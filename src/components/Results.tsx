@@ -6,10 +6,10 @@ import Tooltip from './Tooltip';
 const networkFeaturesInfo = (
   <div className="space-y-2">
     <p><strong>API</strong> - Application Programming Interface endpoints</p>
-    <p><strong>NSG</strong> - Network Security Groups for controlling traffic</p>
-    <p><strong>UDR</strong> - User Defined Routes for custom routing</p>
+    <p><strong>NSG</strong> - Network security groups for controlling traffic</p>
+    <p><strong>UDR</strong> - User defined routes for custom routing</p>
     <p><strong>FW</strong> - Azure Firewall service</p>
-    <p><strong>VSE</strong> - Virtual Service Endpoints for secure Azure service access</p>
+    <p><strong>VSE</strong> - Virtual service endpoints for secure Azure service access</p>
   </div>
 );
 
@@ -110,7 +110,7 @@ export default function Results({ results, query, total }: ResultsProps) {
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-1">
-                  <span>Network Features {renderSortIndicator('networkFeatures')}</span>
+                  <span>Network features {renderSortIndicator('networkFeatures')}</span>
                   <Tooltip content={networkFeaturesInfo}>
                     <span className="text-gray-400 hover:text-gray-600 cursor-help">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
