@@ -131,7 +131,7 @@ export default function About() {
           </ul>
           
           <p className="mt-4">
-            See the <Link href="https://github.com/yourusername/azure-ip-lookup" className="text-blue-600 hover:text-blue-800">GitHub repository</Link> for more information.
+            See the <Link href="https://github.com/endgor/azure-ip-lookup" className="text-blue-600 hover:text-blue-800">GitHub repository</Link> for more information.
           </p>
           
           <h2>Technical Implementation</h2>

@@ -11,15 +11,7 @@ A modern web application that helps you determine if an IP address or domain bel
 
 ## Demo
 
-Visit [https://azure-ip-lookup.vercel.app](https://azure-ip-lookup.vercel.app)
-
-## Technical Stack
-
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Data Fetching**: [SWR](https://swr.vercel.app/)
-- **Deployment**: [Vercel](https://vercel.com/)
+Visit [https://azurehub.org](https://azurehub.org)
 
 ## Local Development
 
