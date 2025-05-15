@@ -4,12 +4,14 @@ import Tooltip from './Tooltip';
 
 // Network features descriptions
 const networkFeaturesInfo = (
-  <div className="space-y-2">
+  <div className="space-y-3">
+    <p className="font-medium">These are Azure network features where this service tag can be used:</p>
     <p><strong>API</strong> - Application Programming Interface endpoints</p>
     <p><strong>NSG</strong> - Network security groups for controlling traffic</p>
     <p><strong>UDR</strong> - User defined routes for custom routing</p>
     <p><strong>FW</strong> - Azure Firewall service</p>
     <p><strong>VSE</strong> - Virtual service endpoints for secure Azure service access</p>
+    <p className="text-xs mt-2 pt-2 border-t border-gray-600">Service tags appear as selectable options in dropdown menus when configuring network rules in Azure</p>
   </div>
 );
 
