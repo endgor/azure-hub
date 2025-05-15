@@ -4,20 +4,20 @@ const path = require('path');
 
 console.log('Running Vercel build script for Azure IP lookup data...');
 
-// Define paths
-const dataDir = path.join(process.cwd(), 'data');
-const publicDataDir = path.join(process.cwd(), 'public', 'data');
+// Define paths - use consistent naming with other scripts
+const PROJECT_ROOT = process.cwd();
+const DATA_DIR = path.join(PROJECT_ROOT, 'data');
+const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
-// Ensure public data directory exists
-if (!fs.existsSync(publicDataDir)) {
-  console.log('Creating public/data directory');
-  fs.mkdirSync(publicDataDir, { recursive: true });
+// Ensure both directories exist
+if (!fs.existsSync(DATA_DIR)) {
+  console.log('Data directory not found! Creating empty one.');
+  fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Check if data directory exists
-if (!fs.existsSync(dataDir)) {
-  console.log('Data directory not found! Creating empty one.');
-  fs.mkdirSync(dataDir, { recursive: true });
+if (!fs.existsSync(PUBLIC_DATA_DIR)) {
+  console.log('Creating public/data directory');
+  fs.mkdirSync(PUBLIC_DATA_DIR, { recursive: true });
 }
 
 // List all files in the data directory

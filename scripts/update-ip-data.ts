@@ -21,10 +21,17 @@ const downloadMappings: DownloadMapping[] = [
   { id: '57063', cloud: AzureCloudName.AzureUSGovernment }, // US Government
 ];
 
-// Directory to save the data files
+// Directories to save the data files
 const DATA_DIR = path.join(process.cwd(), 'data');
+const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
+
+// Create both directories if they don't exist
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+if (!fs.existsSync(PUBLIC_DATA_DIR)) {
+  fs.mkdirSync(PUBLIC_DATA_DIR, { recursive: true });
 }
 
 /**
@@ -225,9 +232,16 @@ async function updateAllIpData(): Promise<void> {
         continue;
       }
 
-      const filePath = path.join(DATA_DIR, `${mapping.cloud}.json`);
-      await downloadFile(downloadUrl, filePath);
-      console.log(`Successfully updated data for ${mapping.cloud}`);
+      const dataFilePath = path.join(DATA_DIR, `${mapping.cloud}.json`);
+      const publicDataFilePath = path.join(PUBLIC_DATA_DIR, `${mapping.cloud}.json`);
+      
+      // Download to data directory
+      await downloadFile(downloadUrl, dataFilePath);
+      
+      // Copy to public directory directly
+      fs.copyFileSync(dataFilePath, publicDataFilePath);
+      
+      console.log(`Successfully updated data for ${mapping.cloud} in both data/ and public/data/ directories`);
 
     } catch (error: any) { // Catch specific error type if known, else any
       console.error(`Failed to process ${mapping.cloud} (ID: ${mapping.id}): ${error.message || error}`);

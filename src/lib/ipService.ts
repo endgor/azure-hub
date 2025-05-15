@@ -3,10 +3,11 @@ import path from 'path';
 import fs from 'fs';
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress, AzureCloudName, AzureServiceTagsRoot } from '../types/azure';
-import { dnsLookup } from 'dns-lookup-promise';
 
-// Local data directory
-const DATA_DIR = path.join(process.cwd(), 'data');
+// Directory paths
+const PROJECT_ROOT = process.cwd();
+const DATA_DIR = path.join(PROJECT_ROOT, 'data');
+const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
 // In-memory cache
 let azureIpAddressCache: AzureIpAddress[] | null = null;
@@ -228,16 +229,20 @@ async function parseIpAddress(ipOrDomain: string): Promise<string | null> {
       return ipOrDomain;
     }
 
-    // Try to resolve domain name to IP address
+    // Try to resolve domain name to IP address using DNS promises API
     try {
-      const result = await dnsLookup(ipOrDomain);
-      return result.address;
-    } catch (dnsError) {
-      // Fallback to built-in DNS resolver if the package fails
+      // Try lookup first (uses getaddrinfo under the hood, respects host file)
+      const addresses = await dns.lookup(ipOrDomain);
+      return addresses.address;
+    } catch (lookupError) {
+      // Fallback to resolve4 which uses DNS protocol directly
       try {
-        const addresses = await dns.lookup(ipOrDomain);
-        return addresses.address;
-      } catch (fallbackError) {
+        const addresses = await dns.resolve4(ipOrDomain);
+        if (addresses && addresses.length > 0) {
+          return addresses[0]; // Return the first IPv4 address
+        }
+        return null;
+      } catch (resolveError) {
         console.error(`DNS resolution failed for ${ipOrDomain}`);
         return null;
       }
@@ -282,39 +287,30 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
       let fileContent: string | null = null;
       let sourceLocation: string = '';
       
-      // First try loading from public directory (best for Vercel and other serverless environments)
-      const publicFilePath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
-      if (fs.existsSync(publicFilePath)) {
+      // In server context, prefer reading from the data directory (absolute source of truth)
+      const dataFilePath = path.join(DATA_DIR, `${cloud}.json`);
+      if (fs.existsSync(dataFilePath)) {
         try {
-          fileContent = fs.readFileSync(publicFilePath, 'utf8');
-          sourceLocation = 'public directory';
-        } catch (publicReadError) {
-          console.error(`Error reading file from public directory: ${publicReadError}`);
-          // Will try data directory next
+          fileContent = fs.readFileSync(dataFilePath, 'utf8');
+          sourceLocation = 'data directory';
+        } catch (dataReadError) {
+          console.error(`Error reading file from data directory: ${dataReadError}`);
+          // Will try public directory next
         }
       }
       
-      // If not found in public directory, try data directory
+      // If not found in data directory or in client context, try public directory
       if (!fileContent) {
-        // Create data directory if it doesn't exist
-        if (!fs.existsSync(DATA_DIR)) {
+        const publicFilePath = path.join(PUBLIC_DATA_DIR, `${cloud}.json`);
+        if (fs.existsSync(publicFilePath)) {
           try {
-            fs.mkdirSync(DATA_DIR, { recursive: true });
-          } catch (mkdirError) {
-            console.error(`Error creating data directory: ${mkdirError}`);
-          }
-        }
-        
-        const filePath = path.join(DATA_DIR, `${cloud}.json`);
-        if (fs.existsSync(filePath)) {
-          try {
-            fileContent = fs.readFileSync(filePath, 'utf8');
-            sourceLocation = 'data directory';
-          } catch (readError) {
-            console.error(`Error reading file from data directory: ${readError}`);
+            fileContent = fs.readFileSync(publicFilePath, 'utf8');
+            sourceLocation = 'public directory';
+          } catch (publicReadError) {
+            console.error(`Error reading file from public directory: ${publicReadError}`);
           }
         } else {
-          console.log(`File not found in data directory: ${filePath}`);
+          console.log(`File not found in public directory: ${publicFilePath}`);
         }
       }
       

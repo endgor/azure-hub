@@ -3,9 +3,10 @@ const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-// Get the project root directory
-const PROJECT_ROOT = path.resolve(__dirname, '..');
+// Get the project root directory - resolve for GitHub Actions environment
+const PROJECT_ROOT = process.env.GITHUB_WORKSPACE || path.resolve(__dirname, '..');
 const DATA_DIR = path.join(PROJECT_ROOT, 'data');
+const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
 // Check if the log directory exists, if not create it
 const LOG_DIR = path.join(PROJECT_ROOT, 'logs');
@@ -135,22 +136,40 @@ function downloadIpData() {
 
 // Validate downloaded files
 function validateDataFiles() {
-  const requiredFiles = ['AzureCloud.json'];
+  const requiredFiles = ['AzureCloud.json', 'AzureChinaCloud.json', 'AzureUSGovernment.json'];
   const missingFiles = [];
   
   requiredFiles.forEach(file => {
-    const filePath = path.join(DATA_DIR, file);
-    if (!fs.existsSync(filePath)) {
-      missingFiles.push(file);
+    const dataFilePath = path.join(DATA_DIR, file);
+    const publicFilePath = path.join(PUBLIC_DATA_DIR, file);
+    
+    // Check data directory
+    if (!fs.existsSync(dataFilePath)) {
+      missingFiles.push(`data/${file}`);
     } else {
       try {
         // Check if file is valid JSON
-        const fileContent = fs.readFileSync(filePath, 'utf8');
+        const fileContent = fs.readFileSync(dataFilePath, 'utf8');
         JSON.parse(fileContent);
-        log(`Validated ${file} - file is valid JSON`);
+        log(`Validated data/${file} - file is valid JSON`);
       } catch (err) {
-        log(`Invalid JSON in ${file}: ${err.message}`);
-        missingFiles.push(file);
+        log(`Invalid JSON in data/${file}: ${err.message}`);
+        missingFiles.push(`data/${file}`);
+      }
+    }
+    
+    // Check public directory
+    if (!fs.existsSync(publicFilePath)) {
+      missingFiles.push(`public/data/${file}`);
+    } else {
+      try {
+        // Check if file is valid JSON
+        const fileContent = fs.readFileSync(publicFilePath, 'utf8');
+        JSON.parse(fileContent);
+        log(`Validated public/data/${file} - file is valid JSON`);
+      } catch (err) {
+        log(`Invalid JSON in public/data/${file}: ${err.message}`);
+        missingFiles.push(`public/data/${file}`);
       }
     }
   });

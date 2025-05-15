@@ -30,7 +30,7 @@ jobs:
       
       - name: Run update script
         run: npx ts-node scripts/update-ip-data.ts
-      
+        
       - name: Commit and push if changed
         run: |
           git config --local user.email "action@github.com"
