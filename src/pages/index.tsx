@@ -215,8 +215,8 @@ export default function Home({
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
                 <h3 className="text-blue-800 mb-2">CIDR Range</h3>
-                <p className="mb-2">Example: <code className="bg-blue-100 px-1 rounded">10.0.0.0/24</code></p>
-                <p className="text-sm">Find Azure IP ranges that overlap with this block</p>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-1 rounded">74.7.51.32/29</code></p>
+                <p className="text-sm">Find Azure IP ranges that are within this block</p>
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
