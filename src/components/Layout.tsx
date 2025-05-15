@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 
 interface LayoutProps {
   title?: string;
@@ -25,6 +26,9 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href={url} />
+
+        {/* Verification Meta Tags - Add these after you verify ownership */}
+        <meta name="google-adsense-account" content="ca-pub-8032676267240814" />
         <meta name="robots" content="index, follow" />
         
         {/* OpenGraph Meta Tags */}
@@ -64,6 +68,30 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
           })}
         </script>
       </Head>
+
+      {/* Google AdSense */}
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8032676267240814"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+
+      {/* Google Analytics - Using next/script for better performance */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+            page_path: window.location.pathname,
+          });
+        `}
+      </Script>
       
       <div className="min-h-screen flex flex-col">
         <header className="bg-gradient-to-r from-blue-700 to-blue-600 text-white shadow-lg">
