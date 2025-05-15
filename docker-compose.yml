@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: always
+    volumes:
+      - ./data:/app/data
+
+  cron:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "apk add --no-cache dcron &&
+             echo '0 0 * * * cd /app && node scripts/direct-download.js >> /app/logs/cron.log 2>&1' > /etc/crontabs/root &&
+             crond -f -l 8"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: always

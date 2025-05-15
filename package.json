@@ -1,0 +1,33 @@
+{
+  "name": "azure-ip-lookup-nextjs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "update-ip-data": "ts-node scripts/update-ip-data.ts"
+  },
+  "dependencies": {
+    "dns-lookup-promise": "^1.0.4",
+    "ip-cidr": "^3.1.0",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "swr": "^2.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/node": "^20.17.47",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
