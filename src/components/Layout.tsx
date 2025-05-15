@@ -11,25 +11,76 @@ interface LayoutProps {
 export default function Layout({ title = 'Azure IP Lookup', children }: LayoutProps) {
   const router = useRouter();
   const isActive = (path: string) => router.pathname === path;
-  
+  const fullTitle = `${title} - Find Azure Service IP Ranges`;
+  const description = "Azure IP Lookup Tool helps you identify IP addresses and ranges associated with Azure services. Search by IP, CIDR, service name, or region to discover Azure infrastructure details.";
+  const url = `https://azurehub.org${router.asPath}`;
+
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta name="description" content="Check if an IP or domain belongs to Azure" />
+        <title>{fullTitle}</title>
+        
+        {/* Essential Meta Tags */}
+        <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={url} />
+        <meta name="robots" content="index, follow" />
+        
+        {/* OpenGraph Meta Tags */}
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={url} />
+        <meta property="og:site_name" content="Azure IP Lookup" />
+        
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={fullTitle} />
+        <meta name="twitter:description" content={description} />
+        
+        {/* Keywords */}
+        <meta name="keywords" content="azure ip lookup, azure service tags, azure ip ranges, azure networking, azure infrastructure, cloud ip addresses, microsoft azure" />
+
+        {/* JSON-LD Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Azure IP Lookup",
+            "description": description,
+            "url": url,
+            "applicationCategory": "Networking Tool",
+            "operatingSystem": "Any",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "creator": {
+              "@type": "Organization",
+              "name": "Azure IP Lookup"
+            }
+          })}
+        </script>
       </Head>
       
       <div className="min-h-screen flex flex-col">
         <header className="bg-gradient-to-r from-blue-700 to-blue-600 text-white shadow-lg">
           <div className="container mx-auto px-4">
             <nav className="flex flex-col sm:flex-row justify-between items-center py-4">
-              <Link href="/" className="flex items-center text-2xl font-bold mb-2 sm:mb-0">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-2" viewBox="0 0 24 24" fill="currentColor">
+              <Link href="/" className="flex items-center text-2xl font-bold mb-2 sm:mb-0" aria-label="Azure IP Lookup - Home">
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-8 w-8 mr-2" 
+                  viewBox="0 0 24 24" 
+                  fill="currentColor"
+                  role="img"
+                  aria-label="Azure IP Lookup Logo"
+                >
                   <path d="M21.3 12c0 .9-5.5 5.6-9.3 5.6S2.7 12.9 2.7 12s5.5-5.6 9.3-5.6c3.8-.1 9.3 4.7 9.3 5.6zm-9.3-3.5c1.9 0 3.5 1.6 3.5 3.5s-1.6 3.5-3.5 3.5-3.5-1.6-3.5-3.5 1.5-3.5 3.5-3.5z" />
                 </svg>
-                Azure IP Lookup
+                <span>Azure IP Lookup</span>
               </Link>
               
               <div className="flex items-center space-x-1">

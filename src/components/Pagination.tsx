@@ -75,14 +75,12 @@ const Pagination: React.FC<PaginationProps> = ({
   const pageNumbers = getPageNumbers();
   
   return (
-    <div className="py-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
-      <div className="text-sm text-gray-600">
-        Showing <span className="font-medium">{startItem}</span> to{' '}
-        <span className="font-medium">{endItem}</span> of{' '}
-        <span className="font-medium">{totalItems}</span> results
+    <nav className="flex justify-between items-center my-4" aria-label="Search results pagination">
+      <div className="text-sm text-gray-700">
+        Showing items <span className="font-medium">{startItem}</span> to <span className="font-medium">{endItem}</span> of <span className="font-medium">{totalItems}</span>
       </div>
-      
-      <nav className="flex items-center space-x-1">
+
+      <div className="flex gap-2" role="navigation" aria-label="Pagination">
         {/* Previous button */}
         {currentPage > 1 && (
           <Link href={getPageUrl(currentPage - 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
@@ -118,8 +116,8 @@ const Pagination: React.FC<PaginationProps> = ({
             Next
           </Link>
         )}
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 

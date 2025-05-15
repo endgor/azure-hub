@@ -95,10 +95,13 @@ export default function LookupForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto mb-8">
+    <form onSubmit={handleSubmit} className="max-w-xl mx-auto mb-8" role="search" aria-label="Azure IP Lookup">
       <div className="flex flex-col md:flex-row gap-4 mb-2">
+        <label className="sr-only" htmlFor="search-query">Search Azure IP addresses, services, or regions</label>
         <input
-          type="text"
+          type="search"
+          id="search-query"
+          name="search-query"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Enter IP address, CIDR, service name, or region"
@@ -111,6 +114,7 @@ export default function LookupForm({
             isLoading ? 'opacity-70 cursor-not-allowed' : ''
           }`}
           disabled={isLoading}
+          aria-label="Search"
         >
           {isLoading ? 'Loading...' : 'Lookup'}
         </button>

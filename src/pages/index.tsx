@@ -105,11 +105,12 @@ export default function Home({
   }, [initialQuery, initialService, initialRegion]);
   
   return (
-    <Layout>
+    <Layout title="Azure IP Range Finder & Service Tag Lookup Tool">
       <section className="text-center max-w-3xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Lookup</h1>          <p className="text-xl text-gray-600 mb-8">
-            Check if an IP address belongs to Azure Service Tags
-          </p>
+        <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Address & Service Tag Lookup</h1>
+        <p className="text-xl text-gray-600 mb-8">
+          Find IP ranges for Azure services and verify if an IP address belongs to Azure infrastructure
+        </p>
       </section>
       
       <LookupForm 

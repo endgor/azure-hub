@@ -69,18 +69,18 @@ export default function Results({ results, query, total }: ResultsProps) {
   };
   
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
-      <div className="bg-blue-50 px-4 py-3 border-b border-blue-100">
+    <section className="bg-white rounded-lg shadow-md overflow-hidden mb-6" aria-label="Search Results">
+      <header className="bg-blue-50 px-4 py-3 border-b border-blue-100">
         <h2 className="text-lg font-semibold text-blue-800">
           Results for {query}
         </h2>
         <p className="text-sm text-blue-600">
           Found {totalDisplay} matching Azure IP {results.length === 1 ? 'range' : 'ranges'}
         </p>
-      </div>
+      </header>
       
       <div className="overflow-x-auto w-full">
-        <table className="min-w-full divide-y divide-gray-200 table-fixed relative">
+        <table className="min-w-full divide-y divide-gray-200 table-fixed relative" aria-label="Azure IP Ranges">
           <thead className="bg-gray-50 relative">
             <tr>
               <th 
@@ -152,6 +152,6 @@ export default function Results({ results, query, total }: ResultsProps) {
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }

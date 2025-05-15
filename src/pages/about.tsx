@@ -3,11 +3,14 @@ import Link from 'next/link';
 
 export default function About() {
   return (
-    <Layout title="About - Azure IP Lookup">
+    <Layout title="About Azure IP Lookup - Azure Service IP Range Finder">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-8">
+        <article className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4 text-blue-800">About Azure IP Lookup</h1>
-        </div>
+          <p className="text-xl text-gray-600 mb-6">
+            Discover Azure IP ranges and verify IP addresses against Microsoft Azure infrastructure
+          </p>
+        </article>
         
         <div className="prose prose-blue max-w-none">
           <p>
