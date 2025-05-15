@@ -1,5 +1,5 @@
 {
-  "name": "azure-ip-lookup-nextjs",
+  "name": "azure-ip-lookup",
   "version": "0.1.0",
   "private": true,
   "scripts": {

@@ -14,7 +14,7 @@ export default function About() {
         
         <div className="prose prose-blue max-w-none">
           <p className="lead">
-            Azure IP Lookup is a self-hosted open-source tool that helps you determine if an IP address 
+            Azure IP Lookup is an open-source tool deployed on Vercel that helps you determine if an IP address 
             or domain belongs to Microsoft Azure infrastructure. This can be useful for various scenarios 
             in network administration, security analysis, and cloud management.
           </p>
@@ -116,24 +116,22 @@ export default function About() {
             <li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=56519" target="_blank" rel="noopener noreferrer">Azure Public Cloud IP Ranges</a></li>
             <li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=57062" target="_blank" rel="noopener noreferrer">Azure China Cloud IP Ranges</a></li>
             <li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=57063" target="_blank" rel="noopener noreferrer">Azure US Government Cloud IP Ranges</a></li>
-            <li><a href="https://www.microsoft.com/en-us/download/details.aspx?id=57064" target="_blank" rel="noopener noreferrer">Azure Germany Cloud IP Ranges</a> (may be discontinued)</li>
           </ul>
           
-          <h2>Self-Hosting</h2>
+          <h2>Deployment</h2>
           
           <p>
-            Azure IP Lookup is designed to be easily self-hosted in your own environment. You can:
+            Azure IP Lookup is deployed on Vercel for optimal performance:
           </p>
           
           <ul>
-            <li>Run it locally for development or personal use</li>
-            <li>Deploy it to any hosting platform that supports Next.js</li>
-            <li>Run it in a Docker container using our provided configuration</li>
-            <li>Set up automated data updates with the included scripts</li>
+            <li>The application is hosted on Vercel for optimal performance</li>
+            <li>GitHub Actions is used for automated daily updates</li>
+            <li>IP data is kept current with automated fetching from Microsoft</li>
           </ul>
           
           <p className="mt-4">
-            See the <Link href="https://github.com/yourusername/azure-ip-lookup-nextjs" className="text-blue-600 hover:text-blue-800">GitHub repository</Link> for complete deployment instructions.
+            See the <Link href="https://github.com/yourusername/azure-ip-lookup" className="text-blue-600 hover:text-blue-800">GitHub repository</Link> for more information.
           </p>
           
           <h2>Technical Implementation</h2>

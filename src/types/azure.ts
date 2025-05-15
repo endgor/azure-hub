@@ -33,8 +33,7 @@ export interface AzureServiceTagsRoot {
 export enum AzureCloudName {
   AzureCloud = "AzureCloud",
   AzureChinaCloud = "AzureChinaCloud",
-  AzureUSGovernment = "AzureUSGovernment",
-  AzureGermanCloud = "AzureGermanCloud"
+  AzureUSGovernment = "AzureUSGovernment"
 }
 
 export interface DownloadMapping {

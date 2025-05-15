@@ -1,17 +1,17 @@
 # Azure IP Lookup
 
-A modern web application that helps you determine if an IP address or domain belongs to Microsoft Azure infrastructure. This tool is built with Next.js and hosted on Vercel.
+A modern web application that helps you determine if an IP address or domain belongs to Microsoft Azure infrastructure. This tool is built with Next.js and deployed on Vercel.
 
 ## Features
 
 - Check if an IP address belongs to Azure
 - Resolve domain names to IP addresses and check Azure ownership
 - View Azure region, service tag, and network feature information 
-- IP data automatically updated daily from Microsoft's official sources
+- IP data automatically updated daily from Microsoft's official sources via GitHub Actions
 
 ## Demo
 
-Visit [https://azure-ip-lookup.vercel.app](https://azure-ip-lookup.vercel.app) (replace with your actual Vercel URL once deployed)
+Visit [https://azure-ip-lookup.vercel.app](https://azure-ip-lookup.vercel.app)
 
 ## Technical Stack
 
@@ -22,18 +22,6 @@ Visit [https://azure-ip-lookup.vercel.app](https://azure-ip-lookup.vercel.app) (
 - **Deployment**: [Vercel](https://vercel.com/)
 
 ## Local Development
-
-### Quick Start
-
-Use the provided setup script to install dependencies, download Azure IP data, and start the development server:
-
-```bash
-./setup-and-run.sh
-```
-
-### Manual Setup
-
-If you prefer to set up manually:
 
 1. Install dependencies:
    ```bash
@@ -63,32 +51,12 @@ The IP data comes directly from Microsoft's official download pages:
 
 ## Automated Updates
 
-IP range data is updated daily. For self-hosted deployments, see [SCHEDULED_UPDATES.md](SCHEDULED_UPDATES.md) for instructions on setting up automated updates.
-
-When hosted on GitHub, updates are managed through GitHub Actions. The workflow:
+IP range data is updated daily through GitHub Actions. The workflow:
 
 1. Runs every day at midnight UTC
 2. Downloads the latest IP ranges from Microsoft
 3. Commits the updated data to the repository
-4. Triggers a new deployment on Vercel
-
-## Docker Deployment
-
-This application can be easily deployed using Docker:
-
-```bash
-# Build and run with Docker Compose
-docker-compose up -d
-
-# Or build and run manually
-docker build -t azure-ip-lookup .
-docker run -p 3000:3000 -v ./data:/app/data azure-ip-lookup
-```
-
-The Docker configuration includes:
-- A main container for the web application
-- A cron service that updates IP data daily
-- Shared volumes for persistent data storage
+4. Triggers a new deployment on Vercel automatically
 
 ## License
 
