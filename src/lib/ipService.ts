@@ -279,47 +279,52 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
   
   for (const cloud of clouds) {
     try {
-      // Create data directory if it doesn't exist
-      if (!fs.existsSync(DATA_DIR)) {
-        try {
-          fs.mkdirSync(DATA_DIR, { recursive: true });
-        } catch (mkdirError) {
-          console.error(`Error creating data directory: ${mkdirError}`);
-          // Continue - we'll try to load from public directory as fallback
-        }
-      }
-      
-      // Try loading from data directory first
-      const filePath = path.join(DATA_DIR, `${cloud}.json`);
       let fileContent: string | null = null;
+      let sourceLocation: string = '';
       
-      if (fs.existsSync(filePath)) {
+      // First try loading from public directory (best for Vercel and other serverless environments)
+      const publicFilePath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
+      if (fs.existsSync(publicFilePath)) {
         try {
-          fileContent = fs.readFileSync(filePath, 'utf8');
-        } catch (readError) {
-          console.error(`Error reading file from data directory: ${readError}`);
-          // Will try public directory next
+          fileContent = fs.readFileSync(publicFilePath, 'utf8');
+          sourceLocation = 'public directory';
+        } catch (publicReadError) {
+          console.error(`Error reading file from public directory: ${publicReadError}`);
+          // Will try data directory next
         }
-      } else {
-        console.log(`File not found in data directory: ${filePath}`);
       }
       
-      // If couldn't read from data directory, try loading from public directory as fallback
+      // If not found in public directory, try data directory
       if (!fileContent) {
-        const publicFilePath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
-        if (fs.existsSync(publicFilePath)) {
+        // Create data directory if it doesn't exist
+        if (!fs.existsSync(DATA_DIR)) {
           try {
-            fileContent = fs.readFileSync(publicFilePath, 'utf8');
-            console.log(`Loaded IP data from public directory: ${publicFilePath}`);
-          } catch (publicReadError) {
-            console.error(`Error reading file from public directory: ${publicReadError}`);
-            continue; // Skip this cloud if we can't read the file
+            fs.mkdirSync(DATA_DIR, { recursive: true });
+          } catch (mkdirError) {
+            console.error(`Error creating data directory: ${mkdirError}`);
+          }
+        }
+        
+        const filePath = path.join(DATA_DIR, `${cloud}.json`);
+        if (fs.existsSync(filePath)) {
+          try {
+            fileContent = fs.readFileSync(filePath, 'utf8');
+            sourceLocation = 'data directory';
+          } catch (readError) {
+            console.error(`Error reading file from data directory: ${readError}`);
           }
         } else {
-          console.log(`File not found in public directory: ${publicFilePath}`);
-          continue; // Skip this cloud if we can't read the file
+          console.log(`File not found in data directory: ${filePath}`);
         }
       }
+      
+      // If we still don't have file content, skip this cloud
+      if (!fileContent) {
+        console.log(`Could not find or read data file for ${cloud} in any location`);
+        continue;
+      }
+      
+      console.log(`Loaded ${cloud} IP data from ${sourceLocation}`);
       
       // Parse the file content
       const azureServiceTagsCollection = JSON.parse(fileContent) as AzureServiceTagsRoot;

@@ -35,5 +35,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Azure IP data files
-/data/*.json
+# Azure IP data files - allow committing these now
+# /data/*.json

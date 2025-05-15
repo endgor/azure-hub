@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/vercel-build.js && next build",
     "start": "next start",
     "lint": "next lint",
-    "update-ip-data": "ts-node scripts/update-ip-data.ts"
+    "update-ip-data": "ts-node scripts/update-ip-data.ts",
+    "copy-data": "node scripts/copy-data-to-public.js"
   },
   "dependencies": {
     "dns-lookup-promise": "^1.0.4",
