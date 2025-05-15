@@ -24,8 +24,18 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
         {/* Essential Meta Tags */}
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href={url} />
+        
+        {/* Favicon Tags */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+        <link rel="manifest" href="/favicons/site.webmanifest" />
+        <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#3B82F6" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <meta name="msapplication-TileColor" content="#3B82F6" />
+        <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+        <meta name="theme-color" content="#ffffff" />
 
         {/* Verification Meta Tags - Add these after you verify ownership */}
         <meta name="google-adsense-account" content="ca-pub-8032676267240814" />
