@@ -40,6 +40,11 @@ export default function Home({
 }: HomeProps) {
   const [error, setError] = useState<string | null>(null);
   
+  // Clear error state when query parameters change
+  useEffect(() => {
+    setError(null);
+  }, [initialQuery, initialRegion, initialService, initialPage]);
+  
   // Build API URL with all query parameters
   const apiUrl = useMemo(() => {
     const params = new URLSearchParams();
