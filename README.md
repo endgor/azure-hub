@@ -1,11 +1,11 @@
 # Azure IP Lookup
 
-A modern web application that helps you determine if an IP address or domain belongs to Microsoft Azure infrastructure. This tool is built with Next.js and deployed on Vercel.
+A modern web application that helps you determine if an IP address belongs to Microsoft Azure infrastructure and identify which Azure Service Tags contain specific IP addresses.
 
 ## Features
 
 - Check if an IP address belongs to Azure
-- Resolve domain names to IP addresses and check Azure ownership
+- Lookup which Azure Service Tags contain a specific IP address
 - View Azure region, service tag, and network feature information 
 - IP data automatically updated daily from Microsoft's official sources via GitHub Actions
 
