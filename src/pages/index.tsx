@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
 import Layout from '@/components/Layout';
