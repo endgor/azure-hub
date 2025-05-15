@@ -56,7 +56,7 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                 </Link>
                 
                 <a 
-                  href="https://github.com/yourusername/azure-ip-lookup-nextjs"
+                  href="https://github.com/endgor/azure-ip-lookup"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-2 rounded-md text-sm font-medium text-blue-100 hover:bg-blue-600 flex items-center"
@@ -96,7 +96,7 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
               </Link>
               <span className="text-gray-400">|</span>
               <a 
-                href="https://github.com/yourusername/azure-ip-lookup-nextjs"
+                href="https://github.com/endgor/azure-ip-lookup"
                 className="text-blue-600 hover:underline"
                 target="_blank" 
                 rel="noopener noreferrer"
