@@ -244,4 +244,5 @@ if (require.main === module) {
   });
 }
 
-export { updateAllIpData, AzureCloudName, DownloadMapping };
+export { updateAllIpData };
+export type { AzureCloudName, DownloadMapping };

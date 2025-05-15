@@ -47,7 +47,6 @@ The IP data comes directly from Microsoft's official download pages:
 - [Azure Public Cloud IP Ranges](https://www.microsoft.com/en-us/download/details.aspx?id=56519)
 - [Azure China Cloud IP Ranges](https://www.microsoft.com/en-us/download/details.aspx?id=57062)
 - [Azure US Government Cloud IP Ranges](https://www.microsoft.com/en-us/download/details.aspx?id=57063)
-- [Azure Germany Cloud IP Ranges](https://www.microsoft.com/en-us/download/details.aspx?id=57064)
 
 ## Automated Updates
 
