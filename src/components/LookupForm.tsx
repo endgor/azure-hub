@@ -96,7 +96,7 @@ export default function LookupForm({
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl mx-auto mb-8">
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+      <div className="flex flex-col md:flex-row gap-4 mb-2">
         <input
           type="text"
           value={searchQuery}
@@ -114,12 +114,6 @@ export default function LookupForm({
         >
           {isLoading ? 'Loading...' : 'Lookup'}
         </button>
-      </div>
-      
-      <div className="mb-2">
-        <p className="text-gray-500 text-sm">
-          Examples: 40.112.127.224, 10.0.0.0/24, AzureActiveDirectory, WestEurope, Storage.WestEurope
-        </p>
       </div>
     </form>
   );

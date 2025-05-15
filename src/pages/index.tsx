@@ -1,16 +1,27 @@
 import { useState, useMemo, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
 import useSWR from 'swr';
+import Link from 'next/link';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
 import Pagination from '../components/Pagination';
 import { AzureIpAddress } from '@/types/azure';
 
-const fetcher = (url: string) => fetch(url).then(res => {
-  if (!res.ok) throw new Error(res.statusText);
-  return res.json();
-});
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  const data = await res.json();
+  
+  // If we get a 404 status, it means "not found" rather than an error
+  if (res.status === 404) {
+    return { notFound: true, message: data.error, results: [], total: 0 };
+  }
+  
+  // For other error statuses, throw an error
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  
+  return data;
+};
 
 interface HomeProps {
   initialQuery: string;
@@ -21,7 +32,7 @@ interface HomeProps {
 
 interface ApiResponse {
   results: AzureIpAddress[];
-  query: {
+  query?: {
     ipOrDomain?: string;
     region?: string;
     service?: string;
@@ -30,6 +41,8 @@ interface ApiResponse {
   page?: number;
   pageSize?: number;
   error?: string;
+  notFound?: boolean;
+  message?: string;
 }
 
 export default function Home({ 
@@ -69,8 +82,11 @@ export default function Home({
     }
   );
   
-  const isError = error || (data && 'error' in data);
+  // Handle different response types
+  const isError = error || (data && 'error' in data && !data.notFound);
+  const isNotFound = data?.notFound === true;
   const errorMessage = error || (isError && data && 'error' in data ? data.error : null);
+  const notFoundMessage = isNotFound && data?.message ? data.message : null;
   
   // Process the results
   const results = data && !isError && data.results ? data.results : [];
@@ -91,10 +107,9 @@ export default function Home({
   return (
     <Layout>
       <section className="text-center max-w-3xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Lookup</h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Check if an IP address or domain is part of Azure infrastructure
-        </p>
+        <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Lookup</h1>          <p className="text-xl text-gray-600 mb-8">
+            Check if an IP address belongs to Azure Service Tags
+          </p>
       </section>
       
       <LookupForm 
@@ -111,6 +126,7 @@ export default function Home({
           </div>
         )}
         
+        {/* Show technical errors with red styling */}
         {isError && errorMessage && (
           <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
             <div className="flex">
@@ -121,6 +137,22 @@ export default function Home({
               </div>
               <div className="ml-3">
                 <p className="text-sm text-red-700">{errorMessage}</p>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Show "not found" results with yellow styling */}
+        {isNotFound && notFoundMessage && (
+          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 9a1 1 0 012 0v5a1 1 0 01-2 0V9zm1-1a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-yellow-700">{notFoundMessage}</p>
               </div>
             </div>
           </div>
@@ -150,7 +182,7 @@ export default function Home({
           </>
         )}
         
-        {!isLoading && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
+        {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
           <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
             <div className="flex">
               <div className="flex-shrink-0">
@@ -170,30 +202,35 @@ export default function Home({
       
       {!initialQuery && !initialRegion && !initialService && (
         <section className="max-w-3xl mx-auto mt-16">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">About this tool</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">How to use this tool</h2>
           <div className="prose prose-blue">
             <p>
-              This tool helps you identify whether an IP address or domain name belongs to Microsoft Azure services.
-              It's useful for network administrators, security professionals, and developers who need to identify Azure traffic.
+              Enter any of the following in the search box above:
             </p>
-            <p>
-              Enter any search term in the search box above - our intelligent search will automatically detect what you're looking for:
-            </p>
-            <ul className="list-disc ml-5 mb-3">
-              <li>IP addresses (e.g., "40.112.127.224")</li>
-              <li>CIDR notation (e.g., "10.0.0.0/24")</li>
-              <li>Service names (e.g., "Storage", "AzureActiveDirectory")</li>
-              <li>Region names (e.g., "WestEurope", "eastus")</li>
-              <li>Combined format (e.g., "Storage.WestEurope")</li>
-            </ul>
-            <h3>Features</h3>
-            <ul>
-              <li>Check if an IP address belongs to Azure</li>
-              <li>Resolve domain names to IP addresses and check Azure ownership</li>
-              <li>View Azure region, service tag, and network feature information</li>
-              <li>Search by service tags and regions using prefixes (service:, region:)</li>
-              <li>IP data automatically updated daily from Microsoft's official sources</li>
-            </ul>
+            <div className="grid md:grid-cols-2 gap-4 mb-3">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-blue-800 mb-2">IP Address</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-1 rounded">40.112.127.224</code></p>
+                <p className="text-sm">Discover which Azure services are using this IP address</p>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-blue-800 mb-2">CIDR Range</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-1 rounded">10.0.0.0/24</code></p>
+                <p className="text-sm">Find Azure IP ranges that overlap with this block</p>
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-blue-800 mb-2">Service Name</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-1 rounded">Storage</code></p>
+                <p className="text-sm">See all IP ranges used by specific Azure services</p>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-blue-800 mb-2">Region or Service.Region</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-1 rounded">WestEurope</code> or <code className="bg-blue-100 px-1 rounded">Storage.WestEurope</code></p>
+                <p className="text-sm">View IP ranges for specific regions or service+region combinations</p>
+              </div>
+            </div>
           </div>
         </section>
       )}

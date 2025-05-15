@@ -4,7 +4,7 @@ import Tooltip from './Tooltip';
 
 // Network features descriptions
 const networkFeaturesInfo = (
-  <div className="space-y-3">
+  <div className="space-y-3 normal-case">
     <p className="font-medium">These are Azure network features where this service tag can be used:</p>
     <p><strong>API</strong> - Application Programming Interface endpoints</p>
     <p><strong>NSG</strong> - Network security groups for controlling traffic</p>
@@ -84,31 +84,31 @@ export default function Results({ results, query, total }: ResultsProps) {
           <thead className="bg-gray-50 relative">
             <tr>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[20%]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[25%]"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[25%]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[23%]"
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[15%]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[13%]"
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[20%]"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[17%]"
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[20%] relative"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[22%] relative"
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-1">

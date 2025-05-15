@@ -25,7 +25,7 @@ export default function Tooltip({ children, content }: TooltipProps) {
         }}
         className="w-72 px-4 py-3 text-sm bg-gray-900 text-white rounded-lg 
                     opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                    pointer-events-none"
+                    pointer-events-none normal-case"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative">
