@@ -63,15 +63,40 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   // Filter by service if specified
   if (service) {
     results = results.filter(ip => {
-      // Match by systemService first
-      if (ip.systemService && 
-         (ip.systemService.toLowerCase() === service.toLowerCase() || 
-          ip.systemService.toLowerCase().includes(service.toLowerCase()))) {
-        return true;
+      // Convert search term and target data to lowercase for case-insensitive comparison
+      const serviceLower = service.toLowerCase();
+      
+      // Match by systemService first with exact or partial matching
+      if (ip.systemService) {
+        const systemServiceLower = ip.systemService.toLowerCase();
+        
+        // Try exact match first
+        if (systemServiceLower === serviceLower) {
+          return true;
+        }
+        
+        // Try normalized forms (remove spaces, dashes)
+        const normalizedSearch = serviceLower.replace(/[-\s]/g, '');
+        const normalizedSystem = systemServiceLower.replace(/[-\s]/g, '');
+        
+        if (normalizedSystem === normalizedSearch) {
+          return true;
+        }
+        
+        // Try substring match last
+        if (normalizedSystem.includes(normalizedSearch) || 
+            normalizedSearch.includes(normalizedSystem)) {
+          return true;
+        }
       }
       
-      // Then by serviceTagId
-      return ip.serviceTagId.toLowerCase().includes(service.toLowerCase());
+      // Then by serviceTagId with similar approach
+      const serviceTagIdLower = ip.serviceTagId.toLowerCase();
+      const normalizedSearch = serviceLower.replace(/[-\s]/g, '');
+      const normalizedTagId = serviceTagIdLower.replace(/[-\s]/g, '');
+      
+      return normalizedTagId.includes(normalizedSearch) || 
+             normalizedSearch.includes(normalizedTagId);
     });
   }
   
@@ -156,11 +181,36 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
     const azureIpAddressList = await getAzureIpAddressListFromCache();
     if (!azureIpAddressList) return null;
     
-    // Simple service tag lookup - check both systemService and serviceTagId
-    const result = azureIpAddressList.filter(ip => 
-      (ip.systemService && ip.systemService.toLowerCase() === ipOrDomain.toLowerCase()) ||
-      ip.serviceTagId.toLowerCase().includes(ipOrDomain.toLowerCase())
-    );
+    // Convert input to lowercase for case-insensitive comparison
+    const searchLower = ipOrDomain.toLowerCase();
+    const normalizedSearch = searchLower.replace(/[-\s]/g, '');
+    
+    // Enhanced service tag lookup with improved case-insensitive matching
+    const result = azureIpAddressList.filter(ip => {
+      // Check systemService with multiple matching approaches
+      if (ip.systemService) {
+        const systemServiceLower = ip.systemService.toLowerCase();
+        const normalizedSystem = systemServiceLower.replace(/[-\s]/g, '');
+        
+        // Try exact match or normalized match
+        if (systemServiceLower === searchLower || normalizedSystem === normalizedSearch) {
+          return true;
+        }
+        
+        // Try substring match
+        if (normalizedSystem.includes(normalizedSearch) || normalizedSearch.includes(normalizedSystem)) {
+          return true;
+        }
+      }
+      
+      // Check serviceTagId with similar approach
+      const serviceTagIdLower = ip.serviceTagId.toLowerCase();
+      const normalizedTagId = serviceTagIdLower.replace(/[-\s]/g, '');
+      
+      return normalizedTagId === normalizedSearch || 
+             normalizedTagId.includes(normalizedSearch) || 
+             normalizedSearch.includes(normalizedTagId);
+    });
     
     if (result.length > 0) {
       console.log(`Found ${result.length} IP ranges for service: ${ipOrDomain}`);

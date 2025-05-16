@@ -69,18 +69,40 @@ export default function LookupForm({
     // Check if it matches known region naming pattern (just letters and numbers)
     else if (/^[a-zA-Z][a-zA-Z0-9]*$/.test(cleanedInput)) {
       // This could be either a service tag or region name
-      // We'll let the backend determine which one it is
       
-      // For regions like WestEurope or eastus, we'll try to detect capitalization pattern
-      if (cleanedInput.match(/^[A-Z][a-z]+[A-Z][a-z]+$/)) {
-        // CamelCase format like "WestEurope" suggests a region
+      // List of known Azure regions patterns
+      const regionPatterns = [
+        /^(west|east|north|south|central|australia|brazil|canada|france|germany|india|japan|korea|norway|qatar|sweden|switzerland|uae|uk)/i
+      ];
+      
+      // List of known Azure service prefixes
+      const servicePatterns = [
+        /^azure/i,
+        /^sql/i,
+        /^app/i,
+        /^storage/i,
+        /^key/i,
+        /^api/i,
+        /^cognitive/i,
+        /^event/i
+      ];
+      
+      // Check if it matches a region pattern
+      const isRegion = regionPatterns.some(pattern => pattern.test(cleanedInput));
+      
+      // Check if it matches a service pattern
+      const isService = servicePatterns.some(pattern => pattern.test(cleanedInput));
+      
+      if (isRegion && !isService) {
+        // Clear region match and not a service
         query.region = cleanedInput;
-      } else if (cleanedInput.match(/^[a-z]+[a-z]+$/)) {
-        // all lowercase like "westeurope" suggests a region
-        query.region = cleanedInput;
-      } else {
-        // Default to service tag for other patterns like "Storage" or "AzureActiveDirectory"
+      } else if (isService && !isRegion) {
+        // Clear service match and not a region
         query.service = cleanedInput;
+      } else {
+        // If ambiguous or doesn't match patterns, let the backend handle both options
+        // by searching both as service and region
+        query.ipOrDomain = cleanedInput;
       }
     } else {
       // For anything else, just pass it as ipOrDomain
