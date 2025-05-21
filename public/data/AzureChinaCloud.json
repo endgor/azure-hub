@@ -1,5 +1,5 @@
 {
-  "changeNumber": 354,
+  "changeNumber": 355,
   "cloud": "China",
   "values": [
     {
@@ -1937,7 +1937,7 @@
       "name": "AzureTrafficManager",
       "id": "AzureTrafficManager",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -1955,7 +1955,8 @@
           "2404:7940:101:3::180/122",
           "2404:7940:200:2::11/128",
           "2404:7940:301:3::c0/122",
-          "2406:e500:2600:3::7/128"
+          "2406:e500:2600:3::7/128",
+          "2406:e500:2602:4::/122"
         ],
         "networkFeatures": [
           "API",

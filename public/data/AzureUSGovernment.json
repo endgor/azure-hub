@@ -1,5 +1,5 @@
 {
-  "changeNumber": 355,
+  "changeNumber": 356,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -2298,7 +2298,7 @@
       "name": "AzureTrafficManager",
       "id": "AzureTrafficManager",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -2318,7 +2318,8 @@
           "2001:489a:3103:7::4c0/122",
           "2001:489a:3400::1/128",
           "2001:489a:3403:7::2c0/122",
-          "2001:489a:3600:1::6b/128"
+          "2001:489a:3600:1::6b/128",
+          "2001:489a:3604:7::80/122"
         ],
         "networkFeatures": [
           "API",
@@ -10346,13 +10347,14 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 58,
+        "changeNumber": 59,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
         "systemService": "",
         "addressPrefixes": [
           "13.72.0.0/18",
+          "13.73.64.0/24",
           "13.73.208.0/20",
           "13.77.224.0/19",
           "20.34.32.0/22",
@@ -10421,6 +10423,7 @@
           "52.127.83.0/24",
           "52.127.103.0/24",
           "52.127.104.4/30",
+          "52.127.104.12/30",
           "52.127.116.0/26",
           "52.127.117.128/26",
           "52.127.160.0/20",
@@ -10471,7 +10474,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 107,
+        "changeNumber": 108,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -10489,6 +10492,7 @@
           "13.72.189.52/32",
           "13.72.190.8/32",
           "13.72.190.110/32",
+          "13.73.64.0/24",
           "13.73.208.0/20",
           "13.77.224.0/19",
           "20.34.32.0/22",
@@ -10750,6 +10754,7 @@
           "52.127.104.0/30",
           "52.127.104.4/30",
           "52.127.104.8/30",
+          "52.127.104.12/30",
           "52.127.108.0/22",
           "52.127.112.0/22",
           "52.127.116.0/26",
