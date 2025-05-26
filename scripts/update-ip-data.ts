@@ -132,15 +132,42 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
                     genericLinks.push(decodedLink);
                 }
             }
+
             if (genericLinks.length > 0) {
                 console.log(`[ID: ${downloadId}] Found ${genericLinks.length} potential JSON download links using generic regex.`);
-                // Prefer longer, more specific URLs if multiple are found
+
+                // Attempt to find links with YYYYMMDD dates in the filename
+                // e.g., ServiceTags_Public_20230101.json, ServiceTags_China_20230101.json
+                const dateExtractionRegex = /ServiceTags_(?:Public|China|AzureGovernment)_(\d{8})\.json$/i;
+                
+                const linksWithDates = genericLinks
+                    .map(link => {
+                        const match = dateExtractionRegex.exec(link);
+                        if (match && match[1]) {
+                            return { link, date: match[1] }; // date is YYYYMMDD
+                        }
+                        return null;
+                    })
+                    .filter(item => item !== null) as { link: string; date: string }[];
+
+                if (linksWithDates.length > 0) {
+                    // Sort by date descending (most recent first)
+                    linksWithDates.sort((a, b) => b.date.localeCompare(a.date));
+                    const latestLinkByDate = linksWithDates[0].link;
+                    console.log(`[ID: ${downloadId}] Prioritizing latest dated ServiceTags link from generic matches: ${latestLinkByDate}`);
+                    resolve(latestLinkByDate);
+                    return;
+                } else {
+                     console.log(`[ID: ${downloadId}] No ServiceTags with parseable dates (YYYYMMDD) found in generic links.`);
+                }
+
+                // Original fallback: Prefer longer, more specific URLs if multiple are found and no dates were parsed
+                console.log(`[ID: ${downloadId}] Falling back to sorting generic links by length.`);
                 const sortedGenericLinks = genericLinks.sort((a,b) => b.length - a.length);
                 resolve(sortedGenericLinks[0]);
                 return;
             }
         }
-
 
         console.error(`[ID: ${downloadId}] Could not extract download URL using any method.`);
         // For deeper debugging, you could save the full HTML:
