@@ -1,5 +1,5 @@
 {
-  "changeNumber": 361,
+  "changeNumber": 362,
   "cloud": "China",
   "values": [
     {
@@ -6444,12 +6444,13 @@
       "name": "Storage.ChinaEast2",
       "id": "Storage.ChinaEast2",
       "properties": {
-        "changeNumber": 8,
+        "changeNumber": 9,
         "region": "chinaeast2",
         "regionId": 55,
         "platform": "Azure",
         "systemService": "AzureStorage",
         "addressPrefixes": [
+          "40.72.198.0/24",
           "40.73.81.0/24",
           "40.73.85.16/28",
           "40.73.85.32/27",
@@ -8707,7 +8708,7 @@
       "name": "AzureCloud.chinanorth2",
       "id": "AzureCloud.chinanorth2",
       "properties": {
-        "changeNumber": 31,
+        "changeNumber": 32,
         "region": "chinanorth2",
         "regionId": 54,
         "platform": "Azure",
@@ -8754,6 +8755,7 @@
           "2406:e500:2002::/47",
           "2406:e500:2004::/48",
           "2406:e500:2005::/48",
+          "2406:e500:2801::/63",
           "2406:e500:4801::/48",
           "2406:e500:4900:10::/62",
           "2406:e500:4a02::/48",
@@ -8927,7 +8929,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 100,
+        "changeNumber": 101,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -9224,6 +9226,7 @@
           "2406:e500:2601::/48",
           "2406:e500:2602::/47",
           "2406:e500:2604::/48",
+          "2406:e500:2801::/63",
           "2406:e500:4800::/48",
           "2406:e500:4801::/48",
           "2406:e500:4802::/48",
