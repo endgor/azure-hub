@@ -11,6 +11,7 @@ const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
 // In-memory cache with global module-level persistence
 let azureIpAddressCache: AzureIpAddress[] | null = null;
+let azureVersionsCache: AzureCloudVersions | null = null;
 let cacheExpiry = 0;
 const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours in milliseconds (longer for better cold start performance)
 
@@ -21,6 +22,12 @@ let loadPromise: Promise<AzureIpAddress[]> | null = null;
 export interface SearchOptions {
   region?: string;
   service?: string;
+}
+
+export interface AzureCloudVersions {
+  AzureCloud?: number;
+  AzureChinaCloud?: number;
+  AzureUSGovernment?: number;
 }
 
 /**
@@ -106,6 +113,70 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   
   console.log(`Found ${results.length} IP ranges matching filters: ${JSON.stringify({ region, service })}`);
   return results;
+}
+
+/**
+ * Get Azure cloud version information
+ */
+export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
+  const now = Date.now();
+  
+  // Return from memory cache if valid
+  if (azureVersionsCache && now < cacheExpiry) {
+    console.log('Returning cached version data');
+    return azureVersionsCache;
+  }
+
+  const versions: AzureCloudVersions = {};
+  const clouds = Object.values(AzureCloudName);
+  
+  // Process files in parallel
+  const versionPromises = clouds.map(async (cloud) => {
+    try {
+      let fileContent: string | null = null;
+      
+      // Try data directory first, then public directory
+      const paths = [
+        path.join(DATA_DIR, `${cloud}.json`),
+        path.join(PUBLIC_DATA_DIR, `${cloud}.json`)
+      ];
+      
+      for (const filePath of paths) {
+        try {
+          if (fs.existsSync(filePath)) {
+            fileContent = fs.readFileSync(filePath, 'utf8');
+            break;
+          }
+        } catch (readError) {
+          console.error(`Error reading version from ${filePath}:`, readError);
+        }
+      }
+      
+      if (fileContent) {
+        const data = JSON.parse(fileContent) as AzureServiceTagsRoot;
+        return { cloud, version: data.changeNumber };
+      }
+    } catch (error) {
+      console.error(`Error loading version for cloud ${cloud}:`, error);
+    }
+    
+    return { cloud, version: null };
+  });
+  
+  const results = await Promise.all(versionPromises);
+  
+  // Build versions object
+  for (const { cloud, version } of results) {
+    if (version !== null) {
+      versions[cloud as keyof AzureCloudVersions] = version;
+    }
+  }
+  
+  // Cache the versions
+  azureVersionsCache = versions;
+  
+  console.log('Loaded Azure cloud versions:', versions);
+  return versions;
 }
 
 export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIpAddress[] | null> {
