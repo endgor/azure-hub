@@ -494,3 +494,46 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
   console.log(`Loaded ${azureIpAddressList.length} IP address ranges from ${clouds.length} cloud files`);
   return azureIpAddressList;
 }
+
+/**
+ * Get all unique service tags from Azure data
+ */
+export async function getAllServiceTags(): Promise<string[]> {
+  const azureIpAddressList = await getAzureIpAddressListFromCache();
+  if (!azureIpAddressList || azureIpAddressList.length === 0) {
+    console.log('No Azure IP address data available');
+    return [];
+  }
+  
+  // Get unique service tags
+  const serviceTagsSet = new Set<string>();
+  
+  azureIpAddressList.forEach(ip => {
+    serviceTagsSet.add(ip.serviceTagId);
+  });
+  
+  // Convert to array and sort
+  const serviceTags = Array.from(serviceTagsSet).sort();
+  
+  console.log(`Found ${serviceTags.length} unique service tags`);
+  return serviceTags;
+}
+
+/**
+ * Get all IP ranges for a specific service tag
+ */
+export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpAddress[]> {
+  const azureIpAddressList = await getAzureIpAddressListFromCache();
+  if (!azureIpAddressList || azureIpAddressList.length === 0) {
+    console.log('No Azure IP address data available');
+    return [];
+  }
+  
+  // Filter by exact service tag match
+  const result = azureIpAddressList.filter(ip => 
+    ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase()
+  );
+  
+  console.log(`Found ${result.length} IP ranges for service tag: ${serviceTag}`);
+  return result;
+}
