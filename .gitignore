@@ -35,5 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Azure IP data files - allow committing these now
-# /data/*.json
+# GitHub Actions
+.github/workflows/*.yml
+
+# Claude files
+CLAUDE.md
+.claude/
