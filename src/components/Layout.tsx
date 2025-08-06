@@ -134,6 +134,17 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                 </Link>
                 
                 <Link 
+                  href="/service-tags" 
+                  className={`px-3 py-2 rounded-md font-medium text-sm ${
+                    isActive('/service-tags') || router.pathname.startsWith('/service-tags') 
+                      ? 'bg-blue-800 text-white' 
+                      : 'text-blue-100 hover:bg-blue-600'
+                  }`}
+                >
+                  Service Tags
+                </Link>
+                
+                <Link 
                   href="/about" 
                   className={`px-3 py-2 rounded-md font-medium text-sm ${
                     isActive('/about') 
