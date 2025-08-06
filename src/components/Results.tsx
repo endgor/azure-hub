@@ -1,6 +1,7 @@
 import { AzureIpAddress } from '@/types/azure';
 import { useState, useMemo } from 'react';
 import Tooltip from './Tooltip';
+import ExportDropdown from './ExportDropdown';
 
 // Network features descriptions
 const networkFeaturesInfo = (
@@ -75,12 +76,19 @@ export default function Results({ results, query, total }: ResultsProps) {
   return (
     <section className="bg-white rounded-lg shadow-md overflow-hidden mb-6" aria-label="Search Results">
       <header className="bg-blue-50 px-4 py-3 border-b border-blue-100">
-        <h2 className="text-lg font-semibold text-blue-800">
-          Results for {query}
-        </h2>
-        <p className="text-sm text-blue-600">
-          Found {totalDisplay} matching Azure IP {results.length === 1 ? 'range' : 'ranges'}
-        </p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-lg font-semibold text-blue-800">
+              Results for {query}
+            </h2>
+            <p className="text-sm text-blue-600">
+              Found {totalDisplay} matching Azure IP {results.length === 1 ? 'range' : 'ranges'}
+            </p>
+          </div>
+          <div className="flex-shrink-0">
+            <ExportDropdown results={sortedResults} query={query} />
+          </div>
+        </div>
       </header>
       
       <div className="overflow-x-auto w-full">

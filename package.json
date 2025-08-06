@@ -13,13 +13,16 @@
     "@vercel/analytics": "^1.5.0",
     "ip-cidr": "^3.1.0",
     "next": "^14.0.4",
+    "papaparse": "^5.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "swr": "^2.2.4"
+    "swr": "^2.2.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.17.47",
+    "@types/papaparse": "^5.3.16",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.16",
