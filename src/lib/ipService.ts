@@ -9,10 +9,14 @@ const PROJECT_ROOT = process.cwd();
 const DATA_DIR = path.join(PROJECT_ROOT, 'data');
 const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
-// In-memory cache
+// In-memory cache with global module-level persistence
 let azureIpAddressCache: AzureIpAddress[] | null = null;
 let cacheExpiry = 0;
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour in milliseconds
+const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours in milliseconds (longer for better cold start performance)
+
+// Global flag to track if we're currently loading data (prevents duplicate loads)
+let isLoading = false;
+let loadPromise: Promise<AzureIpAddress[]> | null = null;
 
 export interface SearchOptions {
   region?: string;
@@ -308,21 +312,36 @@ async function getAzureIpAddressListFromCache(): Promise<AzureIpAddress[]> {
   
   // Return from memory cache if valid
   if (azureIpAddressCache && now < cacheExpiry) {
+    console.log(`Returning cached data (${azureIpAddressCache.length} entries)`);
     return azureIpAddressCache;
   }
 
+  // If already loading, wait for the existing promise
+  if (isLoading && loadPromise) {
+    console.log('Data loading in progress, waiting...');
+    return loadPromise;
+  }
+
+  // Set loading flag and create promise
+  isLoading = true;
+  loadPromise = loadAzureIpAddressListFromFiles();
+  
   try {
-    // Load from local files
-    const azureIpAddressList = await loadAzureIpAddressListFromFiles();
+    console.log('Loading Azure IP data from files...');
+    const azureIpAddressList = await loadPromise;
     
     // Update memory cache
     azureIpAddressCache = azureIpAddressList;
     cacheExpiry = now + CACHE_TTL;
     
+    console.log(`Loaded and cached ${azureIpAddressList.length} IP ranges`);
     return azureIpAddressList;
   } catch (error) {
     console.error('Error loading Azure IP address list:', error);
     return [];
+  } finally {
+    isLoading = false;
+    loadPromise = null;
   }
 }
 
@@ -332,67 +351,75 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
   // Get all cloud types
   const clouds = Object.values(AzureCloudName);
   
-  for (const cloud of clouds) {
+  // Process files in parallel for better performance
+  const fileReadPromises = clouds.map(async (cloud) => {
     try {
       let fileContent: string | null = null;
       let sourceLocation: string = '';
       
-      // In server context, prefer reading from the data directory (absolute source of truth)
-      const dataFilePath = path.join(DATA_DIR, `${cloud}.json`);
-      if (fs.existsSync(dataFilePath)) {
+      // Try data directory first, then public directory
+      const paths = [
+        { path: path.join(DATA_DIR, `${cloud}.json`), location: 'data directory' },
+        { path: path.join(PUBLIC_DATA_DIR, `${cloud}.json`), location: 'public directory' }
+      ];
+      
+      for (const { path: filePath, location } of paths) {
         try {
-          fileContent = fs.readFileSync(dataFilePath, 'utf8');
-          sourceLocation = 'data directory';
-        } catch (dataReadError) {
-          console.error(`Error reading file from data directory: ${dataReadError}`);
-          // Will try public directory next
-        }
-      }
-      
-      // If not found in data directory or in client context, try public directory
-      if (!fileContent) {
-        const publicFilePath = path.join(PUBLIC_DATA_DIR, `${cloud}.json`);
-        if (fs.existsSync(publicFilePath)) {
-          try {
-            fileContent = fs.readFileSync(publicFilePath, 'utf8');
-            sourceLocation = 'public directory';
-          } catch (publicReadError) {
-            console.error(`Error reading file from public directory: ${publicReadError}`);
+          if (fs.existsSync(filePath)) {
+            fileContent = fs.readFileSync(filePath, 'utf8');
+            sourceLocation = location;
+            break;
           }
-        } else {
-          console.log(`File not found in public directory: ${publicFilePath}`);
+        } catch (readError) {
+          console.error(`Error reading file from ${location}: ${readError}`);
         }
       }
       
-      // If we still don't have file content, skip this cloud
       if (!fileContent) {
         console.log(`Could not find or read data file for ${cloud} in any location`);
-        continue;
+        return [];
       }
       
       console.log(`Loaded ${cloud} IP data from ${sourceLocation}`);
       
       // Parse the file content
       const azureServiceTagsCollection = JSON.parse(fileContent) as AzureServiceTagsRoot;
+      const cloudResults: AzureIpAddress[] = [];
       
+      // Process service tags more efficiently
       for (const azureServiceTag of azureServiceTagsCollection.values) {
+        const baseEntry = {
+          serviceTagId: azureServiceTag.id,
+          region: azureServiceTag.properties.region,
+          regionId: azureServiceTag.properties.regionId,
+          systemService: azureServiceTag.properties.systemService,
+          networkFeatures: azureServiceTag.properties.networkFeatures?.join(' ') || ''
+        };
+        
+        // Create entries for each address prefix
         for (const addressPrefix of azureServiceTag.properties.addressPrefixes) {
-          azureIpAddressList.push({
-            serviceTagId: azureServiceTag.id,
-            ipAddressPrefix: addressPrefix,
-            region: azureServiceTag.properties.region,
-            regionId: azureServiceTag.properties.regionId,
-            systemService: azureServiceTag.properties.systemService,
-            networkFeatures: azureServiceTag.properties.networkFeatures ? 
-              azureServiceTag.properties.networkFeatures.join(' ') : ''
+          cloudResults.push({
+            ...baseEntry,
+            ipAddressPrefix: addressPrefix
           });
         }
       }
+      
+      return cloudResults;
     } catch (error) {
       console.error(`Error loading data for cloud ${cloud}:`, error);
+      return [];
     }
+  });
+  
+  // Wait for all files to be processed
+  const results = await Promise.all(fileReadPromises);
+  
+  // Flatten results
+  for (const cloudResults of results) {
+    azureIpAddressList.push(...cloudResults);
   }
   
-  console.log(`Loaded ${azureIpAddressList.length} IP address ranges`);
+  console.log(`Loaded ${azureIpAddressList.length} IP address ranges from ${clouds.length} cloud files`);
   return azureIpAddressList;
 }

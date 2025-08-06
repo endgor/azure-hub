@@ -22,7 +22,7 @@ if (!fs.existsSync(PUBLIC_DATA_DIR)) {
 
 // List all files in the data directory
 try {
-  const files = fs.readdirSync(dataDir);
+  const files = fs.readdirSync(DATA_DIR);
   const jsonFiles = files.filter(file => file.endsWith('.json'));
   
   console.log(`Found ${jsonFiles.length} JSON files in data directory`);
@@ -35,7 +35,7 @@ try {
     const clouds = ['AzureCloud', 'AzureChinaCloud', 'AzureUSGovernment'];
     
     clouds.forEach(cloud => {
-      const placeholderPath = path.join(dataDir, `${cloud}.json`);
+      const placeholderPath = path.join(DATA_DIR, `${cloud}.json`);
       const placeholderContent = JSON.stringify({
         name: cloud,
         id: '',
@@ -53,17 +53,17 @@ try {
     });
     
     // Refresh the list of files
-    const updatedFiles = fs.readdirSync(dataDir);
+    const updatedFiles = fs.readdirSync(DATA_DIR);
     const updatedJsonFiles = updatedFiles.filter(file => file.endsWith('.json'));
     console.log(`Now have ${updatedJsonFiles.length} JSON files in data directory`);
   }
   
   // Copy all JSON files from data directory to public/data
-  const filesToCopy = fs.readdirSync(dataDir).filter(file => file.endsWith('.json'));
+  const filesToCopy = fs.readdirSync(DATA_DIR).filter(file => file.endsWith('.json'));
   
   filesToCopy.forEach(file => {
-    const srcPath = path.join(dataDir, file);
-    const destPath = path.join(publicDataDir, file);
+    const srcPath = path.join(DATA_DIR, file);
+    const destPath = path.join(PUBLIC_DATA_DIR, file);
     
     try {
       fs.copyFileSync(srcPath, destPath);

@@ -34,8 +34,7 @@ export default async function handler(
   const regionStr = Array.isArray(region) ? region[0] : region
   const serviceStr = Array.isArray(service) ? service[0] : service
   
-  // For simplicity - if only one search parameter is provided and it contains a dot
-  // but is not an IP address pattern, check if it's Service.Region format
+  // Handle Service.Region format more efficiently without redirect
   if (ipOrDomainStr && !regionStr && !serviceStr && 
       ipOrDomainStr.includes('.') && 
       !/^\d+\.\d+/.test(ipOrDomainStr) &&
@@ -46,12 +45,33 @@ export default async function handler(
         /^[a-zA-Z][a-zA-Z0-9]*$/.test(parts[0]) && 
         /^[a-zA-Z][a-zA-Z0-9]*$/.test(parts[1])) {
       
-      // This looks like Service.Region format (e.g. Storage.WestEurope)
-      // Redirect the request to use both service and region parameters
-      return res.redirect(
-        307,
-        `/api/ipAddress?service=${parts[0]}&region=${parts[1]}&page=${page}&pageSize=${pageSize}`
-      )
+      // Parse as Service.Region format directly
+      const serviceParam = parts[0];
+      const regionParam = parts[1];
+      
+      try {
+        const results = await searchAzureIpAddresses({
+          service: serviceParam,
+          region: regionParam
+        });
+        
+        if (results && results.length > 0) {
+          const total = results.length;
+          const startIndex = (currentPage - 1) * itemsPerPage;
+          const paginatedResults = results.slice(startIndex, startIndex + itemsPerPage);
+          
+          return res.status(200).json({
+            results: paginatedResults,
+            query: { service: serviceParam, region: regionParam },
+            total,
+            page: currentPage,
+            pageSize: itemsPerPage
+          });
+        }
+      } catch (error) {
+        console.error('Error processing Service.Region format:', error);
+        // Fall through to handle as domain
+      }
     }
   }
   
@@ -60,42 +80,40 @@ export default async function handler(
     if (ipOrDomainStr) {
       let result
       
-      // Check if the input could be a service tag (no service parameter provided)
+      // Optimize single term lookup - try service and region in parallel
       if (!serviceStr && /^[a-zA-Z][a-zA-Z0-9]*$/.test(ipOrDomainStr)) {
-        // Try as a service tag first
-        result = await searchAzureIpAddresses({ service: ipOrDomainStr })
-        
-        if (result && result.length > 0) {
-          // Apply pagination
-          const total = result.length
-          const startIndex = (currentPage - 1) * itemsPerPage
-          const paginatedResults = result.slice(startIndex, startIndex + itemsPerPage)
+        try {
+          // Try both service and region searches in parallel for better performance
+          const [serviceResult, regionResult] = await Promise.all([
+            searchAzureIpAddresses({ service: ipOrDomainStr }),
+            searchAzureIpAddresses({ region: ipOrDomainStr })
+          ]);
           
-          return res.status(200).json({
-            results: paginatedResults,
-            query: { service: ipOrDomainStr },
-            total,
-            page: currentPage,
-            pageSize: itemsPerPage
-          })
-        }
-        
-        // If no results as service tag, try as region
-        result = await searchAzureIpAddresses({ region: ipOrDomainStr })
-        
-        if (result && result.length > 0) {
-          // Apply pagination
-          const total = result.length
-          const startIndex = (currentPage - 1) * itemsPerPage
-          const paginatedResults = result.slice(startIndex, startIndex + itemsPerPage)
+          // Use service result if it has more matches, otherwise use region
+          const bestResult = (serviceResult && serviceResult.length >= (regionResult?.length || 0)) 
+            ? { result: serviceResult, queryType: 'service' }
+            : { result: regionResult, queryType: 'region' };
           
-          return res.status(200).json({
-            results: paginatedResults,
-            query: { region: ipOrDomainStr },
-            total,
-            page: currentPage,
-            pageSize: itemsPerPage
-          })
+          if (bestResult.result && bestResult.result.length > 0) {
+            const total = bestResult.result.length;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedResults = bestResult.result.slice(startIndex, startIndex + itemsPerPage);
+            
+            const query = bestResult.queryType === 'service' 
+              ? { service: ipOrDomainStr } 
+              : { region: ipOrDomainStr };
+            
+            return res.status(200).json({
+              results: paginatedResults,
+              query,
+              total,
+              page: currentPage,
+              pageSize: itemsPerPage
+            });
+          }
+        } catch (error) {
+          console.error('Error in parallel service/region search:', error);
+          // Fall through to IP lookup
         }
       }
       
@@ -103,28 +121,7 @@ export default async function handler(
       result = await getAzureIpAddressList(ipOrDomainStr)
       
       if (!result) {
-        // Try one last search for partial service tag or region name
-        const combinedResult = await searchAzureIpAddresses({
-          service: ipOrDomainStr,
-          region: ipOrDomainStr
-        });
-        
-        if (!combinedResult || combinedResult.length === 0) {
-          return res.status(404).json({ error: `No Azure IP range or service found matching "${ipOrDomainStr}"` })
-        }
-        
-        // Apply pagination
-        const total = combinedResult.length
-        const startIndex = (currentPage - 1) * itemsPerPage
-        const paginatedResults = combinedResult.slice(startIndex, startIndex + itemsPerPage)
-        
-        return res.status(200).json({
-          results: paginatedResults,
-          query: { ipOrDomain: ipOrDomainStr },
-          total,
-          page: currentPage,
-          pageSize: itemsPerPage
-        })
+        return res.status(404).json({ error: `No Azure IP range or service found matching "${ipOrDomainStr}"` })
       }
       
       // Filter by region and service if specified
