@@ -179,7 +179,7 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
           <div className="container mx-auto px-4 py-6 text-center text-gray-600">
             <p className="font-medium">Azure IP Lookup Tool</p>
             <p className="text-sm mt-1 mb-2">
-              Data automatically updates daily from Microsoft's official sources
+              Data automatically updates daily from Microsoft&apos;s official sources
             </p>
             <div className="flex justify-center space-x-4 text-sm">
               <a 

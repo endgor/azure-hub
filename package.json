@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
-    "dns-lookup-promise": "^1.0.4",
     "ip-cidr": "^3.1.0",
     "next": "^14.0.4",
     "react": "^18.2.0",

@@ -96,7 +96,7 @@ export default function ServiceTags() {
                 Showing {filteredServiceTags.length} of {data.serviceTags.length} service tags
                 {searchTerm && (
                   <span className="ml-2 text-blue-600 font-medium">
-                    matching "{searchTerm}"
+                    matching &quot;{searchTerm}&quot;
                   </span>
                 )}
               </p>
@@ -119,7 +119,7 @@ export default function ServiceTags() {
             ) : searchTerm ? (
               <div className="text-center py-8">
                 <p className="text-gray-600">
-                  No service tags found matching "{searchTerm}"
+                  No service tags found matching &quot;{searchTerm}&quot;
                 </p>
                 <button
                   onClick={() => setSearchTerm('')}
