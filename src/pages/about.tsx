@@ -33,7 +33,9 @@ export default function About() {
           
           <p>
             This tool uses official Microsoft Azure IP Ranges and Service Tags data that is updated daily. All data is sourced from
-            publicly available APIs provided by Microsoft Azure.
+            publicly available APIs provided by Microsoft Azure. You can <Link href="/" className="text-blue-600 hover:underline">
+            search for IP addresses, CIDR ranges, or service names</Link> on the main page, or <Link href="/service-tags" 
+            className="text-blue-600 hover:underline">browse all available service tags</Link> in our directory.
           </p>
           
           <h2>Network Features</h2>

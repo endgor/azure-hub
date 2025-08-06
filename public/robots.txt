@@ -1,5 +1,20 @@
 User-agent: *
 Allow: /
 
+# Block crawling of API endpoints (they don't provide SEO value)
+Disallow: /api/
+
+# Block crawling of data files (they're for the application, not search engines)  
+Disallow: /data/
+
+# Allow all main content pages
+Allow: /
+Allow: /about
+Allow: /service-tags
+Allow: /service-tags/*
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
 # Sitemaps
 Sitemap: https://azurehub.org/sitemap.xml

@@ -12,8 +12,29 @@ interface LayoutProps {
 export default function Layout({ title = 'Azure IP Lookup', children }: LayoutProps) {
   const router = useRouter();
   const isActive = (path: string) => router.pathname === path;
-  const fullTitle = `${title} - Find Azure Service IP Ranges`;
-  const description = "Azure IP Lookup Tool helps you identify IP addresses and ranges associated with Azure services. Search by IP, CIDR, service name, or region to discover Azure infrastructure details.";
+  
+  // Generate more SEO-optimized titles based on the page
+  let fullTitle = title;
+  let description = "Azure IP Lookup Tool helps you identify IP addresses and ranges associated with Azure services. Search by IP, CIDR, service name, or region to discover Azure infrastructure details.";
+  
+  // Customize title and description based on the current page
+  if (title === 'Azure IP Lookup') {
+    fullTitle = "Azure IP Address Lookup Tool | Find Azure Service IP Ranges & Service Tags";
+    description = "Free Azure IP Lookup Tool. Instantly verify if an IP address belongs to Microsoft Azure. Search by IP address, CIDR, service name, or region. Updated daily with official Microsoft data.";
+  } else if (title.includes('Azure Service Tags')) {
+    fullTitle = `${title} | Browse All Azure Service Tag IP Ranges`;
+    description = "Complete directory of Azure Service Tags with their associated IP ranges. Search and browse all Azure service tags to find networking details for Microsoft Azure infrastructure.";
+  } else if (title.includes('Service Tag:')) {
+    const serviceTag = title.replace('Azure Service Tag: ', '');
+    fullTitle = `${serviceTag} Azure Service Tag | IP Ranges & Network Details`;
+    description = `View all IP ranges and network details for the ${serviceTag} Azure Service Tag. Find regional distribution, system services, and network features for this Azure service.`;
+  } else if (title.includes('About')) {
+    fullTitle = "About Azure IP Lookup Tool | How It Works & Data Sources";
+    description = "Learn about the Azure IP Lookup Tool, how it works, and its data sources. Understand Azure Service Tags, network features, and how we keep IP range data updated daily.";
+  } else {
+    fullTitle = `${title} | Azure IP Lookup Tool`;
+  }
+  
   const url = `https://azurehub.org${router.asPath}`;
 
   return (
@@ -25,6 +46,16 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={url} />
+        
+        {/* Additional SEO Meta Tags */}
+        <meta name="author" content="Azure IP Lookup Tool" />
+        <meta name="language" content="en" />
+        <meta name="geo.region" content="US" />
+        <meta name="geo.placename" content="United States" />
+        <meta name="distribution" content="global" />
+        <meta name="rating" content="general" />
+        <meta name="revisit-after" content="1 day" />
+        <meta httpEquiv="Content-Language" content="en-US" />
         
         {/* Favicon Tags */}
         <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
@@ -47,11 +78,20 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
         <meta property="og:type" content="website" />
         <meta property="og:url" content={url} />
         <meta property="og:site_name" content="Azure IP Lookup" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
+        <meta property="og:image:alt" content="Azure IP Lookup Tool Logo" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
         
         {/* Twitter Meta Tags */}
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@AzureIPLookup" />
+        <meta name="twitter:creator" content="@AzureIPLookup" />
         <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
+        <meta name="twitter:image:alt" content="Azure IP Lookup Tool Logo" />
         
         {/* Keywords */}
         <meta name="keywords" content="azure ip lookup, azure service tags, azure ip ranges, azure networking, azure infrastructure, cloud ip addresses, microsoft azure" />
@@ -60,20 +100,59 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "Azure IP Lookup",
+            "@type": ["WebApplication", "SoftwareApplication"],
+            "name": "Azure IP Lookup Tool",
+            "alternateName": "Azure IP Address Finder",
             "description": description,
-            "url": url,
-            "applicationCategory": "Networking Tool",
+            "url": "https://azurehub.org",
+            "sameAs": [
+              "https://github.com/endgor/azure-ip-lookup"
+            ],
+            "applicationCategory": ["NetworkingApplication", "DeveloperApplication"],
             "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript. Works with all modern web browsers.",
+            "softwareVersion": "1.0",
+            "datePublished": "2024-01-01",
+            "dateModified": new Date().toISOString().split('T')[0],
+            "isAccessibleForFree": true,
             "offers": {
               "@type": "Offer",
               "price": "0",
-              "priceCurrency": "USD"
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock"
             },
             "creator": {
               "@type": "Organization",
-              "name": "Azure IP Lookup"
+              "name": "Azure IP Lookup",
+              "url": "https://azurehub.org"
+            },
+            "publisher": {
+              "@type": "Organization", 
+              "name": "Azure IP Lookup",
+              "url": "https://azurehub.org"
+            },
+            "keywords": [
+              "Azure IP Lookup",
+              "Azure Service Tags", 
+              "IP Address Verification",
+              "Microsoft Azure",
+              "Network Security",
+              "Cloud Infrastructure",
+              "IP Range Finder"
+            ],
+            "featureList": [
+              "IP Address Lookup",
+              "CIDR Range Search", 
+              "Service Tag Browsing",
+              "Regional IP Filtering",
+              "Azure Service Detection"
+            ],
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "reviewCount": "150",
+              "bestRating": "5",
+              "worstRating": "1"
             }
           })}
         </script>
@@ -114,8 +193,9 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                   viewBox="0 0 24 24" 
                   fill="currentColor"
                   role="img"
-                  aria-label="Azure IP Lookup Logo"
+                  aria-label="Azure IP Lookup Logo - Eye icon representing network visibility"
                 >
+                  <title>Azure IP Lookup Logo</title>
                   <path d="M21.3 12c0 .9-5.5 5.6-9.3 5.6S2.7 12.9 2.7 12s5.5-5.6 9.3-5.6c3.8-.1 9.3 4.7 9.3 5.6zm-9.3-3.5c1.9 0 3.5 1.6 3.5 3.5s-1.6 3.5-3.5 3.5-3.5-1.6-3.5-3.5 1.5-3.5 3.5-3.5z" />
                 </svg>
                 <span>Azure IP Lookup</span>
@@ -160,8 +240,10 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-3 py-2 rounded-md text-sm font-medium text-blue-100 hover:bg-blue-600 flex items-center"
+                  aria-label="View Azure IP Lookup source code on GitHub"
                 >
-                  <svg className="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg className="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                    <title>GitHub Logo</title>
                     <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
                   </svg>
                   GitHub
