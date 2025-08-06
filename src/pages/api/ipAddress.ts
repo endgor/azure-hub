@@ -80,39 +80,44 @@ export default async function handler(
     if (ipOrDomainStr) {
       let result
       
-      // Optimize single term lookup - try service and region in parallel
+      // Optimize single term lookup - try service first, then region if no results
       if (!serviceStr && /^[a-zA-Z][a-zA-Z0-9]*$/.test(ipOrDomainStr)) {
         try {
-          // Try both service and region searches in parallel for better performance
-          const [serviceResult, regionResult] = await Promise.all([
-            searchAzureIpAddresses({ service: ipOrDomainStr }),
-            searchAzureIpAddresses({ region: ipOrDomainStr })
-          ]);
+          // Try service search first (more common)
+          const serviceResult = await searchAzureIpAddresses({ service: ipOrDomainStr });
           
-          // Use service result if it has more matches, otherwise use region
-          const bestResult = (serviceResult && serviceResult.length >= (regionResult?.length || 0)) 
-            ? { result: serviceResult, queryType: 'service' }
-            : { result: regionResult, queryType: 'region' };
-          
-          if (bestResult.result && bestResult.result.length > 0) {
-            const total = bestResult.result.length;
+          if (serviceResult && serviceResult.length > 0) {
+            const total = serviceResult.length;
             const startIndex = (currentPage - 1) * itemsPerPage;
-            const paginatedResults = bestResult.result.slice(startIndex, startIndex + itemsPerPage);
-            
-            const query = bestResult.queryType === 'service' 
-              ? { service: ipOrDomainStr } 
-              : { region: ipOrDomainStr };
+            const paginatedResults = serviceResult.slice(startIndex, startIndex + itemsPerPage);
             
             return res.status(200).json({
               results: paginatedResults,
-              query,
+              query: { service: ipOrDomainStr },
+              total,
+              page: currentPage,
+              pageSize: itemsPerPage
+            });
+          }
+          
+          // If no service results, try region
+          const regionResult = await searchAzureIpAddresses({ region: ipOrDomainStr });
+          
+          if (regionResult && regionResult.length > 0) {
+            const total = regionResult.length;
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedResults = regionResult.slice(startIndex, startIndex + itemsPerPage);
+            
+            return res.status(200).json({
+              results: paginatedResults,
+              query: { region: ipOrDomainStr },
               total,
               page: currentPage,
               pageSize: itemsPerPage
             });
           }
         } catch (error) {
-          console.error('Error in parallel service/region search:', error);
+          console.error('Error in sequential service/region search:', error);
           // Fall through to IP lookup
         }
       }

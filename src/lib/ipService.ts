@@ -15,6 +15,30 @@ let azureVersionsCache: AzureCloudVersions | null = null;
 let cacheExpiry = 0;
 const CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours in milliseconds (longer for better cold start performance)
 
+// Pre-compiled regex patterns for better performance
+const serviceTagRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
+const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^(([0-9a-fA-F]{1,4}:){0,6})?::([0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$/;
+const serviceRegionRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
+
+// Normalization cache for repeated operations
+const normalizationCache = new Map<string, string>();
+function getCachedNormalization(str: string): string {
+  let normalized = normalizationCache.get(str);
+  if (normalized === undefined) {
+    normalized = str.replace(/[-\s]/g, '').toLowerCase();
+    // Limit cache size to prevent memory leaks
+    if (normalizationCache.size > 1000) {
+      const firstKey = normalizationCache.keys().next().value;
+      if (firstKey !== undefined) {
+        normalizationCache.delete(firstKey);
+      }
+    }
+    normalizationCache.set(str, normalized);
+  }
+  return normalized;
+}
+
 // Global flag to track if we're currently loading data (prevents duplicate loads)
 let isLoading = false;
 let loadPromise: Promise<AzureIpAddress[]> | null = null;
@@ -63,9 +87,9 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
         return true;
       }
       
-      // Try to match "WestEurope" with "westeurope" or "West Europe"
-      const normalizedRegion = region.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
-      const normalizedIpRegion = ip.region.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+      // Try to match "WestEurope" with "westeurope" or "West Europe" - cached normalization
+      const normalizedRegion = getCachedNormalization(region.replace(/([a-z])([A-Z])/g, '$1 $2'));
+      const normalizedIpRegion = getCachedNormalization(ip.region.replace(/([a-z])([A-Z])/g, '$1 $2'));
       
       return normalizedIpRegion.includes(normalizedRegion);
     });
@@ -86,9 +110,9 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
           return true;
         }
         
-        // Try normalized forms (remove spaces, dashes)
-        const normalizedSearch = serviceLower.replace(/[-\s]/g, '');
-        const normalizedSystem = systemServiceLower.replace(/[-\s]/g, '');
+        // Try normalized forms (remove spaces, dashes) - cached
+        const normalizedSearch = getCachedNormalization(serviceLower);
+        const normalizedSystem = getCachedNormalization(systemServiceLower);
         
         if (normalizedSystem === normalizedSearch) {
           return true;
@@ -101,10 +125,10 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
         }
       }
       
-      // Then by serviceTagId with similar approach
+      // Then by serviceTagId with similar approach - cached
       const serviceTagIdLower = ip.serviceTagId.toLowerCase();
-      const normalizedSearch = serviceLower.replace(/[-\s]/g, '');
-      const normalizedTagId = serviceTagIdLower.replace(/[-\s]/g, '');
+      const normalizedSearch = getCachedNormalization(serviceLower);
+      const normalizedTagId = getCachedNormalization(serviceTagIdLower);
       
       return normalizedTagId.includes(normalizedSearch) || 
              normalizedSearch.includes(normalizedTagId);
@@ -224,10 +248,10 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
     }
   }
   
-  // Handle Service.Region format (e.g., "Storage.WestEurope")
+  // Handle Service.Region format (e.g., "Storage.WestEurope") - optimized regex usage
   if (ipOrDomain.includes('.') && /^[a-zA-Z]/.test(ipOrDomain)) {
     const parts = ipOrDomain.split('.');
-    if (parts.length === 2 && /^[a-zA-Z]/.test(parts[0]) && /^[a-zA-Z]/.test(parts[1])) {
+    if (parts.length === 2 && serviceRegionRegex.test(parts[0]) && serviceRegionRegex.test(parts[1])) {
       console.log(`Looking up service tag with region: ${ipOrDomain}`);
       const [service, region] = parts;
       
@@ -249,23 +273,22 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
     }
   }
   
-  // Handle direct service tag lookups (like "Storage")
-  const serviceTagRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
+  // Handle direct service tag lookups (like "Storage") - use pre-compiled regex
   if (serviceTagRegex.test(ipOrDomain)) {
     console.log(`Looking up service tag: ${ipOrDomain}`);
     const azureIpAddressList = await getAzureIpAddressListFromCache();
     if (!azureIpAddressList) return null;
     
-    // Convert input to lowercase for case-insensitive comparison
+    // Convert input to lowercase for case-insensitive comparison - cached
     const searchLower = ipOrDomain.toLowerCase();
-    const normalizedSearch = searchLower.replace(/[-\s]/g, '');
+    const normalizedSearch = getCachedNormalization(searchLower);
     
     // Enhanced service tag lookup with improved case-insensitive matching
     const result = azureIpAddressList.filter(ip => {
       // Check systemService with multiple matching approaches
       if (ip.systemService) {
         const systemServiceLower = ip.systemService.toLowerCase();
-        const normalizedSystem = systemServiceLower.replace(/[-\s]/g, '');
+        const normalizedSystem = getCachedNormalization(systemServiceLower);
         
         // Try exact match or normalized match
         if (systemServiceLower === searchLower || normalizedSystem === normalizedSearch) {
@@ -278,9 +301,9 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
         }
       }
       
-      // Check serviceTagId with similar approach
+      // Check serviceTagId with similar approach - cached
       const serviceTagIdLower = ip.serviceTagId.toLowerCase();
-      const normalizedTagId = serviceTagIdLower.replace(/[-\s]/g, '');
+      const normalizedTagId = getCachedNormalization(serviceTagIdLower);
       
       return normalizedTagId === normalizedSearch || 
              normalizedTagId.includes(normalizedSearch) || 
@@ -346,10 +369,7 @@ async function parseIpAddress(ipOrDomain: string): Promise<string | null> {
   }
 
   try {
-    // Check if input is already an IP address (both IPv4 and IPv6)
-    const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^(([0-9a-fA-F]{1,4}:){0,6})?::([0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$/;
-    
+    // Check if input is already an IP address (both IPv4 and IPv6) - use pre-compiled regex
     if (ipv4Regex.test(ipOrDomain) || ipv6Regex.test(ipOrDomain)) {
       return ipOrDomain;
     }

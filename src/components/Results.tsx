@@ -1,5 +1,5 @@
 import { AzureIpAddress } from '@/types/azure';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Tooltip from './Tooltip';
 
 // Network features descriptions
@@ -28,8 +28,6 @@ export default function Results({ results, query, total }: ResultsProps) {
   const [sortField, setSortField] = useState<SortField>('serviceTagId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   
-  if (!results || results.length === 0) return null;
-  
   // Format the display for total results if we're showing a subset
   const totalDisplay = total && total > results.length 
     ? `${results.length} of ${total}` 
@@ -47,15 +45,21 @@ export default function Results({ results, query, total }: ResultsProps) {
     }
   };
   
-  // Sort the results
-  const sortedResults = [...results].sort((a, b) => {
-    const fieldA = a[sortField] || '';
-    const fieldB = b[sortField] || '';
-    
-    if (fieldA < fieldB) return sortDirection === 'asc' ? -1 : 1;
-    if (fieldA > fieldB) return sortDirection === 'asc' ? 1 : -1;
-    return 0;
-  });
+  // Sort the results - memoized to avoid unnecessary computations
+  const sortedResults = useMemo(() => {
+    if (!results || results.length === 0) return [];
+    return [...results].sort((a, b) => {
+      const fieldA = a[sortField] || '';
+      const fieldB = b[sortField] || '';
+      
+      if (fieldA < fieldB) return sortDirection === 'asc' ? -1 : 1;
+      if (fieldA > fieldB) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [results, sortField, sortDirection]);
+  
+  // Early return after hooks
+  if (!results || results.length === 0) return null;
   
   // Helper to render the sort indicator
   const renderSortIndicator = (field: SortField) => {
@@ -126,7 +130,7 @@ export default function Results({ results, query, total }: ResultsProps) {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedResults.map((result, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              <tr key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                 <td className="px-6 py-4 text-sm font-medium text-blue-600 break-words">
                   {result.serviceTagId}
                 </td>
