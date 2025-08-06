@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import Link from 'next/link';
+import VersionDisplay from '@/components/VersionDisplay';
 
 export default function About() {
   return (
@@ -17,6 +18,16 @@ export default function About() {
             Azure IP Lookup is a tool that helps you identify whether an IP address belongs to Microsoft Azure services.
             Use it to check if IP addresses are part of Azure infrastructure or to find all IP ranges for specific Azure Service Tags.
           </p>
+          
+          <h2>Version</h2>
+          
+          <p>
+            This tool uses the latest Azure IP ranges data from Microsoft. Current data versions:
+          </p>
+          
+          <div className="bg-blue-50 p-4 rounded-lg mb-6">
+            <VersionDisplay className="text-sm text-blue-700" />
+          </div>
           
           <h2>How it Works</h2>
           
