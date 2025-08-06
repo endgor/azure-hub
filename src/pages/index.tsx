@@ -6,6 +6,7 @@ import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
 import Pagination from '../components/Pagination';
+import VersionDisplay from '@/components/VersionDisplay';
 import { AzureIpAddress } from '@/types/azure';
 
 const fetcher = async (url: string) => {
@@ -106,7 +107,10 @@ export default function Home({
   
   return (
     <Layout title="Azure IP Range Finder & Service Tag Lookup Tool">
-      <section className="text-center max-w-3xl mx-auto mb-8">
+      <section className="text-center max-w-3xl mx-auto mb-8 relative">
+        <div className="absolute top-0 right-0">
+          <VersionDisplay />
+        </div>
         <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Address & Service Tag Lookup</h1>
         <p className="text-xl text-gray-600 mb-8">
           Find IP ranges for Azure services and verify if an IP address belongs to Azure infrastructure
