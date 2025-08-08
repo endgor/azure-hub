@@ -7,6 +7,8 @@ interface SimplePaginationProps {
   totalItems: number;
   pageSize: number;
   isAll?: boolean;
+  onPageSizeChange?: (size: number | 'all') => void;
+  position?: 'top' | 'bottom';
 }
 
 const SimplePagination: React.FC<SimplePaginationProps> = ({
@@ -15,7 +17,9 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
   onPageChange,
   totalItems,
   pageSize,
-  isAll = false
+  isAll = false,
+  onPageSizeChange,
+  position = 'bottom'
 }) => {
   // Don't render pagination if we only have one page
   if (totalPages <= 1) return null;
@@ -59,13 +63,37 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
 
   const pageNumbers = getPageNumbers();
 
+  const pageSizeOptions = [10, 20, 50, 100, 200, 'all'] as const;
+
   return (
-    <nav className="flex justify-between items-center my-4" aria-label="Results pagination">
-      <div className="text-sm text-gray-700">
-        Showing items <span className="font-medium">{startItem}</span> to <span className="font-medium">{endItem}</span> of <span className="font-medium">{totalItems}</span>
+    <nav className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 my-6 px-2" aria-label="Results pagination">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-700">
+        <div>
+          Showing items <span className="font-medium">{startItem}</span> to <span className="font-medium">{endItem}</span> of <span className="font-medium">{totalItems}</span>
+        </div>
+        {onPageSizeChange && (
+          <div className="flex items-center gap-2">
+            <label htmlFor={`pageSize-${position}`} className="text-sm text-gray-600">Items per page:</label>
+            <select
+              id={`pageSize-${position}`}
+              value={isAll ? 'all' : pageSize}
+              onChange={(e) => {
+                const value = e.target.value;
+                onPageSizeChange(value === 'all' ? 'all' : parseInt(value, 10));
+              }}
+              className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              {pageSizeOptions.map(option => (
+                <option key={option} value={option}>
+                  {option === 'all' ? 'All' : option}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
-      <div className="flex gap-2" role="navigation" aria-label="Pagination">
+      <div className="flex flex-wrap justify-center sm:justify-end gap-2" role="navigation" aria-label="Pagination">
         {/* Previous button */}
         {!isAll && currentPage > 1 && (
           <button

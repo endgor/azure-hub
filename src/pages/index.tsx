@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
@@ -54,6 +55,7 @@ export default function Home({
   initialPageSize
 }: HomeProps) {
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   
   // Clear error state when query parameters change
   useEffect(() => {
@@ -98,7 +100,24 @@ export default function Home({
   const currentPage = data && !isError ? data.page || 1 : 1;
   const apiPageSize = data && !isError ? data.pageSize || DEFAULT_PAGE_SIZE : DEFAULT_PAGE_SIZE;
   const isAll = initialPageSize === 'all' || apiPageSize >= totalResults;
-  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE);
+  const effectivePageSize = initialPageSize === 'all' ? totalResults : (typeof initialPageSize === 'number' ? initialPageSize : DEFAULT_PAGE_SIZE);
+  const totalPages = Math.ceil(totalResults / effectivePageSize);
+  
+  // Handle page size change
+  const handlePageSizeChange = (newPageSize: number | 'all') => {
+    const params = new URLSearchParams();
+    if (initialQuery) params.append('ipOrDomain', initialQuery);
+    if (initialRegion) params.append('region', initialRegion);
+    if (initialService) params.append('service', initialService);
+    if (newPageSize === 'all') {
+      params.append('pageSize', 'all');
+    } else if (newPageSize !== DEFAULT_PAGE_SIZE) {
+      // Only add pageSize param if it's different from default
+      params.append('pageSize', newPageSize.toString());
+    }
+    
+    router.push(`/?${params.toString()}`);
+  };
   
   // Generate page title based on query parameters
   const pageTitle = useMemo(() => {
@@ -166,6 +185,23 @@ export default function Home({
         
         {!isLoading && !isError && results.length > 0 && (
           <>
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalResults}
+                pageSize={effectivePageSize}
+                isAll={isAll}
+                position="top"
+                onPageSizeChange={handlePageSizeChange}
+                query={{
+                  ipOrDomain: initialQuery,
+                  region: initialRegion,
+                  service: initialService
+                }}
+              />
+            )}
+            
             <Results 
               results={results} 
               query={pageTitle}
@@ -177,8 +213,10 @@ export default function Home({
                 currentPage={currentPage}
                 totalPages={totalPages}
                 totalItems={totalResults}
-                pageSize={DEFAULT_PAGE_SIZE}
+                pageSize={effectivePageSize}
                 isAll={isAll}
+                position="bottom"
+                onPageSizeChange={handlePageSizeChange}
                 query={{
                   ipOrDomain: initialQuery,
                   region: initialRegion,
@@ -316,7 +354,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const initialRegion = query.region as string || '';
   const initialService = query.service as string || '';
   const initialPage = parseInt(query.page as string || '1', 10);
-  const initialPageSize = query.pageSize === 'all' ? 'all' : 50;
+  const pageSizeParam = query.pageSize as string;
+  
+  let initialPageSize: number | 'all' = 50; // Default page size
+  if (pageSizeParam === 'all') {
+    initialPageSize = 'all';
+  } else if (pageSizeParam) {
+    const parsedPageSize = parseInt(pageSizeParam, 10);
+    if (!isNaN(parsedPageSize) && [10, 20, 50, 100, 200].includes(parsedPageSize)) {
+      initialPageSize = parsedPageSize;
+    }
+  }
 
   return {
     props: {

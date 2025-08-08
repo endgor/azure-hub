@@ -29,7 +29,17 @@ export default async function handler(
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1
   const rawPageSize = Array.isArray(pageSize) ? pageSize[0] : pageSize
   const showAll = rawPageSize === 'all'
-  const itemsPerPage = showAll ? Infinity : parseInt(rawPageSize, 10) || 50
+  
+  // Validate page size - only allow specific values or default to 50
+  let itemsPerPage = 50;
+  if (showAll) {
+    itemsPerPage = Infinity;
+  } else if (rawPageSize) {
+    const parsedPageSize = parseInt(rawPageSize, 10);
+    if (!isNaN(parsedPageSize) && [10, 20, 50, 100, 200].includes(parsedPageSize)) {
+      itemsPerPage = parsedPageSize;
+    }
+  }
   
   // Convert array parameters to string if needed
   const ipOrDomainStr = Array.isArray(ipOrDomain) ? ipOrDomain[0] : ipOrDomain

@@ -27,12 +27,13 @@ interface ServiceTagDetailResponse {
   message?: string;
 }
 
-const PAGE_SIZE = 100;
+const DEFAULT_PAGE_SIZE = 100;
 
 export default function ServiceTagDetail() {
   const router = useRouter();
   const { serviceTag } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
   
   const { data, error, isLoading } = useSWR<ServiceTagDetailResponse>(
@@ -45,12 +46,25 @@ export default function ServiceTagDetail() {
     if (!data?.ipRanges) return [];
     if (isAll) return data.ipRanges;
 
-    const startIndex = (currentPage - 1) * PAGE_SIZE;
-    const endIndex = startIndex + PAGE_SIZE;
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
     return data.ipRanges.slice(startIndex, endIndex);
-  }, [data?.ipRanges, currentPage, isAll]);
+  }, [data?.ipRanges, currentPage, pageSize, isAll]);
 
-  const totalPages = Math.ceil((data?.ipRanges?.length || 0) / PAGE_SIZE);
+  const totalPages = Math.ceil((data?.ipRanges?.length || 0) / pageSize);
+  
+  // Handle page size change
+  const handlePageSizeChange = (newPageSize: number | 'all') => {
+    if (newPageSize === 'all') {
+      setIsAll(true);
+      setPageSize(DEFAULT_PAGE_SIZE);
+      setCurrentPage(1);
+    } else {
+      setIsAll(false);
+      setPageSize(newPageSize);
+      setCurrentPage(1);
+    }
+  };
 
   if (!serviceTag) {
     return (
@@ -159,14 +173,7 @@ export default function ServiceTagDetail() {
               </div>
             </div>
 
-            {/* Results Table */}
-            <Results 
-              results={paginatedResults} 
-              query={serviceTag as string}
-              total={data.ipRanges.length}
-            />
-
-            {/* Pagination */}
+            {/* Top Pagination */}
             {totalPages > 1 && (
               <SimplePagination
                 currentPage={currentPage}
@@ -181,8 +188,39 @@ export default function ServiceTagDetail() {
                   }
                 }}
                 totalItems={data.ipRanges.length}
-                pageSize={PAGE_SIZE}
+                pageSize={pageSize}
                 isAll={isAll}
+                position="top"
+                onPageSizeChange={handlePageSizeChange}
+              />
+            )}
+
+            {/* Results Table */}
+            <Results 
+              results={paginatedResults} 
+              query={serviceTag as string}
+              total={data.ipRanges.length}
+            />
+
+            {/* Bottom Pagination */}
+            {totalPages > 1 && (
+              <SimplePagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => {
+                  if (page === 'all') {
+                    setIsAll(true);
+                    setCurrentPage(1);
+                  } else {
+                    setIsAll(false);
+                    setCurrentPage(page);
+                  }
+                }}
+                totalItems={data.ipRanges.length}
+                pageSize={pageSize}
+                isAll={isAll}
+                position="bottom"
+                onPageSizeChange={handlePageSizeChange}
               />
             )}
           </>
