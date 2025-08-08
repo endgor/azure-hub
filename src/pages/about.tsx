@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import Link from 'next/link';
 import VersionDisplay from '@/components/VersionDisplay';
+import DefinitionsTable from '@/components/DefinitionsTable';
 
 export default function About() {
   return (
@@ -8,27 +9,10 @@ export default function About() {
       <div className="max-w-3xl mx-auto">
         <article className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4 text-blue-800">About Azure IP Lookup</h1>
-          <p className="text-xl text-gray-600 mb-6">
-            Discover Azure IP ranges and verify IP addresses against Microsoft Azure infrastructure
-          </p>
         </article>
         
         <div className="prose prose-blue max-w-none">
-          <p>
-            Azure IP Lookup is a tool that helps you identify whether an IP address belongs to Microsoft Azure services.
-            Use it to check if IP addresses are part of Azure infrastructure or to find all IP ranges for specific Azure Service Tags.
-          </p>
-          
-          <h2>Version</h2>
-          
-          <p>
-            This tool uses the latest Azure IP ranges data from Microsoft. Current data versions:
-          </p>
-          
-          <div className="bg-blue-50 p-4 rounded-lg mb-6">
-            <VersionDisplay className="text-blue-700" />
-          </div>
-          
+     
           <h2>How it Works</h2>
           
           <p>
@@ -37,7 +21,15 @@ export default function About() {
             search for IP addresses, CIDR ranges, or service names</Link> on the main page, or <Link href="/service-tags" 
             className="text-blue-600 hover:underline">browse all available service tags</Link> in our directory.
           </p>
+
+          <h2>Definitions</h2>
           
+          <p>
+            These are the different Service Tag definitions we&apos;re currently using:
+          </p>
+          
+          <DefinitionsTable />
+
           <h2>Network Features</h2>
           
           <p>Service tags may include network features with the following abbreviations:</p>

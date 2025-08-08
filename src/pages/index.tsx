@@ -132,9 +132,6 @@ export default function Home({
     <Layout title="Azure IP Range Finder & Service Tag Lookup Tool">
       <section className="text-center max-w-3xl mx-auto mb-8">
         <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Address & Service Tag Lookup</h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Find IP ranges for Azure services and verify if an IP address belongs to Azure infrastructure
-        </p>
       </section>
       
       <LookupForm 
@@ -248,28 +245,25 @@ export default function Home({
       {!initialQuery && !initialRegion && !initialService && (
         <>
           <section className="max-w-4xl mx-auto mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">How to Use the Azure IP Lookup Tool</h2>
-            <p className="text-center text-gray-600 mb-8">
-              Enter any of the following search types to find Azure IP ranges and service information:
-            </p>
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Examples</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">IP Address Lookup</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">IP Address</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">40.112.127.224</code></p>
                 <p className="text-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">CIDR Range Search</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">CIDR Range</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">74.7.51.32/29</code></p>
                 <p className="text-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Service Name Search</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Service Name</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">Storage</code></p>
                 <p className="text-gray-600">Browse IP ranges for specific Azure services like Storage, SQL, or Compute.</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Regional Search</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Region</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">WestEurope</code></p>
                 <p className="text-gray-600">View IP ranges for specific regions or service+region combinations.</p>
               </div>

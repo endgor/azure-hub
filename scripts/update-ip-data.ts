@@ -7,7 +7,7 @@ import * as https from 'https';
 //   AzureChinaCloud = 'AzureChinaCloud',
 //   AzureUSGovernment = 'AzureUSGovernment',
 // }
-import { AzureCloudName } from '../src/types/azure'; // Adjust path as necessary
+import { AzureCloudName, AzureFileMetadata, AzureServiceTagsRoot } from '../src/types/azure'; // Adjust path as necessary
 
 interface DownloadMapping {
   id: string;
@@ -25,6 +25,9 @@ const downloadMappings: DownloadMapping[] = [
 const DATA_DIR = path.join(process.cwd(), 'data');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
+// Metadata file to store file information
+const METADATA_FILE = path.join(DATA_DIR, 'file-metadata.json');
+
 // Create both directories if they don't exist
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -32,6 +35,50 @@ if (!fs.existsSync(DATA_DIR)) {
 
 if (!fs.existsSync(PUBLIC_DATA_DIR)) {
   fs.mkdirSync(PUBLIC_DATA_DIR, { recursive: true });
+}
+
+/**
+ * Extract filename from download URL
+ */
+function extractFilenameFromUrl(url: string): string {
+  try {
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/');
+    const filename = pathParts[pathParts.length - 1];
+    return filename || 'unknown.json';
+  } catch (error) {
+    console.error('Error extracting filename from URL:', error);
+    return 'unknown.json';
+  }
+}
+
+/**
+ * Load existing metadata from file
+ */
+function loadMetadata(): AzureFileMetadata[] {
+  try {
+    if (fs.existsSync(METADATA_FILE)) {
+      const content = fs.readFileSync(METADATA_FILE, 'utf8');
+      return JSON.parse(content);
+    }
+  } catch (error) {
+    console.error('Error loading metadata:', error);
+  }
+  return [];
+}
+
+/**
+ * Save metadata to file
+ */
+function saveMetadata(metadata: AzureFileMetadata[]): void {
+  try {
+    fs.writeFileSync(METADATA_FILE, JSON.stringify(metadata, null, 2), 'utf8');
+    // Copy to public directory for API access
+    const publicMetadataFile = path.join(PUBLIC_DATA_DIR, 'file-metadata.json');
+    fs.copyFileSync(METADATA_FILE, publicMetadataFile);
+  } catch (error) {
+    console.error('Error saving metadata:', error);
+  }
 }
 
 /**
@@ -249,6 +296,9 @@ async function downloadFile(url: string, filePath: string): Promise<void> {
 async function updateAllIpData(): Promise<void> {
   console.log('Starting IP data update...');
 
+  // Load existing metadata
+  const metadata = loadMetadata();
+
   for (const mapping of downloadMappings) {
     console.log(`Processing ${mapping.cloud}...`);
 
@@ -268,12 +318,39 @@ async function updateAllIpData(): Promise<void> {
       // Copy to public directory directly
       fs.copyFileSync(dataFilePath, publicDataFilePath);
       
-      console.log(`Successfully updated data for ${mapping.cloud} in both data/ and public/data/ directories`);
+      // Read the file to get change number
+      const fileContent = fs.readFileSync(dataFilePath, 'utf8');
+      const data = JSON.parse(fileContent) as AzureServiceTagsRoot;
+      
+      // Extract filename from download URL
+      const filename = extractFilenameFromUrl(downloadUrl);
+      
+      // Update metadata
+      const existingIndex = metadata.findIndex(m => m.cloud === mapping.cloud);
+      const fileMetadata: AzureFileMetadata = {
+        cloud: mapping.cloud,
+        changeNumber: data.changeNumber,
+        filename: filename,
+        downloadUrl: downloadUrl,
+        lastRetrieved: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+      };
+
+      if (existingIndex >= 0) {
+        metadata[existingIndex] = fileMetadata;
+      } else {
+        metadata.push(fileMetadata);
+      }
+      
+      console.log(`Successfully updated data for ${mapping.cloud} (${filename}) in both data/ and public/data/ directories`);
 
     } catch (error: any) { // Catch specific error type if known, else any
       console.error(`Failed to process ${mapping.cloud} (ID: ${mapping.id}): ${error.message || error}`);
     }
   }
+
+  // Save updated metadata
+  saveMetadata(metadata);
+  
   console.log('IP data update completed.');
 }
 
