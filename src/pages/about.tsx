@@ -19,9 +19,7 @@ export default function About() {
             These are the different Service Tag definitions we&apos;re currently using:
           </p>
           
-          <div className="bg-blue-50 p-4 rounded-lg mb-6">
-            <FileVersionsTable className="text-sm" />
-          </div>
+          <FileVersionsTable className="mb-6" />
           
           <h2>How it Works</h2>
           

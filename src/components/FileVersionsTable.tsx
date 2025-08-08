@@ -54,43 +54,55 @@ export default function FileVersionsTable({ className = '' }: FileVersionsTableP
   };
 
   return (
-    <div className={className}>
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Cloud</th>
-            <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Change Number</th>
-            <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Download</th>
-            <th className="border border-gray-300 px-4 py-2 text-left font-semibold">Last Retrieved</th>
-          </tr>
-        </thead>
-        <tbody>
-          {metadata
-            .sort((a, b) => a.cloud.localeCompare(b.cloud))
-            .map((file) => (
-              <tr key={file.cloud} className="hover:bg-gray-50">
-                <td className="border border-gray-300 px-4 py-2">
-                  <span className="font-medium text-blue-600">
+    <div className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}>
+      <div className="overflow-x-auto w-full">
+        <table className="min-w-full divide-y divide-gray-200 table-fixed">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[25%]">
+                Cloud
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[25%]">
+                Change Number
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[35%]">
+                Download
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[15%]">
+                Last Retrieved
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {metadata
+              .sort((a, b) => a.cloud.localeCompare(b.cloud))
+              .map((file, index) => (
+                <tr key={file.cloud} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                  <td className="px-6 py-4 text-sm font-medium text-blue-600 break-words">
                     {getCloudDisplayName(file.cloud)}
-                  </span>
-                </td>
-                <td className="border border-gray-300 px-4 py-2">{file.changeNumber}</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <a
-                    href={file.downloadUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    {file.filename}
-                  </a>
-                </td>
-                <td className="border border-gray-300 px-4 py-2">{file.lastRetrieved}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                    {file.changeNumber}
+                  </td>
+                  <td className="px-6 py-4 text-sm break-words">
+                    <a
+                      href={file.downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      {file.filename}
+                    </a>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                    {file.lastRetrieved}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
