@@ -26,7 +26,7 @@ export default function About() {
           </p>
           
           <div className="bg-blue-50 p-4 rounded-lg mb-6">
-            <VersionDisplay className="text-sm text-blue-700" />
+            <VersionDisplay className="text-blue-700" />
           </div>
           
           <h2>How it Works</h2>

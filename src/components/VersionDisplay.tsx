@@ -37,7 +37,7 @@ export default function VersionDisplay({ className = '' }: VersionDisplayProps) 
   if (!hasVersions) return null;
 
   return (
-    <div className={`text-xs text-gray-500 ${className}`}>
+    <div className={`text-gray-500 ${className}`}>
       <div className="flex flex-wrap gap-2">
         {versions.AzureCloud && (
           <span>Public: v{versions.AzureCloud}</span>
