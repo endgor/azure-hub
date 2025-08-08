@@ -247,69 +247,31 @@ export default function Home({
       
       {!initialQuery && !initialRegion && !initialService && (
         <>
-          <section className="max-w-3xl mx-auto mt-16">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800">How to Use the Azure IP Lookup Tool</h2>
-            <div className="prose prose-blue">
-              <p className="text-lg mb-6">
-                Enter any of the following search types in the search box above to find Azure IP ranges and service information:
-              </p>
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-3">IP Address Lookup</h3>
-                  <p className="mb-3">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">40.112.127.224</code></p>
-                  <p className="text-sm text-gray-700">Instantly verify if an IP address belongs to Microsoft Azure and discover which specific services are using it.</p>
-                </div>
-                <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-3">CIDR Range Search</h3>
-                  <p className="mb-3">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">74.7.51.32/29</code></p>
-                  <p className="text-sm text-gray-700">Find all Azure IP ranges that overlap with or are contained within your specified CIDR block.</p>
-                </div>
-                <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-3">Service Name Search</h3>
-                  <p className="mb-3">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">Storage</code></p>
-                  <p className="text-sm text-gray-700">Browse all IP ranges used by specific Azure services like Storage, SQL, or Compute.</p>
-                </div>
-                <div className="bg-blue-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-800 mb-3">Regional Search</h3>
-                  <p className="mb-3">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">WestEurope</code> or <code className="bg-blue-100 px-2 py-1 rounded text-sm">Storage.WestEurope</code></p>
-                  <p className="text-sm text-gray-700">View IP ranges for specific Azure regions or service+region combinations.</p>
-                </div>
+          <section className="max-w-4xl mx-auto mt-12">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">How to Use the Azure IP Lookup Tool</h2>
+            <p className="text-center text-gray-600 mb-8">
+              Enter any of the following search types to find Azure IP ranges and service information:
+            </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">IP Address Lookup</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">40.112.127.224</code></p>
+                <p className="text-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
               </div>
-            </div>
-          </section>
-
-          <section className="max-w-3xl mx-auto mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800">Why Use Azure IP Lookup?</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Security checkmark icon">
-                    <title>Network Security</title>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Network Security</h3>
-                <p className="text-sm text-gray-600">Verify IP addresses for firewall rules and security group configurations.</p>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">CIDR Range Search</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">74.7.51.32/29</code></p>
+                <p className="text-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
               </div>
-              <div className="text-center">
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Lightning bolt icon representing speed">
-                    <title>Updated Daily</title>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Updated Daily</h3>
-                <p className="text-sm text-gray-600">Automatically updated with the latest official Microsoft Azure IP ranges.</p>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Service Name Search</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">Storage</code></p>
+                <p className="text-gray-600">Browse IP ranges for specific Azure services like Storage, SQL, or Compute.</p>
               </div>
-              <div className="text-center">
-                <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-label="Search magnifying glass icon">
-                    <title>Easy Search</title>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Easy Search</h3>
-                <p className="text-sm text-gray-600">Simple interface for quick IP lookups and service tag exploration.</p>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Regional Search</h3>
+                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">WestEurope</code></p>
+                <p className="text-gray-600">View IP ranges for specific regions or service+region combinations.</p>
               </div>
             </div>
           </section>
