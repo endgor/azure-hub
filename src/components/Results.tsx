@@ -29,10 +29,8 @@ export default function Results({ results, query, total }: ResultsProps) {
   const [sortField, setSortField] = useState<SortField>('serviceTagId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   
-  // Format the display for total results if we're showing a subset
-  const totalDisplay = total && total > results.length 
-    ? `${results.length} of ${total}` 
-    : results.length;
+  // Show total available results
+  const totalDisplay = total || results.length;
   
   // Handle column sort
   const handleSort = (field: SortField) => {
@@ -82,7 +80,7 @@ export default function Results({ results, query, total }: ResultsProps) {
               Results for {query}
             </h2>
             <p className="text-sm text-blue-600">
-              Found {totalDisplay} matching Azure IP {results.length === 1 ? 'range' : 'ranges'}
+              Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
             </p>
           </div>
           <div className="flex-shrink-0">
