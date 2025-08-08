@@ -8,16 +8,9 @@ export default function About() {
       <div className="max-w-3xl mx-auto">
         <article className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4 text-blue-800">About Azure IP Lookup</h1>
-          <p className="text-xl text-gray-600 mb-6">
-            Discover Azure IP ranges and verify IP addresses against Microsoft Azure infrastructure
-          </p>
         </article>
         
         <div className="prose prose-blue max-w-none">
-          <p>
-            Azure IP Lookup is a tool that helps you identify whether an IP address belongs to Microsoft Azure services.
-            Use it to check if IP addresses are part of Azure infrastructure or to find all IP ranges for specific Azure Service Tags.
-          </p>
           
           <h2>Version</h2>
           
