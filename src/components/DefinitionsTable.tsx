@@ -60,29 +60,27 @@ export default function DefinitionsTable() {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-gray-200">
-            <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase">Cloud</th>
-            <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase">Change Number</th>
-            <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase">Download</th>
-            <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 uppercase">Last Retrieved</th>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cloud</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Change Number</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Download</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Retrieved</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {metadata
             .sort((a, b) => a.cloud.localeCompare(b.cloud))
-            .map((file) => (
-              <tr key={file.cloud} className="border-b border-gray-100">
-                <td className="px-4 py-4 text-sm">
-                  <span className="font-medium text-blue-600">
-                    {getCloudDisplayName(file.cloud)}
-                  </span>
+            .map((file, index) => (
+              <tr key={file.cloud} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                <td className="px-6 py-4 text-sm font-medium text-blue-600 break-words">
+                  {getCloudDisplayName(file.cloud)}
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900">
+                <td className="px-6 py-4 text-sm text-gray-900 break-words">
                   {file.changeNumber}
                 </td>
-                <td className="px-4 py-4 text-sm">
+                <td className="px-6 py-4 text-sm break-words">
                   <a
                     href={file.downloadUrl}
                     target="_blank"
@@ -92,7 +90,7 @@ export default function DefinitionsTable() {
                     {file.filename}
                   </a>
                 </td>
-                <td className="px-4 py-4 text-sm text-gray-900">
+                <td className="px-6 py-4 text-sm text-gray-900 break-words">
                   {formatDate(file.lastRetrieved)}
                 </td>
               </tr>
