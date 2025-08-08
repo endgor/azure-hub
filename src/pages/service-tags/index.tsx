@@ -45,7 +45,6 @@ export default function ServiceTags() {
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Browse all available Azure Service Tags. Click on any service tag to view its associated IP ranges and network details.
-            You can also <Link href="/" className="text-blue-600 hover:underline">search for specific IP addresses</Link> to find which service tags they belong to.
           </p>
         </div>
 
