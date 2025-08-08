@@ -55,6 +55,17 @@ export default function FileVersionsTable({ className = '' }: FileVersionsTableP
 
   return (
     <div className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}>
+      <header className="bg-blue-50 px-4 py-3 border-b border-blue-100">
+        <div>
+          <h3 className="text-lg font-semibold text-blue-800">
+            Service Tag Definitions
+          </h3>
+          <p className="text-sm text-blue-600">
+            Current Azure Service Tag files and their version information
+          </p>
+        </div>
+      </header>
+      
       <div className="overflow-x-auto w-full">
         <table className="min-w-full table-fixed">
           <thead className="bg-gray-50">
