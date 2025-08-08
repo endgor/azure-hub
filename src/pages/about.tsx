@@ -12,15 +12,7 @@ export default function About() {
         </article>
         
         <div className="prose prose-blue max-w-none">
-          
-          <h2>Definitions</h2>
-          
-          <p>
-            These are the different Service Tag definitions we&apos;re currently using:
-          </p>
-          
-          <FileVersionsTable className="mb-6" />
-          
+     
           <h2>How it Works</h2>
           
           <p>
@@ -29,7 +21,15 @@ export default function About() {
             search for IP addresses, CIDR ranges, or service names</Link> on the main page, or <Link href="/service-tags" 
             className="text-blue-600 hover:underline">browse all available service tags</Link> in our directory.
           </p>
+
+          <h2>Definitions</h2>
           
+          <p>
+            These are the different Service Tag definitions we&apos;re currently using:
+          </p>
+          
+          <FileVersionsTable className="mb-6" />
+
           <h2>Network Features</h2>
           
           <p>Service tags may include network features with the following abbreviations:</p>
