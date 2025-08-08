@@ -33,6 +33,7 @@ export default function ServiceTagDetail() {
   const router = useRouter();
   const { serviceTag } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAll, setIsAll] = useState(false);
   
   const { data, error, isLoading } = useSWR<ServiceTagDetailResponse>(
     serviceTag ? `/api/service-tags?serviceTag=${encodeURIComponent(serviceTag as string)}` : null,
@@ -42,11 +43,12 @@ export default function ServiceTagDetail() {
   // Paginate results
   const paginatedResults = useMemo(() => {
     if (!data?.ipRanges) return [];
-    
+    if (isAll) return data.ipRanges;
+
     const startIndex = (currentPage - 1) * PAGE_SIZE;
     const endIndex = startIndex + PAGE_SIZE;
     return data.ipRanges.slice(startIndex, endIndex);
-  }, [data?.ipRanges, currentPage]);
+  }, [data?.ipRanges, currentPage, isAll]);
 
   const totalPages = Math.ceil((data?.ipRanges?.length || 0) / PAGE_SIZE);
 
@@ -169,9 +171,18 @@ export default function ServiceTagDetail() {
               <SimplePagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={(page) => {
+                  if (page === 'all') {
+                    setIsAll(true);
+                    setCurrentPage(1);
+                  } else {
+                    setIsAll(false);
+                    setCurrentPage(page);
+                  }
+                }}
                 totalItems={data.ipRanges.length}
                 pageSize={PAGE_SIZE}
+                isAll={isAll}
               />
             )}
           </>

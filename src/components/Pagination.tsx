@@ -6,6 +6,7 @@ interface PaginationProps {
   totalPages: number;
   totalItems: number;
   pageSize: number;
+  isAll?: boolean;
   query: {
     ipOrDomain?: string;
     region?: string;
@@ -18,7 +19,8 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   totalItems,
   pageSize,
-  query
+  query,
+  isAll = false
 }) => {
   // Determine which page links to show
   const getPageNumbers = () => {
@@ -60,7 +62,17 @@ const Pagination: React.FC<PaginationProps> = ({
     if (query.region) params.append('region', query.region);
     if (query.service) params.append('service', query.service);
     if (page > 1) params.append('page', page.toString());
-    
+
+    return `/?${params.toString()}`;
+  };
+
+  const getAllUrl = () => {
+    const params = new URLSearchParams();
+    if (query.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
+    if (query.region) params.append('region', query.region);
+    if (query.service) params.append('service', query.service);
+    params.append('pageSize', 'all');
+
     return `/?${params.toString()}`;
   };
   
@@ -68,8 +80,8 @@ const Pagination: React.FC<PaginationProps> = ({
   if (totalPages <= 1) return null;
   
   // Calculate range of items being shown
-  const startItem = (currentPage - 1) * pageSize + 1;
-  const endItem = Math.min(currentPage * pageSize, totalItems);
+  const startItem = isAll ? 1 : (currentPage - 1) * pageSize + 1;
+  const endItem = isAll ? totalItems : Math.min(currentPage * pageSize, totalItems);
   
   // Get pages to display
   const pageNumbers = getPageNumbers();
@@ -82,7 +94,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       <div className="flex gap-2" role="navigation" aria-label="Pagination">
         {/* Previous button */}
-        {currentPage > 1 && (
+        {!isAll && currentPage > 1 && (
           <Link href={getPageUrl(currentPage - 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
             Previous
           </Link>
@@ -100,7 +112,7 @@ const Pagination: React.FC<PaginationProps> = ({
               key={page}
               href={getPageUrl(page)}
               className={`px-3 py-1 rounded-md text-sm ${
-                currentPage === page
+                !isAll && currentPage === page
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
@@ -109,9 +121,19 @@ const Pagination: React.FC<PaginationProps> = ({
             </Link>
           );
         })}
+
+        {/* All option */}
+        <Link
+          href={getAllUrl()}
+          className={`px-3 py-1 rounded-md text-sm ${
+            isAll ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          All
+        </Link>
         
         {/* Next button */}
-        {currentPage < totalPages && (
+        {!isAll && currentPage < totalPages && (
           <Link href={getPageUrl(currentPage + 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
             Next
           </Link>

@@ -24,10 +24,12 @@ export default async function handler(
   }
 
   const { ipOrDomain, region, service, page = '1', pageSize = '50' } = req.query
-  
-  // Parse pagination parameters
+
+  // Parse pagination parameters, supporting "all" to return all results
   const currentPage = parseInt(Array.isArray(page) ? page[0] : page, 10) || 1
-  const itemsPerPage = parseInt(Array.isArray(pageSize) ? pageSize[0] : pageSize, 10) || 50
+  const rawPageSize = Array.isArray(pageSize) ? pageSize[0] : pageSize
+  const showAll = rawPageSize === 'all'
+  const itemsPerPage = showAll ? Infinity : parseInt(rawPageSize, 10) || 50
   
   // Convert array parameters to string if needed
   const ipOrDomainStr = Array.isArray(ipOrDomain) ? ipOrDomain[0] : ipOrDomain
@@ -58,14 +60,16 @@ export default async function handler(
         if (results && results.length > 0) {
           const total = results.length;
           const startIndex = (currentPage - 1) * itemsPerPage;
-          const paginatedResults = results.slice(startIndex, startIndex + itemsPerPage);
-          
+          const paginatedResults = showAll
+            ? results
+            : results.slice(startIndex, startIndex + itemsPerPage);
+
           return res.status(200).json({
             results: paginatedResults,
             query: { service: serviceParam, region: regionParam },
             total,
-            page: currentPage,
-            pageSize: itemsPerPage
+            page: showAll ? 1 : currentPage,
+            pageSize: showAll ? total : itemsPerPage
           });
         }
       } catch (error) {
@@ -89,14 +93,16 @@ export default async function handler(
           if (serviceResult && serviceResult.length > 0) {
             const total = serviceResult.length;
             const startIndex = (currentPage - 1) * itemsPerPage;
-            const paginatedResults = serviceResult.slice(startIndex, startIndex + itemsPerPage);
-            
+            const paginatedResults = showAll
+              ? serviceResult
+              : serviceResult.slice(startIndex, startIndex + itemsPerPage);
+
             return res.status(200).json({
               results: paginatedResults,
               query: { service: ipOrDomainStr },
               total,
-              page: currentPage,
-              pageSize: itemsPerPage
+              page: showAll ? 1 : currentPage,
+              pageSize: showAll ? total : itemsPerPage
             });
           }
           
@@ -106,14 +112,16 @@ export default async function handler(
           if (regionResult && regionResult.length > 0) {
             const total = regionResult.length;
             const startIndex = (currentPage - 1) * itemsPerPage;
-            const paginatedResults = regionResult.slice(startIndex, startIndex + itemsPerPage);
-            
+            const paginatedResults = showAll
+              ? regionResult
+              : regionResult.slice(startIndex, startIndex + itemsPerPage);
+
             return res.status(200).json({
               results: paginatedResults,
               query: { region: ipOrDomainStr },
               total,
-              page: currentPage,
-              pageSize: itemsPerPage
+              page: showAll ? 1 : currentPage,
+              pageSize: showAll ? total : itemsPerPage
             });
           }
         } catch (error) {
@@ -148,14 +156,16 @@ export default async function handler(
       // Apply pagination
       const total = filteredResults.length
       const startIndex = (currentPage - 1) * itemsPerPage
-      const paginatedResults = filteredResults.slice(startIndex, startIndex + itemsPerPage)
-      
+      const paginatedResults = showAll
+        ? filteredResults
+        : filteredResults.slice(startIndex, startIndex + itemsPerPage)
+
       return res.status(200).json({
         results: paginatedResults,
         query: { ipOrDomain: ipOrDomainStr, region: regionStr, service: serviceStr },
         total,
-        page: currentPage,
-        pageSize: itemsPerPage
+        page: showAll ? 1 : currentPage,
+        pageSize: showAll ? total : itemsPerPage
       })
     } 
     // If we have region or service, use the search functionality directly
@@ -172,14 +182,16 @@ export default async function handler(
       // Apply pagination
       const total = results.length
       const startIndex = (currentPage - 1) * itemsPerPage
-      const paginatedResults = results.slice(startIndex, startIndex + itemsPerPage)
-      
+      const paginatedResults = showAll
+        ? results
+        : results.slice(startIndex, startIndex + itemsPerPage)
+
       return res.status(200).json({
         results: paginatedResults,
         query: { region: regionStr, service: serviceStr },
         total,
-        page: currentPage,
-        pageSize: itemsPerPage
+        page: showAll ? 1 : currentPage,
+        pageSize: showAll ? total : itemsPerPage
       })
     } 
     // No valid search parameters

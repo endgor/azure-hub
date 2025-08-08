@@ -3,9 +3,10 @@ import React from 'react';
 interface SimplePaginationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
+  onPageChange: (page: number | 'all') => void;
   totalItems: number;
   pageSize: number;
+  isAll?: boolean;
 }
 
 const SimplePagination: React.FC<SimplePaginationProps> = ({
@@ -13,14 +14,15 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
   totalPages,
   onPageChange,
   totalItems,
-  pageSize
+  pageSize,
+  isAll = false
 }) => {
   // Don't render pagination if we only have one page
   if (totalPages <= 1) return null;
 
   // Calculate range of items being shown
-  const startItem = (currentPage - 1) * pageSize + 1;
-  const endItem = Math.min(currentPage * pageSize, totalItems);
+  const startItem = isAll ? 1 : (currentPage - 1) * pageSize + 1;
+  const endItem = isAll ? totalItems : Math.min(currentPage * pageSize, totalItems);
 
   // Determine which page links to show
   const getPageNumbers = () => {
@@ -65,9 +67,9 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
 
       <div className="flex gap-2" role="navigation" aria-label="Pagination">
         {/* Previous button */}
-        {currentPage > 1 && (
-          <button 
-            onClick={() => onPageChange(currentPage - 1)} 
+        {!isAll && currentPage > 1 && (
+          <button
+            onClick={() => onPageChange(currentPage - 1)}
             className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
           >
             Previous
@@ -86,7 +88,7 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
               key={page}
               onClick={() => onPageChange(page)}
               className={`px-3 py-1 rounded-md text-sm ${
-                currentPage === page
+                !isAll && currentPage === page
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
@@ -95,11 +97,21 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
             </button>
           );
         })}
+
+        {/* All option */}
+        <button
+          onClick={() => onPageChange('all')}
+          className={`px-3 py-1 rounded-md text-sm ${
+            isAll ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          All
+        </button>
         
         {/* Next button */}
-        {currentPage < totalPages && (
-          <button 
-            onClick={() => onPageChange(currentPage + 1)} 
+        {!isAll && currentPage < totalPages && (
+          <button
+            onClick={() => onPageChange(currentPage + 1)}
             className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
           >
             Next
