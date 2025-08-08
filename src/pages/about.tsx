@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import Link from 'next/link';
 import VersionDisplay from '@/components/VersionDisplay';
-import FileVersionsTable from '@/components/FileVersionsTable';
+import DefinitionsTable from '@/components/DefinitionsTable';
 
 export default function About() {
   return (
@@ -28,7 +28,7 @@ export default function About() {
             These are the different Service Tag definitions we&apos;re currently using:
           </p>
           
-          <FileVersionsTable className="mb-6" />
+          <DefinitionsTable />
 
           <h2>Network Features</h2>
           
