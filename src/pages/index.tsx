@@ -28,6 +28,7 @@ interface HomeProps {
   initialRegion: string;
   initialService: string;
   initialPage: number;
+  initialPageSize: number | 'all';
 }
 
 interface ApiResponse {
@@ -45,18 +46,19 @@ interface ApiResponse {
   message?: string;
 }
 
-export default function Home({ 
-  initialQuery, 
-  initialRegion, 
+export default function Home({
+  initialQuery,
+  initialRegion,
   initialService,
-  initialPage 
+  initialPage,
+  initialPageSize
 }: HomeProps) {
   const [error, setError] = useState<string | null>(null);
   
   // Clear error state when query parameters change
   useEffect(() => {
     setError(null);
-  }, [initialQuery, initialRegion, initialService, initialPage]);
+  }, [initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
   
   // Build API URL with all query parameters
   const apiUrl = useMemo(() => {
@@ -65,10 +67,11 @@ export default function Home({
     if (initialRegion) params.append('region', initialRegion);
     if (initialService) params.append('service', initialService);
     if (initialPage > 1) params.append('page', initialPage.toString());
-    
+    if (initialPageSize === 'all') params.append('pageSize', 'all');
+
     const queryString = params.toString();
     return queryString ? `/api/ipAddress?${queryString}` : null;
-  }, [initialQuery, initialRegion, initialService, initialPage]);
+  }, [initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
   
   const { data, isLoading } = useSWR<ApiResponse>(
     apiUrl,
@@ -89,11 +92,13 @@ export default function Home({
   const notFoundMessage = isNotFound && data?.message ? data.message : null;
   
   // Process the results
+  const DEFAULT_PAGE_SIZE = 50;
   const results = data && !isError && data.results ? data.results : [];
   const totalResults = data && !isError ? data.total || 0 : 0;
   const currentPage = data && !isError ? data.page || 1 : 1;
-  const pageSize = data && !isError ? data.pageSize || 50 : 50;
-  const totalPages = Math.ceil(totalResults / pageSize);
+  const apiPageSize = data && !isError ? data.pageSize || DEFAULT_PAGE_SIZE : DEFAULT_PAGE_SIZE;
+  const isAll = initialPageSize === 'all' || apiPageSize >= totalResults;
+  const totalPages = Math.ceil(totalResults / DEFAULT_PAGE_SIZE);
   
   // Generate page title based on query parameters
   const pageTitle = useMemo(() => {
@@ -168,11 +173,12 @@ export default function Home({
             />
             
             {totalPages > 1 && (
-              <Pagination 
+              <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
                 totalItems={totalResults}
-                pageSize={pageSize}
+                pageSize={DEFAULT_PAGE_SIZE}
+                isAll={isAll}
                 query={{
                   ipOrDomain: initialQuery,
                   region: initialRegion,
@@ -310,13 +316,15 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const initialRegion = query.region as string || '';
   const initialService = query.service as string || '';
   const initialPage = parseInt(query.page as string || '1', 10);
-  
+  const initialPageSize = query.pageSize === 'all' ? 'all' : 50;
+
   return {
     props: {
       initialQuery,
       initialRegion,
       initialService,
-      initialPage: isNaN(initialPage) ? 1 : initialPage
+      initialPage: isNaN(initialPage) ? 1 : initialPage,
+      initialPageSize
     },
   };
 };
