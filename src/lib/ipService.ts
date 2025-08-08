@@ -2,7 +2,7 @@ import { promises as dns } from 'dns';
 import path from 'path';
 import fs from 'fs';
 import IPCIDR from 'ip-cidr';
-import { AzureIpAddress, AzureCloudName, AzureServiceTagsRoot } from '../types/azure';
+import { AzureIpAddress, AzureCloudName, AzureServiceTagsRoot, AzureCloudVersions, AzureFileMetadata } from '../types/azure';
 
 // Directory paths
 const PROJECT_ROOT = process.cwd();
@@ -48,11 +48,6 @@ export interface SearchOptions {
   service?: string;
 }
 
-export interface AzureCloudVersions {
-  AzureCloud?: number;
-  AzureChinaCloud?: number;
-  AzureUSGovernment?: number;
-}
 
 /**
  * Search for Azure IP addresses by region and/or service
@@ -137,6 +132,38 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   
   console.log(`Found ${results.length} IP ranges matching filters: ${JSON.stringify({ region, service })}`);
   return results;
+}
+
+/**
+ * Get file metadata information
+ */
+export async function getFileMetadata(): Promise<AzureFileMetadata[]> {
+  try {
+    const paths = [
+      path.join(DATA_DIR, 'file-metadata.json'),
+      path.join(PUBLIC_DATA_DIR, 'file-metadata.json')
+    ];
+    
+    let fileContent: string | null = null;
+    for (const filePath of paths) {
+      try {
+        if (fs.existsSync(filePath)) {
+          fileContent = fs.readFileSync(filePath, 'utf8');
+          break;
+        }
+      } catch (readError) {
+        console.error(`Error reading metadata from ${filePath}:`, readError);
+      }
+    }
+    
+    if (fileContent) {
+      return JSON.parse(fileContent) as AzureFileMetadata[];
+    }
+  } catch (error) {
+    console.error('Error loading file metadata:', error);
+  }
+  
+  return [];
 }
 
 /**

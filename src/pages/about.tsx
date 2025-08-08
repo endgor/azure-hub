@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import Link from 'next/link';
 import VersionDisplay from '@/components/VersionDisplay';
+import FileVersionsTable from '@/components/FileVersionsTable';
 
 export default function About() {
   return (
@@ -12,14 +13,14 @@ export default function About() {
         
         <div className="prose prose-blue max-w-none">
           
-          <h2>Version</h2>
+          <h2>Definitions</h2>
           
           <p>
-            This tool uses the latest Azure IP ranges data from Microsoft. Current data versions:
+            These are the different Service Tag definitions we&apos;re currently using:
           </p>
           
           <div className="bg-blue-50 p-4 rounded-lg mb-6">
-            <VersionDisplay className="text-blue-700" />
+            <FileVersionsTable className="text-sm" />
           </div>
           
           <h2>How it Works</h2>

@@ -40,3 +40,17 @@ export interface DownloadMapping {
   id: string;
   cloud: AzureCloudName;
 }
+
+export interface AzureCloudVersions {
+  AzureCloud?: number;
+  AzureChinaCloud?: number;
+  AzureUSGovernment?: number;
+}
+
+export interface AzureFileMetadata {
+  cloud: AzureCloudName;
+  changeNumber: number;
+  filename: string;
+  downloadUrl: string;
+  lastRetrieved: string;
+}

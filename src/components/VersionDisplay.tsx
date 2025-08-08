@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { AzureCloudVersions } from '../lib/ipService';
+import { AzureCloudVersions } from '../types/azure';
 
 interface VersionDisplayProps {
   className?: string;
