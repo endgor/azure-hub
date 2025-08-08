@@ -248,22 +248,22 @@ export default function Home({
             <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Examples</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">IP Address Lookup</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">IP Address</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">40.112.127.224</code></p>
                 <p className="text-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">CIDR Range Search</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">CIDR Range</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">74.7.51.32/29</code></p>
                 <p className="text-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Service Name Search</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Service Name</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">Storage</code></p>
                 <p className="text-gray-600">Browse IP ranges for specific Azure services like Storage, SQL, or Compute.</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Regional Search</h3>
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Region</h3>
                 <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">WestEurope</code></p>
                 <p className="text-gray-600">View IP ranges for specific regions or service+region combinations.</p>
               </div>
