@@ -1,5 +1,5 @@
 {
-  "changeNumber": 363,
+  "changeNumber": 364,
   "cloud": "China",
   "values": [
     {
@@ -8777,7 +8777,7 @@
       "name": "AzureCloud.chinanorth3",
       "id": "AzureCloud.chinanorth3",
       "properties": {
-        "changeNumber": 53,
+        "changeNumber": 54,
         "region": "chinanorth3",
         "regionId": 89,
         "platform": "Azure",
@@ -8801,6 +8801,7 @@
           "52.130.106.0/23",
           "52.130.108.0/23",
           "52.130.141.0/24",
+          "52.130.160.0/20",
           "52.130.216.0/21",
           "52.130.224.0/20",
           "52.130.240.0/21",
@@ -8929,7 +8930,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 102,
+        "changeNumber": 103,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -9091,6 +9092,7 @@
           "52.130.140.0/24",
           "52.130.141.0/24",
           "52.130.144.0/20",
+          "52.130.160.0/20",
           "52.130.176.0/20",
           "52.130.192.0/20",
           "52.130.208.0/21",
