@@ -41,3 +41,31 @@ next-env.d.ts
 # Claude files
 CLAUDE.md
 .claude/
+
+# Additional OS files
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+thumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Additional temp files
+*.tmp
+*.temp
+*~
+
+# Additional IDE files
+.idea/
+*.swp
+*.swo
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
