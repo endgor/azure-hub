@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -8,7 +12,7 @@ const nextConfig = {
   },
   // SEO and Performance optimizations
   experimental: {
-    optimizePackageImports: ['swr', 'ip-cidr'],
+    optimizePackageImports: ['swr', 'ip-cidr', 'papaparse', 'xlsx'],
   },
   poweredByHeader: false,
   generateEtags: true,
@@ -57,4 +61,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig)

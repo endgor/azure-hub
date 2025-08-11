@@ -4,6 +4,13 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter'
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -12,7 +19,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Azure IP Lookup Tool - Check if an IP belongs to Azure" />
       </Head>
-      <Component {...pageProps} />
+      <div className={`${inter.variable} font-sans`}>
+        <Component {...pageProps} />
+      </div>
       <Analytics />
       <SpeedInsights />
     </>

@@ -23,6 +23,10 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
+  // Add caching headers for better performance
+  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=1800')
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+
   const { ipOrDomain, region, service, page = '1', pageSize = '50' } = req.query
 
   // Parse pagination parameters, supporting "all" to return all results

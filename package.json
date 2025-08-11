@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/vercel-build.js && next build",
+    "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
     "update-ip-data": "ts-node scripts/update-ip-data.ts"
@@ -21,6 +22,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^15.4.6",
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.17.47",
     "@types/papaparse": "^5.3.16",

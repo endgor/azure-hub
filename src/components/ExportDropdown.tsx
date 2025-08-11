@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { AzureIpAddress } from '@/types/azure';
-import { exportToCSV, exportToExcel, prepareDataForExport, generateFilename } from '@/lib/exportUtils';
 
 interface ExportDropdownProps {
   results: AzureIpAddress[];
@@ -25,8 +24,11 @@ export default function ExportDropdown({ results, query, disabled = false }: Exp
     };
   }, []);
 
-  const handleExport = (format: 'csv' | 'xlsx') => {
+  const handleExport = async (format: 'csv' | 'xlsx') => {
     if (results.length === 0) return;
+    
+    // Dynamic import to reduce initial bundle size
+    const { exportToCSV, exportToExcel, prepareDataForExport, generateFilename } = await import('@/lib/exportUtils');
     
     const exportData = prepareDataForExport(results);
     const filename = generateFilename(query, format);

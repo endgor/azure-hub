@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, memo } from 'react';
 import { useRouter } from 'next/router';
 
 interface LookupFormProps {
@@ -7,7 +7,7 @@ interface LookupFormProps {
   initialService?: string;
 }
 
-export default function LookupForm({ 
+const LookupForm = memo(function LookupForm({ 
   initialValue = '', 
   initialRegion = '',
   initialService = ''
@@ -143,4 +143,6 @@ export default function LookupForm({
       </div>
     </form>
   );
-}
+});
+
+export default LookupForm;
