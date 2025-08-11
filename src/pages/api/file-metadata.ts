@@ -6,6 +6,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Add aggressive caching since file metadata changes infrequently
+  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=43200'); // 24h cache, 12h stale
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+
   try {
     const metadata = await getFileMetadata();
     res.status(200).json(metadata);

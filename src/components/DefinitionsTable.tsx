@@ -1,36 +1,12 @@
-import { useState, useEffect } from 'react';
+import { memo } from 'react';
 import { AzureFileMetadata } from '../types/azure';
 
-export default function DefinitionsTable() {
-  const [metadata, setMetadata] = useState<AzureFileMetadata[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+interface DefinitionsTableProps {
+  metadata: AzureFileMetadata[];
+}
 
-  useEffect(() => {
-    async function fetchMetadata() {
-      try {
-        const response = await fetch('/api/file-metadata');
-        if (!response.ok) {
-          throw new Error('Failed to fetch file metadata');
-        }
-        const data = await response.json();
-        setMetadata(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-        console.error('Error fetching file metadata:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchMetadata();
-  }, []);
-
-  if (loading) {
-    return <div className="text-gray-500">Loading file information...</div>;
-  }
-
-  if (error || !metadata.length) {
+const DefinitionsTable = memo(function DefinitionsTable({ metadata }: DefinitionsTableProps) {
+  if (!metadata || metadata.length === 0) {
     return <div className="text-gray-500">File information not available</div>;
   }
 
@@ -100,4 +76,6 @@ export default function DefinitionsTable() {
       </table>
     </div>
   );
-}
+});
+
+export default DefinitionsTable;

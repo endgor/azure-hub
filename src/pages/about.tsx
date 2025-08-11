@@ -2,8 +2,15 @@ import Layout from '@/components/Layout';
 import Link from 'next/link';
 import VersionDisplay from '@/components/VersionDisplay';
 import DefinitionsTable from '@/components/DefinitionsTable';
+import { GetStaticProps } from 'next';
+import { getFileMetadata } from '@/lib/ipService';
+import { AzureFileMetadata } from '@/types/azure';
 
-export default function About() {
+interface AboutProps {
+  fileMetadata: AzureFileMetadata[];
+}
+
+export default function About({ fileMetadata }: AboutProps) {
   return (
     <Layout title="About Azure IP Lookup - Azure Service IP Range Finder">
       <div className="max-w-3xl mx-auto">
@@ -28,7 +35,7 @@ export default function About() {
             These are the different Service Tag definitions we&apos;re currently using:
           </p>
           
-          <DefinitionsTable />
+          <DefinitionsTable metadata={fileMetadata} />
 
           <h2>Network Features</h2>
           
@@ -54,3 +61,24 @@ export default function About() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps<AboutProps> = async () => {
+  try {
+    const fileMetadata = await getFileMetadata();
+    return {
+      props: {
+        fileMetadata,
+      },
+      // Revalidate every 24 hours since file metadata doesn't change frequently
+      revalidate: 24 * 60 * 60,
+    };
+  } catch (error) {
+    console.error('Error loading file metadata for about page:', error);
+    return {
+      props: {
+        fileMetadata: [],
+      },
+      revalidate: 60, // Retry sooner on error
+    };
+  }
+};
