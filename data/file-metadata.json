@@ -1,23 +1,23 @@
 [
   {
     "cloud": "AzureCloud",
-    "changeNumber": 365,
-    "filename": "ServiceTags_Public_20250804.json",
-    "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20250804.json",
-    "lastRetrieved": "2025-08-14"
+    "changeNumber": 366,
+    "filename": "ServiceTags_Public_20250811.json",
+    "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20250811.json",
+    "lastRetrieved": "2025-08-15"
   },
   {
     "cloud": "AzureChinaCloud",
-    "changeNumber": 364,
-    "filename": "ServiceTags_China_20250804.json",
-    "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20250804.json",
-    "lastRetrieved": "2025-08-14"
+    "changeNumber": 365,
+    "filename": "ServiceTags_China_20250811.json",
+    "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20250811.json",
+    "lastRetrieved": "2025-08-15"
   },
   {
     "cloud": "AzureUSGovernment",
-    "changeNumber": 365,
-    "filename": "ServiceTags_AzureGovernment_20250804.json",
-    "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20250804.json",
-    "lastRetrieved": "2025-08-14"
+    "changeNumber": 366,
+    "filename": "ServiceTags_AzureGovernment_20250811.json",
+    "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20250811.json",
+    "lastRetrieved": "2025-08-15"
   }
 ]
