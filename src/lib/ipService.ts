@@ -4,10 +4,9 @@ import fs from 'fs';
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress, AzureCloudName, AzureServiceTagsRoot, AzureCloudVersions, AzureFileMetadata } from '../types/azure';
 
-// Directory paths
+// Directory paths - using single source of truth in public directory
 const PROJECT_ROOT = process.cwd();
-const DATA_DIR = path.join(PROJECT_ROOT, 'data');
-const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
+const DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
 // In-memory cache with global module-level persistence
 let azureIpAddressCache: AzureIpAddress[] | null = null;
@@ -146,21 +145,15 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
  */
 export async function getFileMetadata(): Promise<AzureFileMetadata[]> {
   try {
-    const paths = [
-      path.join(DATA_DIR, 'file-metadata.json'),
-      path.join(PUBLIC_DATA_DIR, 'file-metadata.json')
-    ];
+    const metadataPath = path.join(DATA_DIR, 'file-metadata.json');
     
     let fileContent: string | null = null;
-    for (const filePath of paths) {
-      try {
-        if (fs.existsSync(filePath)) {
-          fileContent = fs.readFileSync(filePath, 'utf8');
-          break;
-        }
-      } catch (readError) {
-        console.error(`Error reading metadata from ${filePath}:`, readError);
+    try {
+      if (fs.existsSync(metadataPath)) {
+        fileContent = fs.readFileSync(metadataPath, 'utf8');
       }
+    } catch (readError) {
+      console.error(`Error reading metadata from ${metadataPath}:`, readError);
     }
     
     if (fileContent) {
@@ -194,20 +187,14 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
       let fileContent: string | null = null;
       
       // Try data directory first, then public directory
-      const paths = [
-        path.join(DATA_DIR, `${cloud}.json`),
-        path.join(PUBLIC_DATA_DIR, `${cloud}.json`)
-      ];
+      const filePath = path.join(DATA_DIR, `${cloud}.json`);
       
-      for (const filePath of paths) {
-        try {
-          if (fs.existsSync(filePath)) {
-            fileContent = fs.readFileSync(filePath, 'utf8');
-            break;
-          }
-        } catch (readError) {
-          console.error(`Error reading version from ${filePath}:`, readError);
+      try {
+        if (fs.existsSync(filePath)) {
+          fileContent = fs.readFileSync(filePath, 'utf8');
         }
+      } catch (readError) {
+        console.error(`Error reading version from ${filePath}:`, readError);
       }
       
       if (fileContent) {
@@ -482,22 +469,16 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
       let fileContent: string | null = null;
       let sourceLocation: string = '';
       
-      // Try data directory first, then public directory
-      const paths = [
-        { path: path.join(DATA_DIR, `${cloud}.json`), location: 'data directory' },
-        { path: path.join(PUBLIC_DATA_DIR, `${cloud}.json`), location: 'public directory' }
-      ];
+      // Read from public data directory
+      const filePath = path.join(DATA_DIR, `${cloud}.json`);
       
-      for (const { path: filePath, location } of paths) {
-        try {
-          if (fs.existsSync(filePath)) {
-            fileContent = fs.readFileSync(filePath, 'utf8');
-            sourceLocation = location;
-            break;
-          }
-        } catch (readError) {
-          console.error(`Error reading file from ${location}: ${readError}`);
+      try {
+        if (fs.existsSync(filePath)) {
+          fileContent = fs.readFileSync(filePath, 'utf8');
+          sourceLocation = 'public/data directory';
         }
+      } catch (readError) {
+        console.error(`Error reading file from public/data directory: ${readError}`);
       }
       
       if (!fileContent) {

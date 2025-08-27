@@ -4,20 +4,14 @@ const path = require('path');
 
 console.log('Running Vercel build script for Azure IP lookup data...');
 
-// Define paths - use consistent naming with other scripts
+// Define path - using single source of truth in public directory
 const PROJECT_ROOT = process.cwd();
-const DATA_DIR = path.join(PROJECT_ROOT, 'data');
-const PUBLIC_DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
+const DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 
-// Ensure both directories exist
+// Ensure directory exists
 if (!fs.existsSync(DATA_DIR)) {
-  console.log('Data directory not found! Creating empty one.');
+  console.log('Public/data directory not found! Creating empty one.');
   fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-if (!fs.existsSync(PUBLIC_DATA_DIR)) {
-  console.log('Creating public/data directory');
-  fs.mkdirSync(PUBLIC_DATA_DIR, { recursive: true });
 }
 
 // List all files in the data directory
@@ -58,20 +52,9 @@ try {
     console.log(`Now have ${updatedJsonFiles.length} JSON files in data directory`);
   }
   
-  // Copy all JSON files from data directory to public/data
-  const filesToCopy = fs.readdirSync(DATA_DIR).filter(file => file.endsWith('.json'));
-  
-  filesToCopy.forEach(file => {
-    const srcPath = path.join(DATA_DIR, file);
-    const destPath = path.join(PUBLIC_DATA_DIR, file);
-    
-    try {
-      fs.copyFileSync(srcPath, destPath);
-      console.log(`Copied ${file} to public/data/`);
-    } catch (err) {
-      console.error(`Error copying ${file}:`, err);
-    }
-  });
+  // No file copying needed since data files are already in public/data directory
+  const existingFiles = fs.readdirSync(DATA_DIR).filter(file => file.endsWith('.json'));
+  console.log(`Found ${existingFiles.length} existing JSON files in public/data directory`);
   
   console.log('Vercel build script completed successfully.');
 } catch (err) {

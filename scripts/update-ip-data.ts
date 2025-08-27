@@ -21,20 +21,15 @@ const downloadMappings: DownloadMapping[] = [
   { id: '57063', cloud: AzureCloudName.AzureUSGovernment }, // US Government
 ];
 
-// Directories to save the data files
-const DATA_DIR = path.join(process.cwd(), 'data');
-const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
+// Directory to save the data files - using single source of truth in public directory
+const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
 // Metadata file to store file information
 const METADATA_FILE = path.join(DATA_DIR, 'file-metadata.json');
 
-// Create both directories if they don't exist
+// Create directory if it doesn't exist
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-if (!fs.existsSync(PUBLIC_DATA_DIR)) {
-  fs.mkdirSync(PUBLIC_DATA_DIR, { recursive: true });
 }
 
 /**
@@ -73,9 +68,6 @@ function loadMetadata(): AzureFileMetadata[] {
 function saveMetadata(metadata: AzureFileMetadata[]): void {
   try {
     fs.writeFileSync(METADATA_FILE, JSON.stringify(metadata, null, 2), 'utf8');
-    // Copy to public directory for API access
-    const publicMetadataFile = path.join(PUBLIC_DATA_DIR, 'file-metadata.json');
-    fs.copyFileSync(METADATA_FILE, publicMetadataFile);
   } catch (error) {
     console.error('Error saving metadata:', error);
   }
@@ -310,13 +302,9 @@ async function updateAllIpData(): Promise<void> {
       }
 
       const dataFilePath = path.join(DATA_DIR, `${mapping.cloud}.json`);
-      const publicDataFilePath = path.join(PUBLIC_DATA_DIR, `${mapping.cloud}.json`);
       
-      // Download to data directory
+      // Download directly to public/data directory
       await downloadFile(downloadUrl, dataFilePath);
-      
-      // Copy to public directory directly
-      fs.copyFileSync(dataFilePath, publicDataFilePath);
       
       // Read the file to get change number
       const fileContent = fs.readFileSync(dataFilePath, 'utf8');
@@ -341,7 +329,7 @@ async function updateAllIpData(): Promise<void> {
         metadata.push(fileMetadata);
       }
       
-      console.log(`Successfully updated data for ${mapping.cloud} (${filename}) in both data/ and public/data/ directories`);
+      console.log(`Successfully updated data for ${mapping.cloud} (${filename}) in public/data/ directory`);
 
     } catch (error: any) { // Catch specific error type if known, else any
       console.error(`Failed to process ${mapping.cloud} (ID: ${mapping.id}): ${error.message || error}`);
