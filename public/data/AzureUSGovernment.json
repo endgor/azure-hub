@@ -1,5 +1,5 @@
 {
-  "changeNumber": 367,
+  "changeNumber": 368,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -1673,6 +1673,29 @@
           "NSG",
           "UDR",
           "FW"
+        ]
+      }
+    },
+    {
+      "name": "AzureMonitorForSAP",
+      "id": "AzureMonitorForSAP",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "regionId": 0,
+        "platform": "Azure",
+        "systemService": "AzureMonitorForSAP",
+        "addressPrefixes": [
+          "51.54.119.240/31",
+          "62.11.179.222/31",
+          "2001:489a:3103:7::60a/127",
+          "2001:489a:3604:8::8/127"
+        ],
+        "networkFeatures": [
+          "NSG",
+          "API",
+          "FW",
+          "UDR"
         ]
       }
     },
