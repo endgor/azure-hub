@@ -1,8 +1,8 @@
-// This script runs during Vercel build to ensure IP data files are available
+// This script runs during build to ensure IP data files are available
 const fs = require('fs');
 const path = require('path');
 
-console.log('Running Vercel build script for Azure IP lookup data...');
+console.log('Running build script for Azure IP lookup data...');
 
 // Define path - using single source of truth in public directory
 const PROJECT_ROOT = process.cwd();
@@ -56,7 +56,7 @@ try {
   const existingFiles = fs.readdirSync(DATA_DIR).filter(file => file.endsWith('.json'));
   console.log(`Found ${existingFiles.length} existing JSON files in public/data directory`);
   
-  console.log('Vercel build script completed successfully.');
+  console.log('Build script completed successfully.');
 } catch (err) {
-  console.error('Error in Vercel build script:', err);
+  console.error('Error in build script:', err);
 }

@@ -4,16 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/vercel-build.js && next build",
-    "build:azure": "node scripts/vercel-build.js && next build && next export",
+    "build": "node scripts/azure-build.js && next build",
+    "build:azure": "node scripts/azure-build.js && next build",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
     "update-ip-data": "ts-node scripts/update-ip-data.ts"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.5.0",
-    "@vercel/speed-insights": "^1.2.0",
     "ip-cidr": "^3.1.0",
     "next": "^14.0.4",
     "papaparse": "^5.5.3",
