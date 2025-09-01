@@ -69,3 +69,6 @@ $RECYCLE.BIN/
 *.7z
 *.tar
 *.gz
+
+# Azure Static Web Apps
+.azure/

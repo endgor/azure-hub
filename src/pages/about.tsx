@@ -69,8 +69,6 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
       props: {
         fileMetadata,
       },
-      // Revalidate every 24 hours since file metadata doesn't change frequently
-      revalidate: 24 * 60 * 60,
     };
   } catch (error) {
     console.error('Error loading file metadata for about page:', error);
@@ -78,7 +76,6 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
       props: {
         fileMetadata: [],
       },
-      revalidate: 60, // Retry sooner on error
     };
   }
 };

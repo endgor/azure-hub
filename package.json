@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/vercel-build.js && next build",
+    "build:azure": "node scripts/vercel-build.js && next build && next export",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",

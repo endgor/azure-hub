@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Link from 'next/link';
@@ -305,30 +305,14 @@ export default function Home({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const initialQuery = query.ipOrDomain as string || '';
-  const initialRegion = query.region as string || '';
-  const initialService = query.service as string || '';
-  const initialPage = parseInt(query.page as string || '1', 10);
-  const pageSizeParam = query.pageSize as string;
-  
-  let initialPageSize: number | 'all' = 50; // Default page size
-  if (pageSizeParam === 'all') {
-    initialPageSize = 'all';
-  } else if (pageSizeParam) {
-    const parsedPageSize = parseInt(pageSizeParam, 10);
-    if (!isNaN(parsedPageSize) && [10, 20, 50, 100, 200].includes(parsedPageSize)) {
-      initialPageSize = parsedPageSize;
-    }
-  }
-
+export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      initialQuery,
-      initialRegion,
-      initialService,
-      initialPage: isNaN(initialPage) ? 1 : initialPage,
-      initialPageSize
+      initialQuery: '',
+      initialRegion: '',
+      initialService: '',
+      initialPage: 1,
+      initialPageSize: 50,
     },
   };
 };

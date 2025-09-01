@@ -1,0 +1,26 @@
+{
+  "routes": [
+    {
+      "route": "/api/*",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/data/*",
+      "headers": {
+        "Cache-Control": "public, max-age=86400, stale-while-revalidate=43200"
+      }
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/404.html",
+    "exclude": ["/data/*", "/api/*", "*.{css,scss,js,ts,png,gif,ico,jpg,svg,woff,woff2}"]
+  },
+  "mimeTypes": {
+    ".json": "application/json"
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://vitals.vercel-insights.com;"
+  }
+}

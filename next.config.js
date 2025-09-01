@@ -4,6 +4,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
   reactStrictMode: true,
   swcMinify: true,
   // Performance optimizations
@@ -23,42 +26,44 @@ const nextConfig = {
     minimumCacheTTL: 60,
   },
   compress: true,
-  // Ensure data files in the public directory are properly served
-  // This is especially important for Vercel deployments
-  async headers() {
-    return [
-      {
-        // Cache static assets more aggressively
-        source: '/data/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=43200', // Cache for 24 hours, stale for 12 hours
-          },
-        ],
-      },
-      {
-        // Cache API routes with shorter TTL
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=3600, stale-while-revalidate=1800', // Cache for 1 hour, stale for 30 min
-          },
-        ],
-      },
-      {
-        // Default cache for other routes
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=3600', // Cache for 1 hour
-          },
-        ],
-      },
-    ];
-  },
+  // Headers configuration disabled for static export
+  // Will be handled by staticwebapp.config.json for Azure Static Web Apps
+  ...(process.env.NODE_ENV !== 'production' && {
+    async headers() {
+      return [
+        {
+          // Cache static assets more aggressively
+          source: '/data/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=86400, stale-while-revalidate=43200', // Cache for 24 hours, stale for 12 hours
+            },
+          ],
+        },
+        {
+          // Cache API routes with shorter TTL
+          source: '/api/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=3600, stale-while-revalidate=1800', // Cache for 1 hour, stale for 30 min
+            },
+          ],
+        },
+        {
+          // Default cache for other routes
+          source: '/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=3600', // Cache for 1 hour
+            },
+          ],
+        },
+      ];
+    },
+  }),
 }
 
 module.exports = withBundleAnalyzer(nextConfig)
