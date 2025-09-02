@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AzureCloudVersions } from '../types/azure';
+import { getVersions } from '@/lib/clientIpService';
 
 interface VersionDisplayProps {
   className?: string;
@@ -13,11 +14,7 @@ export default function VersionDisplay({ className = '' }: VersionDisplayProps) 
   useEffect(() => {
     async function fetchVersions() {
       try {
-        const response = await fetch('/api/versions');
-        if (!response.ok) {
-          throw new Error('Failed to fetch versions');
-        }
-        const data = await response.json();
+        const data = await getVersions();
         setVersions(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
@@ -40,13 +37,13 @@ export default function VersionDisplay({ className = '' }: VersionDisplayProps) 
     <div className={`text-gray-500 ${className}`}>
       <div className="flex flex-wrap gap-2">
         {versions.AzureCloud && (
-          <span>Public: v{versions.AzureCloud}</span>
+          <span>Public: v{typeof versions.AzureCloud === 'string' ? versions.AzureCloud : versions.AzureCloud.version}</span>
         )}
         {versions.AzureChinaCloud && (
-          <span>China: v{versions.AzureChinaCloud}</span>
+          <span>China: v{typeof versions.AzureChinaCloud === 'string' ? versions.AzureChinaCloud : versions.AzureChinaCloud.version}</span>
         )}
         {versions.AzureUSGovernment && (
-          <span>US Gov: v{versions.AzureUSGovernment}</span>
+          <span>US Gov: v{typeof versions.AzureUSGovernment === 'string' ? versions.AzureUSGovernment : versions.AzureUSGovernment.version}</span>
         )}
       </div>
     </div>

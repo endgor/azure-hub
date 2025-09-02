@@ -1,23 +1,42 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import Results from '@/components/Results';
 import SimplePagination from '@/components/SimplePagination';
 import { AzureIpAddress } from '@/types/azure';
+import { getServiceTagDetails } from '@/lib/clientIpService';
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const data = await res.json();
-  
-  if (res.status === 404) {
-    return { notFound: true, message: data.error, ipRanges: [] };
+const clientServiceTagFetcher = async (serviceTagKey: string): Promise<ServiceTagDetailResponse> => {
+  if (!serviceTagKey) {
+    return {
+      serviceTag: '',
+      ipRanges: [],
+      notFound: true,
+      message: 'No service tag provided'
+    };
   }
   
-  if (!res.ok) throw new Error(data.error || res.statusText);
-  
-  return data;
+  try {
+    const ipRanges = await getServiceTagDetails(serviceTagKey);
+    
+    if (ipRanges.length === 0) {
+      return { 
+        notFound: true, 
+        message: `No data found for service tag "${serviceTagKey}"`,
+        serviceTag: serviceTagKey,
+        ipRanges: [] 
+      };
+    }
+    
+    return {
+      serviceTag: serviceTagKey,
+      ipRanges
+    };
+  } catch (error) {
+    console.error('Service tag fetch error:', error);
+    throw error;
+  }
 };
 
 interface ServiceTagDetailResponse {
@@ -35,11 +54,36 @@ export default function ServiceTagDetail() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
+  const [data, setData] = useState<ServiceTagDetailResponse | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   
-  const { data, error, isLoading } = useSWR<ServiceTagDetailResponse>(
-    serviceTag ? `/api/service-tags?serviceTag=${encodeURIComponent(serviceTag as string)}` : null,
-    fetcher
-  );
+  // Fetch service tag details when serviceTag changes
+  useEffect(() => {
+    if (!serviceTag) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchServiceTagDetails = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const result = await clientServiceTagFetcher(serviceTag as string);
+        setData(result);
+      } catch (err) {
+        console.error('Service tag fetch error:', err);
+        setError(err as Error);
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchServiceTagDetails();
+  }, [serviceTag]);
 
   // Paginate results
   const paginatedResults = useMemo(() => {

@@ -1,15 +1,16 @@
-import { useState, useMemo } from 'react';
-import useSWR from 'swr';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
+import { getAllServiceTags } from '@/lib/clientIpService';
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const data = await res.json();
-  
-  if (!res.ok) throw new Error(data.error || res.statusText);
-  
-  return data;
+const clientServiceTagsFetcher = async () => {
+  try {
+    const serviceTags = await getAllServiceTags();
+    return { serviceTags };
+  } catch (error) {
+    console.error('Service tags fetch error:', error);
+    throw error;
+  }
 };
 
 interface ServiceTagsResponse {
@@ -18,11 +19,29 @@ interface ServiceTagsResponse {
 
 export default function ServiceTags() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [data, setData] = useState<ServiceTagsResponse | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const { data, error, isLoading } = useSWR<ServiceTagsResponse>(
-    '/api/service-tags',
-    fetcher
-  );
+  // Fetch service tags on component mount
+  useEffect(() => {
+    const fetchServiceTags = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const result = await clientServiceTagsFetcher();
+        setData(result);
+      } catch (err) {
+        console.error('Service tags fetch error:', err);
+        setError(err as Error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchServiceTags();
+  }, []);
 
   // Filter service tags based on search term
   const filteredServiceTags = useMemo(() => {

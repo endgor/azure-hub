@@ -213,7 +213,7 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
   // Build versions object
   for (const { cloud, version } of results) {
     if (version !== null) {
-      versions[cloud as keyof AzureCloudVersions] = version;
+      versions[cloud as keyof AzureCloudVersions] = version.toString();
     }
   }
   

@@ -1,36 +1,74 @@
 import { useState, useMemo, useEffect } from 'react';
-import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
 import Pagination from '../components/Pagination';
 import { AzureIpAddress } from '@/types/azure';
+import { checkIpAddress, searchAzureIpAddresses } from '@/lib/clientIpService';
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const data = await res.json();
-  
-  // If we get a 404 status, it means "not found" rather than an error
-  if (res.status === 404) {
-    return { notFound: true, message: data.error, results: [], total: 0 };
+const clientFetcher = async (key: string): Promise<ApiResponse> => {
+  if (!key) {
+    return {
+      results: [],
+      total: 0,
+      notFound: true,
+      message: 'No query provided'
+    };
   }
   
-  // For other error statuses, throw an error
-  if (!res.ok) throw new Error(data.error || res.statusText);
-  
-  return data;
+  try {
+    // Parse the query parameters from the key
+    const url = new URL(`http://localhost${key}`);
+    const ipOrDomain = url.searchParams.get('ipOrDomain') || undefined;
+    const region = url.searchParams.get('region') || undefined;
+    const service = url.searchParams.get('service') || undefined;
+    
+    let results: AzureIpAddress[] = [];
+    
+    // Handle IP/Domain lookups
+    if (ipOrDomain) {
+      // Check if it's an IP address or CIDR
+      if (/^\d+\.\d+/.test(ipOrDomain) || ipOrDomain.includes('/')) {
+        results = await checkIpAddress(ipOrDomain);
+      } else {
+        // For other cases, try as both service and region search
+        const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
+        const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
+        
+        // Combine and deduplicate results
+        const combinedResults = [...serviceResults, ...regionResults];
+        const uniqueResults = combinedResults.filter((item, index, array) => 
+          index === array.findIndex(t => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId)
+        );
+        results = uniqueResults;
+      }
+    } else {
+      // Handle region/service search
+      results = await searchAzureIpAddresses({ region, service });
+    }
+    
+    if (results.length === 0) {
+      return { 
+        notFound: true, 
+        message: `No Azure IP ranges found matching your search criteria`, 
+        results: [], 
+        total: 0 
+      };
+    }
+    
+    return {
+      results,
+      total: results.length,
+      query: { ipOrDomain, region, service }
+    };
+  } catch (error) {
+    console.error('Client fetch error:', error);
+    throw error;
+  }
 };
 
-interface HomeProps {
-  initialQuery: string;
-  initialRegion: string;
-  initialService: string;
-  initialPage: number;
-  initialPageSize: number | 'all';
-}
 
 interface ApiResponse {
   results: AzureIpAddress[];
@@ -47,23 +85,46 @@ interface ApiResponse {
   message?: string;
 }
 
-export default function Home({
-  initialQuery,
-  initialRegion,
-  initialService,
-  initialPage,
-  initialPageSize
-}: HomeProps) {
+export default function Home() {
   const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<ApiResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  
+  // Extract query parameters from router - use useState to track them separately
+  const [queryParams, setQueryParams] = useState({
+    initialQuery: '',
+    initialRegion: '',
+    initialService: '',
+    initialPage: 1,
+    initialPageSize: 50 as number | 'all'
+  });
+  
+  // Update query params when router is ready
+  useEffect(() => {
+    if (router.isReady) {
+      setQueryParams({
+        initialQuery: (router.query.ipOrDomain as string) || '',
+        initialRegion: (router.query.region as string) || '',
+        initialService: (router.query.service as string) || '',
+        initialPage: parseInt((router.query.page as string) || '1', 10),
+        initialPageSize: router.query.pageSize === 'all' ? 'all' : parseInt((router.query.pageSize as string) || '50', 10)
+      });
+    }
+  }, [router.isReady, router.query]);
+  
+  const { initialQuery, initialRegion, initialService, initialPage, initialPageSize } = queryParams;
   
   // Clear error state when query parameters change
   useEffect(() => {
     setError(null);
   }, [initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
   
-  // Build API URL with all query parameters
+  // Build client query URL with all query parameters
   const apiUrl = useMemo(() => {
+    // Don't make requests until router is ready
+    if (!router.isReady) return null;
+    
     const params = new URLSearchParams();
     if (initialQuery) params.append('ipOrDomain', initialQuery);
     if (initialRegion) params.append('region', initialRegion);
@@ -72,20 +133,35 @@ export default function Home({
     if (initialPageSize === 'all') params.append('pageSize', 'all');
 
     const queryString = params.toString();
-    return queryString ? `/api/ipAddress?${queryString}` : null;
-  }, [initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
+    return queryString ? `/client/ipAddress?${queryString}` : null;
+  }, [router.isReady, initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
   
-  const { data, isLoading } = useSWR<ApiResponse>(
-    apiUrl,
-    fetcher,
-    {
-      onError: (err) => {
+  // Fetch data when apiUrl changes
+  useEffect(() => {
+    if (!apiUrl) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const result = await clientFetcher(apiUrl);
+        setData(result);
+      } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load data. Please check your input and try again.');
-      },
-      revalidateOnFocus: false,
-    }
-  );
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [apiUrl]);
   
   // Handle different response types
   const isError = error || (data && 'error' in data && !data.notFound);
@@ -305,14 +381,3 @@ export default function Home({
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {
-      initialQuery: '',
-      initialRegion: '',
-      initialService: '',
-      initialPage: 1,
-      initialPageSize: 50,
-    },
-  };
-};
