@@ -9,7 +9,7 @@ A modern web application that helps you determine if an IP address belongs to Mi
 - View Azure region, service tag, and network feature information 
 - IP data automatically updated daily from Microsoft's official sources via GitHub Actions
 
-## Demo
+## DEMO
 
 Visit [https://azurehub.org](https://azurehub.org)
 
