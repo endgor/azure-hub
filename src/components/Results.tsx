@@ -1,5 +1,6 @@
 import { AzureIpAddress } from '@/types/azure';
 import { useState, useMemo, memo } from 'react';
+import { useRouter } from 'next/router';
 import Tooltip from './Tooltip';
 import ExportDropdown from './ExportDropdown';
 
@@ -28,9 +29,15 @@ type SortDirection = 'asc' | 'desc';
 const Results = memo(function Results({ results, query, total }: ResultsProps) {
   const [sortField, setSortField] = useState<SortField>('serviceTagId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const router = useRouter();
   
   // Show total available results
   const totalDisplay = total || results.length;
+  
+  // Handle service tag click
+  const handleServiceTagClick = (serviceTagId: string) => {
+    router.push(`/service-tags/${encodeURIComponent(serviceTagId)}`);
+  };
   
   // Handle column sort
   const handleSort = (field: SortField) => {
@@ -137,8 +144,14 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedResults.map((result, index) => (
               <tr key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-6 py-4 text-sm font-medium text-blue-600 break-words">
-                  {result.serviceTagId}
+                <td className="px-6 py-4 text-sm font-medium break-words">
+                  <button
+                    onClick={() => handleServiceTagClick(result.serviceTagId)}
+                    className="text-blue-600 hover:text-blue-800 hover:underline cursor-pointer transition-colors"
+                    title={`View details for ${result.serviceTagId}`}
+                  >
+                    {result.serviceTagId}
+                  </button>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900 break-words">
                   {result.ipAddressPrefix}
