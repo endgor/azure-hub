@@ -1,6 +1,7 @@
 import { promises as dns } from 'dns';
 import path from 'path';
-import fs from 'fs';
+import { promises as fs } from 'fs';
+import { isIP } from 'net';
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress, AzureCloudName, AzureServiceTagsRoot, AzureCloudVersions, AzureFileMetadata } from '../types/azure';
 import { getCachedNormalization } from './normalization';
@@ -16,14 +17,10 @@ let ipCacheExpiry = 0;
 let versionsCacheExpiry = 0;
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds (longer for better cold start performance)
 
-// Pre-compiled regex patterns for better performance
-const serviceTagRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
-const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^(([0-9a-fA-F]{1,4}:){0,6})?::([0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$/;
-const serviceRegionRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
+// Pre-compiled regex pattern for service/region tags
+const tagRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
 
-// Global flag to track if we're currently loading data (prevents duplicate loads)
-let isLoading = false;
+// Promise used to load data when cache is empty or expired
 let loadPromise: Promise<AzureIpAddress[]> | null = null;
 
 export interface SearchOptions {
@@ -52,64 +49,37 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   
   // Filter by region if specified
   if (region) {
+    const regionLower = region.toLowerCase();
+    const normalizedRegion = getCachedNormalization(regionLower.replace(/([a-z])([A-Z])/g, '$1 $2'));
     results = results.filter(ip => {
-      if (!ip.region) return false;
-      
-      // Try exact match first (case insensitive)
-      if (ip.region.toLowerCase() === region.toLowerCase()) {
-        return true;
-      }
-      
-      // Then try substring match
-      if (ip.region.toLowerCase().includes(region.toLowerCase())) {
-        return true;
-      }
-      
-      // Try to match "WestEurope" with "westeurope" or "West Europe" - cached normalization
-      const normalizedRegion = getCachedNormalization(region.replace(/([a-z])([A-Z])/g, '$1 $2'));
-      const normalizedIpRegion = getCachedNormalization(ip.region.replace(/([a-z])([A-Z])/g, '$1 $2'));
-      
+      const ipRegion = ip.region;
+      if (!ipRegion) return false;
+      const ipRegionLower = ipRegion.toLowerCase();
+      if (ipRegionLower === regionLower) return true;
+      if (ipRegionLower.includes(regionLower)) return true;
+      const normalizedIpRegion = getCachedNormalization(ipRegionLower.replace(/([a-z])([A-Z])/g, '$1 $2'));
       return normalizedIpRegion.includes(normalizedRegion);
     });
   }
-  
+
   // Filter by service if specified
   if (service) {
+    const serviceLower = service.toLowerCase();
+    const normalizedSearch = getCachedNormalization(serviceLower);
     results = results.filter(ip => {
-      // Convert search term and target data to lowercase for case-insensitive comparison
-      const serviceLower = service.toLowerCase();
-      
-      // Match by systemService first with exact or partial matching
       if (ip.systemService) {
         const systemServiceLower = ip.systemService.toLowerCase();
-        
-        // Try exact match first
-        if (systemServiceLower === serviceLower) {
-          return true;
-        }
-        
-        // Try normalized forms (remove spaces, dashes) - cached
-        const normalizedSearch = getCachedNormalization(serviceLower);
         const normalizedSystem = getCachedNormalization(systemServiceLower);
-        
-        if (normalizedSystem === normalizedSearch) {
+        if (systemServiceLower === serviceLower || normalizedSystem === normalizedSearch) {
           return true;
         }
-        
-        // Try substring match last
-        if (normalizedSystem.includes(normalizedSearch) || 
-            normalizedSearch.includes(normalizedSystem)) {
+        if (normalizedSystem.includes(normalizedSearch) || normalizedSearch.includes(normalizedSystem)) {
           return true;
         }
       }
-      
-      // Then by serviceTagId with similar approach - cached
       const serviceTagIdLower = ip.serviceTagId.toLowerCase();
-      const normalizedSearch = getCachedNormalization(serviceLower);
       const normalizedTagId = getCachedNormalization(serviceTagIdLower);
-      
-      return normalizedTagId.includes(normalizedSearch) || 
-             normalizedSearch.includes(normalizedTagId);
+      return normalizedTagId.includes(normalizedSearch) || normalizedSearch.includes(normalizedTagId);
     });
   }
   
@@ -123,24 +93,12 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
 export async function getFileMetadata(): Promise<AzureFileMetadata[]> {
   try {
     const metadataPath = path.join(DATA_DIR, 'file-metadata.json');
-    
-    let fileContent: string | null = null;
-    try {
-      if (fs.existsSync(metadataPath)) {
-        fileContent = fs.readFileSync(metadataPath, 'utf8');
-      }
-    } catch (readError) {
-      console.error(`Error reading metadata from ${metadataPath}:`, readError);
-    }
-    
-    if (fileContent) {
-      return JSON.parse(fileContent) as AzureFileMetadata[];
-    }
+    const fileContent = await fs.readFile(metadataPath, 'utf8');
+    return JSON.parse(fileContent) as AzureFileMetadata[];
   } catch (error) {
     console.error('Error loading file metadata:', error);
+    return [];
   }
-  
-  return [];
 }
 
 /**
@@ -161,28 +119,14 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
   // Process files in parallel
   const versionPromises = clouds.map(async (cloud) => {
     try {
-      let fileContent: string | null = null;
-      
-      // Try data directory first, then public directory
       const filePath = path.join(DATA_DIR, `${cloud}.json`);
-      
-      try {
-        if (fs.existsSync(filePath)) {
-          fileContent = fs.readFileSync(filePath, 'utf8');
-        }
-      } catch (readError) {
-        console.error(`Error reading version from ${filePath}:`, readError);
-      }
-      
-      if (fileContent) {
-        const data = JSON.parse(fileContent) as AzureServiceTagsRoot;
-        return { cloud, version: data.changeNumber };
-      }
+      const fileContent = await fs.readFile(filePath, 'utf8');
+      const data = JSON.parse(fileContent) as AzureServiceTagsRoot;
+      return { cloud, version: data.changeNumber };
     } catch (error) {
       console.error(`Error loading version for cloud ${cloud}:`, error);
+      return { cloud, version: null };
     }
-    
-    return { cloud, version: null };
   });
   
   const results = await Promise.all(versionPromises);
@@ -247,33 +191,35 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
     }
   }
   
-  // Handle Service.Region format (e.g., "Storage.WestEurope") - optimized regex usage
+  // Handle Service.Region format (e.g., "Storage.WestEurope")
   if (ipOrDomain.includes('.') && /^[a-zA-Z]/.test(ipOrDomain)) {
     const parts = ipOrDomain.split('.');
-    if (parts.length === 2 && serviceRegionRegex.test(parts[0]) && serviceRegionRegex.test(parts[1])) {
+    if (parts.length === 2 && tagRegex.test(parts[0]) && tagRegex.test(parts[1])) {
       console.log(`Looking up service tag with region: ${ipOrDomain}`);
       const [service, region] = parts;
-      
+      const serviceLower = service.toLowerCase();
+      const regionLower = region.toLowerCase();
+
       const azureIpAddressList = await getAzureIpAddressListFromCache();
       if (!azureIpAddressList) return null;
-      
+
       const result = azureIpAddressList.filter(ip => {
-        const matchesService = ip.systemService && 
-          ip.systemService.toLowerCase() === service.toLowerCase();
-        const matchesRegion = ip.region && 
-          ip.region.toLowerCase().includes(region.toLowerCase());
+        const matchesService = ip.systemService &&
+          ip.systemService.toLowerCase() === serviceLower;
+        const matchesRegion = ip.region &&
+          ip.region.toLowerCase().includes(regionLower);
         return matchesService && matchesRegion;
       });
-      
+
       if (result.length > 0) {
         console.log(`Found ${result.length} IP ranges for service: ${service} in region: ${region}`);
         return result;
       }
     }
   }
-  
-  // Handle direct service tag lookups (like "Storage") - use pre-compiled regex
-  if (serviceTagRegex.test(ipOrDomain)) {
+
+  // Handle direct service tag lookups (like "Storage")
+  if (tagRegex.test(ipOrDomain)) {
     console.log(`Looking up service tag: ${ipOrDomain}`);
     const azureIpAddressList = await getAzureIpAddressListFromCache();
     if (!azureIpAddressList) return null;
@@ -368,8 +314,8 @@ async function parseIpAddress(ipOrDomain: string): Promise<string | null> {
   }
 
   try {
-    // Check if input is already an IP address (both IPv4 and IPv6) - use pre-compiled regex
-    if (ipv4Regex.test(ipOrDomain) || ipv6Regex.test(ipOrDomain)) {
+    // Check if input is already an IP address (both IPv4 and IPv6)
+    if (isIP(ipOrDomain)) {
       return ipOrDomain;
     }
 
@@ -399,40 +345,31 @@ async function parseIpAddress(ipOrDomain: string): Promise<string | null> {
 
 async function getAzureIpAddressListFromCache(): Promise<AzureIpAddress[]> {
   const now = Date.now();
-  
-  // Return from memory cache if valid
+
   if (azureIpAddressCache && now < ipCacheExpiry) {
     console.log(`Returning cached data (${azureIpAddressCache.length} entries)`);
     return azureIpAddressCache;
   }
 
-  // If already loading, wait for the existing promise
-  if (isLoading && loadPromise) {
-    console.log('Data loading in progress, waiting...');
-    return loadPromise;
+  if (!loadPromise) {
+    loadPromise = (async () => {
+      try {
+        console.log('Loading Azure IP data from files...');
+        const azureIpAddressList = await loadAzureIpAddressListFromFiles();
+        azureIpAddressCache = azureIpAddressList;
+        ipCacheExpiry = Date.now() + CACHE_TTL;
+        console.log(`Loaded and cached ${azureIpAddressList.length} IP ranges`);
+        return azureIpAddressList;
+      } catch (error) {
+        console.error('Error loading Azure IP address list:', error);
+        return [];
+      } finally {
+        loadPromise = null;
+      }
+    })();
   }
 
-  // Set loading flag and create promise
-  isLoading = true;
-  loadPromise = loadAzureIpAddressListFromFiles();
-  
-  try {
-    console.log('Loading Azure IP data from files...');
-    const azureIpAddressList = await loadPromise;
-    
-    // Update memory cache
-    azureIpAddressCache = azureIpAddressList;
-    ipCacheExpiry = now + CACHE_TTL;
-    
-    console.log(`Loaded and cached ${azureIpAddressList.length} IP ranges`);
-    return azureIpAddressList;
-  } catch (error) {
-    console.error('Error loading Azure IP address list:', error);
-    return [];
-  } finally {
-    isLoading = false;
-    loadPromise = null;
-  }
+  return loadPromise;
 }
 
 async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
@@ -444,29 +381,9 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
   // Process files in parallel for better performance
   const fileReadPromises = clouds.map(async (cloud) => {
     try {
-      let fileContent: string | null = null;
-      let sourceLocation: string = '';
-      
-      // Read from public data directory
       const filePath = path.join(DATA_DIR, `${cloud}.json`);
-      
-      try {
-        if (fs.existsSync(filePath)) {
-          fileContent = fs.readFileSync(filePath, 'utf8');
-          sourceLocation = 'public/data directory';
-        }
-      } catch (readError) {
-        console.error(`Error reading file from public/data directory: ${readError}`);
-      }
-      
-      if (!fileContent) {
-        console.log(`Could not find or read data file for ${cloud} in any location`);
-        return [];
-      }
-      
-      console.log(`Loaded ${cloud} IP data from ${sourceLocation}`);
-      
-      // Parse the file content
+      const fileContent = await fs.readFile(filePath, 'utf8');
+      console.log(`Loaded ${cloud} IP data from public/data directory`);
       const azureServiceTagsCollection = JSON.parse(fileContent) as AzureServiceTagsRoot;
       const cloudResults: AzureIpAddress[] = [];
       
