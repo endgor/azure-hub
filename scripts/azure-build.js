@@ -53,8 +53,7 @@ try {
   }
   
   // No file copying needed since data files are already in public/data directory
-  const existingFiles = fs.readdirSync(DATA_DIR).filter(file => file.endsWith('.json'));
-  console.log(`Found ${existingFiles.length} existing JSON files in public/data directory`);
+  console.log(`Found ${jsonFiles.length} existing JSON files in public/data directory`);
   
   console.log('Build script completed successfully.');
 } catch (err) {

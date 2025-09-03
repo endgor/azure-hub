@@ -34,7 +34,6 @@ const clientServiceTagFetcher = async (serviceTagKey: string): Promise<ServiceTa
       ipRanges
     };
   } catch (error) {
-    console.error('Service tag fetch error:', error);
     throw error;
   }
 };
@@ -74,7 +73,6 @@ export default function ServiceTagDetail() {
         const result = await clientServiceTagFetcher(serviceTag as string);
         setData(result);
       } catch (err) {
-        console.error('Service tag fetch error:', err);
         setError(err as Error);
         setData(null);
       } finally {

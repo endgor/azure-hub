@@ -13,7 +13,7 @@ Azure IP Lookup is a Next.js web application that identifies whether IP addresse
 ### Core Development
 - `npm install` - Install dependencies
 - `npm run dev` - Start development server (http://localhost:3000)
-- `npm run build` - Build for production (includes data copy via vercel-build.js)
+- `npm run build` - Build for production (includes data setup via azure-build.js)
 - `npm run analyze` - Build with bundle analyzer to identify optimization opportunities
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
@@ -28,22 +28,18 @@ Azure IP Lookup is a Next.js web application that identifies whether IP addresse
 ## Architecture
 
 ### Core Components
-- **IP Service** (`src/lib/ipService.ts`): Core business logic for IP lookups, CIDR matching, and service tag queries with optimized caching (6-hour TTL) and LRU normalization cache
-- **Data Layer**: Azure IP ranges stored in both `/data/` (source) and `/public/data/` directories
-- **API Routes**: 
-  - `/api/ipAddress.ts` - Main IP lookup endpoint with optimized caching headers
-  - `/api/file-metadata.ts` - File metadata with aggressive caching (24h)
-  - `/api/service-tags.ts` - Service tag directory API
-  - `/api/versions.ts` - Version information API
+- **IP Service** (`src/lib/ipService.ts`): Server-side business logic for IP lookups, CIDR matching, and service tag queries with optimized caching (6-hour TTL) and LRU normalization cache
+- **Client IP Service** (`src/lib/clientIpService.ts`): Client-side service for data loading and processing
+- **Data Layer**: Azure IP ranges stored in `/public/data/` directory for client access
 - **Frontend Components**: Performance-optimized React components with memoization in `/src/components/`
 - **Static Pages**: About page uses ISR (Incremental Static Regeneration) for optimal performance
 
 ### Data Flow
 1. IP data downloaded from Microsoft's official sources (Public Cloud, China Cloud, US Government)
-2. Stored in `/data/` directory and copied to `/public/data/` for client access
-3. Extended in-memory caching (6-hour TTL) with improved memory management
+2. Stored directly in `/public/data/` directory for client access
+3. Client-side data loading with extended in-memory caching (6-hour TTL)
 4. Service supports IP addresses, CIDR notation, domain names, and service tag lookups
-5. Aggressive CDN caching with stale-while-revalidate headers for optimal performance
+5. Static file serving with CDN caching for optimal performance
 
 ### Key Features
 - **Multi-format Input**: Supports IP addresses, CIDR ranges, domain names, and service tags
@@ -54,15 +50,15 @@ Azure IP Lookup is a Next.js web application that identifies whether IP addresse
 - **Export Functionality**: Dynamic imports for CSV/Excel export to reduce initial bundle size
 
 ### File Structure
-- `/src/lib/ipService.ts` - Main IP lookup and search logic with performance optimizations
+- `/src/lib/ipService.ts` - Server-side IP lookup and search logic with performance optimizations
+- `/src/lib/clientIpService.ts` - Client-side data loading and processing
 - `/src/lib/exportUtils.ts` - Export functionality (CSV/Excel) with dynamic loading
 - `/src/types/azure.ts` - TypeScript interfaces for Azure data structures
 - `/src/components/` - Performance-optimized React components with memo() wrappers
 - `/src/pages/_app.tsx` - App root with next/font integration and analytics
 - `/scripts/update-ip-data.ts` - Data fetching and update automation
-- `/scripts/vercel-build.js` - Build-time data copying for Vercel deployments
-- `/data/` - Source Azure IP range JSON files (4.6MB total)
-- `/public/data/` - Client-accessible copy of IP data
+- `/scripts/azure-build.js` - Build-time data setup for deployments
+- `/public/data/` - Azure IP range JSON files (4.6MB total)
 
 ## Performance Optimizations
 
@@ -71,7 +67,7 @@ Azure IP Lookup is a Next.js web application that identifies whether IP addresse
 - **Component Optimization**: Added React.memo to Results, LookupForm, and DefinitionsTable components
 - **Bundle Analysis**: Added @next/bundle-analyzer for ongoing performance monitoring
 - **Static Generation**: About page converted to ISR with 24-hour revalidation (3.91s → <500ms load time)
-- **Caching Strategy**: Enhanced API caching headers and extended in-memory cache TTLs
+- **Caching Strategy**: Client-side data caching with extended in-memory cache TTLs
 - **Dynamic Imports**: Export functionality lazy-loaded to reduce initial bundle size
 
 ### Performance Monitoring
@@ -94,7 +90,7 @@ Data is automatically updated daily via GitHub Actions and triggers Vercel deplo
 - **Cold Start Optimization**: Extended cache TTLs to improve serverless performance
 - **Bundle Size**: Use dynamic imports for heavy dependencies (papaparse, xlsx)
 - **Static Generation**: Use ISR for pages with infrequent data changes
-- **CDN Optimization**: Aggressive caching headers for static and API responses
+- **CDN Optimization**: Static file caching for data files and assets
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.

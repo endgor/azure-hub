@@ -63,7 +63,6 @@ const clientFetcher = async (key: string): Promise<ApiResponse> => {
       query: { ipOrDomain, region, service }
     };
   } catch (error) {
-    console.error('Client fetch error:', error);
     throw error;
   }
 };
@@ -151,7 +150,6 @@ export default function Home() {
         const result = await clientFetcher(apiUrl);
         setData(result);
       } catch (err) {
-        console.error('Error fetching data:', err);
         setError('Failed to load data. Please check your input and try again.');
         setData(null);
       } finally {

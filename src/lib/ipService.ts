@@ -41,7 +41,6 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   
   const azureIpAddressList = await getAzureIpAddressListFromCache();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
-    console.log('No Azure IP address data available');
     return [];
   }
   
@@ -83,7 +82,6 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
     });
   }
   
-  console.log(`Found ${results.length} IP ranges matching filters: ${JSON.stringify({ region, service })}`);
   return results;
 }
 
@@ -96,7 +94,6 @@ export async function getFileMetadata(): Promise<AzureFileMetadata[]> {
     const fileContent = await fs.readFile(metadataPath, 'utf8');
     return JSON.parse(fileContent) as AzureFileMetadata[];
   } catch (error) {
-    console.error('Error loading file metadata:', error);
     return [];
   }
 }
@@ -109,7 +106,6 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
   
   // Return from memory cache if valid
   if (azureVersionsCache && now < versionsCacheExpiry) {
-    console.log('Returning cached version data');
     return azureVersionsCache;
   }
 
@@ -124,7 +120,6 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
       const data = JSON.parse(fileContent) as AzureServiceTagsRoot;
       return { cloud, version: data.changeNumber };
     } catch (error) {
-      console.error(`Error loading version for cloud ${cloud}:`, error);
       return { cloud, version: null };
     }
   });
@@ -142,7 +137,6 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
   azureVersionsCache = versions;
   versionsCacheExpiry = now + CACHE_TTL;
 
-  console.log('Loaded Azure cloud versions:', versions);
   return versions;
 }
 
@@ -150,7 +144,6 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
   // Handle CIDR notation specially (e.g., "10.0.0.0/24")
   if (ipOrDomain.includes('/')) {
     try {
-      console.log(`Looking up IP CIDR range: ${ipOrDomain}`);
       const cidr = new IPCIDR(ipOrDomain);
       
       const azureIpAddressList = await getAzureIpAddressListFromCache();
@@ -164,8 +157,7 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
           const azureCidr = new IPCIDR(azureIpAddress.ipAddressPrefix);
           
           // Check for any overlap between the two CIDR blocks
-          if (cidr.contains(azureCidr.start()) || cidr.contains(azureCidr.end()) || 
-              azureCidr.contains(cidr.start()) || azureCidr.contains(cidr.end())) {
+          if (cidr.contains(azureCidr.start()) || azureCidr.contains(cidr.start())) {
             
             // Create copy with the search CIDR as reference
             const matchedAddress = { 
@@ -175,18 +167,16 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
             result.push(matchedAddress);
           }
         } catch (error) {
-          console.error(`Error checking CIDR overlap for ${azureIpAddress.ipAddressPrefix}:`, error);
+          // Skip invalid CIDR ranges
         }
       }
       
       if (result.length > 0) {
-        console.log(`Found ${result.length} matching Azure IP ranges for CIDR: ${ipOrDomain}`);
         return result;
       }
       
       return null;
     } catch (error) {
-      console.error(`Invalid CIDR notation: ${ipOrDomain}`, error);
       return null;
     }
   }
@@ -195,7 +185,6 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
   if (ipOrDomain.includes('.') && /^[a-zA-Z]/.test(ipOrDomain)) {
     const parts = ipOrDomain.split('.');
     if (parts.length === 2 && tagRegex.test(parts[0]) && tagRegex.test(parts[1])) {
-      console.log(`Looking up service tag with region: ${ipOrDomain}`);
       const [service, region] = parts;
       const serviceLower = service.toLowerCase();
       const regionLower = region.toLowerCase();
@@ -212,7 +201,6 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
       });
 
       if (result.length > 0) {
-        console.log(`Found ${result.length} IP ranges for service: ${service} in region: ${region}`);
         return result;
       }
     }
@@ -220,7 +208,6 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
 
   // Handle direct service tag lookups (like "Storage")
   if (tagRegex.test(ipOrDomain)) {
-    console.log(`Looking up service tag: ${ipOrDomain}`);
     const azureIpAddressList = await getAzureIpAddressListFromCache();
     if (!azureIpAddressList) return null;
     
@@ -256,7 +243,6 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
     });
     
     if (result.length > 0) {
-      console.log(`Found ${result.length} IP ranges for service: ${ipOrDomain}`);
       return result;
     }
   }
@@ -264,13 +250,11 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
   // Try to parse as an IP address or resolve domain
   const ipAddress = await parseIpAddress(ipOrDomain);
   if (!ipAddress) {
-    console.log(`Cannot parse ${ipOrDomain} to a valid IP address`);
     return null;
   }
 
   const azureIpAddressList = await getAzureIpAddressListFromCache();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
-    console.log('No Azure IP address data available');
     return null;
   }
   
@@ -281,17 +265,13 @@ export async function getAzureIpAddressList(ipOrDomain: string): Promise<AzureIp
       const cidr = new IPCIDR(azureIpAddress.ipAddressPrefix);
       if (cidr.contains(ipAddress)) {
         const matchingAddress = { ...azureIpAddress, ipAddress };
-        console.log(`Found match: ${JSON.stringify(matchingAddress)}`);
         result.push(matchingAddress);
       }
     } catch (error) {
-      console.error(`Error checking IP network ${azureIpAddress.ipAddressPrefix}:`, error);
+      // Skip invalid CIDR ranges
     }
   }
 
-  if (result.length === 0) {
-    console.log(`${ipAddress} is not a known Azure IP address`);
-  }
 
   return result.length > 0 ? result : null;
 }
@@ -308,7 +288,6 @@ async function parseIpAddress(ipOrDomain: string): Promise<string | null> {
       const cidr = new IPCIDR(ipOrDomain);
       return cidr.start();
     } catch (cidrError) {
-      console.error(`Invalid CIDR notation: ${ipOrDomain}`, cidrError);
       // Fall through to other methods below
     }
   }
@@ -333,12 +312,10 @@ async function parseIpAddress(ipOrDomain: string): Promise<string | null> {
         }
         return null;
       } catch (resolveError) {
-        console.error(`DNS resolution failed for ${ipOrDomain}`);
         return null;
       }
     }
   } catch (error) {
-    console.error(`Error parsing ipOrDomain ${ipOrDomain}:`, error);
     return null;
   }
 }
@@ -347,21 +324,17 @@ async function getAzureIpAddressListFromCache(): Promise<AzureIpAddress[]> {
   const now = Date.now();
 
   if (azureIpAddressCache && now < ipCacheExpiry) {
-    console.log(`Returning cached data (${azureIpAddressCache.length} entries)`);
     return azureIpAddressCache;
   }
 
   if (!loadPromise) {
     loadPromise = (async () => {
       try {
-        console.log('Loading Azure IP data from files...');
         const azureIpAddressList = await loadAzureIpAddressListFromFiles();
         azureIpAddressCache = azureIpAddressList;
         ipCacheExpiry = Date.now() + CACHE_TTL;
-        console.log(`Loaded and cached ${azureIpAddressList.length} IP ranges`);
         return azureIpAddressList;
       } catch (error) {
-        console.error('Error loading Azure IP address list:', error);
         return [];
       } finally {
         loadPromise = null;
@@ -383,7 +356,6 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
     try {
       const filePath = path.join(DATA_DIR, `${cloud}.json`);
       const fileContent = await fs.readFile(filePath, 'utf8');
-      console.log(`Loaded ${cloud} IP data from public/data directory`);
       const azureServiceTagsCollection = JSON.parse(fileContent) as AzureServiceTagsRoot;
       const cloudResults: AzureIpAddress[] = [];
       
@@ -408,7 +380,6 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
       
       return cloudResults;
     } catch (error) {
-      console.error(`Error loading data for cloud ${cloud}:`, error);
       return [];
     }
   });
@@ -421,7 +392,6 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
     azureIpAddressList.push(...cloudResults);
   }
   
-  console.log(`Loaded ${azureIpAddressList.length} IP address ranges from ${clouds.length} cloud files`);
   return azureIpAddressList;
 }
 
@@ -431,7 +401,6 @@ async function loadAzureIpAddressListFromFiles(): Promise<AzureIpAddress[]> {
 export async function getAllServiceTags(): Promise<string[]> {
   const azureIpAddressList = await getAzureIpAddressListFromCache();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
-    console.log('No Azure IP address data available');
     return [];
   }
   
@@ -445,7 +414,6 @@ export async function getAllServiceTags(): Promise<string[]> {
   // Convert to array and sort
   const serviceTags = Array.from(serviceTagsSet).sort();
   
-  console.log(`Found ${serviceTags.length} unique service tags`);
   return serviceTags;
 }
 
@@ -455,7 +423,6 @@ export async function getAllServiceTags(): Promise<string[]> {
 export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpAddress[]> {
   const azureIpAddressList = await getAzureIpAddressListFromCache();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
-    console.log('No Azure IP address data available');
     return [];
   }
   
@@ -464,6 +431,5 @@ export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpA
     ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase()
   );
   
-  console.log(`Found ${result.length} IP ranges for service tag: ${serviceTag}`);
   return result;
 }

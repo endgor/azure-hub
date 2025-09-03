@@ -8,7 +8,6 @@ const clientServiceTagsFetcher = async () => {
     const serviceTags = await getAllServiceTags();
     return { serviceTags };
   } catch (error) {
-    console.error('Service tags fetch error:', error);
     throw error;
   }
 };
@@ -33,7 +32,6 @@ export default function ServiceTags() {
         const result = await clientServiceTagsFetcher();
         setData(result);
       } catch (err) {
-        console.error('Service tags fetch error:', err);
         setError(err as Error);
       } finally {
         setIsLoading(false);

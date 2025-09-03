@@ -101,31 +101,31 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
           <thead className="bg-google-gray-50 relative">
             <tr>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[25%]"
+                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[20%]"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[23%]"
+                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[20%]"
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[13%]"
+                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[15%]"
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[17%]"
+                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[20%]"
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[22%] relative"
+                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[25%] relative"
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-1">
@@ -144,7 +144,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
           <tbody className="bg-white divide-y divide-google-gray-200">
             {sortedResults.map((result, index) => (
               <tr key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-google-gray-50 hover:bg-google-blue-50'} onMouseEnter={() => {}} onMouseLeave={() => {}}>
-                <td className="px-6 py-4 text-sm font-medium break-words">
+                <td className="px-4 py-4 text-sm font-medium break-words">
                   <button
                     onClick={() => handleServiceTagClick(result.serviceTagId)}
                     className="text-google-blue-600 hover:text-google-blue-700 hover:underline cursor-pointer font-medium transition-colors"
@@ -153,21 +153,21 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
                     {result.serviceTagId}
                   </button>
                 </td>
-                <td className="px-6 py-4 text-sm text-google-gray-900 break-words">
+                <td className="px-4 py-4 text-sm text-google-gray-900 break-words font-mono">
                   {result.ipAddressPrefix}
                   {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && (
-                    <span className="ml-2 text-xs px-2 py-1 rounded bg-google-blue-50 text-google-blue-700 inline-block mt-1">
+                    <span className="ml-2 text-xs px-2 py-1 rounded bg-google-blue-50 text-google-blue-700 inline-block mt-1 font-sans">
                       {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
                     </span>
                   )}
                 </td>
-                <td className="px-6 py-4 text-sm text-google-gray-700 break-words">
+                <td className="px-4 py-4 text-sm text-google-gray-700 break-words">
                   {result.region || '-'}
                 </td>
-                <td className="px-6 py-4 text-sm text-google-gray-700 break-words">
+                <td className="px-4 py-4 text-sm text-google-gray-700 break-words">
                   {result.systemService || '-'}
                 </td>
-                <td className="px-6 py-4 text-sm text-google-gray-700 break-words">
+                <td className="px-4 py-4 text-sm text-google-gray-700 break-all leading-relaxed">
                   {result.networkFeatures || '-'}
                 </td>
               </tr>

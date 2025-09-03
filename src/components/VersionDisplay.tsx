@@ -18,7 +18,6 @@ export default function VersionDisplay({ className = '' }: VersionDisplayProps) 
         setVersions(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
-        console.error('Error fetching versions:', err);
       } finally {
         setLoading(false);
       }

@@ -60,7 +60,6 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
     
     return ipRanges;
   } catch (error) {
-    console.error('Error loading Azure IP data:', error);
     return [];
   }
 }
@@ -99,7 +98,6 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   
   const azureIpAddressList = await loadAzureIpData();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
-    console.log('No Azure IP address data available');
     return [];
   }
   
@@ -212,7 +210,6 @@ export async function getVersions(): Promise<AzureCloudVersions> {
 
     return versions;
   } catch (error) {
-    console.error('Error loading versions:', error);
     return {
       AzureCloud: { version: 'unknown', lastModified: '' },
       AzureChinaCloud: { version: 'unknown', lastModified: '' },

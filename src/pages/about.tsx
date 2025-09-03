@@ -71,7 +71,6 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
       },
     };
   } catch (error) {
-    console.error('Error loading file metadata for about page:', error);
     return {
       props: {
         fileMetadata: [],
