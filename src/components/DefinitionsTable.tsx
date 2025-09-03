@@ -50,7 +50,7 @@ const DefinitionsTable = memo(function DefinitionsTable({ metadata }: Definition
             .sort((a, b) => a.cloud.localeCompare(b.cloud))
             .map((file, index) => (
               <tr key={file.cloud} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-6 py-4 text-sm font-medium text-blue-600 break-words">
+                <td className="px-6 py-4 text-sm font-medium text-gray-900 break-words">
                   {getCloudDisplayName(file.cloud)}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-900 break-words">
@@ -61,7 +61,7 @@ const DefinitionsTable = memo(function DefinitionsTable({ metadata }: Definition
                     href={file.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="text-gray-700 hover:text-gray-900 hover:underline"
                   >
                     {file.filename}
                   </a>

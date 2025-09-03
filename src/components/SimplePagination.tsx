@@ -81,7 +81,7 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
                 const value = e.target.value;
                 onPageSizeChange(value === 'all' ? 'all' : parseInt(value, 10));
               }}
-              className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="text-sm border border-gray-300 rounded-md px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
             >
               {pageSizeOptions.map(option => (
                 <option key={option} value={option}>
@@ -117,7 +117,7 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
               onClick={() => onPageChange(page)}
               className={`px-3 py-1 rounded-md text-sm ${
                 !isAll && currentPage === page
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-gray-800 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -130,7 +130,7 @@ const SimplePagination: React.FC<SimplePaginationProps> = ({
         <button
           onClick={() => onPageChange('all')}
           className={`px-3 py-1 rounded-md text-sm ${
-            isAll ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            isAll ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           }`}
         >
           All

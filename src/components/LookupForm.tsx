@@ -127,12 +127,12 @@ const LookupForm = memo(function LookupForm({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Enter IP address, CIDR, service name, or region"
-          className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
           aria-label="Search query"
         />
         <button 
           type="submit" 
-          className={`bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors ${
+          className={`border border-gray-300 bg-white text-gray-700 px-6 py-2 rounded-md font-medium hover:bg-gray-50 hover:text-gray-900 transition-colors ${
             isLoading ? 'opacity-70 cursor-not-allowed' : ''
           }`}
           disabled={isLoading}

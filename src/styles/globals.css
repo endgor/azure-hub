@@ -3,8 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 249, 250, 251;
+  --foreground-rgb: 31, 41, 55;
+  --background-rgb: 255, 255, 255;
+  --text-light-rgb: 107, 114, 128;
+  --border-rgb: 229, 231, 235;
+  --accent-rgb: 59, 130, 246;
 }
 
 body {
@@ -15,23 +18,23 @@ body {
 }
 
 .prose h1 {
-  @apply text-3xl font-bold mb-6 text-blue-800;
+  @apply text-3xl font-bold mb-6 text-gray-900;
 }
 
 .prose h2 {
-  @apply text-2xl font-semibold mt-8 mb-4 text-blue-700;
+  @apply text-2xl font-semibold mt-8 mb-4 text-gray-800;
 }
 
 .prose h3 {
-  @apply text-xl font-semibold mt-6 mb-3 text-blue-600;
+  @apply text-xl font-semibold mt-6 mb-3 text-gray-700;
 }
 
 .prose p {
-  @apply mb-4 text-gray-700;
+  @apply mb-4 text-gray-600;
 }
 
 .prose a {
-  @apply text-blue-600 hover:underline;
+  @apply text-gray-700 hover:text-blue-600 hover:underline;
 }
 
 .prose ul, .prose ol {

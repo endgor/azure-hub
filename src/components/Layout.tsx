@@ -160,13 +160,13 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
 
       
       <div className="min-h-screen flex flex-col">
-        <header className="bg-gradient-to-r from-blue-700 to-blue-600 text-white shadow-lg">
+        <header className="bg-white border-b border-gray-200">
           <div className="container mx-auto px-4">
             <nav className="flex flex-col sm:flex-row justify-between items-center py-4">
-              <Link href="/" className="flex items-center text-2xl font-bold mb-2 sm:mb-0" aria-label="Azure IP Lookup - Home">
+              <Link href="/" className="flex items-center text-2xl font-bold mb-2 sm:mb-0 text-gray-800" aria-label="Azure IP Lookup - Home">
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
-                  className="h-8 w-8 mr-2" 
+                  className="h-8 w-8 mr-2 text-gray-600" 
                   viewBox="0 0 24 24" 
                   fill="currentColor"
                   role="img"
@@ -181,10 +181,10 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
               <div className="flex items-center space-x-1">
                 <Link 
                   href="/" 
-                  className={`px-3 py-2 rounded-md font-medium text-sm ${
+                  className={`px-3 py-2 font-medium text-sm ${
                     isActive('/') 
-                      ? 'bg-blue-800 text-white' 
-                      : 'text-blue-100 hover:bg-blue-600'
+                      ? 'text-gray-900 border-b-2 border-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   Home
@@ -192,10 +192,10 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                 
                 <Link 
                   href="/service-tags" 
-                  className={`px-3 py-2 rounded-md font-medium text-sm ${
+                  className={`px-3 py-2 font-medium text-sm ${
                     isActive('/service-tags') || router.pathname.startsWith('/service-tags') 
-                      ? 'bg-blue-800 text-white' 
-                      : 'text-blue-100 hover:bg-blue-600'
+                      ? 'text-gray-900 border-b-2 border-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   Service Tags
@@ -203,10 +203,10 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                 
                 <Link 
                   href="/about" 
-                  className={`px-3 py-2 rounded-md font-medium text-sm ${
+                  className={`px-3 py-2 font-medium text-sm ${
                     isActive('/about') 
-                      ? 'bg-blue-800 text-white' 
-                      : 'text-blue-100 hover:bg-blue-600'
+                      ? 'text-gray-900 border-b-2 border-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   About
@@ -216,7 +216,7 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
                   href="https://github.com/endgor/azure-ip-lookup"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-2 rounded-md text-sm font-medium text-blue-100 hover:bg-blue-600 flex items-center"
+                  className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center"
                   aria-label="View Azure IP Lookup source code on GitHub"
                 >
                   <svg className="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
@@ -234,29 +234,29 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
           {children}
         </main>
         
-        <footer className="bg-gray-50 border-t">
-          <div className="container mx-auto px-4 py-6 text-center text-gray-600">
-            <p className="font-medium">Azure IP Lookup Tool</p>
+        <footer className="bg-white border-t border-gray-200">
+          <div className="container mx-auto px-4 py-6 text-center text-gray-500">
+            <p className="font-medium text-gray-700">Azure IP Lookup Tool</p>
             <p className="text-sm mt-1 mb-2">
               Data automatically updates daily from Microsoft&apos;s official sources
             </p>
             <div className="flex justify-center space-x-4 text-sm">
               <a 
                 href="https://www.microsoft.com/en-us/download/details.aspx?id=56519"
-                className="text-blue-600 hover:underline"
+                className="text-gray-600 hover:text-gray-900 hover:underline"
                 target="_blank" 
                 rel="noopener noreferrer"
               >
                 Official Data Source
               </a>
-              <span className="text-gray-400">|</span>
-              <Link href="/about" className="text-blue-600 hover:underline">
+              <span className="text-gray-300">|</span>
+              <Link href="/about" className="text-gray-600 hover:text-gray-900 hover:underline">
                 About
               </Link>
-              <span className="text-gray-400">|</span>
+              <span className="text-gray-300">|</span>
               <a 
                 href="https://github.com/endgor/azure-ip-lookup"
-                className="text-blue-600 hover:underline"
+                className="text-gray-600 hover:text-gray-900 hover:underline"
                 target="_blank" 
                 rel="noopener noreferrer"
               >
