@@ -19,7 +19,7 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
   
   // Customize title and description based on the current page
   if (title === 'Azure IP Lookup') {
-    fullTitle = "Azure IP Address Lookup Tool | Find Azure Service IP Ranges & Service Tags";
+    fullTitle = "Azure IP Lookup Tool";
     description = "Free Azure IP Lookup Tool. Instantly verify if an IP address belongs to Microsoft Azure. Search by IP address, CIDR, service name, or region. Updated daily with official Microsoft data.";
   } else if (title.includes('Azure Service Tags')) {
     fullTitle = `${title} | Browse All Azure Service Tag IP Ranges`;

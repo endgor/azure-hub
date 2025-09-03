@@ -204,7 +204,7 @@ export default function Home() {
   }, [initialQuery, initialService, initialRegion]);
   
   return (
-    <Layout title="Azure IP Range Finder & Service Tag Lookup Tool">
+    <Layout title="Azure IP Lookup">
       <section className="text-center max-w-3xl mx-auto mb-8">
         <h1 className="text-4xl font-bold mb-4 text-google-gray-800">Azure IP Address & Service Tag Lookup</h1>
       </section>
