@@ -334,7 +334,7 @@ export default function Home() {
               </div>
               <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
                 <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Service Name</h3>
-                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">Storage</code></p>
+                <p className="mb-2">Example:<br /> <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">Storage</code></p>
                 <p className="text-google-gray-600">Browse IP ranges for specific Azure services like Storage or SQL.</p>
               </div>
               <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
