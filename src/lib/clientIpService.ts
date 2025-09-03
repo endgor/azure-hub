@@ -1,35 +1,13 @@
 import IPCIDR from 'ip-cidr';
-import { AzureIpAddress, AzureCloudVersions, AzureFileMetadata } from '../types/azure';
+import { AzureIpAddress, AzureCloudVersions } from '../types/azure';
+import { getCachedNormalization } from './normalization';
 
 // Client-side cache
 let azureIpAddressCache: AzureIpAddress[] | null = null;
 let azureVersionsCache: AzureCloudVersions | null = null;
-let cacheExpiry = 0;
+let ipCacheExpiry = 0;
+let versionsCacheExpiry = 0;
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
-
-// Normalization cache for repeated operations
-const normalizationCache = new Map<string, string>();
-const MAX_CACHE_SIZE = 500;
-
-function getCachedNormalization(str: string): string {
-  let normalized = normalizationCache.get(str);
-  if (normalized === undefined) {
-    normalized = str.replace(/[-\s]/g, '').toLowerCase();
-    
-    if (normalizationCache.size >= MAX_CACHE_SIZE) {
-      const firstKey = normalizationCache.keys().next().value;
-      if (firstKey !== undefined) {
-        normalizationCache.delete(firstKey);
-      }
-    }
-    normalizationCache.set(str, normalized);
-  } else {
-    // Move to end for LRU behavior
-    normalizationCache.delete(str);
-    normalizationCache.set(str, normalized);
-  }
-  return normalized;
-}
 
 export interface SearchOptions {
   region?: string;
@@ -43,7 +21,7 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
   const now = Date.now();
   
   // Check if cache is valid
-  if (azureIpAddressCache && cacheExpiry > now) {
+  if (azureIpAddressCache && ipCacheExpiry > now) {
     return azureIpAddressCache;
   }
 
@@ -78,7 +56,7 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
 
     // Cache the results
     azureIpAddressCache = ipRanges;
-    cacheExpiry = now + CACHE_TTL;
+    ipCacheExpiry = now + CACHE_TTL;
     
     return ipRanges;
   } catch (error) {
@@ -186,7 +164,6 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
     });
   }
   
-  console.log(`Found ${results.length} IP ranges matching filters: ${JSON.stringify({ region, service })}`);
   return results;
 }
 
@@ -212,19 +189,6 @@ export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpA
 /**
  * Get file metadata information
  */
-export async function getFileMetadata(): Promise<AzureFileMetadata[]> {
-  try {
-    const response = await fetch('/data/file-metadata.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load file metadata: ${response.statusText}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error loading file metadata:', error);
-    return [];
-  }
-}
-
 /**
  * Get version information for all clouds
  */
@@ -232,7 +196,7 @@ export async function getVersions(): Promise<AzureCloudVersions> {
   const now = Date.now();
   
   // Check if cache is valid
-  if (azureVersionsCache && cacheExpiry > now) {
+  if (azureVersionsCache && versionsCacheExpiry > now) {
     return azureVersionsCache;
   }
 
@@ -241,10 +205,11 @@ export async function getVersions(): Promise<AzureCloudVersions> {
     if (!response.ok) {
       throw new Error(`Failed to load versions: ${response.statusText}`);
     }
-    
+
     const versions = await response.json();
     azureVersionsCache = versions;
-    
+    versionsCacheExpiry = now + CACHE_TTL;
+
     return versions;
   } catch (error) {
     console.error('Error loading versions:', error);

@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';

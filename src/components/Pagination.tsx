@@ -7,13 +7,14 @@ interface PaginationProps {
   totalItems: number;
   pageSize: number;
   isAll?: boolean;
-  query: {
+  query?: {
     ipOrDomain?: string;
     region?: string;
     service?: string;
   };
   onPageSizeChange?: (size: number | 'all') => void;
   position?: 'top' | 'bottom';
+  onPageChange?: (page: number | 'all') => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -24,7 +25,8 @@ const Pagination: React.FC<PaginationProps> = ({
   query,
   isAll = false,
   onPageSizeChange,
-  position = 'bottom'
+  position = 'bottom',
+  onPageChange
 }) => {
   // Determine which page links to show
   const getPageNumbers = () => {
@@ -62,9 +64,9 @@ const Pagination: React.FC<PaginationProps> = ({
   // Helper to build URL with query params
   const getPageUrl = (page: number) => {
     const params = new URLSearchParams();
-    if (query.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
-    if (query.region) params.append('region', query.region);
-    if (query.service) params.append('service', query.service);
+    if (query?.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
+    if (query?.region) params.append('region', query.region);
+    if (query?.service) params.append('service', query.service);
     if (page > 1) params.append('page', page.toString());
 
     return `/?${params.toString()}`;
@@ -72,9 +74,9 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const getAllUrl = () => {
     const params = new URLSearchParams();
-    if (query.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
-    if (query.region) params.append('region', query.region);
-    if (query.service) params.append('service', query.service);
+    if (query?.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
+    if (query?.region) params.append('region', query.region);
+    if (query?.service) params.append('service', query.service);
     params.append('pageSize', 'all');
 
     return `/?${params.toString()}`;
@@ -123,9 +125,18 @@ const Pagination: React.FC<PaginationProps> = ({
       <div className="flex flex-wrap justify-center sm:justify-end gap-2" role="navigation" aria-label="Pagination">
         {/* Previous button */}
         {!isAll && currentPage > 1 && (
-          <Link href={getPageUrl(currentPage - 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
-            Previous
-          </Link>
+          onPageChange ? (
+            <button
+              onClick={() => onPageChange(currentPage - 1)}
+              className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              Previous
+            </button>
+          ) : (
+            <Link href={getPageUrl(currentPage - 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
+              Previous
+            </Link>
+          )
         )}
         
         {/* Page numbers */}
@@ -136,35 +147,69 @@ const Pagination: React.FC<PaginationProps> = ({
           }
           
           return (
-            <Link
-              key={page}
-              href={getPageUrl(page)}
-              className={`px-3 py-1 rounded-md text-sm ${
-                !isAll && currentPage === page
-                  ? 'bg-gray-800 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {page}
-            </Link>
+            onPageChange ? (
+              <button
+                key={page}
+                onClick={() => onPageChange(page)}
+                className={`px-3 py-1 rounded-md text-sm ${
+                  !isAll && currentPage === page
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {page}
+              </button>
+            ) : (
+              <Link
+                key={page}
+                href={getPageUrl(page)}
+                className={`px-3 py-1 rounded-md text-sm ${
+                  !isAll && currentPage === page
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {page}
+              </Link>
+            )
           );
         })}
 
         {/* All option */}
-        <Link
-          href={getAllUrl()}
-          className={`px-3 py-1 rounded-md text-sm ${
-            isAll ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          All
-        </Link>
-        
+        {onPageChange ? (
+          <button
+            onClick={() => onPageChange('all')}
+            className={`px-3 py-1 rounded-md text-sm ${
+              isAll ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            All
+          </button>
+        ) : (
+          <Link
+            href={getAllUrl()}
+            className={`px-3 py-1 rounded-md text-sm ${
+              isAll ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            All
+          </Link>
+        )}
+
         {/* Next button */}
         {!isAll && currentPage < totalPages && (
-          <Link href={getPageUrl(currentPage + 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
-            Next
-          </Link>
+          onPageChange ? (
+            <button
+              onClick={() => onPageChange(currentPage + 1)}
+              className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              Next
+            </button>
+          ) : (
+            <Link href={getPageUrl(currentPage + 1)} className="px-3 py-1 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200">
+              Next
+            </Link>
+          )
         )}
       </div>
     </nav>
