@@ -207,7 +207,7 @@ export default function Home() {
   return (
     <Layout title="Azure IP Range Finder & Service Tag Lookup Tool">
       <section className="text-center max-w-3xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-blue-800">Azure IP Address & Service Tag Lookup</h1>
+        <h1 className="text-4xl font-bold mb-4 text-google-gray-800">Azure IP Address & Service Tag Lookup</h1>
       </section>
       
       <LookupForm 
@@ -321,60 +321,31 @@ export default function Home() {
       {!initialQuery && !initialRegion && !initialService && (
         <>
           <section className="max-w-4xl mx-auto mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Examples</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-google-gray-800 text-center">Examples</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">IP Address</h3>
-                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">40.112.127.224</code></p>
-                <p className="text-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
+              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
+                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">IP Address</h3>
+                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">40.112.127.224</code></p>
+                <p className="text-google-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">CIDR Range</h3>
-                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">74.7.51.32/29</code></p>
-                <p className="text-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
+              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
+                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">CIDR Range</h3>
+                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">74.7.51.32/29</code></p>
+                <p className="text-google-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Service Name</h3>
-                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">Storage</code></p>
-                <p className="text-gray-600">Browse IP ranges for specific Azure services like Storage, SQL, or Compute.</p>
+              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
+                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Service Name</h3>
+                <p className="mb-2">Example:<br /><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">Storage</code></p>
+                <p className="text-google-gray-600">Browse IP ranges for specific Azure services like Storage or SQL.</p>
               </div>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Region</h3>
-                <p className="mb-2">Example: <code className="bg-blue-100 px-2 py-1 rounded text-sm">WestEurope</code></p>
-                <p className="text-gray-600">View IP ranges for specific regions or service+region combinations.</p>
+              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
+                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Region</h3>
+                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">WestEurope</code></p>
+                <p className="text-google-gray-600">View IP ranges for specific regions or service+region combinations.</p>
               </div>
             </div>
           </section>
 
-          <section className="max-w-3xl mx-auto mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-800">Explore More</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-semibold mb-3 text-blue-800">Browse All Service Tags</h3>
-                <p className="text-gray-600 mb-4">
-                  Explore the complete directory of Azure Service Tags and their associated IP ranges.
-                </p>
-                <Link 
-                  href="/service-tags"
-                  className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
-                >
-                  View Service Tags Directory →
-                </Link>
-              </div>
-              <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <h3 className="text-lg font-semibold mb-3 text-blue-800">Learn More About This Tool</h3>
-                <p className="text-gray-600 mb-4">
-                  Discover how the Azure IP Lookup Tool works, its data sources, and technical details.
-                </p>
-                <Link 
-                  href="/about"
-                  className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
-                >
-                  Read About Page →
-                </Link>
-              </div>
-            </div>
-          </section>
         </>
       )}
     </Layout>

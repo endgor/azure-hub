@@ -194,28 +194,6 @@ export default function ServiceTagDetail() {
         {/* Results */}
         {data && data.ipRanges && data.ipRanges.length > 0 && (
           <>
-            {/* Summary */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h2 className="font-medium text-blue-900 mb-2">Summary</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div>
-                  <span className="text-blue-700 font-medium">Total IP Ranges:</span>
-                  <span className="ml-2 text-blue-900">{data.ipRanges.length}</span>
-                </div>
-                <div>
-                  <span className="text-blue-700 font-medium">Unique Regions:</span>
-                  <span className="ml-2 text-blue-900">
-                    {new Set(data.ipRanges.map(ip => ip.region).filter(Boolean)).size}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-blue-700 font-medium">System Services:</span>
-                  <span className="ml-2 text-blue-900">
-                    {new Set(data.ipRanges.map(ip => ip.systemService).filter(Boolean)).size}
-                  </span>
-                </div>
-              </div>
-            </div>
 
             {/* Top Pagination */}
             {totalPages > 1 && (
@@ -274,7 +252,7 @@ export default function ServiceTagDetail() {
         <div className="mt-8 text-center">
           <Link 
             href="/service-tags"
-            className="inline-flex items-center px-4 py-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+            className="inline-flex items-center justify-center rounded-lg border border-google-gray-300 px-4 py-2 bg-white text-sm font-medium text-google-gray-700 hover:bg-google-gray-50 hover:shadow-google focus:outline-none focus:ring-2 focus:ring-google-blue-500 transition-all duration-200"
           >
             ← Back to Service Tags List
           </Link>

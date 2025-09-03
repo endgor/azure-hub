@@ -79,14 +79,14 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
   };
   
   return (
-    <section className="bg-white border border-gray-200 overflow-hidden mb-6" aria-label="Search Results">
-      <header className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+    <section className="bg-white border border-google-gray-200 rounded-lg shadow-google overflow-hidden mb-6" aria-label="Search Results">
+      <header className="bg-google-gray-50 px-4 py-3 border-b border-google-gray-200">
         <div className="flex justify-between items-center">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-lg font-semibold text-google-gray-900">
               Results for {query}
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-google-gray-600">
               Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
             </p>
           </div>
@@ -97,41 +97,41 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
       </header>
       
       <div className="overflow-x-auto w-full">
-        <table className="min-w-full divide-y divide-gray-200 table-fixed relative" aria-label="Azure IP Ranges">
-          <thead className="bg-gray-50 relative">
+        <table className="min-w-full divide-y divide-google-gray-200 table-fixed relative" aria-label="Azure IP Ranges">
+          <thead className="bg-google-gray-50 relative">
             <tr>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[25%]"
+                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[25%]"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[23%]"
+                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[23%]"
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[13%]"
+                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[13%]"
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[17%]"
+                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[17%]"
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 w-[22%] relative"
+                className="px-6 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[22%] relative"
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-1">
                   <span>Network features {renderSortIndicator('networkFeatures')}</span>
                   <Tooltip content={networkFeaturesInfo}>
-                    <span className="text-gray-400 hover:text-gray-600 cursor-help">
+                    <span className="text-google-gray-500 hover:text-google-blue-600 cursor-help transition-colors">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -141,33 +141,33 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-google-gray-200">
             {sortedResults.map((result, index) => (
-              <tr key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+              <tr key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-google-gray-50 hover:bg-google-blue-50'} onMouseEnter={() => {}} onMouseLeave={() => {}}>
                 <td className="px-6 py-4 text-sm font-medium break-words">
                   <button
                     onClick={() => handleServiceTagClick(result.serviceTagId)}
-                    className="text-gray-700 hover:text-gray-900 hover:underline cursor-pointer transition-colors"
+                    className="text-google-blue-600 hover:text-google-blue-700 hover:underline cursor-pointer font-medium transition-colors"
                     title={`View details for ${result.serviceTagId}`}
                   >
                     {result.serviceTagId}
                   </button>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                <td className="px-6 py-4 text-sm text-google-gray-900 break-words">
                   {result.ipAddressPrefix}
                   {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && (
-                    <span className="ml-2 text-xs px-2 py-1 rounded bg-gray-100 text-gray-700 inline-block mt-1">
+                    <span className="ml-2 text-xs px-2 py-1 rounded bg-google-blue-50 text-google-blue-700 inline-block mt-1">
                       {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
                     </span>
                   )}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                <td className="px-6 py-4 text-sm text-google-gray-700 break-words">
                   {result.region || '-'}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                <td className="px-6 py-4 text-sm text-google-gray-700 break-words">
                   {result.systemService || '-'}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                <td className="px-6 py-4 text-sm text-google-gray-700 break-words">
                   {result.networkFeatures || '-'}
                 </td>
               </tr>

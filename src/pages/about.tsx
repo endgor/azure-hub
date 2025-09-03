@@ -15,7 +15,7 @@ export default function About({ fileMetadata }: AboutProps) {
     <Layout title="About Azure IP Lookup - Azure Service IP Range Finder">
       <div className="max-w-3xl mx-auto">
         <article className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-blue-800">About Azure IP Lookup</h1>
+          <h1 className="text-4xl font-bold mb-4 text-google-gray-800">About Azure IP Lookup</h1>
         </article>
         
         <div className="prose prose-blue max-w-none">

@@ -127,13 +127,13 @@ const LookupForm = memo(function LookupForm({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Enter IP address, CIDR, service name, or region"
-          className="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400"
+          className="flex-grow border border-google-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-google-blue-500 focus:border-google-blue-500 transition-colors"
           aria-label="Search query"
         />
         <button 
           type="submit" 
-          className={`border border-gray-300 bg-white text-gray-700 px-6 py-2 rounded-md font-medium hover:bg-gray-50 hover:text-gray-900 transition-colors ${
-            isLoading ? 'opacity-70 cursor-not-allowed' : ''
+          className={`bg-google-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-google-blue-600 hover:shadow-google transition-all duration-200 ${
+            isLoading ? 'opacity-70 cursor-not-allowed' : 'active:bg-google-blue-700'
           }`}
           disabled={isLoading}
           aria-label="Search"
