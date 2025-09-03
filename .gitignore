@@ -72,3 +72,6 @@ $RECYCLE.BIN/
 
 # Azure Static Web Apps
 .azure/
+
+# Playwright MCP
+.playwright*/
