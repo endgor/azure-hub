@@ -324,22 +324,26 @@ export default function Home() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
                 <h3 className="text-lg font-semibold text-google-blue-600 mb-2">IP Address</h3>
-                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">40.112.127.224</code></p>
+                <p className="mb-2">Example:</p>
+                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">40.112.127.224</code></p>
                 <p className="text-google-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
               </div>
               <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
                 <h3 className="text-lg font-semibold text-google-blue-600 mb-2">CIDR Range</h3>
-                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">74.7.51.32/29</code></p>
+                <p className="mb-2">Example:</p>
+                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">74.7.51.32/29</code></p>
                 <p className="text-google-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
               </div>
               <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
                 <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Service Name</h3>
-                <p className="mb-2">Example:<br /> <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">Storage</code></p>
+                <p className="mb-2">Example:</p>
+                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">Storage</code></p>
                 <p className="text-google-gray-600">Browse IP ranges for specific Azure services like Storage or SQL.</p>
               </div>
               <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
                 <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Region</h3>
-                <p className="mb-2">Example: <code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">WestEurope</code></p>
+                <p className="mb-2">Example:</p>
+                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">WestEurope</code></p>
                 <p className="text-google-gray-600">View IP ranges for specific regions or service+region combinations.</p>
               </div>
             </div>
