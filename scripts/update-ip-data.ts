@@ -1,20 +1,14 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
-// Assuming AzureCloudName is defined in this path, e.g.:
-// export enum AzureCloudName {
-//   AzureCloud = 'AzureCloud',
-//   AzureChinaCloud = 'AzureChinaCloud',
-//   AzureUSGovernment = 'AzureUSGovernment',
-// }
-import { AzureCloudName, AzureFileMetadata, AzureServiceTagsRoot } from '../src/types/azure'; // Adjust path as necessary
+import { AzureCloudName, AzureFileMetadata, AzureServiceTagsRoot } from '../src/types/azure';
 
 interface DownloadMapping {
   id: string;
   cloud: AzureCloudName;
 }
 
-// Updated download mappings, removing AzureGermanCloud
+// Download mappings for available clouds
 const downloadMappings: DownloadMapping[] = [
   { id: '56519', cloud: AzureCloudName.AzureCloud }, // Public
   { id: '57062', cloud: AzureCloudName.AzureChinaCloud }, // China

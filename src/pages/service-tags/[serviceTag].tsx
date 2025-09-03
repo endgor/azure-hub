@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import Results from '@/components/Results';
-import SimplePagination from '@/components/SimplePagination';
+import Pagination from '@/components/Pagination';
 import { AzureIpAddress } from '@/types/azure';
 import { getServiceTagDetails } from '@/lib/clientIpService';
 
@@ -197,9 +197,14 @@ export default function ServiceTagDetail() {
 
             {/* Top Pagination */}
             {totalPages > 1 && (
-              <SimplePagination
+              <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
+                totalItems={data.ipRanges.length}
+                pageSize={pageSize}
+                isAll={isAll}
+                position="top"
+                onPageSizeChange={handlePageSizeChange}
                 onPageChange={(page) => {
                   if (page === 'all') {
                     setIsAll(true);
@@ -209,11 +214,6 @@ export default function ServiceTagDetail() {
                     setCurrentPage(page);
                   }
                 }}
-                totalItems={data.ipRanges.length}
-                pageSize={pageSize}
-                isAll={isAll}
-                position="top"
-                onPageSizeChange={handlePageSizeChange}
               />
             )}
 
@@ -226,9 +226,14 @@ export default function ServiceTagDetail() {
 
             {/* Bottom Pagination */}
             {totalPages > 1 && (
-              <SimplePagination
+              <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
+                totalItems={data.ipRanges.length}
+                pageSize={pageSize}
+                isAll={isAll}
+                position="bottom"
+                onPageSizeChange={handlePageSizeChange}
                 onPageChange={(page) => {
                   if (page === 'all') {
                     setIsAll(true);
@@ -238,11 +243,6 @@ export default function ServiceTagDetail() {
                     setCurrentPage(page);
                   }
                 }}
-                totalItems={data.ipRanges.length}
-                pageSize={pageSize}
-                isAll={isAll}
-                position="bottom"
-                onPageSizeChange={handlePageSizeChange}
               />
             )}
           </>

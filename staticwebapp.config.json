@@ -1,10 +1,6 @@
 {
   "routes": [
     {
-      "route": "/api/*",
-      "allowedRoles": ["anonymous"]
-    },
-    {
       "route": "/data/*",
       "headers": {
         "Cache-Control": "public, max-age=86400, stale-while-revalidate=43200"
@@ -13,7 +9,7 @@
   ],
   "navigationFallback": {
     "rewrite": "/404.html",
-    "exclude": ["/data/*", "/api/*", "*.{css,scss,js,ts,png,gif,ico,jpg,svg,woff,woff2}"]
+    "exclude": ["/data/*", "*.{css,scss,js,ts,png,gif,ico,jpg,svg,woff,woff2}"]
   },
   "mimeTypes": {
     ".json": "application/json"

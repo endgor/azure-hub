@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress, AzureCloudName, AzureServiceTagsRoot, AzureCloudVersions, AzureFileMetadata } from '../types/azure';
+import { getCachedNormalization } from './normalization';
 
 // Directory paths - using single source of truth in public directory
 const PROJECT_ROOT = process.cwd();
@@ -11,7 +12,8 @@ const DATA_DIR = path.join(PROJECT_ROOT, 'public', 'data');
 // In-memory cache with global module-level persistence
 let azureIpAddressCache: AzureIpAddress[] | null = null;
 let azureVersionsCache: AzureCloudVersions | null = null;
-let cacheExpiry = 0;
+let ipCacheExpiry = 0;
+let versionsCacheExpiry = 0;
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds (longer for better cold start performance)
 
 // Pre-compiled regex patterns for better performance
@@ -19,31 +21,6 @@ const serviceTagRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
 const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
 const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^(([0-9a-fA-F]{1,4}:){0,6})?::([0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}$/;
 const serviceRegionRegex = /^[a-zA-Z][a-zA-Z0-9]*$/;
-
-// Normalization cache for repeated operations with LRU-like behavior
-const normalizationCache = new Map<string, string>();
-const MAX_CACHE_SIZE = 500; // Reduced cache size for better memory usage
-
-function getCachedNormalization(str: string): string {
-  let normalized = normalizationCache.get(str);
-  if (normalized === undefined) {
-    normalized = str.replace(/[-\s]/g, '').toLowerCase();
-    
-    // Implement simple LRU: remove oldest entries when cache is full
-    if (normalizationCache.size >= MAX_CACHE_SIZE) {
-      const firstKey = normalizationCache.keys().next().value;
-      if (firstKey !== undefined) {
-        normalizationCache.delete(firstKey);
-      }
-    }
-    normalizationCache.set(str, normalized);
-  } else {
-    // Move to end for LRU behavior
-    normalizationCache.delete(str);
-    normalizationCache.set(str, normalized);
-  }
-  return normalized;
-}
 
 // Global flag to track if we're currently loading data (prevents duplicate loads)
 let isLoading = false;
@@ -173,7 +150,7 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
   const now = Date.now();
   
   // Return from memory cache if valid
-  if (azureVersionsCache && now < cacheExpiry) {
+  if (azureVersionsCache && now < versionsCacheExpiry) {
     console.log('Returning cached version data');
     return azureVersionsCache;
   }
@@ -219,7 +196,8 @@ export async function getAzureCloudVersions(): Promise<AzureCloudVersions> {
   
   // Cache the versions
   azureVersionsCache = versions;
-  
+  versionsCacheExpiry = now + CACHE_TTL;
+
   console.log('Loaded Azure cloud versions:', versions);
   return versions;
 }
@@ -423,7 +401,7 @@ async function getAzureIpAddressListFromCache(): Promise<AzureIpAddress[]> {
   const now = Date.now();
   
   // Return from memory cache if valid
-  if (azureIpAddressCache && now < cacheExpiry) {
+  if (azureIpAddressCache && now < ipCacheExpiry) {
     console.log(`Returning cached data (${azureIpAddressCache.length} entries)`);
     return azureIpAddressCache;
   }
@@ -444,7 +422,7 @@ async function getAzureIpAddressListFromCache(): Promise<AzureIpAddress[]> {
     
     // Update memory cache
     azureIpAddressCache = azureIpAddressList;
-    cacheExpiry = now + CACHE_TTL;
+    ipCacheExpiry = now + CACHE_TTL;
     
     console.log(`Loaded and cached ${azureIpAddressList.length} IP ranges`);
     return azureIpAddressList;

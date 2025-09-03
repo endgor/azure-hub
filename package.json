@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/azure-build.js && next build",
-    "build:azure": "node scripts/azure-build.js && next build",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
