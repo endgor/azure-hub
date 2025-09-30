@@ -210,10 +210,6 @@ export async function getVersions(): Promise<AzureCloudVersions> {
 
     return versions;
   } catch (error) {
-    return {
-      AzureCloud: { version: 'unknown', lastModified: '' },
-      AzureChinaCloud: { version: 'unknown', lastModified: '' },
-      AzureUSGovernment: { version: 'unknown', lastModified: '' }
-    };
+    throw new Error(`Failed to load version data: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
