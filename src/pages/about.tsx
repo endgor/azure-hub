@@ -69,12 +69,16 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
       props: {
         fileMetadata,
       },
+      // Revalidate every 24 hours since file metadata doesn't change frequently
+      revalidate: 24 * 60 * 60,
     };
   } catch (error) {
     return {
       props: {
         fileMetadata: [],
       },
+      // Retry sooner on error
+      revalidate: 60,
     };
   }
 };
