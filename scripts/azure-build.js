@@ -21,35 +21,14 @@ try {
   
   console.log(`Found ${jsonFiles.length} JSON files in data directory`);
   
-  // Check if we have any data files
-  if (jsonFiles.length === 0) {
-    console.log('No JSON files found in data directory. Creating empty placeholders.');
-    
-    // Create empty placeholder files for the 3 Azure clouds
-    const clouds = ['AzureCloud', 'AzureChinaCloud', 'AzureUSGovernment'];
-    
-    clouds.forEach(cloud => {
-      const placeholderPath = path.join(DATA_DIR, `${cloud}.json`);
-      const placeholderContent = JSON.stringify({
-        name: cloud,
-        id: '',
-        changeNumber: 0,
-        cloud: cloud,
-        values: []
-      });
-      
-      try {
-        fs.writeFileSync(placeholderPath, placeholderContent);
-        console.log(`Created empty placeholder for ${cloud}`);
-      } catch (writeErr) {
-        console.error(`Error creating placeholder for ${cloud}:`, writeErr);
-      }
-    });
-    
-    // Refresh the list of files
-    const updatedFiles = fs.readdirSync(DATA_DIR);
-    const updatedJsonFiles = updatedFiles.filter(file => file.endsWith('.json'));
-    console.log(`Now have ${updatedJsonFiles.length} JSON files in data directory`);
+  // Check if we have required data files
+  const requiredFiles = ['AzureCloud.json', 'AzureChinaCloud.json', 'AzureUSGovernment.json', 'file-metadata.json'];
+  const missingFiles = requiredFiles.filter(file => !jsonFiles.includes(file));
+
+  if (missingFiles.length > 0) {
+    console.error(`ERROR: Missing required data files: ${missingFiles.join(', ')}`);
+    console.error('Please run "npm run update-ip-data" to download the latest Azure IP ranges.');
+    process.exit(1);
   }
   
   // No file copying needed since data files are already in public/data directory
