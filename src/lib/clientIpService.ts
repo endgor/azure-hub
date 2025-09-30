@@ -57,10 +57,10 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
     // Cache the results
     azureIpAddressCache = ipRanges;
     ipCacheExpiry = now + CACHE_TTL;
-    
+
     return ipRanges;
   } catch (error) {
-    return [];
+    throw new Error(`Failed to load Azure IP data: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
