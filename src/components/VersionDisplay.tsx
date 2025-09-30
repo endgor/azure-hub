@@ -36,13 +36,13 @@ export default function VersionDisplay({ className = '' }: VersionDisplayProps) 
     <div className={`text-gray-500 ${className}`}>
       <div className="flex flex-wrap gap-2">
         {versions.AzureCloud && (
-          <span>Public: v{typeof versions.AzureCloud === 'string' ? versions.AzureCloud : versions.AzureCloud.version}</span>
+          <span>Public: v{versions.AzureCloud}</span>
         )}
         {versions.AzureChinaCloud && (
-          <span>China: v{typeof versions.AzureChinaCloud === 'string' ? versions.AzureChinaCloud : versions.AzureChinaCloud.version}</span>
+          <span>China: v{versions.AzureChinaCloud}</span>
         )}
         {versions.AzureUSGovernment && (
-          <span>US Gov: v{typeof versions.AzureUSGovernment === 'string' ? versions.AzureUSGovernment : versions.AzureUSGovernment.version}</span>
+          <span>US Gov: v{versions.AzureUSGovernment}</span>
         )}
       </div>
     </div>

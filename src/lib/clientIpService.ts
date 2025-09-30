@@ -185,26 +185,31 @@ export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpA
 }
 
 /**
- * Get file metadata information
- */
-/**
- * Get version information for all clouds
+ * Get version information for all clouds from file metadata
  */
 export async function getVersions(): Promise<AzureCloudVersions> {
   const now = Date.now();
-  
+
   // Check if cache is valid
   if (azureVersionsCache && versionsCacheExpiry > now) {
     return azureVersionsCache;
   }
 
   try {
-    const response = await fetch('/data/versions.json');
+    const response = await fetch('/data/file-metadata.json');
     if (!response.ok) {
-      throw new Error(`Failed to load versions: ${response.statusText}`);
+      throw new Error(`Failed to load file metadata: ${response.statusText}`);
     }
 
-    const versions = await response.json();
+    const metadata = await response.json();
+
+    // Transform file metadata into versions format
+    const versions: AzureCloudVersions = {};
+    metadata.forEach((file: any) => {
+      const cloudKey = file.cloud as keyof AzureCloudVersions;
+      versions[cloudKey] = file.changeNumber.toString();
+    });
+
     azureVersionsCache = versions;
     versionsCacheExpiry = now + CACHE_TTL;
 

@@ -42,9 +42,9 @@ export interface DownloadMapping {
 }
 
 export interface AzureCloudVersions {
-  AzureCloud?: string | { version: string; lastModified: string };
-  AzureChinaCloud?: string | { version: string; lastModified: string };
-  AzureUSGovernment?: string | { version: string; lastModified: string };
+  AzureCloud?: string;
+  AzureChinaCloud?: string;
+  AzureUSGovernment?: string;
 }
 
 export interface AzureFileMetadata {
