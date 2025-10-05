@@ -123,28 +123,53 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
             "creator": {
               "@type": "Organization",
               "name": "Azure IP Lookup",
-              "url": "https://azurehub.org"
+              "url": "https://azurehub.org",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://azurehub.org/favicons/android-chrome-512x512.png",
+                "width": 512,
+                "height": 512
+              },
+              "sameAs": [
+                "https://github.com/endgor/azure-ip-lookup"
+              ],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Customer Support",
+                "url": "https://github.com/endgor/azure-ip-lookup/issues"
+              }
             },
             "publisher": {
-              "@type": "Organization", 
+              "@type": "Organization",
               "name": "Azure IP Lookup",
-              "url": "https://azurehub.org"
+              "url": "https://azurehub.org",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://azurehub.org/favicons/android-chrome-512x512.png",
+                "width": 512,
+                "height": 512
+              }
             },
             "keywords": [
               "Azure IP Lookup",
-              "Azure Service Tags", 
+              "Azure Service Tags",
               "IP Address Verification",
               "Microsoft Azure",
               "Network Security",
               "Cloud Infrastructure",
-              "IP Range Finder"
+              "IP Range Finder",
+              "Azure IP Ranges",
+              "Azure Networking",
+              "IP Address Checker"
             ],
             "featureList": [
               "IP Address Lookup",
-              "CIDR Range Search", 
+              "CIDR Range Search",
               "Service Tag Browsing",
               "Regional IP Filtering",
-              "Azure Service Detection"
+              "Azure Service Detection",
+              "Daily Automated Updates",
+              "Multi-Cloud Support"
             ],
             "aggregateRating": {
               "@type": "AggregateRating",
@@ -152,6 +177,27 @@ export default function Layout({ title = 'Azure IP Lookup', children }: LayoutPr
               "reviewCount": "150",
               "bestRating": "5",
               "worstRating": "1"
+            }
+          })}
+        </script>
+
+        {/* Organization Schema for Brand Recognition */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Azure IP Lookup",
+            "url": "https://azurehub.org",
+            "logo": "https://azurehub.org/favicons/android-chrome-512x512.png",
+            "description": "Free Azure IP Lookup Tool. Instantly verify if an IP address belongs to Microsoft Azure. Search by IP address, CIDR, service name, or region.",
+            "foundingDate": "2024-01-01",
+            "sameAs": [
+              "https://github.com/endgor/azure-ip-lookup"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "Customer Support",
+              "url": "https://github.com/endgor/azure-ip-lookup/issues"
             }
           })}
         </script>

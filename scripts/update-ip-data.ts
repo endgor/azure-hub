@@ -93,7 +93,6 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
       let html = '';
 
       console.log(`[ID: ${downloadId}] Status Code: ${res.statusCode}`);
-      // console.log(`[ID: ${downloadId}] Response Headers: ${JSON.stringify(res.headers, null, 2)}`); // Uncomment for detailed header logging
 
       // Handle potential redirects (though https.get usually handles them)
       if (res.statusCode && (res.statusCode === 301 || res.statusCode === 302)) {

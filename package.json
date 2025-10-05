@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/azure-build.js && next build",
+    "build": "node scripts/azure-build.js && next build && node scripts/generate-sitemap.js",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
