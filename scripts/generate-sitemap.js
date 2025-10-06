@@ -6,6 +6,31 @@ const BASE_URL = 'https://azurehub.org';
 const OUTPUT_DIR = path.join(process.cwd(), 'out');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
+/**
+ * Escapes XML special characters to prevent XML injection
+ * @param {string} unsafe - String that may contain XML special characters
+ * @returns {string} XML-safe string
+ */
+function escapeXml(unsafe) {
+  if (typeof unsafe !== 'string') return '';
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+/**
+ * Validates service tag name format
+ * Only allows alphanumeric characters, dots, underscores, and hyphens
+ * @param {string} tag - Service tag name to validate
+ * @returns {boolean} True if valid, false otherwise
+ */
+function isValidServiceTag(tag) {
+  return typeof tag === 'string' && /^[a-zA-Z0-9._-]+$/.test(tag);
+}
+
 function generateSitemap() {
   console.log('Generating sitemap.xml...');
 
@@ -61,9 +86,19 @@ function generateSitemap() {
   </url>
   <!-- Dynamic Service Tag Pages -->
 ${serviceTagsArray
+  .filter(tag => {
+    if (!isValidServiceTag(tag)) {
+      console.warn(`⚠ Skipping invalid service tag (contains special characters): ${tag}`);
+      return false;
+    }
+    return true;
+  })
   .map((tag) => {
+    // Apply both URL encoding and XML escaping for defense in depth
+    const urlEncodedTag = encodeURIComponent(tag);
+    const xmlSafeUrl = escapeXml(`${BASE_URL}/service-tags/${urlEncodedTag}/`);
     return `  <url>
-    <loc>${BASE_URL}/service-tags/${encodeURIComponent(tag)}/</loc>
+    <loc>${xmlSafeUrl}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

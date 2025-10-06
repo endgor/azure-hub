@@ -42,6 +42,54 @@ function extractFilenameFromUrl(url: string): string {
 }
 
 /**
+ * Validates service tag name format
+ * Only allows alphanumeric characters, dots, underscores, and hyphens
+ * @param tag - Service tag name to validate
+ * @returns True if valid, false otherwise
+ */
+function isValidServiceTagName(tag: string): boolean {
+  return typeof tag === 'string' && /^[a-zA-Z0-9._-]+$/.test(tag);
+}
+
+/**
+ * Validates Azure service tags data for security
+ * @param data - Azure service tags data to validate
+ * @returns Validated data with invalid tags filtered out
+ */
+function validateAndSanitizeData(data: AzureServiceTagsRoot): AzureServiceTagsRoot {
+  if (!data.values || !Array.isArray(data.values)) {
+    console.warn('⚠ Invalid data structure: missing or invalid values array');
+    return data;
+  }
+
+  const originalCount = data.values.length;
+  const validatedValues = data.values.filter(item => {
+    if (!item.name) {
+      console.warn('⚠ Skipping item without name property');
+      return false;
+    }
+
+    if (!isValidServiceTagName(item.name)) {
+      console.warn(`⚠ SECURITY: Rejecting service tag with invalid characters: "${item.name}"`);
+      console.warn(`  Expected format: alphanumeric, dots, underscores, hyphens only`);
+      return false;
+    }
+
+    return true;
+  });
+
+  const rejectedCount = originalCount - validatedValues.length;
+  if (rejectedCount > 0) {
+    console.warn(`⚠ Rejected ${rejectedCount} service tag(s) with invalid names`);
+  }
+
+  return {
+    ...data,
+    values: validatedValues
+  };
+}
+
+/**
  * Load existing metadata from file
  */
 function loadMetadata(): AzureFileMetadata[] {
@@ -298,10 +346,18 @@ async function updateAllIpData(): Promise<void> {
       
       // Download directly to public/data directory
       await downloadFile(downloadUrl, dataFilePath);
-      
+
       // Read the file to get change number
       const fileContent = fs.readFileSync(dataFilePath, 'utf8');
-      const data = JSON.parse(fileContent) as AzureServiceTagsRoot;
+      let data = JSON.parse(fileContent) as AzureServiceTagsRoot;
+
+      // Validate and sanitize the data for security
+      console.log(`Validating service tags for ${mapping.cloud}...`);
+      data = validateAndSanitizeData(data);
+
+      // Write the validated data back to the file
+      fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+      console.log(`Validated and saved sanitized data for ${mapping.cloud}`);
       
       // Extract filename from download URL
       const filename = extractFilenameFromUrl(downloadUrl);
