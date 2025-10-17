@@ -1,5 +1,5 @@
 {
-  "changeNumber": 369,
+  "changeNumber": 370,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -10458,7 +10458,7 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 61,
+        "changeNumber": 62,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -10520,6 +10520,7 @@
           "40.112.46.0/24",
           "51.54.96.0/19",
           "51.54.128.0/18",
+          "51.55.0.0/18",
           "52.108.66.0/23",
           "52.126.64.0/18",
           "52.126.192.192/26",
@@ -10587,7 +10588,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 114,
+        "changeNumber": 115,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -10822,6 +10823,7 @@
           "51.54.128.0/18",
           "51.54.192.0/19",
           "51.54.224.0/19",
+          "51.55.0.0/18",
           "52.108.64.0/23",
           "52.108.66.0/23",
           "52.108.140.0/24",
