@@ -688,15 +688,16 @@ export default function SubnetCalculatorPage(): JSX.Element {
                           <button
                             type="button"
                             onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
-                            className={`h-5 w-5 rounded-full border-2 bg-white transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                            className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
                               selectedColorId === CLEAR_COLOR_ID
                                 ? 'border-sky-500'
-                                : 'border-slate-300 hover:border-slate-400'
+                                : 'border-transparent hover:border-slate-300'
                             }`}
+                            style={{ backgroundColor: '#ffffff' }}
                             aria-label="Clear highlight"
                           />
                           </div>
-                          <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                          <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400">
                             Click a row to paint
                           </span>
                         </div>
