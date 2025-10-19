@@ -96,6 +96,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied' | 'error'>('idle');
   const [isAzureMenuOpen, setIsAzureMenuOpen] = useState(false);
   const azureMenuRef = useRef<HTMLDivElement | null>(null);
+  const colorMenuRef = useRef<HTMLDivElement | null>(null);
 
   const leaves = useMemo(() => collectLeaves(state.tree, state.rootId), [state.tree, state.rootId]);
   const maxDepth = useMemo(() => leaves.reduce((maximum, leaf) => Math.max(maximum, leaf.depth), 0), [leaves]);
@@ -141,6 +142,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
       document.removeEventListener('mousedown', handleClick);
     };
   }, [isAzureMenuOpen]);
+
 
   useEffect(() => {
     if (!router.isReady || hasRestoredShare) {
@@ -642,78 +644,94 @@ export default function SubnetCalculatorPage(): JSX.Element {
 
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsColorModeActive((current) => !current)}
-                      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                        isColorModeActive ? 'border-sky-300 text-sky-600' : 'border-slate-200 hover:border-slate-300'
-                      }`}
-                      aria-pressed={isColorModeActive}
-                      title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
-                    >
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 3.5c-4.694 0-8.5 3.206-8.5 7.25 0 1.502.414 2.878 1.318 3.999a3.5 3.5 0 002.682 1.251h1.75a1.5 1.5 0 011.5 1.5v.25a2.5 2.5 0 002.5 2.5h.25a3.75 3.75 0 003.75-3.75c0-1.1-.9-2-2-2h-.75a1.5 1.5 0 01-1.5-1.5c0-.828.672-1.5 1.5-1.5H15a3.5 3.5 0 000-7c-.552 0-1 .448-1 1s-.448 1-1 1-1-.448-1-1-.448-1-1-1z"
-                        />
-                        <circle cx="8.6" cy="10.3" r="0.85" fill="currentColor" />
-                        <circle cx="10.6" cy="7.4" r="0.85" fill="currentColor" />
-                        <circle cx="13.4" cy="8.2" r="0.85" fill="currentColor" />
-                        <circle cx="9.4" cy="13.1" r="0.85" fill="currentColor" />
-                      </svg>
-                    </button>
+                    <div className="relative" ref={colorMenuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setIsColorModeActive((current) => !current)}
+                        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                          isColorModeActive ? 'border-sky-300 text-sky-600' : 'border-slate-200 hover:border-slate-300'
+                        }`}
+                        aria-pressed={isColorModeActive}
+                        title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
+                      >
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 3.5c-4.694 0-8.5 3.206-8.5 7.25 0 1.502.414 2.878 1.318 3.999a3.5 3.5 0 002.682 1.251h1.75a1.5 1.5 0 011.5 1.5v.25a2.5 2.5 0 002.5 2.5h.25a3.75 3.75 0 003.75-3.75c0-1.1-.9-2-2-2h-.75a1.5 1.5 0 01-1.5-1.5c0-.828.672-1.5 1.5-1.5H15a3.5 3.5 0 000-7c-.552 0-1 .448-1 1s-.448 1-1 1-1-.448-1-1-.448-1-1-1z"
+                          />
+                          <circle cx="8.6" cy="10.3" r="0.85" fill="currentColor" />
+                          <circle cx="10.6" cy="7.4" r="0.85" fill="currentColor" />
+                          <circle cx="13.4" cy="8.2" r="0.85" fill="currentColor" />
+                          <circle cx="9.4" cy="13.1" r="0.85" fill="currentColor" />
+                        </svg>
+                      </button>
 
-                    {isColorModeActive && (
-                      <>
-                        <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm">
-                          {COLOR_SWATCHES.map((option) => {
-                            const isSelected = selectedColorId === option.id;
-                            return (
-                              <button
-                                key={option.id}
-                                type="button"
-                                onClick={() => setSelectedColorId(option.id)}
-                                className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                                  isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
+                      {isColorModeActive && (
+                        <div className="absolute left-1/2 top-[calc(100%+0.5rem)] z-30 flex -translate-x-1/2 flex-col items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-3 py-2 shadow-lg">
+                          <div className="flex items-center gap-1.5">
+                            {COLOR_SWATCHES.map((option) => {
+                              const isSelected = selectedColorId === option.id;
+                              return (
+                                <button
+                                  key={option.id}
+                                  type="button"
+                                  onClick={() => setSelectedColorId(option.id)}
+                                  className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                                    isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
+                                  }`}
+                                  style={{ backgroundColor: option.hex }}
+                                  aria-label={`Select ${option.label} highlight`}
+                                />
+                              );
+                            })}
+                            <button
+                              type="button"
+                              onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
+                              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 text-slate-500 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                                selectedColorId === CLEAR_COLOR_ID
+                                  ? 'border-sky-500 text-sky-600'
+                                  : 'border-transparent hover:border-slate-300 hover:text-slate-700'
                                 }`}
-                                style={{ backgroundColor: option.hex }}
-                                aria-label={`Select ${option.label} highlight`}
-                              />
-                            );
-                          })}
-                          <button
-                            type="button"
-                            onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
-                            className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 text-slate-500 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                              selectedColorId === CLEAR_COLOR_ID
-                                ? 'border-sky-500 text-sky-600'
-                                : 'border-transparent hover:border-slate-300 hover:text-slate-700'
-                            }`}
-                            aria-label="Clear highlight"
-                          >
-                            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.75 19.25h-3.5v-3.5L13.5 7.5l3.5 3.5-8.25 8.25z"
-                              />
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.75l2.25-2.25a1.5 1.5 0 012.121 0l1.379 1.379a1.5 1.5 0 010 2.121L18 10.25" />
-                            </svg>
-                          </button>
+                              aria-label="Clear highlight"
+                            >
+                              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M8.75 19.25h-3.5v-3.5L13.5 7.5l3.5 3.5-8.25 8.25z"
+                                />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.75l2.25-2.25a1.5 1.5 0 012.121 0l1.379 1.379a1.5 1.5 0 010 2.121L18 10.25" />
+                              </svg>
+                            </button>
+                          </div>
+                          <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400">
+                            Click a row to paint
+                          </span>
                         </div>
-
-                        <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
-                          Click a row to paint
-                        </span>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <div className="relative" ref={azureMenuRef}>
-                      {isAzureMenuOpen ? (
-                        <div className="flex items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm">
+                      <button
+                        type="button"
+                        onClick={() => setIsAzureMenuOpen((current) => !current)}
+                        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-sky-600 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                          isAzureMenuOpen ? 'border-sky-300' : 'border-slate-200 hover:border-sky-300'
+                        }`}
+                        title="Azure Reserved IPs"
+                        aria-expanded={isAzureMenuOpen}
+                      >
+                        <svg className="h-4 w-4" viewBox="0 0 48 48" aria-hidden>
+                          <path fill="currentColor" fillOpacity="0.92" d="M8 37L22.5 7H32L16 37H8z" />
+                          <path fill="currentColor" fillOpacity="0.66" d="M21.5 37H33l7-12-7-5.5L21.5 37z" />
+                        </svg>
+                      </button>
+
+                      {isAzureMenuOpen && (
+                        <div className="absolute left-1/2 top-[calc(100%+0.5rem)] z-30 flex -translate-x-1/2 items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-lg">
                           <label className="flex items-center gap-2">
                             <input
                               type="checkbox"
@@ -734,18 +752,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
                             ×
                           </button>
                         </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => setIsAzureMenuOpen(true)}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-sky-600 shadow-sm transition hover:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                          title="Azure Reserved IPs"
-                        >
-                          <svg className="h-4 w-4" viewBox="0 0 48 48" aria-hidden>
-                            <path fill="currentColor" fillOpacity="0.92" d="M8 37L22.5 7H32L16 37H8z" />
-                            <path fill="currentColor" fillOpacity="0.66" d="M21.5 37H33l7-12-7-5.5L21.5 37z" />
-                          </svg>
-                        </button>
                       )}
                     </div>
 
