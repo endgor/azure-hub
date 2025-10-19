@@ -760,9 +760,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
                           className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-sky-600 shadow-sm transition hover:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
                           title="Azure Reserved IPs"
                         >
-                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                            <path d="M5.5 18L11.5 6h5L11.5 18h-6z" opacity="0.9" />
-                            <path d="M12.5 18l2.5-5h3.5l-2.5 5H12.5z" opacity="0.65" />
+                          <svg className="h-4 w-4" viewBox="0 0 48 48" aria-hidden>
+                            <path fill="currentColor" fillOpacity="0.92" d="M8 37L22.5 7H32L16 37H8z" />
+                            <path fill="currentColor" fillOpacity="0.66" d="M21.5 37H33l7-12-7-5.5L21.5 37z" />
                           </svg>
                         </button>
                       )}
