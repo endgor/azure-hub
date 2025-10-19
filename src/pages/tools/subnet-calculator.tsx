@@ -670,12 +670,10 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       aria-pressed={isColorModeActive}
                       title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
                     >
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 3C7.582 3 4 6.134 4 10c0 2.2 1.265 3.93 2.893 5.144.533.39.857 1.002.857 1.649v.426c0 1.105.895 2 2 2h1.25M12 3c4.418 0 8 3.134 8 7 0 1.867-1.5 3-2.5 3-.461 0-1.046-.108-1.5-.25-.809-.252-1.5.38-1.5 1.223V15m-3.5 5.219l2.25-2.25a1.5 1.5 0 012.122 0l.159.159a1.5 1.5 0 010 2.122l-2.25 2.25a1.5 1.5 0 01-2.122 0l-.159-.159a1.5 1.5 0 010-2.122z"
-                        />
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 3.487l3.651 3.651a1.5 1.5 0 010 2.121l-9.621 9.621-4.243.707.707-4.243 9.621-9.621a1.5 1.5 0 012.121 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.25 5.102l3.651 3.651" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 20.25h13.5" />
                       </svg>
                     </button>
 
@@ -700,18 +698,28 @@ export default function SubnetCalculatorPage(): JSX.Element {
                           <button
                             type="button"
                             onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
-                            className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                            className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 text-slate-500 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
                               selectedColorId === CLEAR_COLOR_ID
-                                ? 'border-sky-500'
-                                : 'border-transparent hover:border-slate-300'
+                                ? 'border-sky-500 text-sky-600'
+                                : 'border-transparent hover:border-slate-300 hover:text-slate-700'
                             }`}
-                            style={{
-                              backgroundColor: '#ffffff',
-                              backgroundImage:
-                                'linear-gradient(135deg, transparent 45%, rgba(100,116,139,0.55) 45%, rgba(100,116,139,0.55) 55%, transparent 55%)'
-                            }}
                             aria-label="Clear highlight"
-                          />
+                          >
+                            <svg
+                              className="h-3.5 w-3.5"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={1.8}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M14.742 3.97l5.287 5.287a1.5 1.5 0 010 2.122l-5.287 5.287a1.5 1.5 0 01-2.122 0l-5.287-5.287a1.5 1.5 0 010-2.122l5.287-5.287a1.5 1.5 0 012.122 0z"
+                              />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 20.25H12.75" />
+                            </svg>
+                          </button>
                         </div>
 
                         <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
