@@ -194,9 +194,9 @@ export default function IpLookupPage() {
     <Layout title="Azure IP Lookup" description="Discover whether an IP address, CIDR block, or Azure service tag belongs to Microsoft Azure.">
       <section className="space-y-10">
         <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-400/70">Networking</p>
-          <h1 className="text-3xl font-semibold text-slate-100 md:text-4xl">Azure IP Lookup</h1>
-          <p className="text-sm text-slate-400 md:text-base">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80">Networking</p>
+          <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl">Azure IP Lookup</h1>
+          <p className="text-sm text-slate-600 md:text-base">
             Search by IP, CIDR, service tag, or region to quickly verify whether an address belongs to Azure infrastructure.
           </p>
         </div>
@@ -209,20 +209,20 @@ export default function IpLookupPage() {
 
         <div className="space-y-6">
           {isLoading && (
-            <div className="flex flex-col items-center gap-4 rounded-xl bg-slate-900/40 p-8">
-              <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500 border-t-transparent" />
-              <p className="text-slate-300">Looking up Azure IP information...</p>
+            <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+              <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+              <p className="text-slate-600">Looking up Azure IP information...</p>
             </div>
           )}
 
           {isError && errorMessage && (
-            <div className="rounded-xl border border-rose-500/40 bg-rose-500/10 p-5 text-sm text-rose-200">
+            <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
               {errorMessage}
             </div>
           )}
 
           {isNotFound && notFoundMessage && (
-            <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-5 text-sm text-amber-200">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
               {notFoundMessage}
             </div>
           )}
@@ -270,7 +270,7 @@ export default function IpLookupPage() {
           )}
 
           {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
-            <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-5 text-sm text-amber-200">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
               No Azure IP ranges found matching your search criteria.
             </div>
           )}
@@ -278,15 +278,15 @@ export default function IpLookupPage() {
 
         {!initialQuery && !initialRegion && !initialService && (
           <section className="space-y-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-300">Sample queries</h2>
-            <p className="text-sm text-slate-500">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Sample queries</h2>
+            <p className="text-sm text-slate-600">
               Use IP addresses, CIDR notations, service tags, or Azure regions to explore the dataset.
             </p>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {SAMPLE_QUERIES.map((item) => (
                 <div key={item.label} className="space-y-2">
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{item.label}</p>
-                  <p className="font-mono text-sm text-slate-100">{item.example}</p>
+                  <p className="font-mono text-sm text-slate-900">{item.example}</p>
                   <p className="text-xs text-slate-500">{item.description}</p>
                 </div>
               ))}

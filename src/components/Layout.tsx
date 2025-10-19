@@ -42,7 +42,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -54,7 +54,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -66,7 +66,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -78,7 +78,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -90,7 +90,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -102,7 +102,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -114,7 +114,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
     >
       <path
         fill="currentColor"
@@ -231,19 +231,19 @@ export default function Layout({
         <meta property="twitter:title" content={meta.title} />
         <meta property="twitter:description" content={meta.description} />
         <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-        <meta name="theme-color" content="#0f172a" />
+        <meta name="theme-color" content="#f1f5f9" />
       </Head>
 
-      <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="min-h-screen bg-slate-100 text-slate-900">
         <div className="flex h-screen overflow-hidden">
           <aside
-            className={`relative flex flex-col border-r border-slate-800 bg-slate-900/80 backdrop-blur transition-all duration-200 ease-out ${
+            className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out ${
               isSidebarCollapsed ? 'w-20' : 'w-72'
             }`}
           >
             <div className="flex items-center justify-between gap-3 px-4 py-5">
               <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-400 font-semibold">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-600 font-semibold">
                   AH
                 </span>
                 <span className={`text-lg font-semibold tracking-tight ${isSidebarCollapsed ? 'hidden' : 'block'}`}>
@@ -252,7 +252,7 @@ export default function Layout({
               </Link>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-700 bg-slate-900/60 text-slate-200 shadow-sm transition hover:border-slate-600 hover:text-slate-50"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700"
                 onClick={() => setIsSidebarCollapsed((prev) => !prev)}
                 aria-pressed={isSidebarCollapsed}
                 aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
@@ -295,10 +295,10 @@ export default function Layout({
                       const baseClasses =
                         'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors';
                       const stateClasses = disabled
-                        ? 'cursor-not-allowed text-slate-600'
+                        ? 'cursor-not-allowed text-slate-300'
                         : active
-                        ? 'bg-slate-800/80 text-slate-100'
-                        : 'text-slate-300 hover:bg-slate-800/60 hover:text-slate-100';
+                        ? 'bg-sky-100 text-slate-900'
+                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900';
 
                       return (
                         <Link
@@ -314,8 +314,8 @@ export default function Layout({
                           }}
                         >
                           <span
-                            className={`flex h-9 w-9 items-center justify-center rounded-md border border-transparent bg-slate-900/40 transition-colors ${
-                              active ? 'border-sky-500/60 bg-sky-500/10' : 'border-slate-800'
+                            className={`flex h-9 w-9 items-center justify-center rounded-md border transition-colors ${
+                              active ? 'border-sky-200 bg-sky-50' : 'border-slate-200 bg-slate-50'
                             }`}
                           >
                             {ICONS[item.icon](active)}
@@ -332,14 +332,14 @@ export default function Layout({
               ))}
             </nav>
 
-            <div className="border-t border-slate-800 px-3 py-4">
+            <div className="border-t border-slate-200 px-3 py-4">
               <Link
                 href="https://github.com/endgor/azure-ip-lookup"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800/60 hover:text-slate-100"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-sky-50 hover:text-slate-900"
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-800 bg-slate-900/40">
+                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50">
                   {ICONS.github(false)}
                 </span>
                 <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>GitHub Repository</span>

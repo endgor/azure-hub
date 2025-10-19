@@ -129,19 +129,19 @@ const LookupForm = memo(function LookupForm({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Enter IP address, CIDR, service name, or region"
-          className="w-full rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 pr-12 text-sm text-slate-100 shadow-inner shadow-slate-950/30 transition placeholder:text-slate-500 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
+          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
           aria-label="Search query"
         />
         <button
           type="submit"
-          className={`absolute inset-y-0 right-0 flex items-center justify-center px-4 text-sky-300 transition hover:text-sky-100 ${
+          className={`absolute inset-y-0 right-0 flex items-center justify-center px-4 text-sky-500 transition hover:text-sky-700 ${
             isLoading ? 'cursor-wait opacity-70' : ''
           }`}
           disabled={isLoading}
           aria-label="Run lookup"
         >
           {isLoading ? (
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-sky-300/60 border-t-transparent" />
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-sky-500/60 border-t-transparent" />
           ) : (
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path

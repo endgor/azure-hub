@@ -23,15 +23,13 @@ export default function Tooltip({ children, content }: TooltipProps) {
           left: `${left}px`,
           transform: 'translateX(-50%)'
         }}
-        className="w-72 px-4 py-3 text-sm bg-gray-900 text-white rounded-lg 
-                    opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                    pointer-events-none normal-case"
+        className="w-72 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-xl opacity-0 transition-opacity duration-200
+                    group-hover:opacity-100 pointer-events-none normal-case"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative">
           {content}
-          <div className="absolute w-3 h-3 bg-gray-900 transform rotate-45 
-                        left-[50%] translate-x-[-50%] bottom-[-6px]"></div>
+          <div className="absolute bottom-[-6px] left-[50%] h-3 w-3 translate-x-[-50%] rotate-45 border border-slate-200 bg-white"></div>
         </div>
       </div>
     </div>

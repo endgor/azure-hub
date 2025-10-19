@@ -9,7 +9,7 @@ export default function Document() {
           content="Azure Hub, Azure networking tools, Azure IP lookup, Azure service tags, tenant insights, subnet calculator, region latency, Microsoft Azure diagnostics"
         />
       </Head>
-      <body className="bg-slate-950">
+      <body className="bg-slate-100">
         <Main />
         <NextScript />
       </body>

@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
@@ -111,18 +112,20 @@ export default function ServiceTagDetail() {
   if (!serviceTag) {
     return (
       <Layout title="Service Tag Not Found">
-        <div className="mx-auto max-w-3xl rounded-2xl border border-slate-800/70 bg-slate-900/60 p-8 text-center text-slate-200">
-          <h1 className="text-2xl font-semibold text-slate-100">Service tag not found</h1>
-          <p className="mt-2 text-sm text-slate-400">Select a tag from the catalogue to view its address ranges.</p>
-          <div className="mt-6">
-            <Link
-              href="/tools/service-tags"
-              className="inline-flex items-center justify-center rounded-xl border border-slate-700 px-4 py-2 text-sm font-semibold text-sky-200 transition hover:border-sky-500/50 hover:text-sky-100"
-            >
-              ← Back to Service Tags
-            </Link>
+        <section className="space-y-6">
+          <div className="space-y-3">
+            <h1 className="text-3xl font-semibold text-slate-900">Service tag not found</h1>
+            <p className="max-w-xl text-sm text-slate-600">
+              Select a tag from the catalogue to view its address ranges or try searching for a different name.
+            </p>
           </div>
-        </div>
+          <Link
+            href="/tools/service-tags"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-700"
+          >
+            <span aria-hidden="true">←</span> Back to Service Tags
+          </Link>
+        </section>
       </Layout>
     );
   }
@@ -158,41 +161,45 @@ export default function ServiceTagDetail() {
       title={`Azure Service Tag: ${serviceTag}`}
       description={`Explore the Azure IP ranges associated with the ${serviceTag as string} service tag.`}
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <section className="space-y-8 rounded-2xl border border-slate-800/80 bg-slate-900/60 p-8 shadow-xl shadow-slate-950/30">
-        <nav className="text-xs uppercase tracking-[0.3em] text-slate-500" aria-label="Breadcrumb">
-          <Link href="/tools/service-tags" className="text-sky-300 transition hover:text-sky-200">
-            Service Tags
-          </Link>
-          <span className="mx-2 text-slate-600">/</span>
-          <span className="text-slate-400">{serviceTag}</span>
-        </nav>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+      </Head>
+      <section className="space-y-8">
+        <div className="space-y-3">
+          <nav className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" aria-label="Breadcrumb">
+            <Link href="/tools/service-tags" className="text-sky-600 transition hover:text-sky-700">
+              Service Tags
+            </Link>
+            <span className="mx-2 text-slate-400">/</span>
+            <span className="text-slate-500">{serviceTag}</span>
+          </nav>
 
-        <div className="space-y-4 text-center">
-          <h1 className="text-3xl font-semibold text-slate-100">Service Tag: {serviceTag}</h1>
-          <p className="text-sm text-slate-300">
-            IP ranges, Azure services, and network features associated with this service tag.
-          </p>
+          <div className="space-y-3">
+            <h1 className="text-3xl font-semibold text-slate-900">Service Tag: {serviceTag}</h1>
+            <p className="text-sm text-slate-600 md:text-base">
+              IP ranges, Azure services, and network features associated with this service tag.
+            </p>
+          </div>
         </div>
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-800/60 bg-slate-900/40 p-8 text-sm text-slate-300">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500 border-t-transparent" />
-            Loading service tag details...
+          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-600 shadow-sm">
+            <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+            <span>Loading service tag details...</span>
           </div>
         )}
 
         {/* Error State */}
         {error && (
-          <div className="rounded-xl border border-rose-500/40 bg-rose-500/10 p-5 text-sm text-rose-200">
-            <h3 className="font-semibold text-rose-100">Error loading service tag details</h3>
-            <p className="mt-1 text-rose-200/80">{error.message}</p>
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
+            <h3 className="font-semibold text-rose-700">Error loading service tag details</h3>
+            <p className="mt-1 text-rose-600">{error.message}</p>
             <div className="mt-4">
-              <Link href="/tools/service-tags" className="font-semibold text-sky-200 underline-offset-4 hover:underline">
+              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline">
                 ← Back to Service Tags
               </Link>
             </div>
@@ -201,13 +208,13 @@ export default function ServiceTagDetail() {
 
         {/* Not Found State */}
         {data?.notFound && (
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-5 text-sm text-amber-100">
-            <h3 className="font-semibold text-amber-50">Service tag not found</h3>
-            <p className="mt-1 text-amber-100/90">
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
+            <h3 className="font-semibold text-amber-700">Service tag not found</h3>
+            <p className="mt-1 text-amber-600">
               {data.message || `No data found for service tag "${serviceTag}"`}
             </p>
             <div className="mt-4">
-              <Link href="/tools/service-tags" className="font-semibold text-sky-200 underline-offset-4 hover:underline">
+              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline">
                 ← Back to Service Tags
               </Link>
             </div>
@@ -274,12 +281,12 @@ export default function ServiceTagDetail() {
         )}
 
         {/* Back Link */}
-        <div className="mt-10 text-center">
+        <div className="mt-10">
           <Link
             href="/tools/service-tags"
-            className="inline-flex items-center justify-center rounded-xl border border-slate-700 px-4 py-2 text-sm font-semibold text-sky-200 transition hover:border-sky-500/40 hover:text-sky-100"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-700"
           >
-            ← Back to Service Tags
+            <span aria-hidden="true">←</span> Back to Service Tags
           </Link>
         </div>
       </section>
