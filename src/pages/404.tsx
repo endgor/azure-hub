@@ -3,55 +3,51 @@ import Layout from '@/components/Layout';
 
 export default function Custom404() {
   return (
-    <Layout title="Page Not Found - 404 Error">
-      <div className="max-w-2xl mx-auto text-center">
-        <div className="mb-8">
-          <h1 className="text-6xl font-bold text-gray-800 mb-4">404</h1>
-          <h2 className="text-2xl font-semibold text-gray-600 mb-6">Page Not Found</h2>
-          <p className="text-lg text-gray-500 mb-8">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+    <Layout title="Page Not Found · Azure Hub">
+      <div className="mx-auto max-w-3xl text-center">
+        <div className="rounded-3xl border border-slate-800/80 bg-slate-900/60 px-10 py-12 shadow-xl shadow-slate-950/30">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Error</p>
+          <h1 className="mt-4 text-6xl font-semibold text-slate-50">404</h1>
+          <h2 className="mt-3 text-xl font-semibold text-slate-200">We can&apos;t find that page</h2>
+          <p className="mt-3 text-sm text-slate-400">
+            The resource you&apos;re looking for doesn&apos;t exist or has moved. Jump back into the Azure Hub tools instead.
           </p>
-        </div>
 
-        <div className="bg-blue-50 rounded-lg p-8 mb-8">
-          <h3 className="text-xl font-semibold text-blue-800 mb-4">What can you do instead?</h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            <Link 
-              href="/"
-              className="block bg-white border border-blue-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <Link
+              href="/tools/ip-lookup"
+              className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5 text-left transition hover:border-sky-500/40 hover:bg-slate-900/60"
             >
-              <h4 className="font-medium text-blue-800 mb-2">Search IP Addresses</h4>
-              <p className="text-sm text-gray-600">Find Azure IP ranges and service tags</p>
+              <h3 className="text-lg font-semibold text-slate-100">Azure IP Lookup</h3>
+              <p className="mt-2 text-sm text-slate-400">Verify IP ownership and inspect service tags.</p>
             </Link>
-            
-            <Link 
-              href="/service-tags"
-              className="block bg-white border border-blue-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            <Link
+              href="/tools/service-tags"
+              className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5 text-left transition hover:border-sky-500/40 hover:bg-slate-900/60"
             >
-              <h4 className="font-medium text-blue-800 mb-2">Browse Service Tags</h4>
-              <p className="text-sm text-gray-600">Explore all Azure Service Tags</p>
+              <h3 className="text-lg font-semibold text-slate-100">Service Tags Explorer</h3>
+              <p className="mt-2 text-sm text-slate-400">Browse the Microsoft-maintained tag catalogue.</p>
             </Link>
           </div>
-        </div>
 
-        <div className="space-y-4">
-          <Link 
-            href="/"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            ← Go Back to Home
-          </Link>
-          
-          <div className="text-sm text-gray-500">
-            <p>If you believe this is an error, please check the URL or contact us through our 
-            <a 
-              href="https://github.com/endgor/azure-ip-lookup/issues" 
-              className="text-blue-600 hover:underline ml-1"
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="mt-10 flex flex-col items-center gap-3">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-700 px-6 py-3 text-sm font-semibold text-sky-200 transition hover:border-sky-500/40 hover:text-sky-100"
             >
-              GitHub repository
-            </a>.
+              ← Return to Azure Hub
+            </Link>
+            <p className="text-xs text-slate-500">
+              Need help? Open an issue on{' '}
+              <a
+                href="https://github.com/endgor/azure-ip-lookup/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-sky-300 hover:text-sky-200"
+              >
+                GitHub
+              </a>
+              .
             </p>
           </div>
         </div>

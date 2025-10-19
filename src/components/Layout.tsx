@@ -1,316 +1,358 @@
-import React from 'react';
+import { useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Script from 'next/script';
+
+type IconKey =
+  | 'dashboard'
+  | 'ipLookup'
+  | 'serviceTags'
+  | 'tenant'
+  | 'subnet'
+  | 'latency'
+  | 'github';
+
+interface NavItem {
+  label: string;
+  description?: string;
+  href: string;
+  icon: IconKey;
+  comingSoon?: boolean;
+  disabled?: boolean;
+}
+
+interface NavSection {
+  label: string;
+  items: NavItem[];
+}
 
 interface LayoutProps {
   title?: string;
-  children: React.ReactNode;
+  description?: string;
+  children: ReactNode;
 }
 
-export default function Layout({ title = 'Azure IP Lookup', children }: LayoutProps) {
-  const router = useRouter();
-  const isActive = (path: string) => router.pathname === path;
-  
-  // Generate more SEO-optimized titles based on the page
-  let fullTitle = title;
-  let description = "Azure IP Lookup Tool helps you identify IP addresses and ranges associated with Azure services. Search by IP, CIDR, service name, or region to discover Azure infrastructure details.";
-  
-  // Customize title and description based on the current page
-  if (title === 'Azure IP Lookup') {
-    fullTitle = "Azure IP Lookup Tool";
-    description = "Free Azure IP Lookup Tool. Instantly verify if an IP address belongs to Microsoft Azure. Search by IP address, CIDR, service name, or region. Updated daily with official Microsoft data.";
-  } else if (title.includes('Azure Service Tags')) {
-    fullTitle = `${title} | Browse All Azure Service Tag IP Ranges`;
-    description = "Complete directory of Azure Service Tags with their associated IP ranges. Search and browse all Azure service tags to find networking details for Microsoft Azure infrastructure.";
-  } else if (title.includes('Service Tag:')) {
-    const serviceTag = title.replace('Azure Service Tag: ', '');
-    fullTitle = `${serviceTag} Azure Service Tag | IP Ranges & Network Details`;
-    description = `View all IP ranges and network details for the ${serviceTag} Azure Service Tag. Find regional distribution, system services, and network features for this Azure service.`;
-  } else if (title.includes('About')) {
-    fullTitle = "About Azure IP Lookup Tool | How It Works & Data Sources";
-    description = "Learn about the Azure IP Lookup Tool, how it works, and its data sources. Understand Azure Service Tags, network features, and how we keep IP range data updated daily.";
-  } else {
-    fullTitle = `${title} | Azure IP Lookup Tool`;
+const DEFAULT_TITLE = 'Azure Hub';
+const DEFAULT_DESCRIPTION =
+  'Azure Hub brings together networking, identity, and diagnostics tooling to help you explore and understand Microsoft Azure resources.';
+
+const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
+  dashboard: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M11 4c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h7c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1h-7zm-8 0c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h5c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1H3zm0 9c-.55 0-1 .45-1 1v5c0 .55.45 1 1 1h7c.55 0 1-.45 1-1v-5c0-.55-.45-1-1-1H3zm11 0c-.55 0-1 .45-1 1v5c0 .55.45 1 1 1h5c.55 0 1-.45 1-1v-5c0-.55-.45-1-1-1h-5z"
+      />
+    </svg>
+  ),
+  ipLookup: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M11 4a7 7 0 015.65 11.12l3.12 3.11a1 1 0 11-1.41 1.42l-3.12-3.12A7 7 0 1111 4zm0 2a5 5 0 100 10 5 5 0 000-10zm0 3a1 1 0 01.99.86L12 10v2a1 1 0 01-1.99.14L10 12v-2a1 1 0 011-1zm-2 0a1 1 0 01.99.86L10 10v2a1 1 0 01-1.99.14L8 12v-2a1 1 0 011-1z"
+      />
+    </svg>
+  ),
+  serviceTags: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M3 4a2 2 0 012-2h4.586a2 2 0 011.414.586l8.414 8.414a2 2 0 010 2.828l-4.586 4.586a2 2 0 01-2.828 0L3.586 10.414A2 2 0 013 9V4zm4 3a2 2 0 100-4 2 2 0 000 4z"
+      />
+    </svg>
+  ),
+  tenant: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M4 4a2 2 0 012-2h4a2 2 0 012 2v3h5a2 2 0 012 2v3h-2V9h-5v11h-2v-4H6v4H4V4zm4 0H6v5h4V4H8zm12 10a2 2 0 012 2v5h-2v-3h-4v3h-2v-5a2 2 0 012-2h4zm-1 2h-2v1h2v-1z"
+      />
+    </svg>
+  ),
+  subnet: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M5 3a2 2 0 00-2 2v5h18V5a2 2 0 00-2-2H5zm16 9H3v5a2 2 0 002 2h6v-3H9a1 1 0 110-2h6a1 1 0 010 2h-2v3h6a2 2 0 002-2v-5z"
+      />
+    </svg>
+  ),
+  latency: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M5 4a1 1 0 011.78-.62l4.22 5.62 2.19-2.73a1 1 0 011.51 0l6 7.5A1 1 0 0119.98 16H4.02a1 1 0 01-.81-1.59L5 11.53V4zm14 14a1 1 0 110 2H5a1 1 0 110-2h14z"
+      />
+    </svg>
+  ),
+  github: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-400' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        fillRule="evenodd"
+        d="M12 2C6.48 2 2 6.58 2 12.26c0 4.51 2.87 8.33 6.84 9.68.5.09.68-.23.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.36-3.37-1.36-.45-1.17-1.11-1.48-1.11-1.48-.91-.62.07-.61.07-.61 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.35 1.11 2.92.85.09-.67.35-1.11.64-1.37-2.22-.26-4.56-1.12-4.56-4.99 0-1.1.39-1.99 1.03-2.7-.1-.25-.45-1.28.1-2.67 0 0 .84-.27 2.75 1.03a9.3 9.3 0 012.5-.35c.85 0 1.7.12 2.5.35 1.9-1.3 2.74-1.03 2.74-1.03.55 1.39.2 2.42.1 2.67.64.7 1.03 1.6 1.03 2.7 0 3.88-2.34 4.73-4.57 4.99.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.68.5A10.06 10.06 0 0022 12.26C22 6.58 17.52 2 12 2z"
+      />
+    </svg>
+  )
+};
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    label: 'Overview',
+    items: [
+      {
+        label: 'Dashboard',
+        href: '/',
+        icon: 'dashboard'
+      }
+    ]
+  },
+  {
+    label: 'Networking',
+    items: [
+      {
+        label: 'IP Lookup',
+        href: '/tools/ip-lookup',
+        icon: 'ipLookup'
+      },
+      {
+        label: 'Service Tags',
+        href: '/tools/service-tags',
+        icon: 'serviceTags'
+      },
+      {
+        label: 'Subnet Calculator',
+        href: '/tools/subnet-calculator',
+        icon: 'subnet',
+        comingSoon: true,
+        disabled: true
+      }
+    ]
+  },
+  {
+    label: 'Identity',
+    items: [
+      {
+        label: 'Tenant Insights',
+        href: '/tools/tenant-insights',
+        icon: 'tenant',
+        comingSoon: true,
+        disabled: true
+      }
+    ]
+  },
+  {
+    label: 'Diagnostics',
+    items: [
+      {
+        label: 'Region Latency',
+        href: '/tools/region-latency',
+        icon: 'latency',
+        comingSoon: true,
+        disabled: true
+      }
+    ]
   }
-  
-  const url = `https://azurehub.org${router.asPath}`;
+];
+
+export default function Layout({
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  children
+}: LayoutProps) {
+  const router = useRouter();
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const meta = useMemo(() => {
+    const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
+    const canonicalUrl = `https://azurehub.org${router.asPath}`;
+
+    return {
+      title: pageTitle,
+      description,
+      url: canonicalUrl
+    };
+  }, [description, router.asPath, title]);
+
+  const matchRoute = (href: string) => {
+    if (!href.startsWith('/')) {
+      return false;
+    }
+    if (href === '/') {
+      return router.pathname === '/';
+    }
+    return router.pathname === href || router.pathname.startsWith(`${href}/`);
+  };
 
   return (
     <>
       <Head>
-        <title>{fullTitle}</title>
-        
-        {/* Essential Meta Tags */}
-        <meta name="description" content={description} />
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href={url} />
-        
-        {/* Additional SEO Meta Tags */}
-        <meta name="author" content="Azure IP Lookup Tool" />
-        <meta name="language" content="en" />
-        <meta name="geo.region" content="US" />
-        <meta name="geo.placename" content="United States" />
-        <meta name="distribution" content="global" />
-        <meta name="rating" content="general" />
-        <meta name="revisit-after" content="1 day" />
-        <meta httpEquiv="Content-Language" content="en-US" />
-        
-        {/* Favicon Tags */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
-        <link rel="manifest" href="/favicons/site.webmanifest" />
-        <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#3B82F6" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <meta name="msapplication-TileColor" content="#3B82F6" />
-        <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
-        <meta name="theme-color" content="#ffffff" />
-
-        {/* Verification Meta Tags - Add these after you verify ownership */}
-        <meta name="robots" content="index, follow" />
-        
-        {/* OpenGraph Meta Tags */}
-        <meta property="og:title" content={fullTitle} />
-        <meta property="og:description" content={description} />
+        <link rel="canonical" href={meta.url} />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.description} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={url} />
-        <meta property="og:site_name" content="Azure IP Lookup" />
-        <meta property="og:locale" content="en_US" />
+        <meta property="og:url" content={meta.url} />
+        <meta property="og:site_name" content="Azure Hub" />
         <meta property="og:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-        <meta property="og:image:alt" content="Azure IP Lookup Tool Logo" />
-        <meta property="og:image:width" content="512" />
-        <meta property="og:image:height" content="512" />
-        
-        {/* Twitter Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@AzureIPLookup" />
-        <meta name="twitter:creator" content="@AzureIPLookup" />
-        <meta name="twitter:title" content={fullTitle} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-        <meta name="twitter:image:alt" content="Azure IP Lookup Tool Logo" />
-        
-        {/* Keywords */}
-        <meta name="keywords" content="azure ip lookup, azure service tags, azure ip ranges, azure networking, azure infrastructure, cloud ip addresses, microsoft azure" />
-
-        {/* JSON-LD Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": ["WebApplication", "SoftwareApplication"],
-            "name": "Azure IP Lookup Tool",
-            "alternateName": "Azure IP Address Finder",
-            "description": description,
-            "url": "https://azurehub.org",
-            "sameAs": [
-              "https://github.com/endgor/azure-ip-lookup"
-            ],
-            "applicationCategory": ["NetworkingApplication", "DeveloperApplication"],
-            "operatingSystem": "Any",
-            "browserRequirements": "Requires JavaScript. Works with all modern web browsers.",
-            "softwareVersion": "1.0",
-            "datePublished": "2024-01-01",
-            "dateModified": new Date().toISOString().split('T')[0],
-            "isAccessibleForFree": true,
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD",
-              "availability": "https://schema.org/InStock"
-            },
-            "creator": {
-              "@type": "Organization",
-              "name": "Azure IP Lookup",
-              "url": "https://azurehub.org",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://azurehub.org/favicons/android-chrome-512x512.png",
-                "width": 512,
-                "height": 512
-              },
-              "sameAs": [
-                "https://github.com/endgor/azure-ip-lookup"
-              ],
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "contactType": "Customer Support",
-                "url": "https://github.com/endgor/azure-ip-lookup/issues"
-              }
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Azure IP Lookup",
-              "url": "https://azurehub.org",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://azurehub.org/favicons/android-chrome-512x512.png",
-                "width": 512,
-                "height": 512
-              }
-            },
-            "keywords": [
-              "Azure IP Lookup",
-              "Azure Service Tags",
-              "IP Address Verification",
-              "Microsoft Azure",
-              "Network Security",
-              "Cloud Infrastructure",
-              "IP Range Finder",
-              "Azure IP Ranges",
-              "Azure Networking",
-              "IP Address Checker"
-            ],
-            "featureList": [
-              "IP Address Lookup",
-              "CIDR Range Search",
-              "Service Tag Browsing",
-              "Regional IP Filtering",
-              "Azure Service Detection",
-              "Daily Automated Updates",
-              "Multi-Cloud Support"
-            ],
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.8",
-              "reviewCount": "150",
-              "bestRating": "5",
-              "worstRating": "1"
-            }
-          })}
-        </script>
-
-        {/* Organization Schema for Brand Recognition */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "Azure IP Lookup",
-            "url": "https://azurehub.org",
-            "logo": "https://azurehub.org/favicons/android-chrome-512x512.png",
-            "description": "Free Azure IP Lookup Tool. Instantly verify if an IP address belongs to Microsoft Azure. Search by IP address, CIDR, service name, or region.",
-            "foundingDate": "2024-01-01",
-            "sameAs": [
-              "https://github.com/endgor/azure-ip-lookup"
-            ],
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "contactType": "Customer Support",
-              "url": "https://github.com/endgor/azure-ip-lookup/issues"
-            }
-          })}
-        </script>
+        <meta property="og:image:alt" content="Azure Hub logo" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content={meta.title} />
+        <meta property="twitter:description" content={meta.description} />
+        <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
+        <meta name="theme-color" content="#0f172a" />
       </Head>
 
-
-      
-      <div className="min-h-screen flex flex-col">
-        <header className="bg-white shadow-sm border-b border-google-gray-200">
-          <div className="container mx-auto px-4">
-            <nav className="flex flex-col sm:flex-row justify-between items-center py-4">
-              <Link href="/" className="flex items-center text-2xl font-bold mb-2 sm:mb-0 text-google-gray-800" aria-label="Azure IP Lookup - Home">
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-8 w-8 mr-2 text-google-blue-600" 
-                  viewBox="0 0 24 24" 
-                  fill="currentColor"
-                  role="img"
-                  aria-label="Azure IP Lookup Logo - Eye icon representing network visibility"
+      <div className="min-h-screen bg-slate-950 text-slate-100">
+        <div className="flex h-screen overflow-hidden">
+          <aside
+            className={`relative flex flex-col border-r border-slate-800 bg-slate-900/80 backdrop-blur transition-all duration-200 ease-out ${
+              isSidebarCollapsed ? 'w-20' : 'w-72'
+            }`}
+          >
+            <div className="flex items-center justify-between gap-3 px-4 py-5">
+              <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-400 font-semibold">
+                  AH
+                </span>
+                <span className={`text-lg font-semibold tracking-tight ${isSidebarCollapsed ? 'hidden' : 'block'}`}>
+                  Azure Hub
+                </span>
+              </Link>
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-700 bg-slate-900/60 text-slate-200 shadow-sm transition hover:border-slate-600 hover:text-slate-50"
+                onClick={() => setIsSidebarCollapsed((prev) => !prev)}
+                aria-pressed={isSidebarCollapsed}
+                aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+              >
+                <span className="sr-only">{isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-5 w-5 text-current"
                 >
-                  <title>Azure IP Lookup Logo</title>
-                  <path d="M21.3 12c0 .9-5.5 5.6-9.3 5.6S2.7 12.9 2.7 12s5.5-5.6 9.3-5.6c3.8-.1 9.3 4.7 9.3 5.6zm-9.3-3.5c1.9 0 3.5 1.6 3.5 3.5s-1.6 3.5-3.5 3.5-3.5-1.6-3.5-3.5 1.5-3.5 3.5-3.5z" />
+                  {isSidebarCollapsed ? (
+                    <path
+                      fill="currentColor"
+                      d="M9.3 7.3a1 1 0 011.4 0L15 11.6a1 1 0 01.03 1.35l-.03.03-4.3 4.3a1 1 0 01-1.5-1.32l.1-.11L12.58 12l-3.28-3.29a1 1 0 010-1.41z"
+                    />
+                  ) : (
+                    <path
+                      fill="currentColor"
+                      d="M14.7 7.3a1 1 0 010 1.4L11.41 12l3.3 3.29a1 1 0 01-1.32 1.5l-.11-.1-4.3-4.3a1 1 0 01-.03-1.35l.03-.03 4.3-4.3a1 1 0 011.41 0z"
+                    />
+                  )}
                 </svg>
-                <span>Azure IP Lookup</span>
-              </Link>
-              
-              <div className="flex items-center space-x-1">
-                <Link 
-                  href="/" 
-                  className={`px-3 py-2 font-medium text-sm transition-colors ${
-                    isActive('/') 
-                      ? 'text-google-blue-600 border-b-2 border-google-blue-600' 
-                      : 'text-google-gray-700 hover:text-google-blue-600'
-                  }`}
-                >
-                  Home
-                </Link>
-                
-                <Link 
-                  href="/service-tags" 
-                  className={`px-3 py-2 font-medium text-sm transition-colors ${
-                    isActive('/service-tags') || router.pathname.startsWith('/service-tags') 
-                      ? 'text-google-blue-600 border-b-2 border-google-blue-600' 
-                      : 'text-google-gray-700 hover:text-google-blue-600'
-                  }`}
-                >
-                  Service Tags
-                </Link>
-                
-                <Link 
-                  href="/about" 
-                  className={`px-3 py-2 font-medium text-sm transition-colors ${
-                    isActive('/about') 
-                      ? 'text-google-blue-600 border-b-2 border-google-blue-600' 
-                      : 'text-google-gray-700 hover:text-google-blue-600'
-                  }`}
-                >
-                  About
-                </Link>
-                
-                <a 
-                  href="https://github.com/endgor/azure-ip-lookup"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 py-2 text-sm font-medium text-google-gray-600 hover:text-google-blue-600 flex items-center transition-colors"
-                  aria-label="View Azure IP Lookup source code on GitHub"
-                >
-                  <svg className="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
-                    <title>GitHub Logo</title>
-                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                  </svg>
-                  GitHub
-                </a>
-              </div>
-            </nav>
-          </div>
-        </header>
-        
-        <main className="flex-grow container mx-auto px-4 py-8">
-          {children}
-        </main>
-        
-        <footer className="bg-google-gray-50 border-t border-google-gray-200">
-          <div className="container mx-auto px-4 py-6 text-center text-google-gray-600">
-            <p className="font-medium text-google-gray-800">Azure IP Lookup Tool</p>
-            <p className="text-sm mt-1 mb-2">
-              Data automatically updates daily from Microsoft&apos;s official sources
-            </p>
-            <div className="flex justify-center space-x-4 text-sm">
-              <a 
-                href="https://www.microsoft.com/en-us/download/details.aspx?id=56519"
-                className="text-google-gray-600 hover:text-google-blue-600 hover:underline transition-colors"
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                Official Data Source
-              </a>
-              <span className="text-google-gray-400">|</span>
-              <Link href="/about" className="text-google-gray-600 hover:text-google-blue-600 hover:underline transition-colors">
-                About
-              </Link>
-              <span className="text-google-gray-400">|</span>
-              <a 
-                href="https://github.com/endgor/azure-ip-lookup"
-                className="text-google-gray-600 hover:text-google-blue-600 hover:underline transition-colors"
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                GitHub Repository
-              </a>
+              </button>
             </div>
+
+            <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-6">
+              {NAV_SECTIONS.map((section) => (
+                <div key={section.label}>
+                  <p
+                    className={`px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 ${
+                      isSidebarCollapsed ? 'hidden' : 'block'
+                    }`}
+                  >
+                    {section.label}
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {section.items.map((item) => {
+                      const active = matchRoute(item.href);
+                      const disabled = item.disabled;
+                      const baseClasses =
+                        'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors';
+                      const stateClasses = disabled
+                        ? 'cursor-not-allowed text-slate-600'
+                        : active
+                        ? 'bg-slate-800/80 text-slate-100'
+                        : 'text-slate-300 hover:bg-slate-800/60 hover:text-slate-100';
+
+                      return (
+                        <Link
+                          key={item.label}
+                          href={disabled ? '#' : item.href}
+                          className={`${baseClasses} ${stateClasses}`}
+                          aria-disabled={disabled}
+                          tabIndex={disabled ? -1 : undefined}
+                          onClick={(event) => {
+                            if (disabled) {
+                              event.preventDefault();
+                            }
+                          }}
+                        >
+                          <span
+                            className={`flex h-9 w-9 items-center justify-center rounded-md border border-transparent bg-slate-900/40 transition-colors ${
+                              active ? 'border-sky-500/60 bg-sky-500/10' : 'border-slate-800'
+                            }`}
+                          >
+                            {ICONS[item.icon](active)}
+                          </span>
+                          <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>{item.label}</span>
+                          {item.comingSoon && !isSidebarCollapsed && (
+                            <span className="ml-auto text-xs font-semibold uppercase text-slate-400">Soon</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </nav>
+
+            <div className="border-t border-slate-800 px-3 py-4">
+              <Link
+                href="https://github.com/endgor/azure-ip-lookup"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800/60 hover:text-slate-100"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-800 bg-slate-900/40">
+                  {ICONS.github(false)}
+                </span>
+                <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>GitHub Repository</span>
+              </Link>
+            </div>
+          </aside>
+
+          <div className="flex flex-1 flex-col">
+            <main className="flex-1 overflow-y-auto px-6 py-10">
+              <div className="mx-auto w-full max-w-6xl space-y-6">{children}</div>
+            </main>
           </div>
-        </footer>
+        </div>
       </div>
     </>
   );

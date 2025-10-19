@@ -3,43 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 60, 64, 67;
-  --background-rgb: 255, 255, 255;
-  --text-light-rgb: 95, 99, 104;
-  --border-rgb: 218, 220, 224;
-  --accent-rgb: 26, 115, 232;
-  --surface-rgb: 248, 249, 250;
+  --foreground-rgb: 226, 232, 240;
+  --background-rgb: 2, 6, 23;
+  --surface-rgb: 15, 23, 42;
+  --border-rgb: 30, 41, 59;
+  --accent-rgb: 56, 189, 248;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-  font-family: var(--font-inter), Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-inter), 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .prose h1 {
-  @apply text-3xl font-bold mb-6 text-google-gray-900;
+  @apply mb-6 text-3xl font-semibold text-slate-100;
 }
 
 .prose h2 {
-  @apply text-2xl font-semibold mt-8 mb-4 text-google-gray-800;
+  @apply mt-10 mb-4 text-2xl font-semibold text-slate-100;
 }
 
 .prose h3 {
-  @apply text-xl font-semibold mt-6 mb-3 text-google-gray-700;
+  @apply mt-6 mb-3 text-xl font-semibold text-slate-100;
 }
 
 .prose p {
-  @apply mb-4 text-google-gray-700;
+  @apply mb-4 text-slate-300;
 }
 
 .prose a {
-  @apply text-google-blue-600 hover:text-google-blue-700 hover:underline;
+  @apply font-semibold text-sky-300 underline-offset-4 hover:text-sky-200 hover:underline;
 }
 
-.prose ul, .prose ol {
-  @apply my-4 ml-6;
+.prose ul,
+.prose ol {
+  @apply my-4 ml-6 text-slate-300;
 }
 
 .prose li {

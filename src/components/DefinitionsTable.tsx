@@ -7,7 +7,7 @@ interface DefinitionsTableProps {
 
 const DefinitionsTable = memo(function DefinitionsTable({ metadata }: DefinitionsTableProps) {
   if (!metadata || metadata.length === 0) {
-    return <div className="text-gray-500">File information not available</div>;
+    return <div className="px-4 py-3 text-sm text-slate-400">File information not available.</div>;
   }
 
   const getCloudDisplayName = (cloud: string): string => {
@@ -36,37 +36,37 @@ const DefinitionsTable = memo(function DefinitionsTable({ metadata }: Definition
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-slate-800/70 text-sm text-slate-200">
+        <thead className="bg-slate-900/70 text-xs uppercase tracking-wide text-slate-400">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cloud</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Change Number</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Download</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Retrieved</th>
+            <th className="px-4 py-3 text-left">Cloud</th>
+            <th className="px-4 py-3 text-left">Change</th>
+            <th className="px-4 py-3 text-left">Download</th>
+            <th className="px-4 py-3 text-left">Last Retrieved</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="divide-y divide-slate-800/60">
           {metadata
             .sort((a, b) => a.cloud.localeCompare(b.cloud))
             .map((file, index) => (
-              <tr key={file.cloud} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-6 py-4 text-sm font-medium text-gray-900 break-words">
+              <tr key={file.cloud} className={index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-900/20'}>
+                <td className="px-4 py-3 font-semibold text-slate-100 break-words">
                   {getCloudDisplayName(file.cloud)}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                <td className="px-4 py-3 text-slate-200 break-words">
                   {file.changeNumber}
                 </td>
-                <td className="px-6 py-4 text-sm break-words">
+                <td className="px-4 py-3 break-words">
                   <a
                     href={file.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-700 hover:text-gray-900 hover:underline"
+                    className="font-semibold text-sky-200 hover:text-sky-100 hover:underline"
                   >
                     {file.filename}
                   </a>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 break-words">
+                <td className="px-4 py-3 text-slate-300 break-words">
                   {formatDate(file.lastRetrieved)}
                 </td>
               </tr>

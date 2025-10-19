@@ -6,14 +6,16 @@ import ExportDropdown from './ExportDropdown';
 
 // Network features descriptions
 const networkFeaturesInfo = (
-  <div className="space-y-3 normal-case">
-    <p className="font-medium">These are Azure network features where this service tag can be used:</p>
+  <div className="space-y-3 text-slate-200">
+    <p className="text-sm font-semibold text-slate-100">These are Azure network features where this service tag can be used:</p>
     <p><strong>API</strong> - Application Programming Interface endpoints</p>
     <p><strong>NSG</strong> - Network security groups for controlling traffic</p>
     <p><strong>UDR</strong> - User defined routes for custom routing</p>
     <p><strong>FW</strong> - Azure Firewall service</p>
     <p><strong>VSE</strong> - Virtual service endpoints for secure Azure service access</p>
-    <p className="text-xs mt-2 pt-2 border-t border-gray-600">Service tags appear as selectable options in dropdown menus when configuring network rules in Azure</p>
+    <p className="mt-2 border-t border-slate-700 pt-2 text-xs text-slate-400">
+      Service tags appear as selectable options when configuring network rules in Azure.
+    </p>
   </div>
 );
 
@@ -36,7 +38,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
   
   // Handle service tag click
   const handleServiceTagClick = (serviceTagId: string) => {
-    router.push(`/service-tags/${encodeURIComponent(serviceTagId)}`);
+    router.push(`/tools/service-tags/${encodeURIComponent(serviceTagId)}`);
   };
   
   // Handle column sort
@@ -79,61 +81,67 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
   };
   
   return (
-    <section className="bg-white border border-google-gray-200 rounded-lg shadow-google overflow-hidden mb-6" aria-label="Search Results">
-      <header className="bg-google-gray-50 px-4 py-3 border-b border-google-gray-200">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-lg font-semibold text-google-gray-900">
-              Results for {query}
-            </h2>
-            <p className="text-sm text-google-gray-600">
-              Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
-            </p>
-          </div>
-          <div className="flex-shrink-0">
-            <ExportDropdown results={sortedResults} query={query} />
-          </div>
+    <section
+      className="mb-6 overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-900/50 shadow-xl shadow-slate-950/30"
+      aria-label="Search Results"
+    >
+      <header className="flex flex-col gap-4 border-b border-slate-800/70 bg-slate-900/70 px-6 py-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-slate-50">Results for {query}</h2>
+          <p className="text-sm text-slate-400">
+            Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <ExportDropdown results={sortedResults} query={query} />
         </div>
       </header>
-      
-      <div className="overflow-x-auto w-full">
-        <table className="min-w-full divide-y divide-google-gray-200 table-fixed relative" aria-label="Azure IP Ranges">
-          <thead className="bg-google-gray-50 relative">
-            <tr>
-              <th 
-                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[20%]"
+
+      <div className="w-full overflow-x-auto">
+        <table className="relative min-w-full table-fixed divide-y divide-slate-800/70" aria-label="Azure IP Ranges">
+          <thead className="bg-slate-900/70">
+            <tr className="text-left text-xs uppercase tracking-wider text-slate-400">
+              <th
+                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-900/80"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
-              <th 
-                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[20%]"
+              <th
+                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-900/80"
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
-              <th 
-                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[15%]"
+              <th
+                className="w-[15%] px-5 py-4 font-semibold transition hover:bg-slate-900/80"
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
-              <th 
-                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[20%]"
+              <th
+                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-900/80"
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
-              <th 
-                className="px-4 py-3 text-left text-xs font-medium text-google-gray-600 uppercase tracking-wider cursor-pointer hover:bg-google-gray-100 transition-colors w-[25%] relative"
+              <th
+                className="relative w-[25%] px-5 py-4 font-semibold transition hover:bg-slate-900/80"
                 onClick={() => handleSort('networkFeatures')}
               >
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   <span>Network features {renderSortIndicator('networkFeatures')}</span>
                   <Tooltip content={networkFeaturesInfo}>
-                    <span className="text-google-gray-500 hover:text-google-blue-600 cursor-help transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <span className="cursor-help text-slate-500 transition hover:text-sky-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline-block h-4 w-4" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M12 17h.01M12 10a2 2 0 00-2 2v1a1 1 0 002 0v-.5c0-.28.22-.5.5-.5.83 0 1.5-.67 1.5-1.5A2.5 2.5 0 0010 8"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
                       </svg>
                     </span>
                   </Tooltip>
@@ -141,35 +149,32 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-google-gray-200">
+          <tbody className="divide-y divide-slate-800/60">
             {sortedResults.map((result, index) => (
-              <tr key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`} className={index % 2 === 0 ? 'bg-white' : 'bg-google-gray-50 hover:bg-google-blue-50'} onMouseEnter={() => {}} onMouseLeave={() => {}}>
-                <td className="px-4 py-4 text-sm font-medium break-words">
+              <tr
+                key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`}
+                className={index % 2 === 0 ? 'bg-slate-900/40' : 'bg-slate-900/20'}
+              >
+                <td className="px-5 py-4 text-sm font-semibold text-slate-100">
                   <button
                     onClick={() => handleServiceTagClick(result.serviceTagId)}
-                    className="text-google-blue-600 hover:text-google-blue-700 hover:underline cursor-pointer font-medium transition-colors"
+                    className="rounded-md border border-transparent px-2 py-1 text-left text-sky-300 transition hover:border-sky-500/40 hover:bg-sky-500/10 hover:text-sky-200"
                     title={`View details for ${result.serviceTagId}`}
                   >
                     {result.serviceTagId}
                   </button>
                 </td>
-                <td className="px-4 py-4 text-sm text-google-gray-900 break-words font-mono">
+                <td className="px-5 py-4 font-mono text-sm text-slate-100">
                   {result.ipAddressPrefix}
                   {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && (
-                    <span className="ml-2 text-xs px-2 py-1 rounded bg-google-blue-50 text-google-blue-700 inline-block mt-1 font-sans">
+                    <span className="mt-2 inline-block rounded-md border border-sky-500/30 bg-sky-500/10 px-2 py-1 text-xs font-semibold text-sky-200">
                       {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
                     </span>
                   )}
                 </td>
-                <td className="px-4 py-4 text-sm text-google-gray-700 break-words">
-                  {result.region || '-'}
-                </td>
-                <td className="px-4 py-4 text-sm text-google-gray-700 break-words">
-                  {result.systemService || '-'}
-                </td>
-                <td className="px-4 py-4 text-sm text-google-gray-700 break-all leading-relaxed">
-                  {result.networkFeatures || '-'}
-                </td>
+                <td className="px-5 py-4 text-sm text-slate-300">{result.region || '-'}</td>
+                <td className="px-5 py-4 text-sm text-slate-300">{result.systemService || '-'}</td>
+                <td className="px-5 py-4 text-sm text-slate-300">{result.networkFeatures || '-'}</td>
               </tr>
             ))}
           </tbody>

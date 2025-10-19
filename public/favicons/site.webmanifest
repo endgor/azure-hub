@@ -1,7 +1,7 @@
 {
-    "name": "Azure IP Lookup",
-    "short_name": "Azure IP",
-    "description": "Check if an IP address belongs to Azure Service Tags",
+    "name": "Azure Hub",
+    "short_name": "Azure Hub",
+    "description": "Unified workspace for Azure IP lookup, service tags, and diagnostics tooling.",
     "icons": [
         {
             "src": "/favicons/android-chrome-192x192.png",
