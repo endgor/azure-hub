@@ -9,6 +9,7 @@ interface SubnetExportButtonProps {
   rowColors: Record<string, string>;
   rowComments: Record<string, string>;
   disabled?: boolean;
+  variant?: 'default' | 'icon';
 }
 
 export default function SubnetExportButton({
@@ -18,7 +19,8 @@ export default function SubnetExportButton({
   basePrefix,
   rowColors,
   rowComments,
-  disabled = false
+  disabled = false,
+  variant = 'default'
 }: SubnetExportButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -71,26 +73,44 @@ export default function SubnetExportButton({
   };
 
   if (disabled || leaves.length === 0) {
-    return null;
+   return null;
   }
+
+  const isIconVariant = variant === 'icon';
+  const triggerClasses = isIconVariant
+    ? `inline-flex h-8 w-8 items-center justify-center rounded-full border ${
+        isOpen ? 'border-sky-300 text-sky-600' : 'border-slate-200 text-slate-600 hover:border-sky-200'
+      } bg-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 disabled:cursor-not-allowed disabled:opacity-60`
+    : 'inline-flex items-center justify-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-[0_6px_18px_-15px_rgba(15,23,42,0.55)] transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70';
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         type="button"
-        className="inline-flex items-center justify-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-[0_6px_18px_-15px_rgba(15,23,42,0.55)] transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70"
+        className={triggerClasses}
         onClick={() => setIsOpen((current) => !current)}
         aria-expanded={isOpen}
         aria-haspopup="true"
         disabled={isExporting}
+        title={isIconVariant ? 'Export subnet plan' : undefined}
       >
-        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+        <svg
+          className={isIconVariant ? 'h-4 w-4' : 'h-4 w-4'}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden
+        >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        Export
-        <svg className="h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'} />
-        </svg>
+        {!isIconVariant && (
+          <>
+            Export
+            <svg className="h-4 w-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7'} />
+            </svg>
+          </>
+        )}
       </button>
 
       {isOpen && (

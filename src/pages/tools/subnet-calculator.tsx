@@ -94,6 +94,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
   const shareTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [isGeneratingShare, setIsGeneratingShare] = useState(false);
   const [shareStatus, setShareStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [isAzureMenuOpen, setIsAzureMenuOpen] = useState(false);
+  const azureMenuRef = useRef<HTMLDivElement | null>(null);
 
   const leaves = useMemo(() => collectLeaves(state.tree, state.rootId), [state.tree, state.rootId]);
   const maxDepth = useMemo(() => leaves.reduce((maximum, leaf) => Math.max(maximum, leaf.depth), 0), [leaves]);
@@ -119,6 +121,26 @@ export default function SubnetCalculatorPage(): JSX.Element {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!isAzureMenuOpen) {
+      return;
+    }
+
+    function handleClick(event: MouseEvent) {
+      if (!azureMenuRef.current) {
+        return;
+      }
+      if (!azureMenuRef.current.contains(event.target as Node)) {
+        setIsAzureMenuOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClick);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, [isAzureMenuOpen]);
 
   useEffect(() => {
     if (!router.isReady || hasRestoredShare) {
@@ -597,23 +619,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
             </div>
 
             <div className="flex items-center gap-3 sm:col-start-4 sm:justify-self-end">
-              <label className="inline-flex h-10 items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm transition hover:border-slate-300 focus-within:border-sky-300 focus-within:ring-2 focus-within:ring-sky-200">
-                <input
-                  type="checkbox"
-                  checked={useAzureReservations}
-                  onChange={(event) => setUseAzureReservations(event.target.checked)}
-                  className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
-                />
-                <span>Azure Reserved IPs</span>
-              </label>
-              <SubnetExportButton
-                leaves={leaves}
-                useAzureReservations={useAzureReservations}
-                baseNetwork={state.baseNetwork}
-                basePrefix={state.basePrefix}
-                rowColors={rowColors}
-                rowComments={rowComments}
-              />
               <button
                 type="button"
                 onClick={handleShare}
@@ -655,64 +660,116 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsColorModeActive((current) => !current)}
-                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                      isColorModeActive ? 'border-sky-300 text-sky-600' : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                    aria-pressed={isColorModeActive}
-                    title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
-                  >
-                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 3C7.582 3 4 6.134 4 10c0 2.2 1.265 3.93 2.893 5.144.533.39.857 1.002.857 1.649v.426c0 1.105.895 2 2 2h1.25M12 3c4.418 0 8 3.134 8 7 0 1.867-1.5 3-2.5 3-.461 0-1.046-.108-1.5-.25-.809-.252-1.5.38-1.5 1.223V15m-3.5 5.219l2.25-2.25a1.5 1.5 0 012.122 0l.159.159a1.5 1.5 0 010 2.122l-2.25 2.25a1.5 1.5 0 01-2.122 0l-.159-.159a1.5 1.5 0 010-2.122z"
-                      />
-                    </svg>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsColorModeActive((current) => !current)}
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                        isColorModeActive ? 'border-sky-300 text-sky-600' : 'border-slate-200 hover:border-slate-300'
+                      }`}
+                      aria-pressed={isColorModeActive}
+                      title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
+                    >
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 3C7.582 3 4 6.134 4 10c0 2.2 1.265 3.93 2.893 5.144.533.39.857 1.002.857 1.649v.426c0 1.105.895 2 2 2h1.25M12 3c4.418 0 8 3.134 8 7 0 1.867-1.5 3-2.5 3-.461 0-1.046-.108-1.5-.25-.809-.252-1.5.38-1.5 1.223V15m-3.5 5.219l2.25-2.25a1.5 1.5 0 012.122 0l.159.159a1.5 1.5 0 010 2.122l-2.25 2.25a1.5 1.5 0 01-2.122 0l-.159-.159a1.5 1.5 0 010-2.122z"
+                        />
+                      </svg>
+                    </button>
 
-                  {isColorModeActive && (
-                    <>
-                      <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm">
-                        {COLOR_SWATCHES.map((option) => {
-                          const isSelected = selectedColorId === option.id;
-                          return (
-                            <button
-                              key={option.id}
-                              type="button"
-                              onClick={() => setSelectedColorId(option.id)}
-                              className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                                isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
-                              }`}
-                              style={{ backgroundColor: option.hex }}
-                              aria-label={`Select ${option.label} highlight`}
+                    {isColorModeActive && (
+                      <>
+                        <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm">
+                          {COLOR_SWATCHES.map((option) => {
+                            const isSelected = selectedColorId === option.id;
+                            return (
+                              <button
+                                key={option.id}
+                                type="button"
+                                onClick={() => setSelectedColorId(option.id)}
+                                className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                                  isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
+                                }`}
+                                style={{ backgroundColor: option.hex }}
+                                aria-label={`Select ${option.label} highlight`}
+                              />
+                            );
+                          })}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
+                            className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                              selectedColorId === CLEAR_COLOR_ID
+                                ? 'border-sky-500'
+                                : 'border-transparent hover:border-slate-300'
+                            }`}
+                            style={{
+                              backgroundColor: '#ffffff',
+                              backgroundImage:
+                                'linear-gradient(135deg, transparent 45%, rgba(100,116,139,0.55) 45%, rgba(100,116,139,0.55) 55%, transparent 55%)'
+                            }}
+                            aria-label="Clear highlight"
+                          />
+                        </div>
+
+                        <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
+                          Click a row to paint
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="relative" ref={azureMenuRef}>
+                      {isAzureMenuOpen ? (
+                        <div className="flex items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm">
+                          <label className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={useAzureReservations}
+                              onChange={(event) => setUseAzureReservations(event.target.checked)}
+                              className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
                             />
-                          );
-                        })}
+                            <span className="whitespace-nowrap text-[10px] font-semibold tracking-[0.25em] text-slate-600">
+                              Use Azure Reserved IPs
+                            </span>
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setIsAzureMenuOpen(false)}
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-slate-300 hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-200"
+                            aria-label="Collapse Azure Reserved IPs toggle"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ) : (
                         <button
                           type="button"
-                          onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
-                          className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                            selectedColorId === CLEAR_COLOR_ID
-                              ? 'border-sky-500'
-                              : 'border-transparent hover:border-slate-300'
-                          }`}
-                          style={{
-                            backgroundColor: '#ffffff',
-                            backgroundImage:
-                              'linear-gradient(135deg, transparent 45%, rgba(100,116,139,0.55) 45%, rgba(100,116,139,0.55) 55%, transparent 55%)'
-                          }}
-                          aria-label="Clear highlight"
-                        />
-                      </div>
+                          onClick={() => setIsAzureMenuOpen(true)}
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-sky-600 shadow-sm transition hover:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                          title="Azure Reserved IPs"
+                        >
+                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                            <path d="M5.5 18L11.5 6h5L11.5 18h-6z" opacity="0.9" />
+                            <path d="M12.5 18l2.5-5h3.5l-2.5 5H12.5z" opacity="0.65" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
 
-                      <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
-                        Click a row to paint
-                      </span>
-                    </>
-                  )}
+                    <SubnetExportButton
+                      leaves={leaves}
+                      useAzureReservations={useAzureReservations}
+                      baseNetwork={state.baseNetwork}
+                      basePrefix={state.basePrefix}
+                      rowColors={rowColors}
+                      rowComments={rowComments}
+                      variant="icon"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -945,6 +1002,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                         className="border border-slate-200 px-2.5 py-1.5 align-top text-xs text-slate-500"
                         data-skip-color
                         onClick={(event) => event.stopPropagation()}
+                        style={highlightStyle}
                       >
                         {isEditingComment ? (
                           <form
