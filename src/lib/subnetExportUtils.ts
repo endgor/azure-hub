@@ -38,8 +38,7 @@ export function prepareSubnetExportData(leaves: LeafSubnet[], useAzureReservatio
       Netmask: inetNtoa(subnetNetmask(leaf.prefix)),
       'Range of Addresses': formatRange(leaf.network, lastAddress),
       [usableLabel]: usable ? formatRange(usable.first, usable.last) : 'Reserved',
-      [hostLabel]: hostCount,
-      'Azure Reserved IPs Applied': useAzureReservations ? 'Yes' : 'No'
+      [hostLabel]: hostCount
     };
   });
 }
