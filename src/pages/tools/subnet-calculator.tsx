@@ -644,44 +644,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={handleShare}
-                      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                        shareStatus === 'copied'
-                          ? 'border-emerald-300 text-emerald-600'
-                          : shareStatus === 'error'
-                            ? 'border-rose-300 text-rose-500'
-                            : 'border-slate-200 text-slate-600 hover:border-sky-300 hover:text-sky-600'
-                      }`}
-                      disabled={isGeneratingShare}
-                      title={
-                        shareStatus === 'copied'
-                          ? 'Link copied'
-                          : shareStatus === 'error'
-                            ? 'Copy failed'
-                            : 'Copy shareable link'
-                      }
-                    >
-                      {shareStatus === 'copied' ? (
-                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      ) : shareStatus === 'error' ? (
-                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
-                        </svg>
-                      ) : (
-                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M13.5 7.5l3-3a3 3 0 114.243 4.243l-3 3M10.5 16.5l-3 3a3 3 0 11-4.243-4.243l3-3M8.25 15.75l7.5-7.5"
-                          />
-                        </svg>
-                      )}
-                    </button>
-
-                    <button
-                      type="button"
                       onClick={() => setIsColorModeActive((current) => !current)}
                       className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
                         isColorModeActive ? 'border-sky-300 text-sky-600' : 'border-slate-200 hover:border-slate-300'
@@ -796,6 +758,52 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       rowComments={rowComments}
                       variant="icon"
                     />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleShare}
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                        shareStatus === 'copied'
+                          ? 'border-emerald-300 text-emerald-600'
+                          : shareStatus === 'error'
+                            ? 'border-rose-300 text-rose-500'
+                            : 'border-slate-200 text-slate-600 hover:border-sky-300 hover:text-sky-600'
+                      }`}
+                      disabled={isGeneratingShare}
+                      title={
+                        shareStatus === 'copied'
+                          ? 'Link copied'
+                          : shareStatus === 'error'
+                            ? 'Copy failed'
+                            : 'Copy shareable link'
+                      }
+                    >
+                      {shareStatus === 'copied' ? (
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : shareStatus === 'error' ? (
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                        </svg>
+                      ) : (
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 7.5l3-3a3 3 0 114.243 4.243l-3 3M10.5 16.5l-3 3a3 3 0 11-4.243-4.243l3-3M8.25 15.75l7.5-7.5"
+                          />
+                        </svg>
+                      )}
+                    </button>
+                    {shareStatus === 'copied' && (
+                      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">Link copied!</span>
+                    )}
+                    {shareStatus === 'error' && (
+                      <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-500">Copy failed</span>
+                    )}
                   </div>
                 </div>
               </div>
