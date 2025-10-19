@@ -32,6 +32,17 @@ interface State {
   tree: SubnetTree;
 }
 
+const COLOR_SWATCHES = [
+  { id: 'mint', label: 'Mint', hex: '#d1fae5' },
+  { id: 'sky', label: 'Sky', hex: '#dbeafe' },
+  { id: 'rose', label: 'Rose', hex: '#fce7f3' },
+  { id: 'amber', label: 'Amber', hex: '#fef3c7' },
+  { id: 'violet', label: 'Violet', hex: '#ede9fe' }
+] as const;
+
+const CLEAR_COLOR_ID = 'clear';
+const DEFAULT_COLOR_ID = COLOR_SWATCHES[0].id;
+
 function formatRange(first: number, last: number): string {
   if (first === last) {
     return inetNtoa(first);
@@ -54,6 +65,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
   });
   const [formError, setFormError] = useState<string | null>(null);
   const [useAzureReservations, setUseAzureReservations] = useState(false);
+  const [rowColors, setRowColors] = useState<Record<string, string>>({});
+  const [isColorModeActive, setIsColorModeActive] = useState(false);
+  const [selectedColorId, setSelectedColorId] = useState<string>(DEFAULT_COLOR_ID);
   const [state, setState] = useState<State>(() => {
     const ipValue = inetAtov(DEFAULT_NETWORK)!;
     const normalised = normaliseNetwork(ipValue, DEFAULT_PREFIX);
@@ -71,6 +85,12 @@ export default function SubnetCalculatorPage(): JSX.Element {
   const leafCounts = useMemo(() => computeLeafCounts(state.tree, state.rootId), [state.tree, state.rootId]);
   const joinColumnCount = Math.max(maxDepth + 1, 1);
   const renderedJoinCells = new Set<string>();
+  const activeColorHex = useMemo(() => {
+    if (selectedColorId === CLEAR_COLOR_ID) {
+      return null;
+    }
+    return COLOR_SWATCHES.find((option) => option.id === selectedColorId)?.hex ?? null;
+  }, [selectedColorId]);
   const [resetPulse, setResetPulse] = useState(false);
   const resetTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -81,6 +101,24 @@ export default function SubnetCalculatorPage(): JSX.Element {
       }
     };
   }, []);
+
+  useEffect(() => {
+    setRowColors((current) => {
+      const leafIds = new Set(leaves.map((leaf) => leaf.id));
+      let mutated = false;
+      const next: Record<string, string> = {};
+
+      Object.entries(current).forEach(([leafId, color]) => {
+        if (leafIds.has(leafId)) {
+          next[leafId] = color;
+        } else {
+          mutated = true;
+        }
+      });
+
+      return mutated ? next : current;
+    });
+  }, [leaves]);
 
   const handleFieldChange = (field: 'network' | 'prefix') => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -115,6 +153,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
       baseNetwork: normalisedNetwork,
       basePrefix: parsedPrefix
     });
+    setRowColors({});
+    setIsColorModeActive(false);
     setFormFields({
       network: inetNtoa(normalisedNetwork),
       prefix: parsedPrefix.toString()
@@ -130,6 +170,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
       prefix: DEFAULT_PREFIX.toString()
     });
     setFormError(null);
+    setRowColors({});
+    setIsColorModeActive(false);
     setState({
       rootId,
       tree,
@@ -139,6 +181,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
   };
 
   const handleSplit = (nodeId: string) => {
+    const node = state.tree[nodeId];
+    const canSplitNode = node && !node.children && node.prefix < 32;
+
     setState((current) => {
       const updatedTree = splitSubnet(current.tree, nodeId);
       if (updatedTree === current.tree) {
@@ -150,9 +195,29 @@ export default function SubnetCalculatorPage(): JSX.Element {
         tree: updatedTree
       };
     });
+
+    if (canSplitNode) {
+      setRowColors((current) => {
+        if (!(nodeId in current)) {
+          return current;
+        }
+        const color = current[nodeId];
+        const next = { ...current };
+        delete next[nodeId];
+        if (color) {
+          next[`${nodeId}-0`] = color;
+          next[`${nodeId}-1`] = color;
+        }
+        return next;
+      });
+    }
   };
 
   const handleJoin = (nodeId: string) => {
+    const node = state.tree[nodeId];
+    const childIds = node?.children;
+    const canJoinNode = !!node && !!childIds && isJoinableNode(state.tree, node);
+
     setState((current) => {
       const updatedTree = joinSubnet(current.tree, nodeId);
       if (updatedTree === current.tree) {
@@ -164,6 +229,44 @@ export default function SubnetCalculatorPage(): JSX.Element {
         tree: updatedTree
       };
     });
+
+    if (canJoinNode && childIds) {
+      setRowColors((current) => {
+        const next = { ...current };
+        let mutated = false;
+
+        const leftColor = next[childIds[0]];
+        const rightColor = next[childIds[1]];
+
+        if (childIds[0] in next) {
+          delete next[childIds[0]];
+          mutated = true;
+        }
+        if (childIds[1] in next) {
+          delete next[childIds[1]];
+          mutated = true;
+        }
+
+        const mergedColor =
+          leftColor && rightColor
+            ? leftColor === rightColor
+              ? leftColor
+              : undefined
+            : leftColor || rightColor;
+
+        if (mergedColor) {
+          if (next[nodeId] !== mergedColor) {
+            next[nodeId] = mergedColor;
+            mutated = true;
+          }
+        } else if (nodeId in next) {
+          delete next[nodeId];
+          mutated = true;
+        }
+
+        return mutated ? next : current;
+      });
+    }
   };
 
   return (
@@ -241,6 +344,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 useAzureReservations={useAzureReservations}
                 baseNetwork={state.baseNetwork}
                 basePrefix={state.basePrefix}
+                rowColors={rowColors}
               />
             </div>
 
@@ -254,13 +358,74 @@ export default function SubnetCalculatorPage(): JSX.Element {
 
         <div className="rounded-3xl border border-slate-200/70 bg-white/95 p-5 shadow-[0_16px_36px_-26px_rgba(15,23,42,0.4)]">
           <header className="flex flex-wrap items-center justify-between gap-3">
-            <div className="space-y-1">
+            <div className="space-y-2">
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-slate-400">Current Plan</p>
-              <div className="text-sm text-slate-600">
-                <span className="font-semibold text-slate-900">{inetNtoa(state.baseNetwork)}</span>
-                <span className="ml-1 text-slate-400">{formatPrefix(state.basePrefix)}</span>
-                <span className="mx-2 text-slate-300">·</span>
-                <span>{leaves.length} subnet{leaves.length !== 1 ? 's' : ''}</span>
+              <div className="flex flex-wrap items-center gap-3 text-sm text-slate-600">
+                <div className="flex items-center gap-1 text-sm text-slate-600">
+                  <span className="font-semibold text-slate-900">{inetNtoa(state.baseNetwork)}</span>
+                  <span className="ml-1 text-slate-400">{formatPrefix(state.basePrefix)}</span>
+                  <span className="mx-2 text-slate-300">·</span>
+                  <span>
+                    {leaves.length} subnet{leaves.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsColorModeActive((current) => !current)}
+                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                      isColorModeActive ? 'border-sky-300 text-sky-600' : 'border-slate-200 hover:border-slate-300'
+                    }`}
+                    aria-pressed={isColorModeActive}
+                    title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.232 5.232a3 3 0 114.243 4.243L10.5 18.45l-4.772.53.532-4.772 8.972-8.976z"
+                      />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 7.5l-9 9" />
+                    </svg>
+                  </button>
+
+                  <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm">
+                    {COLOR_SWATCHES.map((option) => {
+                      const isSelected = selectedColorId === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setSelectedColorId(option.id)}
+                          className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                            isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
+                          }`}
+                          style={{ backgroundColor: option.hex }}
+                          aria-label={`Select ${option.label} highlight`}
+                        />
+                      );
+                    })}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
+                      className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 text-[10px] font-bold transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                        selectedColorId === CLEAR_COLOR_ID
+                          ? 'border-sky-500 text-sky-600'
+                          : 'border-transparent text-slate-400 hover:border-slate-300 hover:text-slate-600'
+                      }`}
+                      aria-label="Clear highlight"
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  {isColorModeActive && (
+                    <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
+                      Click a row to paint
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </header>
@@ -299,7 +464,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   const canSplit = leaf.prefix < 32;
                   const segments = [...path].reverse();
                   const joinCells: JSX.Element[] = [];
-                  const rowBackground = rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/40';
+                  const rowColor = rowColors[leaf.id];
+                  const rowBackground = rowColor ? '' : rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/40';
+                  const rowStyle = rowColor ? { backgroundColor: rowColor } : undefined;
 
                   segments.forEach((segment, index) => {
                     const isLeafSegment = index === 0;
@@ -418,7 +585,39 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   });
 
                   return (
-                    <tr key={leaf.id} className={`transition ${rowBackground}`}>
+                    <tr
+                      key={leaf.id}
+                      className={`transition ${rowBackground} ${
+                        isColorModeActive ? 'cursor-pointer select-none' : ''
+                      }`}
+                      style={rowStyle}
+                      onClick={(event) => {
+                        if (!isColorModeActive) {
+                          return;
+                        }
+                        if ((event.target as HTMLElement).closest('button')) {
+                          return;
+                        }
+                        setRowColors((current) => {
+                          if (!activeColorHex) {
+                            if (!(leaf.id in current)) {
+                              return current;
+                            }
+                            const next = { ...current };
+                            delete next[leaf.id];
+                            return next;
+                          }
+                          if (current[leaf.id] === activeColorHex) {
+                            return current;
+                          }
+                          return {
+                            ...current,
+                            [leaf.id]: activeColorHex
+                          };
+                        });
+                      }}
+                      title={isColorModeActive ? 'Click to apply selected color' : undefined}
+                    >
                       <td className="border border-slate-200 px-2.5 py-1.5 align-top">
                         <span className="font-medium text-slate-900">{subnetLabel(leaf)}</span>
                       </td>

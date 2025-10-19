@@ -6,6 +6,7 @@ interface SubnetExportButtonProps {
   useAzureReservations: boolean;
   baseNetwork: number;
   basePrefix: number;
+  rowColors: Record<string, string>;
   disabled?: boolean;
 }
 
@@ -14,6 +15,7 @@ export default function SubnetExportButton({
   useAzureReservations,
   baseNetwork,
   basePrefix,
+  rowColors,
   disabled = false
 }: SubnetExportButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,11 +53,12 @@ export default function SubnetExportButton({
       }
 
       const filename = generateSubnetExportFilename(baseNetwork, basePrefix, useAzureReservations, format);
+      const rowFills = leaves.map((leaf) => rowColors[leaf.id] ?? null);
 
       if (format === 'csv') {
         exportToCSV(exportData, filename);
       } else {
-        exportToExcel(exportData, filename, 'Subnet Plan');
+        exportToExcel(exportData, filename, 'Subnet Plan', { rowFills });
       }
     } catch (error) {
       console.error('Failed to export subnet plan', error);
