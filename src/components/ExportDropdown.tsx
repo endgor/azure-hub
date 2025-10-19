@@ -36,7 +36,7 @@ export default function ExportDropdown({ results, query, disabled = false }: Exp
     if (format === 'csv') {
       exportToCSV(exportData, filename);
     } else {
-      exportToExcel(exportData, filename);
+      await exportToExcel(exportData, filename);
     }
     
     setIsOpen(false);

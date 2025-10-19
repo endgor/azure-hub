@@ -62,7 +62,7 @@ export default function SubnetExportButton({
       if (format === 'csv') {
         exportToCSV(exportData, filename);
       } else {
-        exportToExcel(exportData, filename, 'Subnet Plan', { rowFills });
+        await exportToExcel(exportData, filename, 'Subnet Plan', { rowFills });
       }
     } catch (error) {
       console.error('Failed to export subnet plan', error);
