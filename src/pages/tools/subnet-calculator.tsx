@@ -68,6 +68,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
   const [rowColors, setRowColors] = useState<Record<string, string>>({});
   const [isColorModeActive, setIsColorModeActive] = useState(false);
   const [selectedColorId, setSelectedColorId] = useState<string>(DEFAULT_COLOR_ID);
+  const [rowComments, setRowComments] = useState<Record<string, string>>({});
+  const [activeCommentRow, setActiveCommentRow] = useState<string | null>(null);
+  const [commentDraft, setCommentDraft] = useState('');
   const [state, setState] = useState<State>(() => {
     const ipValue = inetAtov(DEFAULT_NETWORK)!;
     const normalised = normaliseNetwork(ipValue, DEFAULT_PREFIX);
@@ -103,8 +106,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
   }, []);
 
   useEffect(() => {
+    const leafIds = new Set(leaves.map((leaf) => leaf.id));
+
     setRowColors((current) => {
-      const leafIds = new Set(leaves.map((leaf) => leaf.id));
       let mutated = false;
       const next: Record<string, string> = {};
 
@@ -118,7 +122,27 @@ export default function SubnetCalculatorPage(): JSX.Element {
 
       return mutated ? next : current;
     });
-  }, [leaves]);
+
+    setRowComments((current) => {
+      let mutated = false;
+      const next: Record<string, string> = {};
+
+      Object.entries(current).forEach(([leafId, comment]) => {
+        if (leafIds.has(leafId)) {
+          next[leafId] = comment;
+        } else {
+          mutated = true;
+        }
+      });
+
+      return mutated ? next : current;
+    });
+
+    if (activeCommentRow && !leafIds.has(activeCommentRow)) {
+      setActiveCommentRow(null);
+      setCommentDraft('');
+    }
+  }, [leaves, activeCommentRow]);
 
   const handleFieldChange = (field: 'network' | 'prefix') => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -126,6 +150,40 @@ export default function SubnetCalculatorPage(): JSX.Element {
       ...current,
       [field]: value
     }));
+  };
+
+  const openCommentEditor = (leafId: string) => {
+    setActiveCommentRow(leafId);
+    setCommentDraft(rowComments[leafId] ?? '');
+  };
+
+  const closeCommentEditor = () => {
+    setActiveCommentRow(null);
+    setCommentDraft('');
+  };
+
+  const saveComment = (leafId: string, value: string) => {
+    const trimmed = value.trim();
+
+    setRowComments((current) => {
+      if (!trimmed) {
+        if (!(leafId in current)) {
+          return current;
+        }
+        const next = { ...current };
+        delete next[leafId];
+        return next;
+      }
+
+      if (current[leafId] === trimmed) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [leafId]: trimmed
+      };
+    });
   };
 
   const handleApplyNetwork = (event: FormEvent<HTMLFormElement>) => {
@@ -155,6 +213,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
     });
     setRowColors({});
     setIsColorModeActive(false);
+    setRowComments({});
+    closeCommentEditor();
     setFormFields({
       network: inetNtoa(normalisedNetwork),
       prefix: parsedPrefix.toString()
@@ -172,6 +232,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
     setFormError(null);
     setRowColors({});
     setIsColorModeActive(false);
+    setRowComments({});
+    closeCommentEditor();
     setState({
       rootId,
       tree,
@@ -210,6 +272,24 @@ export default function SubnetCalculatorPage(): JSX.Element {
         }
         return next;
       });
+
+      setRowComments((current) => {
+        if (!(nodeId in current)) {
+          return current;
+        }
+        const comment = current[nodeId];
+        const next = { ...current };
+        delete next[nodeId];
+        if (comment) {
+          next[`${nodeId}-0`] = comment;
+          next[`${nodeId}-1`] = comment;
+        }
+        return next;
+      });
+
+      if (activeCommentRow === nodeId) {
+        closeCommentEditor();
+      }
     }
   };
 
@@ -266,6 +346,47 @@ export default function SubnetCalculatorPage(): JSX.Element {
 
         return mutated ? next : current;
       });
+    }
+
+    if (canJoinNode && childIds) {
+      setRowComments((current) => {
+        const leftComment = current[childIds[0]];
+        const rightComment = current[childIds[1]];
+        const next = { ...current };
+        let mutated = false;
+
+        if (childIds[0] in next) {
+          delete next[childIds[0]];
+          mutated = true;
+        }
+        if (childIds[1] in next) {
+          delete next[childIds[1]];
+          mutated = true;
+        }
+
+        const mergedComment =
+          leftComment && rightComment
+            ? leftComment === rightComment
+              ? leftComment
+              : ''
+            : leftComment || rightComment || '';
+
+        if (mergedComment) {
+          if (next[nodeId] !== mergedComment) {
+            next[nodeId] = mergedComment;
+            mutated = true;
+          }
+        } else if (nodeId in next) {
+          delete next[nodeId];
+          mutated = true;
+        }
+
+        return mutated ? next : current;
+      });
+
+      if (activeCommentRow && (childIds.includes(activeCommentRow) || activeCommentRow === nodeId)) {
+        closeCommentEditor();
+      }
     }
   };
 
@@ -345,6 +466,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 baseNetwork={state.baseNetwork}
                 basePrefix={state.basePrefix}
                 rowColors={rowColors}
+                rowComments={rowComments}
               />
             </div>
 
@@ -445,6 +567,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   <th className="border border-slate-200 px-2.5 py-2">
                     Hosts{useAzureReservations ? ' (Azure)' : ''}
                   </th>
+                  <th className="border border-slate-200 px-2.5 py-2">Comment</th>
                   <th className="border border-slate-200 px-2.5 py-2 text-center" colSpan={joinColumnCount}>
                     Split / Join
                   </th>
@@ -467,6 +590,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   const rowColor = rowColors[leaf.id];
                   const rowBackground = rowColor ? '' : rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/40';
                   const rowStyle = rowColor ? { backgroundColor: rowColor } : undefined;
+                  const comment = rowComments[leaf.id] ?? '';
+                  const isEditingComment = activeCommentRow === leaf.id;
 
                   segments.forEach((segment, index) => {
                     const isLeafSegment = index === 0;
@@ -595,7 +720,13 @@ export default function SubnetCalculatorPage(): JSX.Element {
                         if (!isColorModeActive) {
                           return;
                         }
-                        if ((event.target as HTMLElement).closest('button')) {
+                        const target = event.target as HTMLElement;
+                        if (
+                          target.closest('button') ||
+                          target.closest('[data-skip-color]') ||
+                          target.tagName === 'TEXTAREA' ||
+                          target.tagName === 'INPUT'
+                        ) {
                           return;
                         }
                         setRowColors((current) => {
@@ -632,6 +763,78 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       </td>
                       <td className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500">
                         {hostCount.toLocaleString()}
+                      </td>
+                      <td
+                        className="border border-slate-200 px-2.5 py-1.5 align-top text-xs text-slate-500"
+                        data-skip-color
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        {isEditingComment ? (
+                          <form
+                            className="space-y-2"
+                            onSubmit={(event) => {
+                              event.preventDefault();
+                              saveComment(leaf.id, commentDraft);
+                              closeCommentEditor();
+                            }}
+                          >
+                            <textarea
+                              value={commentDraft}
+                              onChange={(event) => setCommentDraft(event.target.value)}
+                              onKeyDown={(event) => {
+                                if (event.key === 'Escape') {
+                                  event.preventDefault();
+                                  closeCommentEditor();
+                                }
+                              }}
+                              className="w-full rounded-lg border border-slate-300 px-2 py-1 text-sm text-slate-700 shadow-sm focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                              rows={3}
+                              autoFocus
+                              placeholder="Document this subnet..."
+                            />
+                            <div className="flex items-center gap-2">
+                              <button
+                                type="submit"
+                                className="inline-flex items-center justify-center rounded-[12px] bg-sky-500 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                              >
+                                Save
+                              </button>
+                              <button
+                                type="button"
+                                onClick={closeCommentEditor}
+                                className="inline-flex items-center justify-center rounded-[12px] border border-slate-300 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 transition hover:border-slate-400 hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </form>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`max-w-[220px] truncate ${
+                                comment ? 'text-slate-600' : 'text-slate-400 italic'
+                              }`}
+                              title={comment || undefined}
+                            >
+                              {comment || 'Add comment'}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => openCommentEditor(leaf.id)}
+                              className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-sky-300 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                              aria-label={comment ? 'Edit comment' : 'Add comment'}
+                            >
+                              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 20h9" />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M16.5 3.5a2.121 2.121 0 113 3L7 19l-4 1 1-4L16.5 3.5z"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        )}
                       </td>
                       {joinCells}
                     </tr>

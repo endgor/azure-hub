@@ -18,7 +18,11 @@ function formatRange(first: number, last: number): string {
   return `${inetNtoa(first)} - ${inetNtoa(last)}`;
 }
 
-export function prepareSubnetExportData(leaves: LeafSubnet[], useAzureReservations: boolean): SubnetExportRow[] {
+export function prepareSubnetExportData(
+  leaves: LeafSubnet[],
+  useAzureReservations: boolean,
+  rowComments: Record<string, string> = {}
+): SubnetExportRow[] {
   if (leaves.length === 0) {
     return [];
   }
@@ -38,7 +42,8 @@ export function prepareSubnetExportData(leaves: LeafSubnet[], useAzureReservatio
       Netmask: inetNtoa(subnetNetmask(leaf.prefix)),
       'Range of Addresses': formatRange(leaf.network, lastAddress),
       [usableLabel]: usable ? formatRange(usable.first, usable.last) : 'Reserved',
-      [hostLabel]: hostCount
+      [hostLabel]: hostCount,
+      Comment: rowComments[leaf.id] ?? ''
     };
   });
 }

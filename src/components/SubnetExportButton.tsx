@@ -7,6 +7,7 @@ interface SubnetExportButtonProps {
   baseNetwork: number;
   basePrefix: number;
   rowColors: Record<string, string>;
+  rowComments: Record<string, string>;
   disabled?: boolean;
 }
 
@@ -16,6 +17,7 @@ export default function SubnetExportButton({
   baseNetwork,
   basePrefix,
   rowColors,
+  rowComments,
   disabled = false
 }: SubnetExportButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +49,7 @@ export default function SubnetExportButton({
         import('@/lib/exportUtils')
       ]);
 
-      const exportData = prepareSubnetExportData(leaves, useAzureReservations);
+      const exportData = prepareSubnetExportData(leaves, useAzureReservations, rowComments);
       if (exportData.length === 0) {
         return;
       }
