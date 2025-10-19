@@ -664,50 +664,54 @@ export default function SubnetCalculatorPage(): JSX.Element {
                     aria-pressed={isColorModeActive}
                     title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
                   >
-                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M15.232 5.232a3 3 0 114.243 4.243L10.5 18.45l-4.772.53.532-4.772 8.972-8.976z"
+                        d="M12 3C7.582 3 4 6.134 4 10c0 2.2 1.265 3.93 2.893 5.144.533.39.857 1.002.857 1.649v.426c0 1.105.895 2 2 2h1.25M12 3c4.418 0 8 3.134 8 7 0 1.867-1.5 3-2.5 3-.461 0-1.046-.108-1.5-.25-.809-.252-1.5.38-1.5 1.223V15m-3.5 5.219l2.25-2.25a1.5 1.5 0 012.122 0l.159.159a1.5 1.5 0 010 2.122l-2.25 2.25a1.5 1.5 0 01-2.122 0l-.159-.159a1.5 1.5 0 010-2.122z"
                       />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 7.5l-9 9" />
                     </svg>
                   </button>
 
-                  <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm">
-                    {COLOR_SWATCHES.map((option) => {
-                      const isSelected = selectedColorId === option.id;
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          onClick={() => setSelectedColorId(option.id)}
-                          className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                            isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
-                          }`}
-                          style={{ backgroundColor: option.hex }}
-                          aria-label={`Select ${option.label} highlight`}
-                        />
-                      );
-                    })}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
-                      className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 text-[10px] font-bold transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                        selectedColorId === CLEAR_COLOR_ID
-                          ? 'border-sky-500 text-sky-600'
-                          : 'border-transparent text-slate-400 hover:border-slate-300 hover:text-slate-600'
-                      }`}
-                      aria-label="Clear highlight"
-                    >
-                      ×
-                    </button>
-                  </div>
-
                   {isColorModeActive && (
-                    <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
-                      Click a row to paint
-                    </span>
+                    <>
+                      <div className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm">
+                        {COLOR_SWATCHES.map((option) => {
+                          const isSelected = selectedColorId === option.id;
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => setSelectedColorId(option.id)}
+                              className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                                isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
+                              }`}
+                              style={{ backgroundColor: option.hex }}
+                              aria-label={`Select ${option.label} highlight`}
+                            />
+                          );
+                        })}
+                        <button
+                          type="button"
+                          onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
+                          className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                            selectedColorId === CLEAR_COLOR_ID
+                              ? 'border-sky-500'
+                              : 'border-transparent hover:border-slate-300'
+                          }`}
+                          style={{
+                            backgroundColor: '#ffffff',
+                            backgroundImage:
+                              'linear-gradient(135deg, transparent 45%, rgba(100,116,139,0.55) 45%, rgba(100,116,139,0.55) 55%, transparent 55%)'
+                          }}
+                          aria-label="Clear highlight"
+                        />
+                      </div>
+
+                      <span className="text-[11px] font-medium uppercase tracking-[0.25em] text-slate-400">
+                        Click a row to paint
+                      </span>
+                    </>
                   )}
                 </div>
               </div>
@@ -751,7 +755,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   const joinCells: JSX.Element[] = [];
                   const rowColor = rowColors[leaf.id];
                   const rowBackground = rowColor ? '' : rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/40';
-                  const rowStyle = rowColor ? { backgroundColor: rowColor } : undefined;
+                  const highlightStyle = rowColor ? { backgroundColor: rowColor } : undefined;
                   const comment = rowComments[leaf.id] ?? '';
                   const isEditingComment = activeCommentRow === leaf.id;
 
@@ -877,7 +881,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       className={`transition ${rowBackground} ${
                         isColorModeActive ? 'cursor-pointer select-none' : ''
                       }`}
-                      style={rowStyle}
                       onClick={(event) => {
                         if (!isColorModeActive) {
                           return;
@@ -911,19 +914,31 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       }}
                       title={isColorModeActive ? 'Click to apply selected color' : undefined}
                     >
-                      <td className="border border-slate-200 px-2.5 py-1.5 align-top">
+                      <td className="border border-slate-200 px-2.5 py-1.5 align-top" style={highlightStyle}>
                         <span className="font-medium text-slate-900">{subnetLabel(leaf)}</span>
                       </td>
-                      <td className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500">
+                      <td
+                        className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500"
+                        style={highlightStyle}
+                      >
                         {inetNtoa(subnetNetmask(leaf.prefix))}
                       </td>
-                      <td className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500">
+                      <td
+                        className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500"
+                        style={highlightStyle}
+                      >
                         {formatRange(leaf.network, lastAddress)}
                       </td>
-                      <td className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500">
+                      <td
+                        className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500"
+                        style={highlightStyle}
+                      >
                         {usable ? formatRange(usable.first, usable.last) : 'Reserved'}
                       </td>
-                      <td className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500">
+                      <td
+                        className="border border-slate-200 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500"
+                        style={highlightStyle}
+                      >
                         {hostCount.toLocaleString()}
                       </td>
                       <td
