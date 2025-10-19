@@ -152,9 +152,7 @@ const NAV_SECTIONS: NavSection[] = [
       {
         label: 'Subnet Calculator',
         href: '/tools/subnet-calculator',
-        icon: 'subnet',
-        comingSoon: true,
-        disabled: true
+        icon: 'subnet'
       }
     ]
   },
