@@ -162,11 +162,9 @@ const NAV_SECTIONS: NavSection[] = [
     label: 'Identity',
     items: [
       {
-        label: 'Tenant Insights',
-        href: '/tools/tenant-insights',
-        icon: 'tenant',
-        comingSoon: true,
-        disabled: true
+        label: 'Tenant Lookup',
+        href: '/tools/tenant-lookup',
+        icon: 'tenant'
       }
     ]
   },

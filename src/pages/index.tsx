@@ -17,6 +17,20 @@ const CORE_TOOLS = [
     )
   },
   {
+    title: 'Tenant Lookup',
+    description: 'Discover tenant IDs, default domains, and Azure AD region scope by domain.',
+    href: '/tools/tenant-lookup',
+    badge: 'New',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M12 2a5 5 0 015 5v1h1a4 4 0 013.98 3.6L22 12v4a3 3 0 01-2.82 3H19v1a2 2 0 01-1.85 1.99L17 22H7a2 2 0 01-1.99-1.85L5 20v-1h-.18A2.82 2.82 0 012 16.18V12a4 4 0 013.8-3.99L6 8h1V7a5 5 0 015-5zm0 2a3 3 0 00-2.95 2.6L9 7v1h6V7a3 3 0 00-2.4-2.95L12 4zm6 6H6a2 2 0 00-1.99 1.85L4 12v4a.82.82 0 00.7.82L5 17h14a1 1 0 001-.88l.01-.12v-4a2 2 0 00-1.85-1.99L18 10z"
+        />
+      </svg>
+    )
+  },
+  {
     title: 'Service Tags Explorer',
     description: 'Browse Microsoft service tags and jump directly into their associated address ranges.',
     href: '/tools/service-tags',
@@ -33,19 +47,6 @@ const CORE_TOOLS = [
 ] as const;
 
 const UPCOMING_TOOLS = [
-  {
-    title: 'Tenant Insights',
-    description: 'Pull directory metadata, domains, and subscription footprint in one view.',
-    href: '/tools/tenant-insights',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-400" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M4 4a2 2 0 012-2h12a2 2 0 012 2v6h-2V4H6v16h6v2H6a2 2 0 01-2-2V4zm13 10h3l-4 6v-4h-3l4-6v4z"
-        />
-      </svg>
-    )
-  },
   {
     title: 'Subnet Calculator',
     description: 'Plan subnets, address allocation, and export templates for Azure networking.',
