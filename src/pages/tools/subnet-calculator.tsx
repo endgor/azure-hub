@@ -670,10 +670,16 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       aria-pressed={isColorModeActive}
                       title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
                     >
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 3.487l3.651 3.651a1.5 1.5 0 010 2.121l-9.621 9.621-4.243.707.707-4.243 9.621-9.621a1.5 1.5 0 012.121 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.25 5.102l3.651 3.651" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 20.25h13.5" />
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 3.5c-4.694 0-8.5 3.206-8.5 7.25 0 1.502.414 2.878 1.318 3.999a3.5 3.5 0 002.682 1.251h1.75a1.5 1.5 0 011.5 1.5v.25a2.5 2.5 0 002.5 2.5h.25a3.75 3.75 0 003.75-3.75c0-1.1-.9-2-2-2h-.75a1.5 1.5 0 01-1.5-1.5c0-.828.672-1.5 1.5-1.5H15a3.5 3.5 0 000-7c-.552 0-1 .448-1 1s-.448 1-1 1-1-.448-1-1-.448-1-1-1z"
+                        />
+                        <circle cx="8.6" cy="10.3" r="0.85" fill="currentColor" />
+                        <circle cx="10.6" cy="7.4" r="0.85" fill="currentColor" />
+                        <circle cx="13.4" cy="8.2" r="0.85" fill="currentColor" />
+                        <circle cx="9.4" cy="13.1" r="0.85" fill="currentColor" />
                       </svg>
                     </button>
 
@@ -705,19 +711,13 @@ export default function SubnetCalculatorPage(): JSX.Element {
                             }`}
                             aria-label="Clear highlight"
                           >
-                            <svg
-                              className="h-3.5 w-3.5"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={1.8}
-                            >
+                            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                               <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                d="M14.742 3.97l5.287 5.287a1.5 1.5 0 010 2.122l-5.287 5.287a1.5 1.5 0 01-2.122 0l-5.287-5.287a1.5 1.5 0 010-2.122l5.287-5.287a1.5 1.5 0 012.122 0z"
+                                d="M8.75 19.25h-3.5v-3.5L13.5 7.5l3.5 3.5-8.25 8.25z"
                               />
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 20.25H12.75" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.75l2.25-2.25a1.5 1.5 0 012.121 0l1.379 1.379a1.5 1.5 0 010 2.121L18 10.25" />
                             </svg>
                           </button>
                         </div>
