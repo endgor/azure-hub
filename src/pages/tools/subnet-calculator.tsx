@@ -575,7 +575,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
 
         <div className="relative rounded-[26px] bg-white/95 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.35)] ring-1 ring-white/60 backdrop-blur">
           <div className="absolute inset-0 rounded-3xl border border-slate-100/40" aria-hidden />
-          <form onSubmit={handleApplyNetwork} className="relative z-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-[240px_160px_minmax(0,1fr)_auto] sm:items-end">
+          <form onSubmit={handleApplyNetwork} className="relative z-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-[240px_160px_minmax(0,1fr)] sm:items-end">
             <label className="flex flex-col gap-2 text-sm text-slate-700">
               <span className="text-sm font-semibold text-slate-900">Network Address</span>
               <input
@@ -618,25 +618,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
               </button>
             </div>
 
-            <div className="flex items-center gap-3 sm:col-start-4 sm:justify-self-end">
-              <button
-                type="button"
-                onClick={handleShare}
-                className="inline-flex h-10 items-center justify-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70"
-                disabled={isGeneratingShare}
-                title="Copy a shareable link to this subnet plan"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M13.5 7.5l3-3a3 3 0 114.243 4.243l-3 3M10.5 16.5l-3 3a3 3 0 11-4.243-4.243l3-3M8.25 15.75l7.5-7.5"
-                  />
-                </svg>
-                {shareStatus === 'copied' ? 'Copied!' : shareStatus === 'error' ? 'Copy Failed' : 'Share'}
-              </button>
-            </div>
-
             {formError && (
               <div className="ml-auto max-w-xs rounded-[18px] border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm text-rose-700 shadow-sm">
                 {formError}
@@ -661,6 +642,44 @@ export default function SubnetCalculatorPage(): JSX.Element {
 
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleShare}
+                      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                        shareStatus === 'copied'
+                          ? 'border-emerald-300 text-emerald-600'
+                          : shareStatus === 'error'
+                            ? 'border-rose-300 text-rose-500'
+                            : 'border-slate-200 text-slate-600 hover:border-sky-300 hover:text-sky-600'
+                      }`}
+                      disabled={isGeneratingShare}
+                      title={
+                        shareStatus === 'copied'
+                          ? 'Link copied'
+                          : shareStatus === 'error'
+                            ? 'Copy failed'
+                            : 'Copy shareable link'
+                      }
+                    >
+                      {shareStatus === 'copied' ? (
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : shareStatus === 'error' ? (
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
+                        </svg>
+                      ) : (
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 7.5l3-3a3 3 0 114.243 4.243l-3 3M10.5 16.5l-3 3a3 3 0 11-4.243-4.243l3-3M8.25 15.75l7.5-7.5"
+                          />
+                        </svg>
+                      )}
+                    </button>
+
                     <button
                       type="button"
                       onClick={() => setIsColorModeActive((current) => !current)}
