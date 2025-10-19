@@ -670,40 +670,32 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       {isColorModeActive && (
                         <div className="absolute left-1/2 top-[calc(100%+0.5rem)] z-30 flex -translate-x-1/2 flex-col items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-3 py-2 shadow-lg">
                           <div className="flex items-center gap-1.5">
-                            {COLOR_SWATCHES.map((option) => {
-                              const isSelected = selectedColorId === option.id;
-                              return (
-                                <button
-                                  key={option.id}
-                                  type="button"
-                                  onClick={() => setSelectedColorId(option.id)}
-                                  className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                                    isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
-                                  }`}
-                                  style={{ backgroundColor: option.hex }}
-                                  aria-label={`Select ${option.label} highlight`}
-                                />
-                              );
-                            })}
-                            <button
-                              type="button"
-                              onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
-                              className={`inline-flex h-5 w-5 items-center justify-center rounded-full border-2 text-slate-500 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
-                                selectedColorId === CLEAR_COLOR_ID
-                                  ? 'border-sky-500 text-sky-600'
-                                  : 'border-transparent hover:border-slate-300 hover:text-slate-700'
+                          {COLOR_SWATCHES.map((option) => {
+                            const isSelected = selectedColorId === option.id;
+                            return (
+                              <button
+                                key={option.id}
+                                type="button"
+                                onClick={() => setSelectedColorId(option.id)}
+                                className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                                  isSelected ? 'border-sky-500' : 'border-transparent hover:border-slate-300'
                                 }`}
-                              aria-label="Clear highlight"
-                            >
-                              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8.75 19.25h-3.5v-3.5L13.5 7.5l3.5 3.5-8.25 8.25z"
-                                />
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M14.5 6.75l2.25-2.25a1.5 1.5 0 012.121 0l1.379 1.379a1.5 1.5 0 010 2.121L18 10.25" />
-                              </svg>
-                            </button>
+                                style={{ backgroundColor: option.hex }}
+                                aria-label={`Select ${option.label} highlight`}
+                              />
+                            );
+                          })}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedColorId(CLEAR_COLOR_ID)}
+                            className={`h-5 w-5 rounded-full border-2 transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
+                              selectedColorId === CLEAR_COLOR_ID
+                                ? 'border-sky-500'
+                                : 'border-transparent hover:border-slate-300'
+                            }`}
+                            style={{ backgroundColor: '#ffffff' }}
+                            aria-label="Clear highlight"
+                          />
                           </div>
                           <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400">
                             Click a row to paint
