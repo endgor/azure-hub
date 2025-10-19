@@ -2,6 +2,8 @@ import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { AzureIpAddress } from '@/types/azure';
 
+export type ExportRow = Record<string, string | number | boolean | null | undefined>;
+
 export interface ExportData {
   'Service Tag': string;
   'IP Range': string;
@@ -11,7 +13,7 @@ export interface ExportData {
 }
 
 export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
-  return results.map(result => ({
+  return results.map((result) => ({
     'Service Tag': result.serviceTagId || '',
     'IP Range': result.ipAddressPrefix || '',
     'Region': result.region || '',
@@ -20,16 +22,20 @@ export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
   }));
 }
 
-export function exportToCSV(data: ExportData[], filename: string = 'azure-ip-ranges.csv'): void {
+export function exportToCSV<T extends ExportRow>(data: T[], filename: string = 'azure-ip-ranges.csv'): void {
   const csv = Papa.unparse(data);
   downloadFile(csv, filename, 'text/csv;charset=utf-8;');
 }
 
-export function exportToExcel(data: ExportData[], filename: string = 'azure-ip-ranges.xlsx'): void {
+export function exportToExcel<T extends ExportRow>(
+  data: T[],
+  filename: string = 'azure-ip-ranges.xlsx',
+  sheetName: string = 'Azure IP Ranges'
+): void {
   const worksheet = XLSX.utils.json_to_sheet(data);
   const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Azure IP Ranges');
-  
+  XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
+
   // Generate buffer
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
   downloadFile(
@@ -43,15 +49,15 @@ function downloadFile(data: string | Blob, filename: string, mimeType: string): 
   const blob = typeof data === 'string' ? new Blob([data], { type: mimeType }) : data;
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement('a');
-  
+
   link.setAttribute('href', url);
   link.setAttribute('download', filename);
   link.style.visibility = 'hidden';
-  
+
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
+
   window.URL.revokeObjectURL(url);
 }
 

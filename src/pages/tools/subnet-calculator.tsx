@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import Layout from '@/components/Layout';
+import SubnetExportButton from '@/components/SubnetExportButton';
 import {
   DEFAULT_NETWORK,
   DEFAULT_PREFIX,
@@ -180,29 +181,29 @@ export default function SubnetCalculatorPage(): JSX.Element {
           </p>
         </div>
 
-        <div className="relative overflow-hidden rounded-[26px] bg-white/95 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.35)] ring-1 ring-white/60 backdrop-blur">
+        <div className="relative rounded-[26px] bg-white/95 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.35)] ring-1 ring-white/60 backdrop-blur">
           <div className="absolute inset-0 rounded-3xl border border-slate-100/40" aria-hidden />
           <form onSubmit={handleApplyNetwork} className="relative z-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-[240px_160px_minmax(0,1fr)_auto] sm:items-end">
-            <label className="flex flex-col text-sm text-slate-700">
+            <label className="flex flex-col gap-2 text-sm text-slate-700">
               <span className="text-sm font-semibold text-slate-900">Network Address</span>
               <input
                 value={formFields.network}
                 onChange={handleFieldChange('network')}
-                className="mt-1.5 h-11 w-full rounded-[18px] border border-slate-200 bg-slate-50 px-4 text-base font-medium text-slate-900 shadow-[inset_0_1px_1px_rgba(15,23,42,0.08)] placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                className="h-10 w-full rounded-[18px] border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 shadow-sm transition focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200 placeholder:text-slate-400"
                 placeholder="10.0.0.0"
                 inputMode="decimal"
                 autoComplete="off"
               />
             </label>
 
-            <label className="flex flex-col text-sm text-slate-700 sm:w-auto">
+            <label className="flex flex-col gap-2 text-sm text-slate-700 sm:w-auto">
               <span className="text-sm font-semibold text-slate-900">Network Size</span>
-              <div className="mt-1.5 flex h-11 items-center gap-1.5 rounded-[18px] border border-slate-200 bg-slate-50 px-3.5 shadow-[inset_0_1px_1px_rgba(15,23,42,0.08)]">
+              <div className="flex h-10 items-center gap-1.5 rounded-[18px] border border-slate-200 bg-white px-3 shadow-sm transition focus-within:border-sky-300 focus-within:ring-2 focus-within:ring-sky-200">
                 <span className="text-xs font-semibold text-slate-400">/</span>
                 <input
                   value={formFields.prefix}
                   onChange={handleFieldChange('prefix')}
-                  className="w-12 bg-transparent text-center text-base font-semibold text-slate-900 focus:outline-none"
+                  className="w-12 bg-transparent text-center text-sm font-semibold text-slate-900 focus:outline-none"
                   placeholder="16"
                   inputMode="numeric"
                 />
@@ -212,28 +213,36 @@ export default function SubnetCalculatorPage(): JSX.Element {
             <div className="flex items-center gap-3">
               <button
                 type="submit"
-                className="inline-flex h-11 items-center justify-center rounded-[18px] bg-emerald-500 px-5 text-sm font-semibold text-white shadow-[0_10px_22px_-14px_rgba(16,185,129,0.65)] transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-white"
+                className="inline-flex h-10 items-center justify-center rounded-[18px] bg-emerald-500 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-white"
               >
                 Go
               </button>
               <button
                 type="button"
                 onClick={handleReset}
-                className="inline-flex h-11 items-center justify-center rounded-[18px] border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-600 shadow-[0_6px_18px_-15px_rgba(15,23,42,0.55)] transition hover:border-slate-300 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
+                className="inline-flex h-10 items-center justify-center rounded-[18px] border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-slate-300 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
               >
                 Reset
               </button>
             </div>
 
-            <label className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500 sm:col-start-4 sm:inline-flex sm:h-11 sm:justify-self-end sm:rounded-[18px] sm:border sm:border-slate-200 sm:bg-white sm:px-4 sm:text-slate-600 sm:shadow-[0_6px_18px_-15px_rgba(15,23,42,0.55)]">
-              <input
-                type="checkbox"
-                checked={useAzureReservations}
-                onChange={(event) => setUseAzureReservations(event.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+            <div className="flex items-center gap-3 sm:col-start-4 sm:justify-self-end">
+              <label className="inline-flex h-10 items-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm transition hover:border-slate-300 focus-within:border-sky-300 focus-within:ring-2 focus-within:ring-sky-200">
+                <input
+                  type="checkbox"
+                  checked={useAzureReservations}
+                  onChange={(event) => setUseAzureReservations(event.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500"
+                />
+                <span>Azure Reserved IPs</span>
+              </label>
+              <SubnetExportButton
+                leaves={leaves}
+                useAzureReservations={useAzureReservations}
+                baseNetwork={state.baseNetwork}
+                basePrefix={state.basePrefix}
               />
-              <span>Azure Reserved IPs</span>
-            </label>
+            </div>
 
             {formError && (
               <div className="ml-auto max-w-xs rounded-[18px] border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm text-rose-700 shadow-sm">
@@ -254,10 +263,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 <span>{leaves.length} subnet{leaves.length !== 1 ? 's' : ''}</span>
               </div>
             </div>
-            <p className="text-xs text-slate-400">
-              Normalised to network boundary:{' '}
-              <span className="font-semibold text-slate-600">{inetNtoa(state.baseNetwork)}</span>
-            </p>
           </header>
 
           <div className="mt-4 overflow-x-auto">
@@ -309,7 +314,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                         <button
                           type="button"
                           onClick={() => handleSplit(leaf.id)}
-                          className="flex h-full w-full items-center justify-center bg-gradient-to-b from-rose-200/85 to-rose-300/85 px-1 py-2 text-rose-900 transition hover:from-rose-300/90 hover:to-rose-400/90 focus:outline-none focus:ring-2 focus:ring-rose-300 focus:ring-offset-1 focus:ring-offset-white"
+                          className="flex h-full w-full items-center justify-center bg-emerald-500 px-1 py-2 text-white transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-1 focus:ring-offset-white"
                           title={`Split ${subnetLabel(leaf)} into /${leaf.prefix + 1}`}
                         >
                           <span
@@ -353,7 +358,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       <button
                         type="button"
                         onClick={() => handleJoin(segment.id)}
-                        className="flex h-full w-full items-center justify-center bg-gradient-to-b from-sky-200/90 to-sky-300/90 px-1 py-2 text-sky-900 transition hover:from-sky-300/95 hover:to-sky-400/90 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 focus:ring-offset-white"
+                        className="flex h-full w-full items-center justify-center bg-sky-200 px-1 py-2 text-sky-900 transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 focus:ring-offset-white"
                         title={`Join child subnets into ${inetNtoa(segment.network)}/${segment.prefix}`}
                       >
                         <span
