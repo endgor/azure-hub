@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
+import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SubnetExportButton from '@/components/SubnetExportButton';
 import {
@@ -10,6 +11,7 @@ import {
   collectLeaves,
   computeLeafCounts,
   createInitialTree,
+  createTreeFromLeafDefinitions,
   getNodePath,
   hostCapacity,
   hostCapacityAzure,
@@ -24,6 +26,11 @@ import {
   usableRange,
   usableRangeAzure
 } from '@/lib/subnetCalculator';
+import {
+  buildShareableSubnetPlan,
+  parseShareableSubnetPlan,
+  serialiseShareableSubnetPlan
+} from '@/lib/shareSubnetPlan';
 
 interface State {
   rootId: string;
@@ -82,6 +89,11 @@ export default function SubnetCalculatorPage(): JSX.Element {
       basePrefix: DEFAULT_PREFIX
     };
   });
+  const router = useRouter();
+  const [hasRestoredShare, setHasRestoredShare] = useState(false);
+  const shareTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isGeneratingShare, setIsGeneratingShare] = useState(false);
+  const [shareStatus, setShareStatus] = useState<'idle' | 'copied' | 'error'>('idle');
 
   const leaves = useMemo(() => collectLeaves(state.tree, state.rootId), [state.tree, state.rootId]);
   const maxDepth = useMemo(() => leaves.reduce((maximum, leaf) => Math.max(maximum, leaf.depth), 0), [leaves]);
@@ -102,8 +114,85 @@ export default function SubnetCalculatorPage(): JSX.Element {
       if (resetTimerRef.current) {
         clearTimeout(resetTimerRef.current);
       }
+      if (shareTimerRef.current) {
+        clearTimeout(shareTimerRef.current);
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (!router.isReady || hasRestoredShare) {
+      return;
+    }
+
+    const stateParam = router.query.state;
+    if (typeof stateParam !== 'string') {
+      setHasRestoredShare(true);
+      return;
+    }
+
+    const decodedState = parseShareableSubnetPlan(stateParam);
+    if (!decodedState) {
+      setHasRestoredShare(true);
+      return;
+    }
+
+    const shareLeaves = decodedState.leaves;
+    const { rootId, tree: rebuiltTree } = createTreeFromLeafDefinitions(
+      decodedState.net,
+      decodedState.pre,
+      shareLeaves.map((leaf) => ({
+        network: leaf.n,
+        prefix: leaf.p
+      }))
+    );
+
+    const colorByKey = new Map<string, string>();
+    const commentByKey = new Map<string, string>();
+    shareLeaves.forEach((leaf) => {
+      if (leaf.c) {
+        colorByKey.set(`${leaf.n}/${leaf.p}`, leaf.c);
+      }
+      if (leaf.m) {
+        commentByKey.set(`${leaf.n}/${leaf.p}`, leaf.m);
+      }
+    });
+
+    const rebuiltLeaves = collectLeaves(rebuiltTree, rootId);
+    const nextColors: Record<string, string> = {};
+    const nextComments: Record<string, string> = {};
+
+    rebuiltLeaves.forEach((leaf) => {
+      const mapKey = `${leaf.network}/${leaf.prefix}`;
+      const mappedColor = colorByKey.get(mapKey);
+      if (mappedColor) {
+        nextColors[leaf.id] = mappedColor;
+      }
+      const mappedComment = commentByKey.get(mapKey);
+      if (mappedComment) {
+        nextComments[leaf.id] = mappedComment;
+      }
+    });
+
+    setState({
+      rootId,
+      tree: rebuiltTree,
+      baseNetwork: decodedState.net,
+      basePrefix: decodedState.pre
+    });
+
+    setFormFields({
+      network: inetNtoa(decodedState.net),
+      prefix: decodedState.pre.toString()
+    });
+    setUseAzureReservations(Boolean(decodedState.az));
+    setRowColors(nextColors);
+    setRowComments(nextComments);
+    setIsColorModeActive(false);
+    setSelectedColorId(DEFAULT_COLOR_ID);
+    closeCommentEditor();
+    setHasRestoredShare(true);
+  }, [router.isReady, router.query.state, hasRestoredShare]);
 
   useEffect(() => {
     const leafIds = new Set(leaves.map((leaf) => leaf.id));
@@ -184,6 +273,63 @@ export default function SubnetCalculatorPage(): JSX.Element {
         [leafId]: trimmed
       };
     });
+  };
+
+  const copyToClipboard = async (text: string) => {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const successful = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    if (!successful) {
+      throw new Error('Copy to clipboard failed');
+    }
+  };
+
+  const handleShare = async () => {
+    if (typeof window === 'undefined' || isGeneratingShare) {
+      return;
+    }
+
+    setIsGeneratingShare(true);
+    try {
+      const sharePlan = buildShareableSubnetPlan({
+        baseNetwork: state.baseNetwork,
+        basePrefix: state.basePrefix,
+        useAzureReservations,
+        leaves,
+        rowColors,
+        rowComments
+      });
+      const encodedState = serialiseShareableSubnetPlan(sharePlan);
+      const shareUrl = new URL(window.location.href);
+      shareUrl.searchParams.set('state', encodedState);
+
+      await copyToClipboard(shareUrl.toString());
+      setShareStatus('copied');
+      if (shareTimerRef.current) {
+        clearTimeout(shareTimerRef.current);
+      }
+      shareTimerRef.current = setTimeout(() => setShareStatus('idle'), 2400);
+    } catch (error) {
+      console.error('Failed to copy share link', error);
+      setShareStatus('error');
+      if (shareTimerRef.current) {
+        clearTimeout(shareTimerRef.current);
+      }
+      shareTimerRef.current = setTimeout(() => setShareStatus('idle'), 3200);
+    } finally {
+      setIsGeneratingShare(false);
+    }
   };
 
   const handleApplyNetwork = (event: FormEvent<HTMLFormElement>) => {
@@ -468,6 +614,22 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 rowColors={rowColors}
                 rowComments={rowComments}
               />
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex h-10 items-center justify-center gap-2 rounded-[18px] border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600 shadow-sm transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-70"
+                disabled={isGeneratingShare}
+                title="Copy a shareable link to this subnet plan"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} aria-hidden>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 7.5l3-3a3 3 0 114.243 4.243l-3 3M10.5 16.5l-3 3a3 3 0 11-4.243-4.243l3-3M8.25 15.75l7.5-7.5"
+                  />
+                </svg>
+                {shareStatus === 'copied' ? 'Copied!' : shareStatus === 'error' ? 'Copy Failed' : 'Share'}
+              </button>
             </div>
 
             {formError && (

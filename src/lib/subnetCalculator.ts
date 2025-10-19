@@ -288,3 +288,79 @@ export function isJoinableNode(tree: SubnetTree, node: SubnetNode | undefined): 
 
   return Boolean(left && right && !left.children && !right.children);
 }
+
+export interface LeafDefinition {
+  network: number;
+  prefix: number;
+}
+
+export function createTreeFromLeafDefinitions(
+  baseNetwork: number,
+  basePrefix: number,
+  definitions: LeafDefinition[]
+): {
+  rootId: string;
+  tree: SubnetTree;
+} {
+  const sortedDefinitions = [...definitions].sort((a, b) => a.network - b.network);
+  const initial = createInitialTree(baseNetwork, basePrefix);
+  let workingTree = initial.tree;
+
+  sortedDefinitions.forEach(({ network, prefix }) => {
+    workingTree = ensureLeafInTree(workingTree, initial.rootId, network, prefix);
+  });
+
+  return {
+    rootId: initial.rootId,
+    tree: workingTree
+  };
+}
+
+function ensureLeafInTree(tree: SubnetTree, rootId: string, targetNetwork: number, targetPrefix: number): SubnetTree {
+  let currentTree = tree;
+  let currentNodeId = rootId;
+
+  while (true) {
+    const node = currentTree[currentNodeId];
+    if (!node) {
+      break;
+    }
+
+    const nodeLastAddress = subnetLastAddress(node.network, node.prefix);
+    if (targetNetwork < node.network || targetNetwork > nodeLastAddress) {
+      break;
+    }
+
+    if (node.prefix === targetPrefix && node.network === targetNetwork) {
+      break;
+    }
+
+    if (node.prefix >= targetPrefix) {
+      break;
+    }
+
+    if (!node.children) {
+      const updatedTree = splitSubnet(currentTree, currentNodeId);
+      if (updatedTree === currentTree) {
+        break;
+      }
+      currentTree = updatedTree;
+    }
+
+    const currentNode = currentTree[currentNodeId];
+    if (!currentNode.children) {
+      break;
+    }
+
+    const [leftId, rightId] = currentNode.children;
+    const rightNode = currentTree[rightId];
+
+    if (targetNetwork >= rightNode.network) {
+      currentNodeId = rightId;
+    } else {
+      currentNodeId = leftId;
+    }
+  }
+
+  return currentTree;
+}
