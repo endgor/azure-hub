@@ -40,7 +40,7 @@ export default function Custom404() {
             <p className="text-xs text-slate-500">
               Need help? Open an issue on{' '}
               <a
-                href="https://github.com/endgor/azure-ip-lookup/issues"
+                href="https://github.com/endgor/azure-hub/issues"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-sky-300 hover:text-sky-200"

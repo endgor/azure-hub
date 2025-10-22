@@ -11,7 +11,8 @@ type IconKey =
   | 'tenant'
   | 'subnet'
   | 'latency'
-  | 'github';
+  | 'github'
+  | 'help';
 
 interface NavItem {
   label: string;
@@ -120,6 +121,28 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
         fill="currentColor"
         fillRule="evenodd"
         d="M12 2C6.48 2 2 6.58 2 12.26c0 4.51 2.87 8.33 6.84 9.68.5.09.68-.23.68-.5 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.36-3.37-1.36-.45-1.17-1.11-1.48-1.11-1.48-.91-.62.07-.61.07-.61 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.35 1.11 2.92.85.09-.67.35-1.11.64-1.37-2.22-.26-4.56-1.12-4.56-4.99 0-1.1.39-1.99 1.03-2.7-.1-.25-.45-1.28.1-2.67 0 0 .84-.27 2.75 1.03a9.3 9.3 0 012.5-.35c.85 0 1.7.12 2.5.35 1.9-1.3 2.74-1.03 2.74-1.03.55 1.39.2 2.42.1 2.67.64.7 1.03 1.6 1.03 2.7 0 3.88-2.34 4.73-4.57 4.99.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.68.5A10.06 10.06 0 0022 12.26C22 6.58 17.52 2 12 2z"
+      />
+    </svg>
+  ),
+  help: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8.625 9.75a3.375 3.375 0 116.75 0c0 1.5-1.125 2.25-2.25 3s-1.125 1.5-1.125 2.25"
+      />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 17.25h.007" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
       />
     </svg>
   )
@@ -329,17 +352,26 @@ export default function Layout({
             </nav>
 
             <div className="border-t border-slate-200 px-3 py-4">
-              <Link
-                href="https://github.com/endgor/azure-ip-lookup"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-sky-50 hover:text-slate-900"
-              >
-                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50">
-                  {ICONS.github(false)}
-                </span>
-                <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>GitHub Repository</span>
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href="https://github.com/endgor/azure-hub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Open the Azure Hub GitHub repository in a new tab"
+                  className="group inline-flex"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900">
+                    {ICONS.github(false)}
+                  </span>
+                  <span className="sr-only">GitHub repository</span>
+                </Link>
+                <Link href="/about" aria-label="Learn more about Azure Hub" className="group inline-flex">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900">
+                    {ICONS.help(false)}
+                  </span>
+                  <span className="sr-only">About Azure Hub</span>
+                </Link>
+              </div>
             </div>
           </aside>
 

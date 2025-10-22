@@ -62,17 +62,28 @@ const REGION_SCOPE_LABELS: Record<string, string> = {
 
 let cachedCredential: TokenCredential | null = null;
 
+function getEnvValue(...keys: string[]): string | undefined {
+  for (const key of keys) {
+    const value = process.env[key];
+    if (value) {
+      return value;
+    }
+  }
+  return undefined;
+}
+
+
 function getCredential(): TokenCredential {
   if (cachedCredential) {
     return cachedCredential;
   }
 
-  const tenantId = process.env.GRAPH_TENANT_ID;
-  const clientId = process.env.GRAPH_CLIENT_ID;
-  const clientSecret = process.env.GRAPH_CLIENT_SECRET;
+  const tenantId = getEnvValue('AZURE_TENANT_ID', 'GRAPH_TENANT_ID');
+  const clientId = getEnvValue('AZURE_CLIENT_ID', 'GRAPH_CLIENT_ID');
+  const clientSecret = getEnvValue('AZURE_CLIENT_SECRET', 'GRAPH_CLIENT_SECRET');
 
   if (!tenantId || !clientId || !clientSecret) {
-    throw new Error('Missing GRAPH_CLIENT_ID, GRAPH_CLIENT_SECRET, or GRAPH_TENANT_ID environment variables.');
+    throw new Error('Missing Azure AD app registration credentials. Set AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, and AZURE_TENANT_ID (or legacy GRAPH_* equivalents).');
   }
 
   cachedCredential = new ClientSecretCredential(tenantId, clientId, clientSecret, {

@@ -76,8 +76,8 @@ export default function ServiceTags() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
             />
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-              <svg className="h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-sky-500 transition">
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path
                   d="M21 21l-5.2-5.2m0 0A6 6 0 1010 16a6 6 0 005.8-4.2z"
                   stroke="currentColor"
