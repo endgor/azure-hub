@@ -320,6 +320,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
   };
 
   const handleShare = async () => {
+    setIsColorModeActive(false);
     if (typeof window === 'undefined' || isGeneratingShare) {
       return;
     }
@@ -709,7 +710,10 @@ export default function SubnetCalculatorPage(): JSX.Element {
                     <div className="relative" ref={azureMenuRef}>
                       <button
                         type="button"
-                        onClick={() => setIsAzureMenuOpen((current) => !current)}
+                        onClick={() => {
+                          setIsColorModeActive(false);
+                          setIsAzureMenuOpen((current) => !current);
+                        }}
                         className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-sky-600 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 ${
                           isAzureMenuOpen ? 'border-sky-300' : 'border-slate-200 hover:border-sky-300'
                         }`}
@@ -755,6 +759,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       rowColors={rowColors}
                       rowComments={rowComments}
                       variant="icon"
+                      onTrigger={() => setIsColorModeActive(false)}
                     />
                   </div>
 

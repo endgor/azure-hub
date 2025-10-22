@@ -10,6 +10,7 @@ interface SubnetExportButtonProps {
   rowComments: Record<string, string>;
   disabled?: boolean;
   variant?: 'default' | 'icon';
+  onTrigger?: () => void;
 }
 
 export default function SubnetExportButton({
@@ -20,7 +21,8 @@ export default function SubnetExportButton({
   rowColors,
   rowComments,
   disabled = false,
-  variant = 'default'
+  variant = 'default',
+  onTrigger
 }: SubnetExportButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -88,7 +90,10 @@ export default function SubnetExportButton({
       <button
         type="button"
         className={triggerClasses}
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={() => {
+          onTrigger?.();
+          setIsOpen((current) => !current);
+        }}
         aria-expanded={isOpen}
         aria-haspopup="true"
         disabled={isExporting}

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -11,6 +12,7 @@ type IconKey =
   | 'tenant'
   | 'subnet'
   | 'latency'
+  | 'rbac'
   | 'github'
   | 'help';
 
@@ -111,6 +113,22 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
       />
     </svg>
   ),
+  rbac: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M12 2.25a.75.75 0 01.26.048l7.5 2.7a.75.75 0 01.49.702V11c0 5.038-3.36 9.693-8.24 11.145a.75.75 0 01-.52 0C6.61 20.693 3.25 16.038 3.25 11V5.7a.75.75 0 01.49-.702l7.5-2.7a.75.75 0 01.26-.048zM12 3.9L5.75 6.08V11c0 4.142 2.775 7.984 6.25 9.276 3.475-1.292 6.25-5.134 6.25-9.276V6.08L12 3.9z"
+      />
+      <path
+        fill="currentColor"
+        d="M16.53 10.47a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06l1.47 1.47 3.22-3.22a.75.75 0 011.06 0z"
+      />
+    </svg>
+  ),
   github: (active: boolean) => (
     <svg
       viewBox="0 0 24 24"
@@ -186,6 +204,13 @@ const NAV_SECTIONS: NavSection[] = [
         label: 'Tenant Lookup',
         href: '/tools/tenant-lookup',
         icon: 'tenant'
+      },
+      {
+        label: 'RBAC Least Privilege Generator',
+        href: '/tools/rbac-least-privilege',
+        icon: 'rbac',
+        comingSoon: true,
+        disabled: true
       }
     ]
   },
@@ -262,8 +287,15 @@ export default function Layout({
           >
             <div className="flex items-center justify-between gap-3 px-4 py-5">
               <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-sky-600 font-semibold">
-                  AH
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white">
+                  <Image
+                    src="/favicons/favicon-32x32.png"
+                    alt="Azure Hub logo"
+                    width={24}
+                    height={24}
+                    priority
+                    unoptimized
+                  />
                 </span>
                 <span className={`text-lg font-semibold tracking-tight ${isSidebarCollapsed ? 'hidden' : 'block'}`}>
                   Azure Hub
@@ -333,7 +365,7 @@ export default function Layout({
                           }}
                         >
                           <span
-                            className={`flex h-9 w-9 items-center justify-center rounded-md border transition-colors ${
+                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors ${
                               active ? 'border-sky-200 bg-sky-50' : 'border-slate-200 bg-slate-50'
                             }`}
                           >
