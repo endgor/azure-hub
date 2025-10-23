@@ -4,13 +4,13 @@ import { AzureIpAddress } from '@/types/azure';
 
 export type ExportRow = Record<string, string | number | boolean | null | undefined>;
 
-export interface ExportData {
+export type ExportData = ExportRow & {
   'Service Tag': string;
   'IP Range': string;
   'Region': string;
   'System Service': string;
   'Network Features': string;
-}
+};
 
 interface ExcelExportOptions {
   rowFills?: (string | null | undefined)[];

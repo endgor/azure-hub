@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE_URL = 'https://azurehub.org';
-const OUTPUT_DIR = path.join(process.cwd(), 'out');
+const OUTPUT_DIR = path.join(process.cwd(), 'public');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
 /**
@@ -114,6 +114,10 @@ ${serviceTagsArray
 </urlset>`;
 
     // Write sitemap to output directory
+    if (!fs.existsSync(OUTPUT_DIR)) {
+      fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+    }
+
     const sitemapPath = path.join(OUTPUT_DIR, 'sitemap.xml');
     fs.writeFileSync(sitemapPath, sitemap);
 

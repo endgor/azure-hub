@@ -835,7 +835,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 </tr>
               </thead>
               <tbody>
-                {renderedJoinCells.clear()}
                 {leaves.map((leaf, rowIndex) => {
                   const lastAddress = subnetLastAddress(leaf.network, leaf.prefix);
                   const usable = useAzureReservations

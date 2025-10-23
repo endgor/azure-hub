@@ -75,3 +75,6 @@ $RECYCLE.BIN/
 
 # Playwright MCP
 .playwright*/
+
+# Generated assets
+public/sitemap.xml
