@@ -64,6 +64,15 @@ const REGION_SCOPE_LABELS: Record<string, string> = {
   USGov: 'United States Government',
 };
 
+class MissingCredentialsError extends Error {
+  constructor() {
+    super(
+      'Missing Azure AD app registration credentials. Set AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, and AZURE_TENANT_ID (or legacy GRAPH_* equivalents).'
+    );
+    this.name = 'MissingCredentialsError';
+  }
+}
+
 let cachedCredential: TokenCredential | null = null;
 
 function getEnvValue(...keys: string[]): string | undefined {
@@ -86,9 +95,7 @@ function getCredential(): TokenCredential {
   const clientSecret = getEnvValue('AZURE_CLIENT_SECRET', 'GRAPH_CLIENT_SECRET');
 
   if (!tenantId || !clientId || !clientSecret) {
-    throw new Error(
-      'Missing Azure AD app registration credentials. Set AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, and AZURE_TENANT_ID (or legacy GRAPH_* equivalents).'
-    );
+    throw new MissingCredentialsError();
   }
 
   cachedCredential = new ClientSecretCredential(tenantId, clientId, clientSecret, {
@@ -258,7 +265,19 @@ export default async function handler(
 
     sendJson(res, 200, result, corsAllowOrigin);
   } catch (error) {
-    console.error(`Tenant lookup failed: ${(error as Error).message}`);
+    const message = (error as Error).message ?? 'Unknown error';
+    if (error instanceof MissingCredentialsError) {
+      console.error(`Tenant lookup configuration error: ${message}`);
+      sendJson(
+        res,
+        500,
+        { error: 'Tenant lookup API is not configured. Contact the site owner.' },
+        corsAllowOrigin
+      );
+      return;
+    }
+
+    console.error(`Tenant lookup failed: ${message}`);
     sendJson(
       res,
       500,

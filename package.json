@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",
+    "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "ip-cidr": "^3.1.0",
     "jszip": "^3.10.1",
