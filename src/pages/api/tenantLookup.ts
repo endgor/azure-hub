@@ -150,8 +150,7 @@ async function fetchTenantInformation(domain: string, credential: TokenCredentia
   }
 
   if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`Graph request failed: ${response.status} ${errorText}`);
+    console.error(`Graph request failed with status ${response.status}`);
     throw new Error('Microsoft Graph request failed.');
   }
 
@@ -164,12 +163,12 @@ async function fetchTenantMetadata(tenantIdOrDomain: string): Promise<TenantMeta
   try {
     const response = await fetch(metadataUrl);
     if (!response.ok) {
-      console.warn(`Metadata fetch returned ${response.status} for ${metadataUrl}`);
+      console.warn(`Metadata fetch returned status ${response.status}`);
       return null;
     }
     return (await response.json()) as TenantMetadata;
   } catch (error) {
-    console.warn(`Failed to fetch OpenID metadata: ${(error as Error).message}`);
+    console.warn('Failed to fetch OpenID metadata');
     return null;
   }
 }
@@ -265,23 +264,22 @@ export default async function handler(
 
     sendJson(res, 200, result, corsAllowOrigin);
   } catch (error) {
-    const message = (error as Error).message ?? 'Unknown error';
     if (error instanceof MissingCredentialsError) {
-      console.error(`Tenant lookup configuration error: ${message}`);
+      console.error('Tenant lookup configuration error');
       sendJson(
         res,
         500,
-        { error: 'Tenant lookup API is not configured. Contact the site owner.' },
+        { error: 'Unable to retrieve tenant information. Try again later.' },
         corsAllowOrigin
       );
       return;
     }
 
-    console.error(`Tenant lookup failed: ${message}`);
+    console.error('Tenant lookup failed');
     sendJson(
       res,
       500,
-      { error: 'Tenant lookup failed. Please try again in a few moments.' },
+      { error: 'Unable to retrieve tenant information. Try again later.' },
       corsAllowOrigin
     );
   }

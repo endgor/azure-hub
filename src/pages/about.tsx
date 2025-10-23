@@ -20,12 +20,12 @@ export default function About({ fileMetadata }: AboutProps) {
           <h1 className="text-3xl font-semibold text-slate-900">About Azure Hub</h1>
           <p className="text-base text-slate-600">
             Azure Hub started as a simple IP lookup tool and is steadily growing into a multi-feature workspace for Azure
-            administrators who need fast access to the right utilities. It remains a hobby project maintained by Ender,
+            administrators who need fast access to the right utilities. It remains a hobby project maintained by me (Ender),
             with a focus on making common networking tasks quicker to execute and easier to repeat.
           </p>
           <p className="text-base text-slate-600">
             Data on this site refreshes daily from the official Microsoft feeds across Azure Public, China, and US
-            Government clouds so you can trust the latest change numbers and definitions.
+            Government clouds.
           </p>
         </div>
 
@@ -56,18 +56,30 @@ export default function About({ fileMetadata }: AboutProps) {
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
           <h2 className="text-2xl font-semibold text-slate-900">Credits</h2>
-          <p className="text-base text-slate-600">
-            Special thanks to{' '}
-            <Link
-              href="https://github.com/davidc/subnets"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-sky-600 hover:text-sky-700"
-            >
-              DavidC
-            </Link>{' '}
-            for VisualSubnet Calculator and the subnet tooling that inspires Azure Hub&apos;s planning features.
-          </p>
+          <ul className="space-y-2 text-base text-slate-600">
+            <li>
+              <Link
+                href="https://github.com/davidc/subnets"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-sky-600 hover:text-sky-700"
+              >
+                DavidC
+              </Link>{' '}
+              for the Visual Subnet Calculator.
+            </li>
+            <li>
+              <Link
+                href="https://www.azurespeed.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-sky-600 hover:text-sky-700"
+              >
+                AzureSpeed
+              </Link>{' '}
+              for the inspiration.
+            </li>
+          </ul>
         </div>
       </section>
     </Layout>
