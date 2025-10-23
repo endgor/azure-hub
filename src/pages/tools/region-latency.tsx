@@ -5,7 +5,7 @@ export default function RegionLatencyComingSoon() {
   return (
     <Layout
       title="Region Latency Lab"
-      description="A forthcoming Azure Hub experience for measuring latency to Azure regions from your edge endpoints."
+      description="Preview the upcoming Azure Hub latency lab for measuring edge-to-region response times and comparing Azure network performance."
     >
       <section className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-10 text-center shadow-xl shadow-slate-950/30">
         <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-amber-200">

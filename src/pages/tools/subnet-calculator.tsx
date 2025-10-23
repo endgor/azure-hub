@@ -564,7 +564,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
   return (
     <Layout
       title="Subnet Calculator"
-      description="Interactive subnetting tool inspired by the classic Visual Subnet Calculator, refreshed with Azure Hub styling."
+      description="Plan Azure address spaces, model subnet splits, and export allocation charts with the Azure Hub subnet calculator."
     >
       <section className="space-y-6">
         <div className="space-y-2">

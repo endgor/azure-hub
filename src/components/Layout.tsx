@@ -33,12 +33,21 @@ interface NavSection {
 interface LayoutProps {
   title?: string;
   description?: string;
+  keywords?: string[];
   children: ReactNode;
 }
 
 const DEFAULT_TITLE = 'Azure Hub';
 const DEFAULT_DESCRIPTION =
-  'Azure Hub brings together networking, identity, and diagnostics tooling to help you explore and understand Microsoft Azure resources.';
+  'Azure Hub delivers Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud architects and administrators.';
+const DEFAULT_KEYWORDS = [
+  'Azure IP lookup',
+  'Azure tenant lookup',
+  'Azure subnet calculator',
+  'Azure service tags',
+  'Microsoft Entra tools',
+  'Azure networking utilities'
+];
 
 const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
   dashboard: (active: boolean) => (
@@ -231,6 +240,7 @@ const NAV_SECTIONS: NavSection[] = [
 export default function Layout({
   title = DEFAULT_TITLE,
   description = DEFAULT_DESCRIPTION,
+  keywords = DEFAULT_KEYWORDS,
   children
 }: LayoutProps) {
   const router = useRouter();
@@ -243,9 +253,26 @@ export default function Layout({
     return {
       title: pageTitle,
       description,
-      url: canonicalUrl
+      url: canonicalUrl,
+      keywords
     };
-  }, [description, router.asPath, title]);
+  }, [description, keywords, router.asPath, title]);
+
+  const structuredData = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Azure Hub',
+      url: 'https://azurehub.org',
+      description,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://azurehub.org/tools/ip-lookup?ipOrDomain={search_term_string}',
+        'query-input': 'required name=search_term_string'
+      }
+    }),
+    [description]
+  );
 
   const matchRoute = (href: string) => {
     if (!href.startsWith('/')) {
@@ -262,6 +289,7 @@ export default function Layout({
       <Head>
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
+        {meta.keywords.length > 0 && <meta name="keywords" content={meta.keywords.join(', ')} />}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={meta.url} />
         <meta property="og:title" content={meta.title} />
@@ -276,6 +304,7 @@ export default function Layout({
         <meta property="twitter:description" content={meta.description} />
         <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
         <meta name="theme-color" content="#f1f5f9" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>
 
       <div className="min-h-screen bg-slate-100 text-slate-900">

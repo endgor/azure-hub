@@ -56,7 +56,7 @@ export default function ServiceTags() {
   return (
     <Layout
       title="Azure Service Tags"
-      description="Browse the Microsoft Azure service tag catalogue and drill into each tag's address ranges."
+      description="Explore Microsoft Azure service tags, discover associated IP ranges, and research network dependencies by cloud region."
     >
       <section className="space-y-10">
         <div className="space-y-3">

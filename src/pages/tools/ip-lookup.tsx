@@ -191,7 +191,10 @@ export default function IpLookupPage() {
   }, [initialQuery, initialService, initialRegion]);
 
   return (
-    <Layout title="Azure IP Lookup" description="Discover whether an IP address, CIDR block, or Azure service tag belongs to Microsoft Azure.">
+    <Layout
+      title="Azure IP Lookup"
+      description="Search Microsoft Azure IP ranges, CIDR prefixes, and service tags with the Azure Hub IP lookup tool."
+    >
       <section className="space-y-10">
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80">Networking</p>

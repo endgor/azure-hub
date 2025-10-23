@@ -154,7 +154,7 @@ export default function TenantLookupPage() {
   return (
     <Layout
       title="Tenant Lookup"
-      description="Look up Microsoft Entra tenant metadata, cloud instance, and regional scope using any verified domain."
+      description="Find Microsoft Entra tenant IDs, default domains, and cloud instances from any verified domain with the Azure Hub tenant lookup tool."
     >
       <section className="space-y-10">
         <div className="space-y-3">

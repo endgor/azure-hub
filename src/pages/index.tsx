@@ -95,7 +95,10 @@ const UPCOMING_TOOLS = [
 
 export default function Home() {
   return (
-    <Layout title="Azure Hub" description="Azure Hub unifies essential Azure networking and diagnostics tools under a single experience.">
+    <Layout
+      title="Azure Hub"
+      description="Azure Hub centralizes Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud engineers."
+    >
       <section className="space-y-12">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="space-y-3">
