@@ -100,9 +100,6 @@ export default function Home() {
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="space-y-3">
             <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl">Pick a tool and get to work.</h1>
-            <p className="max-w-xl text-sm text-slate-600 md:text-base">
-              Azure Hub keeps the essentials close: verify addresses, inspect service tags, and track what&apos;s coming next.
-            </p>
           </div>
           <div className="flex flex-wrap gap-3 text-xs">
             <InfoPill label="Data refresh" value="Daily" />
