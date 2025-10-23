@@ -10,8 +10,9 @@ Disallow: /data/
 # Allow all main content pages
 Allow: /
 Allow: /about
-Allow: /service-tags
-Allow: /service-tags/*
+Allow: /tools/ip-lookup
+Allow: /tools/service-tags
+Allow: /tools/service-tags/*
 
 # Crawl delay for respectful crawling
 Crawl-delay: 1

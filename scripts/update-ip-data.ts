@@ -21,6 +21,15 @@ const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 // Metadata file to store file information
 const METADATA_FILE = path.join(DATA_DIR, 'file-metadata.json');
 
+const debugEnv = process.env.DEBUG_UPDATE_IP_DATA ?? '';
+const DEBUG_UPDATE_LOGS = debugEnv === '1' || debugEnv.toLowerCase() === 'true';
+
+function logDebug(...args: unknown[]): void {
+  if (DEBUG_UPDATE_LOGS) {
+    console.debug(...args);
+  }
+}
+
 // Create directory if it doesn't exist
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -123,7 +132,7 @@ function saveMetadata(metadata: AzureFileMetadata[]): void {
  */
 async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
   const url = `https://www.microsoft.com/en-us/download/details.aspx?id=${downloadId}`;
-  console.log(`Fetching download page details from: ${url}`);
+  logDebug(`Fetching download page details from: ${url}`);
 
   // Enhanced request headers to mimic a browser
   const requestOptions = {
@@ -140,12 +149,12 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
     https.get(url, requestOptions, (res) => {
       let html = '';
 
-      console.log(`[ID: ${downloadId}] Status Code: ${res.statusCode}`);
+      logDebug(`[ID: ${downloadId}] Status Code: ${res.statusCode}`);
 
       // Handle potential redirects (though https.get usually handles them)
       if (res.statusCode && (res.statusCode === 301 || res.statusCode === 302)) {
         if (res.headers.location) {
-          console.log(`[ID: ${downloadId}] Page redirected to: ${res.headers.location}. Note: https.get should follow this.`);
+          logDebug(`[ID: ${downloadId}] Page redirected to: ${res.headers.location}. Note: https.get should follow this.`);
         }
       }
 
@@ -154,9 +163,9 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
       });
 
       res.on('end', () => {
-        console.log(`[ID: ${downloadId}] HTML content length: ${html.length}`);
+        logDebug(`[ID: ${downloadId}] HTML content length: ${html.length}`);
         if (html.length < 10000) { // Arbitrary small length to log snippet for debugging
-            console.log(`[ID: ${downloadId}] HTML snippet (first 500 chars): ${html.substring(0, 500)}`);
+          logDebug(`[ID: ${downloadId}] HTML snippet (first 500 chars): ${html.substring(0, 500)}`);
         }
 
         let extractedUrl: string | null = null;
@@ -166,11 +175,11 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
         const acoetMatch = acoetRegex.exec(html);
         if (acoetMatch && acoetMatch[1]) {
           extractedUrl = acoetMatch[1].replace(/&amp;/g, '&');
-          console.log(`[ID: ${downloadId}] Found download URL via AcOEt_DownloadUrl: ${extractedUrl}`);
+          logDebug(`[ID: ${downloadId}] Found download URL via AcOEt_DownloadUrl: ${extractedUrl}`);
           resolve(extractedUrl);
           return;
         } else {
-          console.log(`[ID: ${downloadId}] AcOEt_DownloadUrl not found.`);
+          logDebug(`[ID: ${downloadId}] AcOEt_DownloadUrl not found.`);
         }
 
         // 2. Fallback Method: Regex to find download links in href attributes
@@ -181,7 +190,7 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
           const decodedLink = match[1].replace(/&amp;/g, '&');
           downloadLinks.push(decodedLink);
         }
-        console.log(`[ID: ${downloadId}] Found ${downloadLinks.length} potential JSON download links via href attributes.`);
+        logDebug(`[ID: ${downloadId}] Found ${downloadLinks.length} potential JSON download links via href attributes.`);
 
         if (downloadLinks.length > 0) {
           const serviceTagLinks = downloadLinks.filter(link =>
@@ -190,69 +199,66 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
 
           if (serviceTagLinks.length > 0) {
             const mostSpecificLink = serviceTagLinks.sort((a, b) => b.length - a.length)[0];
-            console.log(`[ID: ${downloadId}] Using ServiceTags link from href: ${mostSpecificLink}`);
+            logDebug(`[ID: ${downloadId}] Using ServiceTags link from href: ${mostSpecificLink}`);
             resolve(mostSpecificLink);
             return;
           }
 
           const sortedJsonLinks = downloadLinks.sort((a, b) => b.length - a.length);
-          console.log(`[ID: ${downloadId}] No specific 'ServiceTags' link in href. Using first available JSON link: ${sortedJsonLinks[0]}`);
+          logDebug(`[ID: ${downloadId}] No specific 'ServiceTags' link in href. Using first available JSON link: ${sortedJsonLinks[0]}`);
           resolve(sortedJsonLinks[0]);
           return;
         }
-        
+
         // 3. Generic Fallback (less reliable)
         if (!extractedUrl) {
-            const genericJsonLinkRegex = /https:\/\/download\.microsoft\.com\/download\/[^"]+\.json/gi;
-            let genericMatch;
-            const genericLinks : string[] = [];
-            while((genericMatch = genericJsonLinkRegex.exec(html)) !== null) {
-                const decodedLink = genericMatch[0].replace(/&amp;/g, '&');
-                if (!genericLinks.includes(decodedLink)) {
-                    genericLinks.push(decodedLink);
+          const genericJsonLinkRegex = /https:\/\/download\.microsoft\.com\/download\/[^"]+\.json/gi;
+          let genericMatch;
+          const genericLinks: string[] = [];
+          while ((genericMatch = genericJsonLinkRegex.exec(html)) !== null) {
+            const decodedLink = genericMatch[0].replace(/&amp;/g, '&');
+            if (!genericLinks.includes(decodedLink)) {
+              genericLinks.push(decodedLink);
+            }
+          }
+
+          if (genericLinks.length > 0) {
+            logDebug(`[ID: ${downloadId}] Found ${genericLinks.length} potential JSON download links using generic regex.`);
+
+            // Attempt to find links with YYYYMMDD dates in the filename
+            // e.g., ServiceTags_Public_20230101.json, ServiceTags_China_20230101.json
+            const dateExtractionRegex = /ServiceTags_(?:Public|China|AzureGovernment)_(\d{8})\.json$/i;
+
+            const linksWithDates = genericLinks
+              .map(link => {
+                const match = dateExtractionRegex.exec(link);
+                if (match && match[1]) {
+                  return { link, date: match[1] }; // date is YYYYMMDD
                 }
+                return null;
+              })
+              .filter(item => item !== null) as { link: string; date: string }[];
+
+            if (linksWithDates.length > 0) {
+              // Sort by date descending (most recent first)
+              linksWithDates.sort((a, b) => b.date.localeCompare(a.date));
+              const latestLinkByDate = linksWithDates[0].link;
+              logDebug(`[ID: ${downloadId}] Prioritizing latest dated ServiceTags link from generic matches: ${latestLinkByDate}`);
+              resolve(latestLinkByDate);
+              return;
+            } else {
+              logDebug(`[ID: ${downloadId}] No ServiceTags with parseable dates (YYYYMMDD) found in generic links.`);
             }
 
-            if (genericLinks.length > 0) {
-                console.log(`[ID: ${downloadId}] Found ${genericLinks.length} potential JSON download links using generic regex.`);
-
-                // Attempt to find links with YYYYMMDD dates in the filename
-                // e.g., ServiceTags_Public_20230101.json, ServiceTags_China_20230101.json
-                const dateExtractionRegex = /ServiceTags_(?:Public|China|AzureGovernment)_(\d{8})\.json$/i;
-                
-                const linksWithDates = genericLinks
-                    .map(link => {
-                        const match = dateExtractionRegex.exec(link);
-                        if (match && match[1]) {
-                            return { link, date: match[1] }; // date is YYYYMMDD
-                        }
-                        return null;
-                    })
-                    .filter(item => item !== null) as { link: string; date: string }[];
-
-                if (linksWithDates.length > 0) {
-                    // Sort by date descending (most recent first)
-                    linksWithDates.sort((a, b) => b.date.localeCompare(a.date));
-                    const latestLinkByDate = linksWithDates[0].link;
-                    console.log(`[ID: ${downloadId}] Prioritizing latest dated ServiceTags link from generic matches: ${latestLinkByDate}`);
-                    resolve(latestLinkByDate);
-                    return;
-                } else {
-                     console.log(`[ID: ${downloadId}] No ServiceTags with parseable dates (YYYYMMDD) found in generic links.`);
-                }
-
-                // Original fallback: Prefer longer, more specific URLs if multiple are found and no dates were parsed
-                console.log(`[ID: ${downloadId}] Falling back to sorting generic links by length.`);
-                const sortedGenericLinks = genericLinks.sort((a,b) => b.length - a.length);
-                resolve(sortedGenericLinks[0]);
-                return;
-            }
+            // Original fallback: Prefer longer, more specific URLs if multiple are found and no dates were parsed
+            logDebug(`[ID: ${downloadId}] Falling back to sorting generic links by length.`);
+            const sortedGenericLinks = genericLinks.sort((a, b) => b.length - a.length);
+            resolve(sortedGenericLinks[0]);
+            return;
+          }
         }
 
         console.error(`[ID: ${downloadId}] Could not extract download URL using any method.`);
-        // For deeper debugging, you could save the full HTML:
-        // fs.writeFileSync(path.join(DATA_DIR, `debug_page_${downloadId}.html`), html, 'utf-8');
-        // console.log(`[ID: ${downloadId}] Full HTML saved to debug_page_${downloadId}.html`);
         resolve(null);
       });
     }).on('error', (err) => {
@@ -270,7 +276,7 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
  */
 async function downloadFile(url: string, filePath: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    console.log(`Downloading file from ${url} to ${filePath}`);
+    console.info(`Downloading file from ${url} to ${filePath}`);
 
     const requestOptions = {
         headers: { // Added User-Agent here too for consistency
@@ -301,7 +307,7 @@ async function downloadFile(url: string, filePath: string): Promise<void> {
                 console.error(`Error closing file stream for ${filePath}:`, closeErr);
                 reject(closeErr);
             } else {
-                console.log(`Downloaded ${url} to ${filePath}`);
+                console.info(`Downloaded ${url} to ${filePath}`);
                 resolve();
             }
         });
@@ -327,13 +333,13 @@ async function downloadFile(url: string, filePath: string): Promise<void> {
  * and then downloads the respective file.
  */
 async function updateAllIpData(): Promise<void> {
-  console.log('Starting IP data update...');
+  console.info('Starting IP data update...');
 
   // Load existing metadata
   const metadata = loadMetadata();
 
   for (const mapping of downloadMappings) {
-    console.log(`Processing ${mapping.cloud}...`);
+    console.info(`Processing ${mapping.cloud}...`);
 
     try {
       const downloadUrl = await fetchDownloadUrl(mapping.id);
@@ -352,12 +358,12 @@ async function updateAllIpData(): Promise<void> {
       let data = JSON.parse(fileContent) as AzureServiceTagsRoot;
 
       // Validate and sanitize the data for security
-      console.log(`Validating service tags for ${mapping.cloud}...`);
+      console.info(`Validating service tags for ${mapping.cloud}...`);
       data = validateAndSanitizeData(data);
 
       // Write the validated data back to the file
       fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
-      console.log(`Validated and saved sanitized data for ${mapping.cloud}`);
+      console.info(`Validated and saved sanitized data for ${mapping.cloud}`);
       
       // Extract filename from download URL
       const filename = extractFilenameFromUrl(downloadUrl);
@@ -378,7 +384,7 @@ async function updateAllIpData(): Promise<void> {
         metadata.push(fileMetadata);
       }
       
-      console.log(`Successfully updated data for ${mapping.cloud} (${filename}) in public/data/ directory`);
+      console.info(`Successfully updated data for ${mapping.cloud} (${filename}) in public/data/ directory`);
 
     } catch (error: any) { // Catch specific error type if known, else any
       console.error(`Failed to process ${mapping.cloud} (ID: ${mapping.id}): ${error.message || error}`);
@@ -388,7 +394,7 @@ async function updateAllIpData(): Promise<void> {
   // Save updated metadata
   saveMetadata(metadata);
   
-  console.log('IP data update completed.');
+  console.info('IP data update completed.');
 }
 
 // Run the update if the script is executed directly

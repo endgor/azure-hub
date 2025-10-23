@@ -1,355 +1,174 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Layout from '@/components/Layout';
-import LookupForm from '@/components/LookupForm';
-import Results from '@/components/Results';
-import Pagination from '../components/Pagination';
-import { AzureIpAddress } from '@/types/azure';
-import { checkIpAddress, searchAzureIpAddresses } from '@/lib/clientIpService';
 
-const clientFetcher = async (key: string): Promise<ApiResponse> => {
-  if (!key) {
-    return {
-      results: [],
-      total: 0,
-      notFound: true,
-      message: 'No query provided'
-    };
+const CORE_TOOLS = [
+  {
+    title: 'Azure IP Lookup',
+    description: 'Verify whether an IP, CIDR, or service tag belongs to Azure and explore its metadata.',
+    href: '/tools/ip-lookup',
+    badge: 'Live',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M12 5a7 7 0 015.65 11.12l2.12 2.11a1 1 0 11-1.41 1.42l-2.13-2.12A7 7 0 1112 5zm0 2a5 5 0 100 10 5 5 0 000-10zm0 3a1 1 0 011 .88L13 11v2a1 1 0 01-2 .12L11 13v-2a1 1 0 011-1z"
+        />
+      </svg>
+    )
+  },
+  {
+    title: 'Tenant Lookup',
+    description: 'Discover tenant IDs, default domains, and Azure AD region scope by domain.',
+    href: '/tools/tenant-lookup',
+    badge: 'New',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M12 2a5 5 0 015 5v1h1a4 4 0 013.98 3.6L22 12v4a3 3 0 01-2.82 3H19v1a2 2 0 01-1.85 1.99L17 22H7a2 2 0 01-1.99-1.85L5 20v-1h-.18A2.82 2.82 0 012 16.18V12a4 4 0 013.8-3.99L6 8h1V7a5 5 0 015-5zm0 2a3 3 0 00-2.95 2.6L9 7v1h6V7a3 3 0 00-2.4-2.95L12 4zm6 6H6a2 2 0 00-1.99 1.85L4 12v4a.82.82 0 00.7.82L5 17h14a1 1 0 001-.88l.01-.12v-4a2 2 0 00-1.85-1.99L18 10z"
+        />
+      </svg>
+    )
+  },
+  {
+    title: 'Service Tags Explorer',
+    description: 'Browse Microsoft service tags and jump directly into their associated address ranges.',
+    href: '/tools/service-tags',
+    badge: 'Updated',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M4 3h6l10 10-6 6L4 9V3zm5 2H6v2.59l8.59 8.59L17.59 13 9 5z"
+        />
+      </svg>
+    )
+  },
+  {
+    title: 'Subnet Calculator',
+    description: 'Plan subnets, model address allocation, and export results for Azure deployments.',
+    href: '/tools/subnet-calculator',
+    badge: 'Live',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M4 3h16a1 1 0 011 1v7H3V4a1 1 0 011-1zm0 11h7v7H4a1 1 0 01-1-1v-6zm9 0h8v6a1 1 0 01-1 1h-7v-7z"
+        />
+      </svg>
+    )
   }
-  
-  try {
-    // Parse the query parameters from the key
-    const url = new URL(`http://localhost${key}`);
-    const ipOrDomain = url.searchParams.get('ipOrDomain') || undefined;
-    const region = url.searchParams.get('region') || undefined;
-    const service = url.searchParams.get('service') || undefined;
-    
-    let results: AzureIpAddress[] = [];
-    
-    // Handle IP/Domain lookups
-    if (ipOrDomain) {
-      // Check if it's an IP address or CIDR
-      if (/^\d+\.\d+/.test(ipOrDomain) || ipOrDomain.includes('/')) {
-        results = await checkIpAddress(ipOrDomain);
-      } else {
-        // For other cases, try as both service and region search
-        const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-        const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-        
-        // Combine and deduplicate results
-        const combinedResults = [...serviceResults, ...regionResults];
-        const uniqueResults = combinedResults.filter((item, index, array) => 
-          index === array.findIndex(t => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId)
-        );
-        results = uniqueResults;
-      }
-    } else {
-      // Handle region/service search
-      results = await searchAzureIpAddresses({ region, service });
-    }
-    
-    if (results.length === 0) {
-      return { 
-        notFound: true, 
-        message: `No Azure IP ranges found matching your search criteria`, 
-        results: [], 
-        total: 0 
-      };
-    }
-    
-    return {
-      results,
-      total: results.length,
-      query: { ipOrDomain, region, service }
-    };
-  } catch (error) {
-    throw error;
+] as const;
+
+const UPCOMING_TOOLS = [
+  {
+    title: 'RBAC Least Privilege Generator',
+    description: 'Design scoped Azure RBAC role definitions that follow least-privilege guidance.',
+    href: '/tools/rbac-least-privilege',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-400" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M12 2.25a.75.75 0 01.26.048l7.5 2.7a.75.75 0 01.49.702V11c0 5.038-3.36 9.693-8.24 11.145a.75.75 0 01-.52 0C6.61 20.693 3.25 16.038 3.25 11V5.7a.75.75 0 01.49-.702l7.5-2.7a.75.75 0 01.26-.048zM12 3.9L5.75 6.08V11c0 4.142 2.775 7.984 6.25 9.276 3.475-1.292 6.25-5.134 6.25-9.276V6.08L12 3.9z"
+        />
+        <path
+          fill="currentColor"
+          d="M16.53 10.47a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06l1.47 1.47 3.22-3.22a.75.75 0 011.06 0z"
+        />
+      </svg>
+    )
+  },
+  {
+    title: 'Region Latency Lab',
+    description: 'Measure edge-to-region RTT and compare service availability around the globe.',
+    href: '/tools/region-latency',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-400" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M5 4a1 1 0 011.78-.62l4.22 5.62 2.19-2.73a1 1 0 011.51 0l6 7.5A1 1 0 0119.98 16H4.02a1 1 0 01-.81-1.59L5 11.53V4zm14 14a1 1 0 110 2H5a1 1 0 110-2h14z"
+        />
+      </svg>
+    )
   }
-};
-
-
-interface ApiResponse {
-  results: AzureIpAddress[];
-  query?: {
-    ipOrDomain?: string;
-    region?: string;
-    service?: string;
-  };
-  total: number;
-  page?: number;
-  pageSize?: number;
-  error?: string;
-  notFound?: boolean;
-  message?: string;
-}
+] as const;
 
 export default function Home() {
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<ApiResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  
-  // Extract query parameters from router - use useState to track them separately
-  const [queryParams, setQueryParams] = useState({
-    initialQuery: '',
-    initialRegion: '',
-    initialService: '',
-    initialPage: 1,
-    initialPageSize: 50 as number | 'all'
-  });
-  
-  // Update query params when router is ready
-  useEffect(() => {
-    if (router.isReady) {
-      setQueryParams({
-        initialQuery: (router.query.ipOrDomain as string) || '',
-        initialRegion: (router.query.region as string) || '',
-        initialService: (router.query.service as string) || '',
-        initialPage: parseInt((router.query.page as string) || '1', 10),
-        initialPageSize: router.query.pageSize === 'all' ? 'all' : parseInt((router.query.pageSize as string) || '50', 10)
-      });
-    }
-  }, [router.isReady, router.query]);
-  
-  const { initialQuery, initialRegion, initialService, initialPage, initialPageSize } = queryParams;
-  
-  // Clear error state when query parameters change
-  useEffect(() => {
-    setError(null);
-  }, [initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
-  
-  // Build client query URL with all query parameters
-  const apiUrl = useMemo(() => {
-    // Don't make requests until router is ready
-    if (!router.isReady) return null;
-    
-    const params = new URLSearchParams();
-    if (initialQuery) params.append('ipOrDomain', initialQuery);
-    if (initialRegion) params.append('region', initialRegion);
-    if (initialService) params.append('service', initialService);
-    if (initialPage > 1) params.append('page', initialPage.toString());
-    if (initialPageSize === 'all') params.append('pageSize', 'all');
-
-    const queryString = params.toString();
-    return queryString ? `/client/ipAddress?${queryString}` : null;
-  }, [router.isReady, initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
-  
-  // Fetch data when apiUrl changes
-  useEffect(() => {
-    if (!apiUrl) {
-      setData(null);
-      setIsLoading(false);
-      return;
-    }
-
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      
-      try {
-        const result = await clientFetcher(apiUrl);
-        setData(result);
-      } catch (err) {
-        setError('Failed to load data. Please check your input and try again.');
-        setData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [apiUrl]);
-  
-  // Handle different response types
-  const isError = error || (data && 'error' in data && !data.notFound);
-  const isNotFound = data?.notFound === true;
-  const errorMessage = error || (isError && data && 'error' in data ? data.error : null);
-  const notFoundMessage = isNotFound && data?.message ? data.message : null;
-  
-  // Process the results
-  const DEFAULT_PAGE_SIZE = 50;
-  const results = data && !isError && data.results ? data.results : [];
-  const totalResults = data && !isError ? data.total || 0 : 0;
-  const currentPage = data && !isError ? data.page || 1 : 1;
-  const apiPageSize = data && !isError ? data.pageSize || DEFAULT_PAGE_SIZE : DEFAULT_PAGE_SIZE;
-  const isAll = initialPageSize === 'all' || apiPageSize >= totalResults;
-  const effectivePageSize = initialPageSize === 'all' ? totalResults : (typeof initialPageSize === 'number' ? initialPageSize : DEFAULT_PAGE_SIZE);
-  const totalPages = Math.ceil(totalResults / effectivePageSize);
-  
-  // Handle page size change
-  const handlePageSizeChange = (newPageSize: number | 'all') => {
-    const params = new URLSearchParams();
-    if (initialQuery) params.append('ipOrDomain', initialQuery);
-    if (initialRegion) params.append('region', initialRegion);
-    if (initialService) params.append('service', initialService);
-    if (newPageSize === 'all') {
-      params.append('pageSize', 'all');
-    } else if (newPageSize !== DEFAULT_PAGE_SIZE) {
-      // Only add pageSize param if it's different from default
-      params.append('pageSize', newPageSize.toString());
-    }
-    
-    router.push(`/?${params.toString()}`);
-  };
-  
-  // Generate page title based on query parameters
-  const pageTitle = useMemo(() => {
-    const parts = [];
-    if (initialQuery) parts.push(`IP/Domain: ${initialQuery}`);
-    if (initialService) parts.push(`Service: ${initialService}`);
-    if (initialRegion) parts.push(`Region: ${initialRegion}`);
-    return parts.join(', ') || 'All Results';
-  }, [initialQuery, initialService, initialRegion]);
-  
   return (
-    <Layout title="Azure IP Lookup">
-      <section className="text-center max-w-3xl mx-auto mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-google-gray-800">Azure IP Address & Service Tag Lookup</h1>
-      </section>
-      
-      <LookupForm 
-        initialValue={initialQuery} 
-        initialRegion={initialRegion}
-        initialService={initialService}
-      />
-      
-      <div className="max-w-5xl mx-auto">
-        {isLoading && (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
-            <p className="mt-4 text-gray-600">Looking up IP information...</p>
+    <Layout title="Azure Hub" description="Azure Hub unifies essential Azure networking and diagnostics tools under a single experience.">
+      <section className="space-y-12">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-3">
+            <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl">Pick a tool and get to work.</h1>
+            <p className="max-w-xl text-sm text-slate-600 md:text-base">
+              Azure Hub keeps the essentials close: verify addresses, inspect service tags, and track what&apos;s coming next.
+            </p>
           </div>
-        )}
-        
-        {/* Show technical errors with red styling */}
-        {isError && errorMessage && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700">{errorMessage}</p>
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-3 text-xs">
+            <InfoPill label="Data refresh" value="Daily" />
+            <InfoPill label="Service tags" value="900+" />
+            <InfoPill label="Regions tracked" value="60+" />
           </div>
-        )}
-        
-        {/* Show "not found" results with yellow styling */}
-        {isNotFound && notFoundMessage && (
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 9a1 1 0 012 0v5a1 1 0 01-2 0V9zm1-1a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-yellow-700">{notFoundMessage}</p>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {!isLoading && !isError && results.length > 0 && (
-          <>
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={totalResults}
-                pageSize={effectivePageSize}
-                isAll={isAll}
-                position="top"
-                onPageSizeChange={handlePageSizeChange}
-                query={{
-                  ipOrDomain: initialQuery,
-                  region: initialRegion,
-                  service: initialService
-                }}
-              />
-            )}
-            
-            <Results 
-              results={results} 
-              query={pageTitle}
-              total={totalResults}
-            />
-            
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={totalResults}
-                pageSize={effectivePageSize}
-                isAll={isAll}
-                position="bottom"
-                onPageSizeChange={handlePageSizeChange}
-                query={{
-                  ipOrDomain: initialQuery,
-                  region: initialRegion,
-                  service: initialService
-                }}
-              />
-            )}
-          </>
-        )}
-        
-        {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 9a1 1 0 012 0v5a1 1 0 01-2 0V9zm1-1a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-yellow-700">
-                  No Azure IP ranges found matching your search criteria
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      {!initialQuery && !initialRegion && !initialService && (
-        <>
-          <section className="max-w-4xl mx-auto mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-google-gray-800 text-center">Examples</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
-                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">IP Address</h3>
-                <p className="mb-2">Example:</p>
-                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">40.112.127.224</code></p>
-                <p className="text-google-gray-600">Verify if an IP belongs to Azure and discover which services are using it.</p>
-              </div>
-              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
-                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">CIDR Range</h3>
-                <p className="mb-2">Example:</p>
-                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">74.7.51.32/29</code></p>
-                <p className="text-google-gray-600">Find Azure IP ranges that overlap with your specified CIDR block.</p>
-              </div>
-              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
-                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Service Name</h3>
-                <p className="mb-2">Example:</p>
-                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">Storage</code></p>
-                <p className="text-google-gray-600">Browse IP ranges for specific Azure services like Storage or SQL.</p>
-              </div>
-              <div className="bg-white border border-google-gray-200 rounded-lg shadow-google p-6 hover:shadow-google-lg transition-shadow">
-                <h3 className="text-lg font-semibold text-google-blue-600 mb-2">Region</h3>
-                <p className="mb-2">Example:</p>
-                <p className="mb-2"><code className="bg-google-gray-100 px-2 py-1 rounded text-sm text-google-gray-800">WestEurope</code></p>
-                <p className="text-google-gray-600">View IP ranges for specific regions or service+region combinations.</p>
-              </div>
-            </div>
-          </section>
+        </div>
 
-        </>
-      )}
+        <section className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {CORE_TOOLS.map((tool) => (
+              <Link
+                key={tool.title}
+                href={tool.href}
+                className="group flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-sky-200 hover:shadow-md"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+                    {tool.icon}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-sky-600">{tool.badge}</p>
+                    <h3 className="text-lg font-semibold text-slate-900">{tool.title}</h3>
+                  </div>
+                </div>
+                <p className="text-sm text-slate-600">{tool.description}</p>
+                <span className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-sky-600 transition group-hover:text-sky-700">
+                  Open tool <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-slate-900">On the roadmap</h2>
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Preview</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {UPCOMING_TOOLS.map((tool) => (
+              <div
+                key={tool.title}
+                className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-100">
+                    {tool.icon}
+                  </div>
+                  <h3 className="text-base font-semibold text-slate-900">{tool.title}</h3>
+                </div>
+                <p className="text-sm text-slate-600">{tool.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </section>
     </Layout>
   );
 }
 
+function InfoPill({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-full border border-slate-200 bg-white px-4 py-2 text-left shadow-sm">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">{label}</p>
+      <p className="text-sm font-semibold text-slate-900">{value}</p>
+    </div>
+  );
+}

@@ -79,7 +79,13 @@ function generateSitemap() {
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>${BASE_URL}/service-tags/</loc>
+    <loc>${BASE_URL}/tools/ip-lookup/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/tools/service-tags/</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -96,7 +102,7 @@ ${serviceTagsArray
   .map((tag) => {
     // Apply both URL encoding and XML escaping for defense in depth
     const urlEncodedTag = encodeURIComponent(tag);
-    const xmlSafeUrl = escapeXml(`${BASE_URL}/service-tags/${urlEncodedTag}/`);
+    const xmlSafeUrl = escapeXml(`${BASE_URL}/tools/service-tags/${urlEncodedTag}/`);
     return `  <url>
     <loc>${xmlSafeUrl}</loc>
     <lastmod>${currentDate}</lastmod>
@@ -112,7 +118,7 @@ ${serviceTagsArray
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    console.log(`  Total URLs: ${serviceTagsArray.length + 3}`);
+    console.log(`  Total URLs: ${serviceTagsArray.length + 4}`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);
