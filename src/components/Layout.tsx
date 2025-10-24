@@ -270,9 +270,9 @@ export default function Layout({
     if (typeof window === 'undefined') {
       return;
     }
+
     const storedTheme = window.localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const shouldUseDark = storedTheme ? storedTheme === 'dark' : prefersDark;
+    const shouldUseDark = storedTheme === 'dark';
 
     if (shouldUseDark) {
       document.documentElement.classList.add('dark');
@@ -280,7 +280,12 @@ export default function Layout({
     } else {
       document.documentElement.classList.remove('dark');
       setIsDarkMode(false);
+
+      if (!storedTheme) {
+        window.localStorage.setItem('theme', 'light');
+      }
     }
+
     setThemeInitialized(true);
   }, []);
 
