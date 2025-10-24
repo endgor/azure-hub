@@ -114,14 +114,14 @@ export default function ServiceTagDetail() {
       <Layout title="Service Tag Not Found">
         <section className="space-y-6">
           <div className="space-y-3">
-            <h1 className="text-3xl font-semibold text-slate-900">Service tag not found</h1>
-            <p className="max-w-xl text-sm text-slate-600">
+            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">Service tag not found</h1>
+            <p className="max-w-xl text-sm text-slate-600 dark:text-slate-300">
               Select a tag from the catalogue to view its address ranges or try searching for a different name.
             </p>
           </div>
           <Link
             href="/tools/service-tags"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-700"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
           >
             <span aria-hidden="true">←</span> Back to Service Tags
           </Link>
@@ -169,17 +169,17 @@ export default function ServiceTagDetail() {
       </Head>
       <section className="space-y-8">
         <div className="space-y-3">
-          <nav className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500" aria-label="Breadcrumb">
-            <Link href="/tools/service-tags" className="text-sky-600 transition hover:text-sky-700">
+          <nav className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+            <Link href="/tools/service-tags" className="text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200">
               Service Tags
             </Link>
-            <span className="mx-2 text-slate-400">/</span>
-            <span className="text-slate-500">{serviceTag}</span>
+            <span className="mx-2 text-slate-400 dark:text-slate-600">/</span>
+            <span className="text-slate-500 dark:text-slate-300">{serviceTag}</span>
           </nav>
 
           <div className="space-y-3">
-            <h1 className="text-3xl font-semibold text-slate-900">Service Tag: {serviceTag}</h1>
-            <p className="text-sm text-slate-600 md:text-base">
+            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">Service Tag: {serviceTag}</h1>
+            <p className="text-sm text-slate-600 dark:text-slate-300 md:text-base">
               IP ranges, Azure services, and network features associated with this service tag.
             </p>
           </div>
@@ -187,7 +187,7 @@ export default function ServiceTagDetail() {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-600 shadow-sm">
+          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
             <span>Loading service tag details...</span>
           </div>
@@ -195,11 +195,11 @@ export default function ServiceTagDetail() {
 
         {/* Error State */}
         {error && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
-            <h3 className="font-semibold text-rose-700">Error loading service tag details</h3>
-            <p className="mt-1 text-rose-600">{error.message}</p>
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
+            <h3 className="font-semibold text-rose-700 dark:text-rose-200">Error loading service tag details</h3>
+            <p className="mt-1 text-rose-600 dark:text-rose-200/80">{error.message}</p>
             <div className="mt-4">
-              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline">
+              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
                 ← Back to Service Tags
               </Link>
             </div>
@@ -208,13 +208,13 @@ export default function ServiceTagDetail() {
 
         {/* Not Found State */}
         {data?.notFound && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
-            <h3 className="font-semibold text-amber-700">Service tag not found</h3>
-            <p className="mt-1 text-amber-600">
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-200">
+            <h3 className="font-semibold text-amber-700 dark:text-amber-200">Service tag not found</h3>
+            <p className="mt-1 text-amber-600 dark:text-amber-100/80">
               {data.message || `No data found for service tag "${serviceTag}"`}
             </p>
             <div className="mt-4">
-              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline">
+              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
                 ← Back to Service Tags
               </Link>
             </div>

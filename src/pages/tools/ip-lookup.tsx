@@ -197,9 +197,11 @@ export default function IpLookupPage() {
     >
       <section className="space-y-10">
         <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80">Networking</p>
-          <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl">Azure IP Lookup</h1>
-          <p className="text-sm text-slate-600 md:text-base">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80 dark:text-sky-300">
+            Networking
+          </p>
+          <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100 md:text-4xl">Azure IP Lookup</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-300 md:text-base">
             Search by IP, CIDR, service tag, or region to quickly verify whether an address belongs to Azure infrastructure.
           </p>
         </div>
@@ -212,20 +214,20 @@ export default function IpLookupPage() {
 
         <div className="space-y-6">
           {isLoading && (
-            <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+            <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
               <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
-              <p className="text-slate-600">Looking up Azure IP information...</p>
+              <p className="text-slate-600 dark:text-slate-300">Looking up Azure IP information...</p>
             </div>
           )}
 
           {isError && errorMessage && (
-            <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700">
+            <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
               {errorMessage}
             </div>
           )}
 
           {isNotFound && notFoundMessage && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-200">
               {notFoundMessage}
             </div>
           )}

@@ -847,8 +847,12 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   const canSplit = leaf.prefix < 32;
                   const segments = [...path].reverse();
                   const joinCells: JSX.Element[] = [];
-                  const rowColor = rowColors[leaf.id];
-                  const rowBackground = rowColor ? '' : rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/40';
+              const rowColor = rowColors[leaf.id];
+              const rowBackground = rowColor
+                ? ''
+                : rowIndex % 2 === 0
+                ? 'bg-white dark:bg-slate-900'
+                : 'bg-slate-50/40 dark:bg-slate-900';
                   const highlightStyle = rowColor ? { backgroundColor: rowColor } : undefined;
                   const comment = rowComments[leaf.id] ?? '';
                   const isEditingComment = activeCommentRow === leaf.id;
@@ -859,7 +863,10 @@ export default function SubnetCalculatorPage(): JSX.Element {
                     const segmentKey = `${leaf.id}-${segment.id}`;
                     const rowSpan = leafCounts[segment.id] ?? 1;
                     const colSpan = isLeafSegment ? Math.max(joinColumnCount - (path.length - 1), 1) : 1;
-                    const alternateBg = index % 2 === 0 ? 'bg-slate-100/80' : 'bg-slate-200/60';
+                  const alternateBg =
+                    index % 2 === 0
+                      ? 'bg-slate-100/80 dark:bg-slate-800/70'
+                      : 'bg-slate-200/60 dark:bg-slate-800/60';
 
                     if (isLeafSegment) {
                       const splitContent = canSplit ? (
@@ -910,7 +917,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       <button
                         type="button"
                         onClick={() => handleJoin(segment.id)}
-                        className="flex h-full w-full items-center justify-center bg-sky-200 px-1 py-2 text-sky-900 transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 focus:ring-offset-white"
+                        className="flex h-full w-full items-center justify-center bg-sky-200 px-1 py-2 text-sky-900 transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-sky-900/40 dark:text-sky-100 dark:hover:bg-sky-900/60 dark:focus:ring-sky-600 dark:focus:ring-offset-slate-900"
                         title={`Join child subnets into ${inetNtoa(segment.network)}/${segment.prefix}`}
                       >
                         <span
@@ -937,7 +944,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                             basePrefix: state.basePrefix
                           });
                         }}
-                        className="flex h-full w-full items-center justify-center bg-slate-200 px-1 py-2 text-slate-700 transition hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1 focus:ring-offset-white"
+                        className="flex h-full w-full items-center justify-center bg-slate-200 px-1 py-2 text-slate-700 transition hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus:ring-slate-500 dark:focus:ring-offset-slate-900"
                         title="Reset subnet plan to the base network"
                       >
                         <span
@@ -949,7 +956,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                       </button>
                     ) : (
                       <div
-                        className={`flex h-full w-full items-center justify-center px-1 py-2 text-slate-500 ${alternateBg}`}
+                        className={`flex h-full w-full items-center justify-center px-1 py-2 text-slate-500 dark:text-slate-300 ${alternateBg}`}
                         title="Join unavailable until child subnets are merged"
                       >
                         <span

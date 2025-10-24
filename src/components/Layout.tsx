@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -54,7 +54,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -66,7 +66,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -78,7 +78,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -90,7 +90,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -102,7 +102,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -114,7 +114,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -126,7 +126,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -142,7 +142,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -155,7 +155,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600' : 'text-slate-400'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
       fill="none"
       stroke="currentColor"
       strokeWidth={1.5}
@@ -174,6 +174,24 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     </svg>
   )
 };
+
+const SunIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 text-current">
+    <path
+      fill="currentColor"
+      d="M12 7a5 5 0 110 10 5 5 0 010-10zm0-5a1 1 0 01.99.86L13 3v2a1 1 0 01-1.99.14L11 5V3a1 1 0 011-1zm0 18a1 1 0 01.99.86L13 21v2a1 1 0 01-1.99.14L11 23v-2a1 1 0 011-1zM4.22 5.64a1 1 0 011.41 0L6.99 7a1 1 0 01-1.32 1.5l-.1-.08-1.36-1.36a1 1 0 010-1.42zm12.73 12.73a1 1 0 011.41 0l1.36 1.36a1 1 0 01-1.32 1.5l-.1-.08-1.36-1.36a1 1 0 010-1.42zM1 12a1 1 0 01.86-.99L2 11h2a1 1 0 01.14 1.99L4 13H2a1 1 0 01-1-1zm18 0a1 1 0 01.99-.86L20 11h2a1 1 0 01.14 1.99L22 13h-2a1 1 0 01-1-1zm-13.78 5.64a1 1 0 011.32 1.5l-.1.08-1.36 1.36a1 1 0 01-1.5-1.32l.08-.1 1.36-1.36zm12.73-12.73a1 1 0 011.32 1.5l-.1.08-1.36 1.36a1 1 0 01-1.5-1.32l.08-.1 1.36-1.36z"
+    />
+  </svg>
+);
+
+const MoonIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-5 w-5 text-current">
+    <path
+      fill="currentColor"
+      d="M12.06 2a.75.75 0 01.53.22 7.5 7.5 0 009.19 9.19.75.75 0 01.95.95A9 9 0 1111.83 1.47.75.75 0 0112.06 2zm-1.12 2.1A7.49 7.49 0 0021.9 12a7.5 7.5 0 01-10.96-7.9z"
+    />
+  </svg>
+);
 
 const NAV_SECTIONS: NavSection[] = [
   {
@@ -245,6 +263,40 @@ export default function Layout({
 }: LayoutProps) {
   const router = useRouter();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [themeInitialized, setThemeInitialized] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const storedTheme = window.localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldUseDark = storedTheme ? storedTheme === 'dark' : prefersDark;
+
+    if (shouldUseDark) {
+      document.documentElement.classList.add('dark');
+      setIsDarkMode(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      setIsDarkMode(false);
+    }
+    setThemeInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!themeInitialized || typeof window === 'undefined') {
+      return;
+    }
+
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      window.localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      window.localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode, themeInitialized]);
 
   const meta = useMemo(() => {
     const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
@@ -257,6 +309,8 @@ export default function Layout({
       keywords
     };
   }, [description, keywords, router.asPath, title]);
+
+  const themeColor = isDarkMode ? '#0f172a' : '#f1f5f9';
 
   const structuredData = useMemo(
     () => ({
@@ -303,20 +357,20 @@ export default function Layout({
         <meta property="twitter:title" content={meta.title} />
         <meta property="twitter:description" content={meta.description} />
         <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-        <meta name="theme-color" content="#f1f5f9" />
+        <meta name="theme-color" content={themeColor} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>
 
-      <div className="min-h-screen bg-slate-100 text-slate-900">
+      <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
         <div className="flex h-screen overflow-hidden">
           <aside
-            className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out ${
+            className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out dark:border-slate-800 dark:bg-slate-900/95 ${
               isSidebarCollapsed ? 'w-20' : 'w-72'
             }`}
           >
             <div className="flex items-center justify-between gap-3 px-4 py-5">
               <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
                   <Image
                     src="/favicons/favicon-32x32.png"
                     alt="Azure Hub logo"
@@ -332,7 +386,7 @@ export default function Layout({
               </Link>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-slate-100"
                 onClick={() => setIsSidebarCollapsed((prev) => !prev)}
                 aria-pressed={isSidebarCollapsed}
                 aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
@@ -362,7 +416,7 @@ export default function Layout({
               {NAV_SECTIONS.map((section) => (
                 <div key={section.label}>
                   <p
-                    className={`px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 ${
+                    className={`px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 ${
                       isSidebarCollapsed ? 'hidden' : 'block'
                     }`}
                   >
@@ -375,10 +429,10 @@ export default function Layout({
                       const baseClasses =
                         'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors';
                       const stateClasses = disabled
-                        ? 'cursor-not-allowed text-slate-300'
+                        ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
                         : active
-                        ? 'bg-sky-100 text-slate-900'
-                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900';
+                        ? 'bg-sky-100 text-slate-900 dark:bg-sky-900/40 dark:text-slate-100'
+                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-sky-900/30 dark:hover:text-slate-100';
 
                       return (
                         <Link
@@ -395,14 +449,18 @@ export default function Layout({
                         >
                           <span
                             className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors ${
-                              active ? 'border-sky-200 bg-sky-50' : 'border-slate-200 bg-slate-50'
+                              active
+                                ? 'border-sky-200 bg-sky-50 dark:border-sky-800/60 dark:bg-sky-900/20'
+                                : 'border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800'
                             }`}
                           >
                             {ICONS[item.icon](active)}
                           </span>
                           <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>{item.label}</span>
                           {item.comingSoon && !isSidebarCollapsed && (
-                            <span className="ml-auto text-xs font-semibold uppercase text-slate-400">Soon</span>
+                            <span className="ml-auto text-xs font-semibold uppercase text-slate-400 dark:text-slate-500">
+                              Soon
+                            </span>
                           )}
                         </Link>
                       );
@@ -412,26 +470,47 @@ export default function Layout({
               ))}
             </nav>
 
-            <div className="border-t border-slate-200 px-3 py-4">
-              <div className="flex items-center gap-3">
-                <Link
-                  href="https://github.com/endgor/azure-hub"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Open the Azure Hub GitHub repository in a new tab"
-                  className="group inline-flex"
+            <div className="border-t border-slate-200 px-3 py-4 dark:border-slate-800">
+              <div
+                className={`flex ${
+                  isSidebarCollapsed
+                    ? 'flex-col items-center gap-2'
+                    : 'items-center justify-between gap-3'
+                }`}
+              >
+                <div
+                  className={`flex ${
+                    isSidebarCollapsed ? 'flex-col items-center gap-2' : 'items-center gap-3'
+                  }`}
                 >
-                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900">
-                    {ICONS.github(false)}
-                  </span>
-                  <span className="sr-only">GitHub repository</span>
-                </Link>
-                <Link href="/about" aria-label="Learn more about Azure Hub" className="group inline-flex">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900">
-                    {ICONS.help(false)}
-                  </span>
-                  <span className="sr-only">About Azure Hub</span>
-                </Link>
+                  <Link
+                    href="https://github.com/endgor/azure-hub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open the Azure Hub GitHub repository in a new tab"
+                    className="group inline-flex"
+                  >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:border-sky-800 dark:group-hover:bg-slate-700 dark:group-hover:text-slate-100">
+                      {ICONS.github(false)}
+                    </span>
+                    <span className="sr-only">GitHub repository</span>
+                  </Link>
+                  <Link href="/about" aria-label="Learn more about Azure Hub" className="group inline-flex">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:border-sky-800 dark:group-hover:bg-slate-700 dark:group-hover:text-slate-100">
+                      {ICONS.help(false)}
+                    </span>
+                    <span className="sr-only">About Azure Hub</span>
+                  </Link>
+                </div>
+                <button
+                  type="button"
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-500 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-sky-800 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+                  onClick={() => setIsDarkMode((prev) => !prev)}
+                  aria-pressed={isDarkMode}
+                  aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {isDarkMode ? <MoonIcon /> : <SunIcon />}
+                </button>
               </div>
             </div>
           </aside>

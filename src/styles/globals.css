@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --foreground-rgb: 15, 23, 42;
+  --background-rgb: 241, 245, 249;
+  --surface-rgb: 255, 255, 255;
+  --border-rgb: 226, 232, 240;
+  --accent-rgb: 56, 189, 248;
+}
+
+.dark {
+  color-scheme: dark;
   --foreground-rgb: 226, 232, 240;
   --background-rgb: 2, 6, 23;
   --surface-rgb: 15, 23, 42;
@@ -14,31 +24,80 @@ body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
   font-family: var(--font-inter), 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-slate-700 {
+  color: rgb(226 232 240 / 0.96);
+}
+
+.dark .text-slate-600,
+.dark .text-slate-500,
+.dark .text-slate-400,
+.dark .text-slate-300 {
+  color: rgb(148 163 184 / 0.86);
+}
+
+.dark .text-slate-200,
+.dark .text-slate-100 {
+  color: rgb(203 213 225 / 0.78);
+}
+
+.dark .border-slate-300 {
+  border-color: rgb(71 85 105 / 0.75);
+}
+
+.dark .border-slate-200 {
+  border-color: rgb(71 85 105 / 0.65);
+}
+
+.dark .border-slate-100 {
+  border-color: rgb(51 65 85 / 0.5);
+}
+
+.dark .bg-white {
+  background-color: rgb(15 23 42);
+}
+
+.dark .bg-white\/95 {
+  background-color: rgb(15 23 42 / 0.95);
+}
+
+.dark .bg-slate-50,
+.dark .bg-slate-100,
+.dark .bg-slate-200 {
+  background-color: rgb(30 41 59 / 0.75);
+}
+
+.dark .ring-white\/60 {
+  --tw-ring-color: rgb(148 163 184 / 0.35);
 }
 
 .prose h1 {
-  @apply mb-6 text-3xl font-semibold text-slate-100;
+  @apply mb-6 text-3xl font-semibold text-slate-900 dark:text-slate-100;
 }
 
 .prose h2 {
-  @apply mt-10 mb-4 text-2xl font-semibold text-slate-100;
+  @apply mt-10 mb-4 text-2xl font-semibold text-slate-900 dark:text-slate-100;
 }
 
 .prose h3 {
-  @apply mt-6 mb-3 text-xl font-semibold text-slate-100;
+  @apply mt-6 mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100;
 }
 
 .prose p {
-  @apply mb-4 text-slate-300;
+  @apply mb-4 text-slate-700 dark:text-slate-300;
 }
 
 .prose a {
-  @apply font-semibold text-sky-300 underline-offset-4 hover:text-sky-200 hover:underline;
+  @apply font-semibold text-sky-600 underline-offset-4 hover:text-sky-500 hover:underline dark:text-sky-300 dark:hover:text-sky-200;
 }
 
 .prose ul,
 .prose ol {
-  @apply my-4 ml-6 text-slate-300;
+  @apply my-4 ml-6 text-slate-700 dark:text-slate-300;
 }
 
 .prose li {
