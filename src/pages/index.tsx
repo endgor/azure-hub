@@ -6,12 +6,24 @@ const CORE_TOOLS = [
     title: 'Azure IP Lookup',
     description: 'Verify whether an IP, CIDR, or service tag belongs to Azure and explore its metadata.',
     href: '/tools/ip-lookup',
-    badge: 'Live',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
         <path
           fill="currentColor"
-          d="M12 5a7 7 0 015.65 11.12l2.12 2.11a1 1 0 11-1.41 1.42l-2.13-2.12A7 7 0 1112 5zm0 2a5 5 0 100 10 5 5 0 000-10zm0 3a1 1 0 011 .88L13 11v2a1 1 0 01-2 .12L11 13v-2a1 1 0 011-1z"
+          d="M11 4a7 7 0 015.65 11.12l3.12 3.11a1 1 0 11-1.41 1.42l-3.12-3.12A7 7 0 1111 4zm0 2a5 5 0 100 10 5 5 0 000-10zm0 3a1 1 0 01.99.86L12 10v2a1 1 0 01-1.99.14L10 12v-2a1 1 0 011-1zm-2 0a1 1 0 01.99.86L10 10v2a1 1 0 01-1.99.14L8 12v-2a1 1 0 011-1z"
+        />
+      </svg>
+    )
+  },
+  {
+    title: 'Service Tags',
+    description: 'Browse Azure service tags.',
+    href: '/tools/service-tags',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
+        <path
+          fill="currentColor"
+          d="M3 4a2 2 0 012-2h4.586a2 2 0 011.414.586l8.414 8.414a2 2 0 010 2.828l-4.586 4.586a2 2 0 01-2.828 0L3.586 10.414A2 2 0 013 9V4zm4 3a2 2 0 100-4 2 2 0 000 4z"
         />
       </svg>
     )
@@ -20,26 +32,11 @@ const CORE_TOOLS = [
     title: 'Tenant Lookup',
     description: 'Discover tenant IDs, default domains, and Azure AD region scope by domain.',
     href: '/tools/tenant-lookup',
-    badge: 'New',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
         <path
           fill="currentColor"
-          d="M12 2a5 5 0 015 5v1h1a4 4 0 013.98 3.6L22 12v4a3 3 0 01-2.82 3H19v1a2 2 0 01-1.85 1.99L17 22H7a2 2 0 01-1.99-1.85L5 20v-1h-.18A2.82 2.82 0 012 16.18V12a4 4 0 013.8-3.99L6 8h1V7a5 5 0 015-5zm0 2a3 3 0 00-2.95 2.6L9 7v1h6V7a3 3 0 00-2.4-2.95L12 4zm6 6H6a2 2 0 00-1.99 1.85L4 12v4a.82.82 0 00.7.82L5 17h14a1 1 0 001-.88l.01-.12v-4a2 2 0 00-1.85-1.99L18 10z"
-        />
-      </svg>
-    )
-  },
-  {
-    title: 'Service Tags Explorer',
-    description: 'Browse Microsoft service tags and jump directly into their associated address ranges.',
-    href: '/tools/service-tags',
-    badge: 'Updated',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M4 3h6l10 10-6 6L4 9V3zm5 2H6v2.59l8.59 8.59L17.59 13 9 5z"
+          d="M4 4a2 2 0 012-2h4a2 2 0 012 2v3h5a2 2 0 012 2v3h-2V9h-5v11h-2v-4H6v4H4V4zm4 0H6v5h4V4H8zm12 10a2 2 0 012 2v5h-2v-3h-4v3h-2v-5a2 2 0 012-2h4zm-1 2h-2v1h2v-1z"
         />
       </svg>
     )
@@ -48,12 +45,11 @@ const CORE_TOOLS = [
     title: 'Subnet Calculator',
     description: 'Plan subnets, model address allocation, and export results for Azure deployments.',
     href: '/tools/subnet-calculator',
-    badge: 'Live',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600" aria-hidden="true">
         <path
           fill="currentColor"
-          d="M4 3h16a1 1 0 011 1v7H3V4a1 1 0 011-1zm0 11h7v7H4a1 1 0 01-1-1v-6zm9 0h8v6a1 1 0 01-1 1h-7v-7z"
+          d="M5 3a2 2 0 00-2 2v5h18V5a2 2 0 00-2-2H5zm16 9H3v5a2 2 0 002 2h6v-3H9a1 1 0 110-2h6a1 1 0 010 2h-2v3h6a2 2 0 002-2v-5z"
         />
       </svg>
     )
@@ -79,8 +75,8 @@ const UPCOMING_TOOLS = [
     )
   },
   {
-    title: 'Region Latency Lab',
-    description: 'Measure edge-to-region RTT and compare service availability around the globe.',
+    title: 'Region Latency',
+    description: 'Measure latency between Azure regions.',
     href: '/tools/region-latency',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-400" aria-hidden="true">
@@ -124,7 +120,6 @@ export default function Home() {
                     {tool.icon}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-sky-600">{tool.badge}</p>
                     <h3 className="text-lg font-semibold text-slate-900">{tool.title}</h3>
                   </div>
                 </div>
