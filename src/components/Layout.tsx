@@ -336,7 +336,7 @@ export default function Layout({
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
         {meta.keywords.length > 0 && <meta name="keywords" content={meta.keywords.join(', ')} />}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
         <link rel="canonical" href={meta.url} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
@@ -554,7 +554,7 @@ export default function Layout({
               </div>
             </div>
 
-            <main className="flex-1 overflow-y-auto px-4 py-6 md:px-6 md:py-10">
+            <main className="flex-1 overflow-auto px-4 py-6 md:px-6 md:py-10">
               <div className="mx-auto w-full max-w-6xl space-y-6">{children}</div>
             </main>
           </div>

@@ -25,6 +25,12 @@ body {
   background: rgb(var(--background-rgb));
   font-family: var(--font-inter), 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
   transition: color 150ms ease, background-color 150ms ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .dark .text-slate-900,
