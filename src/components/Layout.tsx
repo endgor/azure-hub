@@ -231,25 +231,6 @@ const NAV_SECTIONS: NavSection[] = [
         label: 'Tenant Lookup',
         href: '/tools/tenant-lookup',
         icon: 'tenant'
-      },
-      {
-        label: 'RBAC Least Privilege Generator',
-        href: '/tools/rbac-least-privilege',
-        icon: 'rbac',
-        comingSoon: true,
-        disabled: true
-      }
-    ]
-  },
-  {
-    label: 'Diagnostics',
-    items: [
-      {
-        label: 'Region Latency',
-        href: '/tools/region-latency',
-        icon: 'latency',
-        comingSoon: true,
-        disabled: true
       }
     ]
   }

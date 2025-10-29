@@ -570,10 +570,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 md:tracking-[0.3em]">Networking</p>
           <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl lg:text-4xl">Subnet Calculator</h1>
-          <p className="max-w-3xl text-sm text-slate-600 md:text-base">
-            Inspect CIDR blocks, plan subnet splits, and visualise mergeable ranges while keeping everything aligned with Azure
-            hub-and-spoke design conventions.
-          </p>
         </div>
 
         <div className="relative rounded-[26px] bg-white/95 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.35)] ring-1 ring-white/60 backdrop-blur">
