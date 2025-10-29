@@ -263,6 +263,7 @@ export default function Layout({
 }: LayoutProps) {
   const router = useRouter();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [themeInitialized, setThemeInitialized] = useState(false);
 
@@ -302,6 +303,11 @@ export default function Layout({
       window.localStorage.setItem('theme', 'light');
     }
   }, [isDarkMode, themeInitialized]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [router.asPath]);
 
   const meta = useMemo(() => {
     const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
@@ -368,9 +374,21 @@ export default function Layout({
 
       <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
         <div className="flex h-screen overflow-hidden">
+          {/* Mobile menu backdrop */}
+          {isMobileMenuOpen && (
+            <div
+              className="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm md:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+          )}
+
+          {/* Sidebar */}
           <aside
             className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out dark:border-slate-800 dark:bg-slate-900/95 ${
               isSidebarCollapsed ? 'w-20' : 'w-72'
+            } ${
+              isMobileMenuOpen ? 'fixed inset-y-0 left-0 z-50 md:relative' : 'hidden md:flex'
             }`}
           >
             <div className="flex items-center justify-between gap-3 px-4 py-5">
@@ -521,7 +539,41 @@ export default function Layout({
           </aside>
 
           <div className="flex flex-1 flex-col">
-            <main className="flex-1 overflow-y-auto px-6 py-10">
+            {/* Mobile header with hamburger button */}
+            <div className="flex items-center gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900 md:hidden">
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-slate-100"
+                onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Open navigation menu"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-5 w-5 text-current"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+                  <Image
+                    src="/favicons/favicon-32x32.png"
+                    alt=""
+                    width={20}
+                    height={20}
+                    priority
+                    unoptimized
+                  />
+                </span>
+                <span className="text-base font-semibold tracking-tight">Azure Hub</span>
+              </div>
+            </div>
+
+            <main className="flex-1 overflow-y-auto px-4 py-6 md:px-6 md:py-10">
               <div className="mx-auto w-full max-w-6xl space-y-6">{children}</div>
             </main>
           </div>

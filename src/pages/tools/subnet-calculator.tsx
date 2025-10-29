@@ -567,9 +567,9 @@ export default function SubnetCalculatorPage(): JSX.Element {
       description="Plan Azure address spaces, model subnet splits, and export allocation charts with the Azure Hub subnet calculator."
     >
       <section className="space-y-6">
-        <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80">Networking</p>
-          <h1 className="text-3xl font-semibold text-slate-900 md:text-[34px]">Subnet Calculator</h1>
+        <div className="space-y-2 md:space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 md:tracking-[0.3em]">Networking</p>
+          <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl lg:text-4xl">Subnet Calculator</h1>
           <p className="max-w-3xl text-sm text-slate-600 md:text-base">
             Inspect CIDR blocks, plan subnet splits, and visualise mergeable ranges while keeping everything aligned with Azure
             hub-and-spoke design conventions.

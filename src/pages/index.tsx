@@ -96,9 +96,9 @@ export default function Home() {
       description="Azure Hub centralizes Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud engineers."
     >
       <section className="space-y-12">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-3">
-            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100 md:text-4xl">
+        <div className="flex flex-col gap-4 md:gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2 md:space-y-3">
+            <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">
               Pick a tool and get to work.
             </h1>
           </div>
