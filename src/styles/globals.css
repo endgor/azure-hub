@@ -33,19 +33,6 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Enable smooth scrolling for overflow containers */
-.overflow-x-auto {
-  overscroll-behavior-x: contain;
-  scroll-behavior: smooth;
-}
-
-/* Improve touch scrolling on iOS */
-@supports (-webkit-touch-callout: none) {
-  .overflow-x-auto {
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
 .dark .text-slate-900,
 .dark .text-slate-800,
 .dark .text-slate-700 {
