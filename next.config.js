@@ -8,9 +8,8 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   reactStrictMode: true,
   swcMinify: true,
-  // Performance and security optimizations
+  // Performance optimizations
   compiler: {
-    // Security: Remove console.* calls in production to prevent accidental logging of sensitive data
     removeConsole: process.env.NODE_ENV === 'production',
   },
   // SEO and Performance optimizations
