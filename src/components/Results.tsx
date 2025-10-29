@@ -84,7 +84,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
   
   return (
     <section
-      className="mb-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
+      className="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
       aria-label="Search Results"
     >
       <header className="flex flex-col gap-4 border-b border-slate-200 bg-slate-50 px-6 py-5 md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:bg-slate-900/60">
@@ -99,36 +99,36 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
         </div>
       </header>
 
-      <div className="w-full overflow-x-auto">
-        <table className="relative min-w-full table-fixed divide-y divide-slate-200 dark:divide-slate-700" aria-label="Azure IP Ranges">
+      <div className="w-full overflow-x-auto overflow-y-visible">
+        <table className="relative min-w-full table-auto divide-y divide-slate-200 dark:divide-slate-700" aria-label="Azure IP Ranges">
           <thead className="bg-slate-100 dark:bg-slate-900/60">
             <tr className="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               <th
-                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="min-w-[200px] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
               <th
-                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="min-w-[160px] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
               <th
-                className="w-[15%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="min-w-[140px] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
               <th
-                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="min-w-[180px] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
               <th
-                className="relative w-[25%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="relative min-w-[200px] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-2">
@@ -174,9 +174,9 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
                     </span>
                   )}
                 </td>
-                <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.region || '-'}</td>
-                <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.systemService || '-'}</td>
-                <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.networkFeatures || '-'}</td>
+                <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.region || '-'}</td>
+                <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.systemService || '-'}</td>
+                <td className="whitespace-nowrap px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.networkFeatures || '-'}</td>
               </tr>
             ))}
           </tbody>
