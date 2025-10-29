@@ -177,7 +177,7 @@ export default function TenantLookupPage() {
               placeholder="Enter tenant domain (contoso.com)"
               value={domain}
               onChange={(event) => setDomain(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
             />
             <button
               type="submit"

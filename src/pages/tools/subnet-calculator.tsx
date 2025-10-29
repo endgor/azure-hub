@@ -580,7 +580,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
               <input
                 value={formFields.network}
                 onChange={handleFieldChange('network')}
-                className="h-10 w-full rounded-[18px] border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 shadow-sm transition focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200 placeholder:text-slate-400"
+                className="h-10 w-full rounded-[18px] border border-slate-200 bg-white px-4 text-base font-medium text-slate-900 shadow-sm transition focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200 placeholder:text-slate-400"
                 placeholder="10.0.0.0"
                 inputMode="decimal"
                 autoComplete="off"
@@ -594,7 +594,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 <input
                   value={formFields.prefix}
                   onChange={handleFieldChange('prefix')}
-                  className="w-12 bg-transparent text-center text-sm font-semibold text-slate-900 focus:outline-none"
+                  className="w-12 bg-transparent text-center text-base font-semibold text-slate-900 focus:outline-none"
                   placeholder="16"
                   inputMode="numeric"
                 />

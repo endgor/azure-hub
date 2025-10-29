@@ -84,7 +84,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
   
   return (
     <section
-      className="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
+      className="-mx-4 mb-6 rounded-none border-x-0 border-y border-slate-200 bg-white shadow-sm md:mx-0 md:rounded-2xl md:border-x dark:border-slate-700 dark:bg-slate-900"
       aria-label="Search Results"
     >
       <header className="flex flex-col gap-4 border-b border-slate-200 bg-slate-50 px-6 py-5 md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:bg-slate-900/60">
