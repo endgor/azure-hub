@@ -4,6 +4,7 @@ import Layout from '@/components/Layout';
 const CORE_TOOLS = [
   {
     title: 'Azure IP Lookup',
+    description: 'Verify whether an IP, CIDR, or service tag belongs to Azure and explore its metadata.',
     href: '/tools/ip-lookup',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600 dark:text-sky-300" aria-hidden="true">
@@ -16,6 +17,7 @@ const CORE_TOOLS = [
   },
   {
     title: 'Service Tags',
+    description: 'Browse Azure service tags.',
     href: '/tools/service-tags',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600 dark:text-sky-300" aria-hidden="true">
@@ -28,6 +30,7 @@ const CORE_TOOLS = [
   },
   {
     title: 'Tenant Lookup',
+    description: 'Discover tenant IDs, default domains, and Azure AD region scope by domain.',
     href: '/tools/tenant-lookup',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600 dark:text-sky-300" aria-hidden="true">
@@ -40,6 +43,7 @@ const CORE_TOOLS = [
   },
   {
     title: 'Subnet Calculator',
+    description: 'Plan subnets, model address allocation, and export results for Azure deployments.',
     href: '/tools/subnet-calculator',
     icon: (
       <svg viewBox="0 0 24 24" className="h-6 w-6 text-sky-600 dark:text-sky-300" aria-hidden="true">
@@ -82,7 +86,8 @@ export default function Home() {
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{tool.title}</h3>
                   </div>
                 </div>
-                <span className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 transition group-hover:text-sky-700 dark:text-sky-300 dark:group-hover:text-sky-200">
+                <p className="text-sm text-slate-600 dark:text-slate-300">{tool.description}</p>
+                <span className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-sky-600 transition group-hover:text-sky-700 dark:text-sky-300 dark:group-hover:text-sky-200">
                   Open tool <span aria-hidden="true">→</span>
                 </span>
               </Link>
