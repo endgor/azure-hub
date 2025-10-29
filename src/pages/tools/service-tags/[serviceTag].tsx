@@ -168,8 +168,8 @@ export default function ServiceTagDetail() {
         />
       </Head>
       <section className="space-y-8">
-        <div className="space-y-3">
-          <nav className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+        <div className="space-y-2 md:space-y-3">
+          <nav className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 md:tracking-[0.3em]" aria-label="Breadcrumb">
             <Link href="/tools/service-tags" className="text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200">
               Service Tags
             </Link>
@@ -177,8 +177,8 @@ export default function ServiceTagDetail() {
             <span className="text-slate-500 dark:text-slate-300">{serviceTag}</span>
           </nav>
 
-          <div className="space-y-3">
-            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">Service Tag: {serviceTag}</h1>
+          <div className="space-y-2 md:space-y-3">
+            <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Service Tag: {serviceTag}</h1>
             <p className="text-sm text-slate-600 dark:text-slate-300 md:text-base">
               IP ranges, Azure services, and network features associated with this service tag.
             </p>

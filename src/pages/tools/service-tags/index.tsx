@@ -59,9 +59,9 @@ export default function ServiceTags() {
       description="Explore Microsoft Azure service tags, discover associated IP ranges, and research network dependencies by cloud region."
     >
       <section className="space-y-10">
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80 dark:text-sky-300">Networking</p>
-          <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">Azure Service Tags</h1>
+        <div className="space-y-2 md:space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Networking</p>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Azure Service Tags</h1>
           <p className="max-w-2xl text-sm text-slate-600 dark:text-slate-300 md:text-base">
             Browse the complete catalogue of Azure service tags and jump directly into the IP ranges assigned to each tag.
           </p>

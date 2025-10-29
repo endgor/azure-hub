@@ -157,9 +157,9 @@ export default function TenantLookupPage() {
       description="Find Microsoft Entra tenant IDs, default domains, and cloud instances from any verified domain with the Azure Hub tenant lookup tool."
     >
       <section className="space-y-10">
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80">Identity</p>
-          <h1 className="text-3xl font-semibold text-slate-900 md:text-4xl">Tenant Lookup</h1>
+        <div className="space-y-2 md:space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 md:tracking-[0.3em]">Identity</p>
+          <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl lg:text-4xl">Tenant Lookup</h1>
           <p className="max-w-2xl text-sm text-slate-600 md:text-base">
             Enter a Microsoft Entra verified domain to discover the tenant ID, default domain, Azure AD cloud instance,
             and tenant region scope. The lookup uses Microsoft Graph&apos;s tenant discovery API.

@@ -196,11 +196,11 @@ export default function IpLookupPage() {
       description="Search Microsoft Azure IP ranges, CIDR prefixes, and service tags with the Azure Hub IP lookup tool."
     >
       <section className="space-y-10">
-        <div className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-sky-600/80 dark:text-sky-300">
+        <div className="space-y-2 md:space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
             Networking
           </p>
-          <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100 md:text-4xl">Azure IP Lookup</h1>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Azure IP Lookup</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 md:text-base">
             Search by IP, CIDR, service tag, or region to quickly verify whether an address belongs to Azure infrastructure.
           </p>
