@@ -287,11 +287,8 @@ async function downloadFile(url: string, filePath: string): Promise<void> {
     https.get(url, requestOptions, (res) => {
       if (res.statusCode !== 200) {
         console.error(`Error downloading ${url}: Status code ${res.statusCode}`);
-        // Attempt to read response body for more error details
-        let errorBody = '';
-        res.on('data', chunk => errorBody += chunk);
+        res.on('data', () => {});
         res.on('end', () => {
-            console.error(`Error response body: ${errorBody.substring(0, 500)}`); // Log first 500 chars of error
             fs.unlink(filePath, (unlinkErr) => { if (unlinkErr) console.error(`Error deleting partial file ${filePath}: ${unlinkErr.message}`)});
             reject(new Error(`Failed to download file: Status code ${res.statusCode}`));
         });

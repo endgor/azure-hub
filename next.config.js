@@ -14,7 +14,7 @@ const nextConfig = {
   },
   // SEO and Performance optimizations
   experimental: {
-    optimizePackageImports: ['ip-cidr', 'papaparse', 'xlsx'],
+    optimizePackageImports: ['ip-cidr', 'papaparse'],
   },
   poweredByHeader: false,
   generateEtags: true,
