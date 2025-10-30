@@ -100,19 +100,19 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <nav
-      className="my-3 flex flex-col gap-2 rounded-lg border border-slate-200 bg-white px-2 py-2 text-sm text-slate-600 shadow-sm md:my-6 md:flex-row md:items-center md:justify-between md:rounded-xl md:px-4 md:py-4 dark:border-slate-700 dark:bg-slate-900"
+      className="my-6 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600 shadow-sm md:flex-row md:items-center md:justify-between"
       aria-label="Search results pagination"
     >
-      <div className="flex items-center justify-between gap-2 text-xs md:gap-4 md:text-sm">
-        <div className="hidden text-slate-600 dark:text-slate-300 sm:block">
-          <span className="font-semibold text-slate-900 dark:text-slate-100">{startItem}</span>-
-          <span className="font-semibold text-slate-900 dark:text-slate-100">{endItem}</span> of{' '}
-          <span className="font-semibold text-slate-900 dark:text-slate-100">{totalItems}</span>
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+        <div className="text-slate-600">
+          Showing <span className="font-semibold text-slate-900">{startItem}</span> to{' '}
+          <span className="font-semibold text-slate-900">{endItem}</span> of{' '}
+          <span className="font-semibold text-slate-900">{totalItems}</span>
         </div>
         {onPageSizeChange && (
-          <div className="flex items-center gap-1.5">
-            <label htmlFor={`pageSize-${position}`} className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 md:text-xs">
-              Show
+          <div className="flex items-center gap-2">
+            <label htmlFor={`pageSize-${position}`} className="text-xs uppercase tracking-wide text-slate-500">
+              Items
             </label>
             <select
               id={`pageSize-${position}`}
@@ -121,7 +121,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 const value = e.target.value;
                 onPageSizeChange(value === 'all' ? 'all' : parseInt(value, 10));
               }}
-              className="rounded-md border border-slate-300 bg-white px-1.5 py-1 text-xs text-slate-700 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500/20 md:rounded-lg md:px-3 md:py-2 md:text-sm dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
             >
               {pageSizeOptions.map((option) => (
                 <option key={option} value={option}>
@@ -133,22 +133,22 @@ const Pagination: React.FC<PaginationProps> = ({
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 md:justify-end" role="navigation" aria-label="Pagination">
+      <div className="flex flex-wrap justify-center gap-2 md:justify-end" role="navigation" aria-label="Pagination">
         {/* Previous button */}
         {!isAll && currentPage > 1 && (
           onPageChange ? (
             <button
               onClick={() => onPageChange(currentPage - 1)}
-              className="rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:rounded-lg md:px-3 md:py-2 md:text-sm dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
             >
-              Prev
+              Previous
             </button>
           ) : (
             <Link
               href={getPageUrl(currentPage - 1)}
-              className="rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:rounded-lg md:px-3 md:py-2 md:text-sm dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
             >
-              Prev
+              Previous
             </Link>
           )
         )}
@@ -157,7 +157,7 @@ const Pagination: React.FC<PaginationProps> = ({
         {pageNumbers.map((page, index) => {
           if (page < 0) {
             // Ellipsis
-            return <span key={`ellipsis-${index}`} className="px-1 py-1 text-xs text-slate-600 md:px-3 md:py-2 md:text-sm dark:text-slate-400">...</span>;
+            return <span key={`ellipsis-${index}`} className="px-3 py-2 text-slate-600">...</span>;
           }
 
           return (
@@ -165,10 +165,10 @@ const Pagination: React.FC<PaginationProps> = ({
               <button
                 key={page}
                 onClick={() => onPageChange(page)}
-                className={`min-w-[28px] rounded-md px-2 py-1 text-xs transition md:min-w-[36px] md:rounded-lg md:px-3 md:py-2 md:text-sm ${
+                className={`rounded-lg px-3 py-2 text-sm transition ${
                   !isAll && currentPage === page
-                    ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/40 dark:text-sky-300'
-                    : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300'
+                    ? 'border border-sky-400 bg-sky-50 text-sky-700'
+                    : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
                 }`}
               >
                 {page}
@@ -177,10 +177,10 @@ const Pagination: React.FC<PaginationProps> = ({
               <Link
                 key={page}
                 href={getPageUrl(page)}
-                className={`min-w-[28px] rounded-md px-2 py-1 text-xs transition md:min-w-[36px] md:rounded-lg md:px-3 md:py-2 md:text-sm ${
+                className={`rounded-lg px-3 py-2 text-sm transition ${
                   !isAll && currentPage === page
-                    ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/40 dark:text-sky-300'
-                    : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300'
+                    ? 'border border-sky-400 bg-sky-50 text-sky-700'
+                    : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
                 }`}
               >
                 {page}
@@ -193,10 +193,10 @@ const Pagination: React.FC<PaginationProps> = ({
         {onPageChange ? (
           <button
             onClick={() => onPageChange('all')}
-            className={`rounded-md px-2 py-1 text-xs transition md:rounded-lg md:px-3 md:py-2 md:text-sm ${
+            className={`rounded-lg px-3 py-2 text-sm transition ${
               isAll
-                ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/40 dark:text-sky-300'
-                : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300'
+                ? 'border border-sky-400 bg-sky-50 text-sky-700'
+                : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
             }`}
           >
             All
@@ -204,10 +204,10 @@ const Pagination: React.FC<PaginationProps> = ({
         ) : (
           <Link
             href={getAllUrl()}
-            className={`rounded-md px-2 py-1 text-xs transition md:rounded-lg md:px-3 md:py-2 md:text-sm ${
+            className={`rounded-lg px-3 py-2 text-sm transition ${
               isAll
-                ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/40 dark:text-sky-300'
-                : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300'
+                ? 'border border-sky-400 bg-sky-50 text-sky-700'
+                : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
             }`}
           >
             All
@@ -219,14 +219,14 @@ const Pagination: React.FC<PaginationProps> = ({
           onPageChange ? (
             <button
               onClick={() => onPageChange(currentPage + 1)}
-              className="rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:rounded-lg md:px-3 md:py-2 md:text-sm dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
             >
               Next
             </button>
           ) : (
             <Link
               href={getPageUrl(currentPage + 1)}
-              className="rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:rounded-lg md:px-3 md:py-2 md:text-sm dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-300"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
             >
               Next
             </Link>
