@@ -87,14 +87,14 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
       className="mb-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
       aria-label="Search Results"
     >
-      <header className="flex flex-col gap-4 border-b border-slate-200 bg-slate-50 px-6 py-5 md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:bg-slate-900/60">
-        <div>
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Results for {query}</h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300">
+      <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 md:text-xl">Results for {query}</h2>
+          <p className="text-xs text-slate-600 dark:text-slate-300 md:text-sm">
             Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
           </p>
         </div>
-        <div className="flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <ExportDropdown results={sortedResults} query={query} />
         </div>
       </header>
