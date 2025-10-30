@@ -231,25 +231,6 @@ const NAV_SECTIONS: NavSection[] = [
         label: 'Tenant Lookup',
         href: '/tools/tenant-lookup',
         icon: 'tenant'
-      },
-      {
-        label: 'RBAC Least Privilege Generator',
-        href: '/tools/rbac-least-privilege',
-        icon: 'rbac',
-        comingSoon: true,
-        disabled: true
-      }
-    ]
-  },
-  {
-    label: 'Diagnostics',
-    items: [
-      {
-        label: 'Region Latency',
-        href: '/tools/region-latency',
-        icon: 'latency',
-        comingSoon: true,
-        disabled: true
       }
     ]
   }
@@ -373,7 +354,7 @@ export default function Layout({
       </Head>
 
       <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex min-h-screen md:h-screen md:overflow-hidden">
           {/* Mobile menu backdrop */}
           {isMobileMenuOpen && (
             <div
@@ -573,7 +554,7 @@ export default function Layout({
               </div>
             </div>
 
-            <main className="flex-1 overflow-y-auto px-4 py-6 md:px-6 md:py-10">
+            <main className="flex-1 overflow-auto px-4 py-6 md:px-6 md:py-10">
               <div className="mx-auto w-full max-w-6xl space-y-6">{children}</div>
             </main>
           </div>

@@ -570,10 +570,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 md:tracking-[0.3em]">Networking</p>
           <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl lg:text-4xl">Subnet Calculator</h1>
-          <p className="max-w-3xl text-sm text-slate-600 md:text-base">
-            Inspect CIDR blocks, plan subnet splits, and visualise mergeable ranges while keeping everything aligned with Azure
-            hub-and-spoke design conventions.
-          </p>
         </div>
 
         <div className="relative rounded-[26px] bg-white/95 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,0.35)] ring-1 ring-white/60 backdrop-blur">
@@ -584,7 +580,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
               <input
                 value={formFields.network}
                 onChange={handleFieldChange('network')}
-                className="h-10 w-full rounded-[18px] border border-slate-200 bg-white px-4 text-sm font-medium text-slate-900 shadow-sm transition focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200 placeholder:text-slate-400"
+                className="h-10 w-full rounded-[18px] border border-slate-200 bg-white px-4 text-base font-medium text-slate-900 shadow-sm transition focus:border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-200 placeholder:text-slate-400"
                 placeholder="10.0.0.0"
                 inputMode="decimal"
                 autoComplete="off"
@@ -598,7 +594,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                 <input
                   value={formFields.prefix}
                   onChange={handleFieldChange('prefix')}
-                  className="w-12 bg-transparent text-center text-sm font-semibold text-slate-900 focus:outline-none"
+                  className="w-12 bg-transparent text-center text-base font-semibold text-slate-900 focus:outline-none"
                   placeholder="16"
                   inputMode="numeric"
                 />

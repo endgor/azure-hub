@@ -160,10 +160,6 @@ export default function TenantLookupPage() {
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 md:tracking-[0.3em]">Identity</p>
           <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl lg:text-4xl">Tenant Lookup</h1>
-          <p className="max-w-2xl text-sm text-slate-600 md:text-base">
-            Enter a Microsoft Entra verified domain to discover the tenant ID, default domain, Azure AD cloud instance,
-            and tenant region scope. The lookup uses Microsoft Graph&apos;s tenant discovery API.
-          </p>
         </div>
 
         <form onSubmit={onSubmit} role="search" aria-label="Tenant lookup" className="w-full max-w-md">
@@ -181,7 +177,7 @@ export default function TenantLookupPage() {
               placeholder="Enter tenant domain (contoso.com)"
               value={domain}
               onChange={(event) => setDomain(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
             />
             <button
               type="submit"

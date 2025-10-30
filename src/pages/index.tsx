@@ -56,38 +56,6 @@ const CORE_TOOLS = [
   }
 ] as const;
 
-const UPCOMING_TOOLS = [
-  {
-    title: 'RBAC Least Privilege Generator',
-    description: 'Design scoped Azure RBAC role definitions that follow least-privilege guidance.',
-    href: '/tools/rbac-least-privilege',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-400 dark:text-slate-500" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M12 2.25a.75.75 0 01.26.048l7.5 2.7a.75.75 0 01.49.702V11c0 5.038-3.36 9.693-8.24 11.145a.75.75 0 01-.52 0C6.61 20.693 3.25 16.038 3.25 11V5.7a.75.75 0 01.49-.702l7.5-2.7a.75.75 0 01.26-.048zM12 3.9L5.75 6.08V11c0 4.142 2.775 7.984 6.25 9.276 3.475-1.292 6.25-5.134 6.25-9.276V6.08L12 3.9z"
-        />
-        <path
-          fill="currentColor"
-          d="M16.53 10.47a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06l1.47 1.47 3.22-3.22a.75.75 0 011.06 0z"
-        />
-      </svg>
-    )
-  },
-  {
-    title: 'Region Latency',
-    description: 'Measure latency between Azure regions.',
-    href: '/tools/region-latency',
-    icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-400 dark:text-slate-500" aria-hidden="true">
-        <path
-          fill="currentColor"
-          d="M5 4a1 1 0 011.78-.62l4.22 5.62 2.19-2.73a1 1 0 011.51 0l6 7.5A1 1 0 0119.98 16H4.02a1 1 0 01-.81-1.59L5 11.53V4zm14 14a1 1 0 110 2H5a1 1 0 110-2h14z"
-        />
-      </svg>
-    )
-  }
-] as const;
 
 export default function Home() {
   return (
@@ -96,17 +64,10 @@ export default function Home() {
       description="Azure Hub centralizes Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud engineers."
     >
       <section className="space-y-12">
-        <div className="flex flex-col gap-4 md:gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-2 md:space-y-3">
-            <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">
-              Pick a tool and get to work.
-            </h1>
-          </div>
-          <div className="flex flex-wrap gap-3 text-xs">
-            <InfoPill label="Data refresh" value="Daily" />
-            <InfoPill label="Service tags" value="900+" />
-            <InfoPill label="Regions tracked" value="60+" />
-          </div>
+        <div className="space-y-2 md:space-y-3">
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">
+            Pick a tool and get to work.
+          </h1>
         </div>
 
         <section className="space-y-4">
@@ -133,39 +94,7 @@ export default function Home() {
             ))}
           </div>
         </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">On the roadmap</h2>
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Preview</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {UPCOMING_TOOLS.map((tool) => (
-              <div
-                key={tool.title}
-                className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
-                    {tool.icon}
-                  </div>
-                  <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{tool.title}</h3>
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">{tool.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
       </section>
     </Layout>
-  );
-}
-
-function InfoPill({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-full border border-slate-200 bg-white px-4 py-2 text-left shadow-sm dark:border-slate-700 dark:bg-slate-900">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">{label}</p>
-      <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{value}</p>
-    </div>
   );
 }

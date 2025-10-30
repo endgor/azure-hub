@@ -152,14 +152,14 @@ const Pagination: React.FC<PaginationProps> = ({
             </Link>
           )
         )}
-        
+
         {/* Page numbers */}
         {pageNumbers.map((page, index) => {
           if (page < 0) {
             // Ellipsis
             return <span key={`ellipsis-${index}`} className="px-3 py-2 text-slate-600">...</span>;
           }
-          
+
           return (
             onPageChange ? (
               <button

@@ -25,6 +25,25 @@ body {
   background: rgb(var(--background-rgb));
   font-family: var(--font-inter), 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
   transition: color 150ms ease, background-color 150ms ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Enable smooth touch scrolling on iOS */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+/* Ensure mobile scrolling works */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
 }
 
 .dark .text-slate-900,
