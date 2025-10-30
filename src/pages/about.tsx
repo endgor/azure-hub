@@ -68,17 +68,6 @@ export default function About({ fileMetadata }: AboutProps) {
               </Link>{' '}
               for the Visual Subnet Calculator.
             </li>
-            <li>
-              <Link
-                href="https://www.azurespeed.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-sky-600 hover:text-sky-700"
-              >
-                AzureSpeed
-              </Link>{' '}
-              for the inspiration.
-            </li>
           </ul>
         </div>
       </section>
