@@ -99,7 +99,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
         </div>
       </header>
 
-      <div className="w-full overflow-x-auto -webkit-overflow-scrolling-touch">
+      <div className="w-full overflow-x-auto">
         <table className="relative w-full min-w-[800px] table-auto divide-y divide-slate-200 dark:divide-slate-700" aria-label="Azure IP Ranges">
           <thead className="bg-slate-100 dark:bg-slate-900/60">
             <tr className="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
