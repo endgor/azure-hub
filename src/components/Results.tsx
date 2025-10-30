@@ -84,7 +84,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
   
   return (
     <section
-      className="mb-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
+      className="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
       aria-label="Search Results"
     >
       <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
@@ -99,8 +99,8 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
         </div>
       </header>
 
-      <div className="w-full overflow-x-auto">
-        <table className="relative min-w-full table-fixed divide-y divide-slate-200 dark:divide-slate-700" aria-label="Azure IP Ranges">
+      <div className="w-full overflow-x-auto -webkit-overflow-scrolling-touch">
+        <table className="relative w-full min-w-[800px] table-auto divide-y divide-slate-200 dark:divide-slate-700" aria-label="Azure IP Ranges">
           <thead className="bg-slate-100 dark:bg-slate-900/60">
             <tr className="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               <th

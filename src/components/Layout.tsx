@@ -336,7 +336,7 @@ export default function Layout({
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
         {meta.keywords.length > 0 && <meta name="keywords" content={meta.keywords.join(', ')} />}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={meta.url} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
@@ -354,7 +354,7 @@ export default function Layout({
       </Head>
 
       <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex min-h-screen md:h-screen md:overflow-hidden">
           {/* Mobile menu backdrop */}
           {isMobileMenuOpen && (
             <div

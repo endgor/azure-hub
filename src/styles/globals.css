@@ -33,6 +33,20 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Enable smooth touch scrolling on iOS */
+.overflow-x-auto,
+.-webkit-overflow-scrolling-touch {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
+/* Ensure mobile scrolling works */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+
 .dark .text-slate-900,
 .dark .text-slate-800,
 .dark .text-slate-700 {
