@@ -12,10 +12,6 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // SEO and Performance optimizations
-  experimental: {
-    optimizePackageImports: ['ip-cidr', 'papaparse'],
-  },
   poweredByHeader: false,
   generateEtags: true,
   compress: true,

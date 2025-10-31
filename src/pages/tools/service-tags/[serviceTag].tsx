@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import Results from '@/components/Results';
-import Pagination from '@/components/Pagination';
 import { AzureIpAddress } from '@/types/azure';
 import { getServiceTagDetails } from '@/lib/clientIpService';
 
@@ -224,49 +223,18 @@ export default function ServiceTagDetail() {
         {/* Results */}
         {data && data.ipRanges && data.ipRanges.length > 0 && (
           <>
-
-            {/* Top Pagination */}
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={data.ipRanges.length}
-                pageSize={pageSize}
-                isAll={isAll}
-                basePath={`/tools/service-tags/${encodeURIComponent(serviceTag as string)}`}
-                position="top"
-                onPageSizeChange={handlePageSizeChange}
-                onPageChange={(page) => {
-                  if (page === 'all') {
-                    setIsAll(true);
-                    setCurrentPage(1);
-                  } else {
-                    setIsAll(false);
-                    setCurrentPage(page);
-                  }
-                }}
-              />
-            )}
-
-            {/* Results Table */}
-            <Results 
-              results={paginatedResults} 
+            {/* Results Table with integrated pagination */}
+            <Results
+              results={paginatedResults}
               query={serviceTag as string}
               total={data.ipRanges.length}
-            />
-
-            {/* Bottom Pagination */}
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={data.ipRanges.length}
-                pageSize={pageSize}
-                isAll={isAll}
-                basePath={`/tools/service-tags/${encodeURIComponent(serviceTag as string)}`}
-                position="bottom"
-                onPageSizeChange={handlePageSizeChange}
-                onPageChange={(page) => {
+              pagination={totalPages > 1 ? {
+                currentPage,
+                totalPages,
+                totalItems: data.ipRanges.length,
+                pageSize,
+                isAll,
+                onPageChange: (page) => {
                   if (page === 'all') {
                     setIsAll(true);
                     setCurrentPage(1);
@@ -274,9 +242,10 @@ export default function ServiceTagDetail() {
                     setIsAll(false);
                     setCurrentPage(page);
                   }
-                }}
-              />
-            )}
+                },
+                onPageSizeChange: handlePageSizeChange
+              } : undefined}
+            />
           </>
         )}
 

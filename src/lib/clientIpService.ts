@@ -15,6 +15,32 @@ export interface SearchOptions {
 }
 
 /**
+ * Check if a search term matches a target string using various strategies
+ */
+function matchesSearchTerm(target: string, searchTerm: string): boolean {
+  if (!target) return false;
+
+  const targetLower = target.toLowerCase();
+  const searchLower = searchTerm.toLowerCase();
+
+  // Exact match (case insensitive)
+  if (targetLower === searchLower) {
+    return true;
+  }
+
+  // Substring match
+  if (targetLower.includes(searchLower)) {
+    return true;
+  }
+
+  // Normalized match (handles "WestEurope" vs "West Europe")
+  const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));
+  const normalizedSearch = getCachedNormalization(searchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
+
+  return normalizedTarget.includes(normalizedSearch);
+}
+
+/**
  * Load Azure IP data from static files
  */
 async function loadAzureIpData(): Promise<AzureIpAddress[]> {
@@ -105,60 +131,19 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   
   // Filter by region if specified
   if (region) {
-    results = results.filter(ip => {
-      if (!ip.region) return false;
-      
-      // Try exact match first (case insensitive)
-      if (ip.region.toLowerCase() === region.toLowerCase()) {
-        return true;
-      }
-      
-      // Then try substring match
-      if (ip.region.toLowerCase().includes(region.toLowerCase())) {
-        return true;
-      }
-      
-      // Try to match "WestEurope" with "westeurope" or "West Europe"
-      const normalizedRegion = getCachedNormalization(region.replace(/([a-z])([A-Z])/g, '$1 $2'));
-      const normalizedIpRegion = getCachedNormalization(ip.region.replace(/([a-z])([A-Z])/g, '$1 $2'));
-      
-      return normalizedIpRegion.includes(normalizedRegion);
-    });
+    results = results.filter(ip => matchesSearchTerm(ip.region, region));
   }
   
   // Filter by service if specified
   if (service) {
     results = results.filter(ip => {
-      const serviceLower = service.toLowerCase();
-      
       // Match by systemService first
-      if (ip.systemService) {
-        const systemServiceLower = ip.systemService.toLowerCase();
-        
-        if (systemServiceLower === serviceLower) {
-          return true;
-        }
-        
-        const normalizedSearch = getCachedNormalization(serviceLower);
-        const normalizedSystem = getCachedNormalization(systemServiceLower);
-        
-        if (normalizedSystem === normalizedSearch) {
-          return true;
-        }
-        
-        if (normalizedSystem.includes(normalizedSearch) || 
-            normalizedSearch.includes(normalizedSystem)) {
-          return true;
-        }
+      if (ip.systemService && matchesSearchTerm(ip.systemService, service)) {
+        return true;
       }
-      
+
       // Then by serviceTagId
-      const serviceTagIdLower = ip.serviceTagId.toLowerCase();
-      const normalizedSearch = getCachedNormalization(serviceLower);
-      const normalizedTagId = getCachedNormalization(serviceTagIdLower);
-      
-      return normalizedTagId.includes(normalizedSearch) || 
-             normalizedSearch.includes(normalizedTagId);
+      return matchesSearchTerm(ip.serviceTagId, service);
     });
   }
   

@@ -62,7 +62,7 @@ export default function SubnetExportButton({
       const rowFills = leaves.map((leaf) => rowColors[leaf.id] ?? null);
 
       if (format === 'csv') {
-        exportToCSV(exportData, filename);
+        await exportToCSV(exportData, filename);
       } else {
         await exportToExcel(exportData, filename, 'Subnet Plan', { rowFills });
       }

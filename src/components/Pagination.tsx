@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import { buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
 
 interface PaginationProps {
   currentPage: number;
@@ -18,7 +19,7 @@ interface PaginationProps {
   onPageChange?: (page: number | 'all') => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const Pagination: React.FC<PaginationProps> = memo(({
   currentPage,
   totalPages,
   totalItems,
@@ -30,14 +31,14 @@ const Pagination: React.FC<PaginationProps> = ({
   position = 'bottom',
   onPageChange
 }) => {
-  // Determine which page links to show
-  const getPageNumbers = () => {
+  // Determine which page links to show - memoized
+  const getPageNumbers = useMemo(() => {
     const pages = [];
     const MAX_VISIBLE = 5;
-    
+
     // Always show first page
     pages.push(1);
-    
+
     if (totalPages <= MAX_VISIBLE) {
       // If we have 5 or fewer pages, show all of them
       for (let i = 2; i <= totalPages; i++) {
@@ -47,44 +48,40 @@ const Pagination: React.FC<PaginationProps> = ({
       // More complex case with ellipsis
       const startPage = Math.max(2, currentPage - 1);
       const endPage = Math.min(totalPages - 1, currentPage + 1);
-      
+
       if (startPage > 2) pages.push(-1); // Add ellipsis after 1
-      
+
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
       }
-      
+
       if (endPage < totalPages - 1) pages.push(-2); // Add ellipsis before last page
-      
+
       // Always show last page if we have more than 1 page
       if (totalPages > 1) pages.push(totalPages);
     }
-    
+
     return pages;
-  };
-  
-  // Helper to build URL with query params
-  const getPageUrl = (page: number) => {
-    const params = new URLSearchParams();
-    if (query?.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
-    if (query?.region) params.append('region', query.region);
-    if (query?.service) params.append('service', query.service);
-    if (page > 1) params.append('page', page.toString());
+  }, [currentPage, totalPages]);
 
-    const queryString = params.toString();
-    return queryString ? `${basePath}?${queryString}` : basePath;
-  };
+  // Helper to build URL with query params - memoized
+  const getPageUrl = useCallback((page: number) => {
+    return buildUrlWithQueryOrBasePath(basePath, {
+      ipOrDomain: query?.ipOrDomain,
+      region: query?.region,
+      service: query?.service,
+      page
+    });
+  }, [basePath, query?.ipOrDomain, query?.region, query?.service]);
 
-  const getAllUrl = () => {
-    const params = new URLSearchParams();
-    if (query?.ipOrDomain) params.append('ipOrDomain', query.ipOrDomain);
-    if (query?.region) params.append('region', query.region);
-    if (query?.service) params.append('service', query.service);
-    params.append('pageSize', 'all');
-
-    const queryString = params.toString();
-    return queryString ? `${basePath}?${queryString}` : basePath;
-  };
+  const getAllUrl = useMemo(() => {
+    return buildUrlWithQueryOrBasePath(basePath, {
+      ipOrDomain: query?.ipOrDomain,
+      region: query?.region,
+      service: query?.service,
+      pageSize: 'all'
+    });
+  }, [basePath, query?.ipOrDomain, query?.region, query?.service]);
   
   // Don't render pagination if we only have one page
   if (totalPages <= 1) return null;
@@ -93,18 +90,15 @@ const Pagination: React.FC<PaginationProps> = ({
   const startItem = isAll ? 1 : (currentPage - 1) * pageSize + 1;
   const endItem = isAll ? totalItems : Math.min(currentPage * pageSize, totalItems);
   
-  // Get pages to display
-  const pageNumbers = getPageNumbers();
-  
   const pageSizeOptions = [10, 20, 50, 100, 200, 'all'] as const;
 
   return (
     <nav
-      className="my-6 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-600 shadow-sm md:flex-row md:items-center md:justify-between"
+      className="my-6 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm text-slate-600 shadow-sm md:flex-row md:items-center md:justify-between md:px-4 md:py-4"
       aria-label="Search results pagination"
     >
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-        <div className="text-slate-600">
+        <div className="text-xs text-slate-600 md:text-sm">
           Showing <span className="font-semibold text-slate-900">{startItem}</span> to{' '}
           <span className="font-semibold text-slate-900">{endItem}</span> of{' '}
           <span className="font-semibold text-slate-900">{totalItems}</span>
@@ -121,7 +115,7 @@ const Pagination: React.FC<PaginationProps> = ({
                 const value = e.target.value;
                 onPageSizeChange(value === 'all' ? 'all' : parseInt(value, 10));
               }}
-              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+              className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-700 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 md:px-3 md:py-2 md:text-sm"
             >
               {pageSizeOptions.map((option) => (
                 <option key={option} value={option}>
@@ -133,20 +127,20 @@ const Pagination: React.FC<PaginationProps> = ({
         )}
       </div>
 
-      <div className="flex flex-wrap justify-center gap-2 md:justify-end" role="navigation" aria-label="Pagination">
+      <div className="flex flex-wrap justify-center gap-1 md:gap-2 md:justify-end" role="navigation" aria-label="Pagination">
         {/* Previous button */}
         {!isAll && currentPage > 1 && (
           onPageChange ? (
             <button
               onClick={() => onPageChange(currentPage - 1)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
+              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:px-3 md:py-2 md:text-sm"
             >
               Previous
             </button>
           ) : (
             <Link
               href={getPageUrl(currentPage - 1)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
+              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:px-3 md:py-2 md:text-sm"
             >
               Previous
             </Link>
@@ -154,10 +148,10 @@ const Pagination: React.FC<PaginationProps> = ({
         )}
 
         {/* Page numbers */}
-        {pageNumbers.map((page, index) => {
+        {getPageNumbers.map((page, index) => {
           if (page < 0) {
             // Ellipsis
-            return <span key={`ellipsis-${index}`} className="px-3 py-2 text-slate-600">...</span>;
+            return <span key={`ellipsis-${index}`} className="px-2 py-1.5 text-xs text-slate-600 md:px-3 md:py-2 md:text-sm">...</span>;
           }
 
           return (
@@ -165,7 +159,7 @@ const Pagination: React.FC<PaginationProps> = ({
               <button
                 key={page}
                 onClick={() => onPageChange(page)}
-                className={`rounded-lg px-3 py-2 text-sm transition ${
+                className={`rounded-lg px-2 py-1.5 text-xs transition md:px-3 md:py-2 md:text-sm ${
                   !isAll && currentPage === page
                     ? 'border border-sky-400 bg-sky-50 text-sky-700'
                     : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
@@ -177,7 +171,7 @@ const Pagination: React.FC<PaginationProps> = ({
               <Link
                 key={page}
                 href={getPageUrl(page)}
-                className={`rounded-lg px-3 py-2 text-sm transition ${
+                className={`rounded-lg px-2 py-1.5 text-xs transition md:px-3 md:py-2 md:text-sm ${
                   !isAll && currentPage === page
                     ? 'border border-sky-400 bg-sky-50 text-sky-700'
                     : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
@@ -193,7 +187,7 @@ const Pagination: React.FC<PaginationProps> = ({
         {onPageChange ? (
           <button
             onClick={() => onPageChange('all')}
-            className={`rounded-lg px-3 py-2 text-sm transition ${
+            className={`rounded-lg px-2 py-1.5 text-xs transition md:px-3 md:py-2 md:text-sm ${
               isAll
                 ? 'border border-sky-400 bg-sky-50 text-sky-700'
                 : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
@@ -203,8 +197,8 @@ const Pagination: React.FC<PaginationProps> = ({
           </button>
         ) : (
           <Link
-            href={getAllUrl()}
-            className={`rounded-lg px-3 py-2 text-sm transition ${
+            href={getAllUrl}
+            className={`rounded-lg px-2 py-1.5 text-xs transition md:px-3 md:py-2 md:text-sm ${
               isAll
                 ? 'border border-sky-400 bg-sky-50 text-sky-700'
                 : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
@@ -219,14 +213,14 @@ const Pagination: React.FC<PaginationProps> = ({
           onPageChange ? (
             <button
               onClick={() => onPageChange(currentPage + 1)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
+              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:px-3 md:py-2 md:text-sm"
             >
               Next
             </button>
           ) : (
             <Link
               href={getPageUrl(currentPage + 1)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 transition hover:border-sky-200 hover:text-sky-700"
+              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:px-3 md:py-2 md:text-sm"
             >
               Next
             </Link>
@@ -235,6 +229,8 @@ const Pagination: React.FC<PaginationProps> = ({
       </div>
     </nav>
   );
-};
+});
+
+Pagination.displayName = 'Pagination';
 
 export default Pagination;

@@ -32,13 +32,13 @@ export default function ExportDropdown({ results, query, disabled = false }: Exp
     
     const exportData = prepareDataForExport(results);
     const filename = generateFilename(query, format);
-    
+
     if (format === 'csv') {
-      exportToCSV(exportData, filename);
+      await exportToCSV(exportData, filename);
     } else {
       await exportToExcel(exportData, filename);
     }
-    
+
     setIsOpen(false);
   };
 

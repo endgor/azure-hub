@@ -1,5 +1,3 @@
-import Papa from 'papaparse';
-import JSZip from 'jszip';
 import { AzureIpAddress } from '@/types/azure';
 
 export type ExportRow = Record<string, string | number | boolean | null | undefined>;
@@ -26,7 +24,9 @@ export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
   }));
 }
 
-export function exportToCSV<T extends ExportRow>(data: T[], filename: string = 'azure-ip-ranges.csv'): void {
+export async function exportToCSV<T extends ExportRow>(data: T[], filename: string = 'azure-ip-ranges.csv'): Promise<void> {
+  // Dynamic import to reduce initial bundle size
+  const Papa = (await import('papaparse')).default;
   const csv = Papa.unparse(data);
   downloadFile(csv, filename, 'text/csv;charset=utf-8;');
 }
@@ -122,19 +122,15 @@ function normaliseExcelColor(hex: string | null): string | null {
   return `FF${value.toUpperCase()}`;
 }
 
-async function createWorkbookBuffer(
-  headers: string[],
+/**
+ * Build data rows with styling
+ */
+function buildDataRows(
   rows: Array<Array<string | number>>,
-  sheetName: string,
-  rowFills: (string | null)[]
-): Promise<Uint8Array> {
-  const zip = new JSZip();
-  const now = new Date().toISOString();
-  const escapedSheetName = escapeXml(sheetName);
-  const headerRow = buildRowXml(1, headers.map((text) => ({ type: 'string', value: text })), 0);
-
-  const colorStyles = buildColorStyleMap(rowFills);
-  const dataRows = rows.map((cells, index) => {
+  rowFills: (string | null)[],
+  colorStyles: Map<string, number>
+): string[] {
+  return rows.map((cells, index) => {
     const styleId = colorStyles.get(rowFills[index] ?? '') ?? 0;
     const cellPayloads = cells.map((cell) => {
       if (typeof cell === 'number' && Number.isFinite(cell)) {
@@ -144,21 +140,56 @@ async function createWorkbookBuffer(
     });
     return buildRowXml(index + 2, cellPayloads, styleId);
   });
+}
 
-  const dimension = buildDimension(headers.length, rows.length + 1);
-  const sheetXml = buildWorksheetXml(dimension, headerRow, dataRows.join(''));
-  const stylesXml = buildStylesXml(colorStyles);
-
+/**
+ * Populate ZIP file structure with Excel XML files
+ */
+function populateZipStructure(
+  zip: any,
+  sheetXml: string,
+  stylesXml: string,
+  escapedSheetName: string,
+  timestamp: string
+): void {
   zip.file('[Content_Types].xml', buildContentTypesXml());
   zip.folder('_rels')?.file('.rels', buildRootRelsXml());
   zip.folder('docProps')?.file('app.xml', buildAppXml(escapedSheetName));
-  zip.folder('docProps')?.file('core.xml', buildCoreXml(now, escapedSheetName));
+  zip.folder('docProps')?.file('core.xml', buildCoreXml(timestamp, escapedSheetName));
 
   const xlFolder = zip.folder('xl');
   xlFolder?.file('workbook.xml', buildWorkbookXml(escapedSheetName));
   xlFolder?.file('styles.xml', stylesXml);
   xlFolder?.folder('worksheets')?.file('sheet1.xml', sheetXml);
   xlFolder?.folder('_rels')?.file('workbook.xml.rels', buildWorkbookRelsXml());
+}
+
+async function createWorkbookBuffer(
+  headers: string[],
+  rows: Array<Array<string | number>>,
+  sheetName: string,
+  rowFills: (string | null)[]
+): Promise<Uint8Array> {
+  // Dynamic import to reduce initial bundle size
+  const JSZip = (await import('jszip')).default;
+  const zip = new JSZip();
+  const now = new Date().toISOString();
+  const escapedSheetName = escapeXml(sheetName);
+
+  // Build header row
+  const headerRow = buildRowXml(1, headers.map((text) => ({ type: 'string', value: text })), 0);
+
+  // Build data rows with styling
+  const colorStyles = buildColorStyleMap(rowFills);
+  const dataRows = buildDataRows(rows, rowFills, colorStyles);
+
+  // Build worksheet XML
+  const dimension = buildDimension(headers.length, rows.length + 1);
+  const sheetXml = buildWorksheetXml(dimension, headerRow, dataRows.join(''));
+  const stylesXml = buildStylesXml(colorStyles);
+
+  // Populate ZIP structure
+  populateZipStructure(zip, sheetXml, stylesXml, escapedSheetName, now);
 
   return zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
 }

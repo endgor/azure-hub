@@ -1,8 +1,10 @@
 import { AzureIpAddress } from '@/types/azure';
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Tooltip from './Tooltip';
 import ExportDropdown from './ExportDropdown';
+import { buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
 
 // Network features descriptions
 const networkFeaturesInfo = (
@@ -25,26 +27,64 @@ interface ResultsProps {
   results: AzureIpAddress[];
   query: string;
   total?: number;
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    pageSize: number;
+    isAll: boolean;
+    onPageChange?: (page: number | 'all') => void;
+    onPageSizeChange?: (size: number | 'all') => void;
+    basePath?: string;
+    query?: {
+      ipOrDomain?: string;
+      region?: string;
+      service?: string;
+    };
+  };
 }
 
 type SortField = 'serviceTagId' | 'ipAddressPrefix' | 'region' | 'systemService' | 'networkFeatures';
 type SortDirection = 'asc' | 'desc';
 
-const Results = memo(function Results({ results, query, total }: ResultsProps) {
+const Results = memo(function Results({ results, query, total, pagination }: ResultsProps) {
   const [sortField, setSortField] = useState<SortField>('serviceTagId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const router = useRouter();
-  
+
   // Show total available results
   const totalDisplay = total || results.length;
-  
-  // Handle service tag click
-  const handleServiceTagClick = (serviceTagId: string) => {
+
+  const pageSizeOptions = [10, 20, 50, 100, 200, 'all'] as const;
+
+  // Helper to build URL for pagination (for URL-based navigation)
+  const getPageUrl = useCallback((page: number) => {
+    if (!pagination?.basePath) return '#';
+    return buildUrlWithQueryOrBasePath(pagination.basePath, {
+      ipOrDomain: pagination.query?.ipOrDomain,
+      region: pagination.query?.region,
+      service: pagination.query?.service,
+      page
+    });
+  }, [pagination?.basePath, pagination?.query]);
+
+  const getAllUrl = useCallback(() => {
+    if (!pagination?.basePath) return '#';
+    return buildUrlWithQueryOrBasePath(pagination.basePath, {
+      ipOrDomain: pagination.query?.ipOrDomain,
+      region: pagination.query?.region,
+      service: pagination.query?.service,
+      pageSize: 'all'
+    });
+  }, [pagination?.basePath, pagination?.query]);
+
+  // Handle service tag click - memoized to prevent re-renders
+  const handleServiceTagClick = useCallback((serviceTagId: string) => {
     router.push(`/tools/service-tags/${encodeURIComponent(serviceTagId)}`);
-  };
+  }, [router]);
   
-  // Handle column sort
-  const handleSort = (field: SortField) => {
+  // Handle column sort - memoized to prevent re-renders
+  const handleSort = useCallback((field: SortField) => {
     if (field === sortField) {
       // Toggle direction if same field
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -53,7 +93,7 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
       setSortField(field);
       setSortDirection('asc');
     }
-  };
+  }, [sortField, sortDirection]);
   
   // Sort the results - memoized to avoid unnecessary computations
   const sortedResults = useMemo(() => {
@@ -87,16 +127,211 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
       className="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
       aria-label="Search Results"
     >
-      <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
-        <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 md:text-xl">Results for {query}</h2>
-          <p className="text-xs text-slate-600 dark:text-slate-300 md:text-sm">
-            Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
-          </p>
+      <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 md:text-xl">Results for {query}</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 md:text-sm">
+              Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <ExportDropdown results={sortedResults} query={query} />
+          </div>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <ExportDropdown results={sortedResults} query={query} />
-        </div>
+
+        {/* Integrated pagination controls */}
+        {pagination && pagination.totalPages > 1 && (
+          <div className="flex items-center justify-between gap-2 border-t border-slate-200 pt-3 md:gap-4 dark:border-slate-700">
+            <div className="flex flex-wrap items-center gap-2 md:gap-4">
+              <div className="text-xs text-slate-600 dark:text-slate-300">
+                Showing{' '}
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
+                  {pagination.isAll ? 1 : (pagination.currentPage - 1) * pagination.pageSize + 1}
+                </span>{' '}
+                to{' '}
+                <span className="font-semibold text-slate-900 dark:text-slate-100">
+                  {pagination.isAll ? pagination.totalItems : Math.min(pagination.currentPage * pagination.pageSize, pagination.totalItems)}
+                </span>{' '}
+                of{' '}
+                <span className="font-semibold text-slate-900 dark:text-slate-100">{pagination.totalItems}</span>
+              </div>
+              {pagination.onPageSizeChange && (
+                <div className="flex items-center gap-2">
+                  <label htmlFor="pageSize-header" className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    Items
+                  </label>
+                  <select
+                    id="pageSize-header"
+                    value={pagination.isAll ? 'all' : pagination.pageSize}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      pagination.onPageSizeChange?.(value === 'all' ? 'all' : parseInt(value, 10));
+                    }}
+                    className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-700 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                  >
+                    {pageSizeOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option === 'all' ? 'All' : option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile: Arrow navigation */}
+            <div className="flex items-center gap-1 md:hidden">
+              {!pagination.isAll && pagination.currentPage > 1 && (
+                pagination.onPageChange ? (
+                  <button
+                    onClick={() => pagination.onPageChange?.(pagination.currentPage - 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
+                  >
+                    ←
+                  </button>
+                ) : (
+                  <Link
+                    href={getPageUrl(pagination.currentPage - 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
+                  >
+                    ←
+                  </Link>
+                )
+              )}
+
+              {!pagination.isAll && pagination.currentPage < pagination.totalPages && (
+                pagination.onPageChange ? (
+                  <button
+                    onClick={() => pagination.onPageChange?.(pagination.currentPage + 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
+                  >
+                    →
+                  </button>
+                ) : (
+                  <Link
+                    href={getPageUrl(pagination.currentPage + 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
+                  >
+                    →
+                  </Link>
+                )
+              )}
+            </div>
+
+            {/* Desktop: Full pagination controls */}
+            <div className="hidden md:flex md:items-center md:gap-1">
+              {!pagination.isAll && pagination.currentPage > 1 && (
+                pagination.onPageChange ? (
+                  <button
+                    onClick={() => pagination.onPageChange?.(pagination.currentPage - 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
+                  >
+                    Previous
+                  </button>
+                ) : (
+                  <Link
+                    href={getPageUrl(pagination.currentPage - 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
+                  >
+                    Previous
+                  </Link>
+                )
+              )}
+
+              {!pagination.isAll && (() => {
+                const pages = [];
+                const maxVisible = 3;
+
+                if (pagination.totalPages <= maxVisible) {
+                  for (let i = 1; i <= pagination.totalPages; i++) {
+                    pages.push(i);
+                  }
+                } else {
+                  pages.push(1);
+                  if (pagination.currentPage > 2) pages.push(-1);
+                  if (pagination.currentPage > 1 && pagination.currentPage < pagination.totalPages) {
+                    pages.push(pagination.currentPage);
+                  }
+                  if (pagination.currentPage < pagination.totalPages - 1) pages.push(-2);
+                  pages.push(pagination.totalPages);
+                }
+
+                return pages.map((page, index) => {
+                  if (page < 0) {
+                    return <span key={`ellipsis-${index}`} className="px-2 py-1.5 text-xs text-slate-600 dark:text-slate-400">...</span>;
+                  }
+
+                  const buttonClass = `rounded-lg px-3 py-1.5 text-xs transition ${
+                    pagination.currentPage === page
+                      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
+                      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
+                  }`;
+
+                  return pagination.onPageChange ? (
+                    <button
+                      key={page}
+                      onClick={() => pagination.onPageChange?.(page)}
+                      className={buttonClass}
+                    >
+                      {page}
+                    </button>
+                  ) : (
+                    <Link
+                      key={page}
+                      href={getPageUrl(page)}
+                      className={buttonClass}
+                    >
+                      {page}
+                    </Link>
+                  );
+                });
+              })()}
+
+              {pagination.onPageChange ? (
+                <button
+                  onClick={() => pagination.onPageChange?.('all')}
+                  className={`rounded-lg px-3 py-1.5 text-xs transition ${
+                    pagination.isAll
+                      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
+                      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
+                  }`}
+                >
+                  All
+                </button>
+              ) : (
+                <Link
+                  href={getAllUrl()}
+                  className={`rounded-lg px-3 py-1.5 text-xs transition ${
+                    pagination.isAll
+                      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
+                      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
+                  }`}
+                >
+                  All
+                </Link>
+              )}
+
+              {!pagination.isAll && pagination.currentPage < pagination.totalPages && (
+                pagination.onPageChange ? (
+                  <button
+                    onClick={() => pagination.onPageChange?.(pagination.currentPage + 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <Link
+                    href={getPageUrl(pagination.currentPage + 1)}
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
+                  >
+                    Next
+                  </Link>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </header>
 
       <div className="w-full overflow-x-auto">
@@ -167,12 +402,21 @@ const Results = memo(function Results({ results, query, total }: ResultsProps) {
                   </button>
                 </td>
                 <td className="px-5 py-4 font-mono text-sm text-slate-900 dark:text-slate-100">
-                  {result.ipAddressPrefix}
-                  {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && (
-                    <span className="mt-2 inline-block rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-semibold text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
-                      {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
-                    </span>
-                  )}
+                  <div className="space-y-2">
+                    <div>{result.ipAddressPrefix}</div>
+                    {result.resolvedFrom && result.resolvedIp && (
+                      <div className="space-y-1">
+                        <span className="inline-block rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-200">
+                          DNS: {result.resolvedFrom} → {result.resolvedIp}
+                        </span>
+                      </div>
+                    )}
+                    {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && !result.resolvedFrom && (
+                      <span className="inline-block rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-semibold text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
+                        {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
+                      </span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.region || '-'}</td>
                 <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.systemService || '-'}</td>

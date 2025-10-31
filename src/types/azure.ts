@@ -6,6 +6,9 @@ export interface AzureIpAddress {
   regionId: string;
   systemService: string;
   networkFeatures: string;
+  // DNS resolution info (when hostname was resolved)
+  resolvedFrom?: string; // Original hostname that was resolved
+  resolvedIp?: string;   // The specific IP address this entry matched
 }
 
 export interface AzureServiceTag {
