@@ -85,14 +85,8 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
   
   // Handle column sort - memoized to prevent re-renders
   const handleSort = useCallback((field: SortField) => {
-    if (field === sortField) {
-      // Toggle direction if same field
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      // New field, default to ascending
-      setSortField(field);
-      setSortDirection('asc');
-    }
+    setSortField(field);
+    setSortDirection(field === sortField && sortDirection === 'asc' ? 'desc' : 'asc');
   }, [sortField, sortDirection]);
   
   // Sort the results - memoized to avoid unnecessary computations
@@ -101,10 +95,8 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
     return [...results].sort((a, b) => {
       const fieldA = a[sortField] || '';
       const fieldB = b[sortField] || '';
-      
-      if (fieldA < fieldB) return sortDirection === 'asc' ? -1 : 1;
-      if (fieldA > fieldB) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
+      const comparison = fieldA < fieldB ? -1 : fieldA > fieldB ? 1 : 0;
+      return sortDirection === 'asc' ? comparison : -comparison;
     });
   }, [results, sortField, sortDirection]);
   

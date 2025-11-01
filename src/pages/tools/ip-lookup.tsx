@@ -26,6 +26,19 @@ function isHostname(input: string): boolean {
   return true;
 }
 
+/**
+ * Deduplicate Azure IP address results based on IP prefix and service tag
+ */
+function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
+  return results.filter(
+    (item, index, array) =>
+      index ===
+      array.findIndex(
+        (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
+      )
+  );
+}
+
 const clientFetcher = async (key: string): Promise<ApiResponse> => {
   if (!key) {
     return {
@@ -75,44 +88,20 @@ const clientFetcher = async (key: string): Promise<ApiResponse> => {
             // DNS lookup failed, fall back to service/region search
             const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
             const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-            const combinedResults = [...serviceResults, ...regionResults];
-            const uniqueResults = combinedResults.filter(
-              (item, index, array) =>
-                index ===
-                array.findIndex(
-                  (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-                )
-            );
-            results = uniqueResults;
+            results = deduplicateResults([...serviceResults, ...regionResults]);
           }
         } catch (dnsError) {
           // If DNS lookup fails, fall back to service/region search
           const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
           const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-          const combinedResults = [...serviceResults, ...regionResults];
-          const uniqueResults = combinedResults.filter(
-            (item, index, array) =>
-              index ===
-              array.findIndex(
-                (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-              )
-          );
-          results = uniqueResults;
+          results = deduplicateResults([...serviceResults, ...regionResults]);
         }
       }
       // Otherwise treat as service/region search
       else {
         const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
         const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-        const combinedResults = [...serviceResults, ...regionResults];
-        const uniqueResults = combinedResults.filter(
-          (item, index, array) =>
-            index ===
-            array.findIndex(
-              (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-            )
-        );
-        results = uniqueResults;
+        results = deduplicateResults([...serviceResults, ...regionResults]);
       }
     } else {
       results = await searchAzureIpAddresses({ region, service });
