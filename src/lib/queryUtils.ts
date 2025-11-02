@@ -42,17 +42,9 @@ export function buildQueryString(params: QueryParams): string {
 
 /**
  * Build a full URL with query string
+ * Returns base path if no query params
  */
 export function buildUrlWithQuery(basePath: string, params: QueryParams): string {
-  const queryString = buildQueryString(params);
-  return queryString ? `${basePath}?${queryString}` : basePath;
-}
-
-/**
- * Build a full URL with query string, always including the base path
- * Use this for navigation links where you want the path even without params
- */
-export function buildUrlWithQueryOrBasePath(basePath: string, params: QueryParams): string {
   const queryString = buildQueryString(params);
   return queryString ? `${basePath}?${queryString}` : basePath;
 }
