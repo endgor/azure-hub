@@ -180,7 +180,12 @@ export default function IpLookupPage() {
   const apiUrl = useMemo(() => {
     if (!router.isReady) return null;
 
-    const url = buildUrlWithQuery('/client/ipAddress', {
+    // Don't fetch if there are no search parameters
+    if (!initialQuery && !initialRegion && !initialService) {
+      return null;
+    }
+
+    return buildUrlWithQuery('/client/ipAddress', {
       ipOrDomain: initialQuery,
       region: initialRegion,
       service: initialService,
@@ -188,8 +193,6 @@ export default function IpLookupPage() {
       // Only include pageSize if it's 'all' (numeric sizes are handled client-side)
       pageSize: initialPageSize === 'all' ? 'all' : undefined
     });
-
-    return url || null;
   }, [router.isReady, initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
 
   useEffect(() => {
