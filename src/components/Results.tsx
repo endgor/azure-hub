@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Tooltip from './Tooltip';
 import ExportDropdown from './ExportDropdown';
-import { buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
+import { buildUrlWithQuery } from '@/lib/queryUtils';
 
 // Network features descriptions
 const networkFeaturesInfo = (
@@ -60,7 +60,7 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
   // Helper to build URL for pagination (for URL-based navigation)
   const getPageUrl = useCallback((page: number) => {
     if (!pagination?.basePath) return '#';
-    return buildUrlWithQueryOrBasePath(pagination.basePath, {
+    return buildUrlWithQuery(pagination.basePath, {
       ipOrDomain: pagination.query?.ipOrDomain,
       region: pagination.query?.region,
       service: pagination.query?.service,
@@ -70,7 +70,7 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
 
   const getAllUrl = useCallback(() => {
     if (!pagination?.basePath) return '#';
-    return buildUrlWithQueryOrBasePath(pagination.basePath, {
+    return buildUrlWithQuery(pagination.basePath, {
       ipOrDomain: pagination.query?.ipOrDomain,
       region: pagination.query?.region,
       service: pagination.query?.service,

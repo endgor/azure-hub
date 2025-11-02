@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/clientIpService';
-import { buildUrlWithQuery, buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
+import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 
 /**
@@ -234,7 +234,7 @@ export default function IpLookupPage() {
   const totalPages = Math.ceil(totalResults / (effectivePageSize || DEFAULT_PAGE_SIZE));
 
   const handlePageSizeChange = useCallback((newPageSize: number | 'all') => {
-    const url = buildUrlWithQueryOrBasePath('/tools/ip-lookup', {
+    const url = buildUrlWithQuery('/tools/ip-lookup', {
       ipOrDomain: initialQuery,
       region: initialRegion,
       service: initialService,
