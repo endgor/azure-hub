@@ -39,6 +39,17 @@ function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
   );
 }
 
+/**
+ * Search for Azure IP addresses by both service and region in parallel
+ */
+async function searchServiceAndRegion(query: string): Promise<AzureIpAddress[]> {
+  const [serviceResults, regionResults] = await Promise.all([
+    searchAzureIpAddresses({ service: query }),
+    searchAzureIpAddresses({ region: query })
+  ]);
+  return deduplicateResults([...serviceResults, ...regionResults]);
+}
+
 const clientFetcher = async (key: string): Promise<ApiResponse> => {
   if (!key) {
     return {
@@ -70,38 +81,30 @@ const clientFetcher = async (key: string): Promise<ApiResponse> => {
           const dnsData = await dnsResponse.json();
 
           if (dnsData.ipAddresses && dnsData.ipAddresses.length > 0) {
-            // For each resolved IP, check Azure service tags
-            const allMatches: AzureIpAddress[] = [];
-
-            for (const resolvedIp of dnsData.ipAddresses) {
+            // For each resolved IP, check Azure service tags in parallel
+            const matchPromises = dnsData.ipAddresses.map(async (resolvedIp: string) => {
               const matches = await checkIpAddress(resolvedIp);
               // Tag each result with DNS info
               matches.forEach(match => {
                 match.resolvedFrom = ipOrDomain;
                 match.resolvedIp = resolvedIp;
               });
-              allMatches.push(...matches);
-            }
+              return matches;
+            });
 
-            results = allMatches;
+            results = (await Promise.all(matchPromises)).flat();
           } else if (dnsData.error) {
             // DNS lookup failed, fall back to service/region search
-            const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-            const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-            results = deduplicateResults([...serviceResults, ...regionResults]);
+            results = await searchServiceAndRegion(ipOrDomain);
           }
         } catch (dnsError) {
           // If DNS lookup fails, fall back to service/region search
-          const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-          const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-          results = deduplicateResults([...serviceResults, ...regionResults]);
+          results = await searchServiceAndRegion(ipOrDomain);
         }
       }
       // Otherwise treat as service/region search
       else {
-        const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-        const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-        results = deduplicateResults([...serviceResults, ...regionResults]);
+        results = await searchServiceAndRegion(ipOrDomain);
       }
     } else {
       results = await searchAzureIpAddresses({ region, service });
