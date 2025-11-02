@@ -42,11 +42,11 @@ export function buildQueryString(params: QueryParams): string {
 
 /**
  * Build a full URL with query string
- * Returns base path if no query params
+ * Returns empty string if no query params (useful for conditional URLs)
  */
 export function buildUrlWithQuery(basePath: string, params: QueryParams): string {
   const queryString = buildQueryString(params);
-  return queryString ? `${basePath}?${queryString}` : basePath;
+  return queryString ? `${basePath}?${queryString}` : '';
 }
 
 /**
