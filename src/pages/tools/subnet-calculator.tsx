@@ -479,7 +479,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
         delete next[nodeId];
         if (comment) {
           next[`${nodeId}-0`] = comment;
-          next[`${nodeId}-1`] = comment;
         }
         return next;
       });
