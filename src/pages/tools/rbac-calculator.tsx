@@ -1,7 +1,7 @@
-import { useState, useCallback, FormEvent } from 'react';
+import { useState, useCallback, useEffect, FormEvent } from 'react';
 import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
-import { calculateLeastPrivilege, searchOperations } from '@/lib/clientRbacService';
+import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService } from '@/lib/clientRbacService';
 import type { LeastPrivilegeResult, Operation } from '@/types/rbac';
 
 type InputMode = 'simple' | 'advanced';
@@ -10,12 +10,51 @@ export default function RbacCalculatorPage() {
   const [inputMode, setInputMode] = useState<InputMode>('simple');
   const [actionsInput, setActionsInput] = useState('');
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedService, setSelectedService] = useState('');
+  const [availableServices, setAvailableServices] = useState<string[]>([]);
+  const [actionSearch, setActionSearch] = useState('');
+  const [availableActions, setAvailableActions] = useState<Operation[]>([]);
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
   const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingActions, setIsLoadingActions] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Load available services on mount
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const services = await getServiceNamespaces();
+        setAvailableServices(services);
+      } catch (err) {
+        console.error('Failed to load services:', err);
+      }
+    };
+    loadServices();
+  }, []);
+
+  // Load actions when service is selected
+  useEffect(() => {
+    const loadActions = async () => {
+      if (!selectedService) {
+        setAvailableActions([]);
+        return;
+      }
+
+      setIsLoadingActions(true);
+      try {
+        const actions = await getActionsByService(selectedService);
+        setAvailableActions(actions);
+      } catch (err) {
+        console.error('Failed to load actions:', err);
+        setAvailableActions([]);
+      } finally {
+        setIsLoadingActions(false);
+      }
+    };
+    loadActions();
+  }, [selectedService]);
 
   // Handle form submission
   const handleSubmit = useCallback(async (e: FormEvent) => {
@@ -70,27 +109,6 @@ export default function RbacCalculatorPage() {
     }
   }, [inputMode, selectedActions, actionsInput]);
 
-  // Handle search for simple mode
-  const handleSimpleSearch = useCallback(async (query: string) => {
-    setSearchQuery(query);
-
-    if (query.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
-
-    setIsSearching(true);
-
-    try {
-      const operations = await searchOperations(query.trim());
-      setSearchResults(operations.slice(0, 15)); // Show more suggestions
-    } catch (err) {
-      console.warn('Search failed:', err);
-      setSearchResults([]);
-    } finally {
-      setIsSearching(false);
-    }
-  }, []);
 
   // Handle search for advanced mode (original behavior)
   const handleAdvancedSearch = useCallback(async (query: string) => {
@@ -119,8 +137,6 @@ export default function RbacCalculatorPage() {
     if (!selectedActions.includes(action)) {
       setSelectedActions(prev => [...prev, action]);
     }
-    setSearchQuery('');
-    setSearchResults([]);
   }, [selectedActions]);
 
   // Remove action in simple mode
@@ -151,11 +167,23 @@ export default function RbacCalculatorPage() {
   const handleClear = useCallback(() => {
     setActionsInput('');
     setSelectedActions([]);
-    setSearchQuery('');
+    setSelectedService('');
+    setActionSearch('');
+    setAvailableActions([]);
     setResults([]);
     setError(null);
     setSearchResults([]);
   }, []);
+
+  // Filter actions based on search
+  const filteredActions = availableActions.filter(action => {
+    if (!actionSearch) return true;
+    const searchLower = actionSearch.toLowerCase();
+    return (
+      action.name.toLowerCase().includes(searchLower) ||
+      (action.displayName && action.displayName.toLowerCase().includes(searchLower))
+    );
+  });
 
   return (
     <Layout
@@ -206,68 +234,99 @@ export default function RbacCalculatorPage() {
           {inputMode === 'simple' ? (
             /* Simple Mode */
             <>
+              {/* Step 1: Select Service */}
               <div className="space-y-2">
                 <label
-                  htmlFor="search"
+                  htmlFor="service-select"
                   className="block text-sm font-medium text-slate-700 dark:text-slate-200"
                 >
-                  Search for Actions
+                  Step 1: Select Azure Service
                 </label>
-                <input
-                  type="text"
-                  id="search"
-                  value={searchQuery}
-                  onChange={(e) => handleSimpleSearch(e.target.value)}
-                  placeholder="e.g., read blob, start virtual machine, list keys"
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
-                />
+                <select
+                  id="service-select"
+                  value={selectedService}
+                  onChange={(e) => {
+                    setSelectedService(e.target.value);
+                    setActionSearch('');
+                  }}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-sky-400"
+                >
+                  <option value="">-- Choose a service --</option>
+                  {availableServices.map((service) => (
+                    <option key={service} value={service}>
+                      {service}
+                    </option>
+                  ))}
+                </select>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Type keywords to search for Azure actions (e.g., &ldquo;storage read&rdquo;, &ldquo;vm start&rdquo;)
+                  Select an Azure service (e.g., Microsoft.Compute, Microsoft.Storage)
                 </p>
               </div>
 
-              {/* Search suggestions */}
-              {searchResults.length > 0 && (
-                <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                      Available Actions (click to add)
-                    </p>
-                  </div>
-                  <div className="max-h-80 overflow-y-auto">
-                    {searchResults.map((operation) => (
-                      <button
-                        key={operation.name}
-                        type="button"
-                        onClick={() => handleAddActionSimple(operation.name)}
-                        disabled={selectedActions.includes(operation.name)}
-                        className="w-full text-left px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="flex-1">
-                            <div className="font-mono text-sm text-sky-600 dark:text-sky-400 break-all">
-                              {operation.name}
+              {/* Step 2: Select Actions (only show if service selected) */}
+              {selectedService && (
+                <div className="space-y-2">
+                  <label
+                    htmlFor="action-search"
+                    className="block text-sm font-medium text-slate-700 dark:text-slate-200"
+                  >
+                    Step 2: Browse and Select Actions
+                  </label>
+                  <input
+                    type="text"
+                    id="action-search"
+                    value={actionSearch}
+                    onChange={(e) => setActionSearch(e.target.value)}
+                    placeholder="Filter actions (e.g., read, write, delete)"
+                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                  />
+
+                  {isLoadingActions ? (
+                    <div className="flex items-center justify-center rounded-lg border border-slate-200 bg-white p-8 dark:border-slate-700 dark:bg-slate-900">
+                      <div className="h-6 w-6 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+                    </div>
+                  ) : filteredActions.length > 0 ? (
+                    <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                      <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                          Available Actions ({filteredActions.length}) - Click to add
+                        </p>
+                      </div>
+                      <div className="max-h-80 overflow-y-auto">
+                        {filteredActions.map((operation) => (
+                          <button
+                            key={operation.name}
+                            type="button"
+                            onClick={() => handleAddActionSimple(operation.name)}
+                            disabled={selectedActions.includes(operation.name)}
+                            className="w-full text-left px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="flex-1">
+                                <div className="font-mono text-sm text-sky-600 dark:text-sky-400 break-all">
+                                  {operation.name}
+                                </div>
+                                {operation.description && (
+                                  <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                    {operation.description}
+                                  </div>
+                                )}
+                              </div>
+                              {selectedActions.includes(operation.name) && (
+                                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 shrink-0">
+                                  Added
+                                </span>
+                              )}
                             </div>
-                            {operation.displayName && (
-                              <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                                {operation.displayName}
-                              </div>
-                            )}
-                            {operation.description && (
-                              <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                                {operation.description}
-                              </div>
-                            )}
-                          </div>
-                          {selectedActions.includes(operation.name) && (
-                            <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 shrink-0">
-                              Added
-                            </span>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                      {actionSearch ? 'No actions match your filter' : 'No actions available for this service'}
+                    </div>
+                  )}
                 </div>
               )}
 
