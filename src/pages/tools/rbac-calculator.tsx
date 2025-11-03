@@ -4,8 +4,13 @@ import RoleResultsTable from '@/components/RoleResultsTable';
 import { calculateLeastPrivilege, searchOperations } from '@/lib/clientRbacService';
 import type { LeastPrivilegeResult, Operation } from '@/types/rbac';
 
+type InputMode = 'simple' | 'advanced';
+
 export default function RbacCalculatorPage() {
+  const [inputMode, setInputMode] = useState<InputMode>('simple');
   const [actionsInput, setActionsInput] = useState('');
+  const [selectedActions, setSelectedActions] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
   const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,26 +23,34 @@ export default function RbacCalculatorPage() {
     setError(null);
     setResults([]);
 
-    if (!actionsInput.trim()) {
-      setError('Please enter at least one action');
-      return;
-    }
+    let actions: string[] = [];
 
-    setIsLoading(true);
-
-    try {
+    if (inputMode === 'simple') {
+      if (selectedActions.length === 0) {
+        setError('Please select at least one action');
+        return;
+      }
+      actions = selectedActions;
+    } else {
+      if (!actionsInput.trim()) {
+        setError('Please enter at least one action');
+        return;
+      }
       // Parse actions from textarea (one per line)
-      const actions = actionsInput
+      actions = actionsInput
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0 && !line.startsWith('#'));
 
       if (actions.length === 0) {
         setError('Please enter at least one action');
-        setIsLoading(false);
         return;
       }
+    }
 
+    setIsLoading(true);
+
+    try {
       // Calculate least privileged roles
       const leastPrivilegedRoles = await calculateLeastPrivilege({
         requiredActions: actions,
@@ -55,10 +68,32 @@ export default function RbacCalculatorPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [actionsInput]);
+  }, [inputMode, selectedActions, actionsInput]);
 
-  // Handle search as user types
-  const handleSearchChange = useCallback(async (query: string) => {
+  // Handle search for simple mode
+  const handleSimpleSearch = useCallback(async (query: string) => {
+    setSearchQuery(query);
+
+    if (query.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+
+    try {
+      const operations = await searchOperations(query.trim());
+      setSearchResults(operations.slice(0, 15)); // Show more suggestions
+    } catch (err) {
+      console.warn('Search failed:', err);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
+  // Handle search for advanced mode (original behavior)
+  const handleAdvancedSearch = useCallback(async (query: string) => {
     setActionsInput(query);
 
     if (query.trim().length < 3) {
@@ -70,7 +105,7 @@ export default function RbacCalculatorPage() {
 
     try {
       const operations = await searchOperations(query.trim());
-      setSearchResults(operations.slice(0, 10)); // Limit to 10 suggestions
+      setSearchResults(operations.slice(0, 10));
     } catch (err) {
       console.warn('Search failed:', err);
       setSearchResults([]);
@@ -79,8 +114,22 @@ export default function RbacCalculatorPage() {
     }
   }, []);
 
-  // Add a suggested action to the input
-  const handleAddAction = useCallback((action: string) => {
+  // Add action in simple mode
+  const handleAddActionSimple = useCallback((action: string) => {
+    if (!selectedActions.includes(action)) {
+      setSelectedActions(prev => [...prev, action]);
+    }
+    setSearchQuery('');
+    setSearchResults([]);
+  }, [selectedActions]);
+
+  // Remove action in simple mode
+  const handleRemoveAction = useCallback((action: string) => {
+    setSelectedActions(prev => prev.filter(a => a !== action));
+  }, []);
+
+  // Add action in advanced mode
+  const handleAddActionAdvanced = useCallback((action: string) => {
     const currentActions = actionsInput.split('\n').filter(line => line.trim());
     if (!currentActions.includes(action)) {
       setActionsInput([...currentActions, action].join('\n'));
@@ -90,7 +139,21 @@ export default function RbacCalculatorPage() {
 
   // Load example actions
   const handleLoadExample = useCallback((actions: readonly string[]) => {
-    setActionsInput([...actions].join('\n'));
+    if (inputMode === 'simple') {
+      setSelectedActions([...actions]);
+    } else {
+      setActionsInput([...actions].join('\n'));
+    }
+    setSearchResults([]);
+  }, [inputMode]);
+
+  // Clear all
+  const handleClear = useCallback(() => {
+    setActionsInput('');
+    setSelectedActions([]);
+    setSearchQuery('');
+    setResults([]);
+    setError(null);
     setSearchResults([]);
   }, []);
 
@@ -112,74 +175,201 @@ export default function RbacCalculatorPage() {
           </p>
         </div>
 
+        {/* Mode Toggle */}
+        <div className="flex gap-2 rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-900 w-fit">
+          <button
+            type="button"
+            onClick={() => setInputMode('simple')}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              inputMode === 'simple'
+                ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+            }`}
+          >
+            Simple
+          </button>
+          <button
+            type="button"
+            onClick={() => setInputMode('advanced')}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              inputMode === 'advanced'
+                ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+            }`}
+          >
+            Advanced
+          </button>
+        </div>
+
         {/* Input Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <label
-              htmlFor="actions"
-              className="block text-sm font-medium text-slate-700 dark:text-slate-200"
-            >
-              Required Actions <span className="text-slate-500">(one per line)</span>
-            </label>
-            <textarea
-              id="actions"
-              value={actionsInput}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Microsoft.Compute/virtualMachines/read&#10;Microsoft.Compute/virtualMachines/start/action&#10;Microsoft.Compute/virtualMachines/restart/action"
-              rows={8}
-              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
-            />
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Supports wildcards (e.g., Microsoft.Storage/*). Lines starting with # are treated as comments.
-            </p>
-          </div>
-
-          {/* Search suggestions */}
-          {searchResults.length > 0 && (
-            <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  Suggested Actions
+          {inputMode === 'simple' ? (
+            /* Simple Mode */
+            <>
+              <div className="space-y-2">
+                <label
+                  htmlFor="search"
+                  className="block text-sm font-medium text-slate-700 dark:text-slate-200"
+                >
+                  Search for Actions
+                </label>
+                <input
+                  type="text"
+                  id="search"
+                  value={searchQuery}
+                  onChange={(e) => handleSimpleSearch(e.target.value)}
+                  placeholder="e.g., read blob, start virtual machine, list keys"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Type keywords to search for Azure actions (e.g., &ldquo;storage read&rdquo;, &ldquo;vm start&rdquo;)
                 </p>
               </div>
-              <div className="max-h-60 overflow-y-auto">
-                {searchResults.map((operation) => (
-                  <button
-                    key={operation.name}
-                    type="button"
-                    onClick={() => handleAddAction(operation.name)}
-                    className="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition border-b border-slate-100 dark:border-slate-800 last:border-0"
-                  >
-                    <div className="font-mono text-sm text-sky-600 dark:text-sky-400">
-                      {operation.name}
+
+              {/* Search suggestions */}
+              {searchResults.length > 0 && (
+                <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      Available Actions (click to add)
+                    </p>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {searchResults.map((operation) => (
+                      <button
+                        key={operation.name}
+                        type="button"
+                        onClick={() => handleAddActionSimple(operation.name)}
+                        disabled={selectedActions.includes(operation.name)}
+                        className="w-full text-left px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex-1">
+                            <div className="font-mono text-sm text-sky-600 dark:text-sky-400 break-all">
+                              {operation.name}
+                            </div>
+                            {operation.displayName && (
+                              <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                                {operation.displayName}
+                              </div>
+                            )}
+                            {operation.description && (
+                              <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                {operation.description}
+                              </div>
+                            )}
+                          </div>
+                          {selectedActions.includes(operation.name) && (
+                            <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 shrink-0">
+                              Added
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Selected Actions */}
+              {selectedActions.length > 0 && (
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
+                    Selected Actions ({selectedActions.length})
+                  </label>
+                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
+                    <div className="flex flex-wrap gap-2">
+                      {selectedActions.map((action) => (
+                        <div
+                          key={action}
+                          className="group flex items-center gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-1.5 dark:border-sky-800 dark:bg-sky-900/30"
+                        >
+                          <span className="font-mono text-xs text-sky-700 dark:text-sky-300 break-all">
+                            {action}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveAction(action)}
+                            className="shrink-0 text-sky-600 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-200"
+                            aria-label={`Remove ${action}`}
+                          >
+                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                    {operation.displayName && (
-                      <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                        {operation.displayName}
-                      </div>
-                    )}
-                  </button>
-                ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            /* Advanced Mode */
+            <>
+              <div className="space-y-2">
+                <label
+                  htmlFor="actions"
+                  className="block text-sm font-medium text-slate-700 dark:text-slate-200"
+                >
+                  Required Actions <span className="text-slate-500">(one per line)</span>
+                </label>
+                <textarea
+                  id="actions"
+                  value={actionsInput}
+                  onChange={(e) => handleAdvancedSearch(e.target.value)}
+                  placeholder="Microsoft.Compute/virtualMachines/read&#10;Microsoft.Compute/virtualMachines/start/action&#10;Microsoft.Compute/virtualMachines/restart/action"
+                  rows={8}
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Supports wildcards (e.g., Microsoft.Storage/ *). Lines starting with # are treated as comments.
+                </p>
               </div>
-            </div>
+
+              {/* Search suggestions for advanced mode */}
+              {searchResults.length > 0 && (
+                <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      Suggested Actions
+                    </p>
+                  </div>
+                  <div className="max-h-60 overflow-y-auto">
+                    {searchResults.map((operation) => (
+                      <button
+                        key={operation.name}
+                        type="button"
+                        onClick={() => handleAddActionAdvanced(operation.name)}
+                        className="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition border-b border-slate-100 dark:border-slate-800 last:border-0"
+                      >
+                        <div className="font-mono text-sm text-sky-600 dark:text-sky-400">
+                          {operation.name}
+                        </div>
+                        {operation.displayName && (
+                          <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                            {operation.displayName}
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <div className="flex gap-3">
             <button
               type="submit"
-              disabled={isLoading || !actionsInput.trim()}
+              disabled={isLoading || (inputMode === 'simple' ? selectedActions.length === 0 : !actionsInput.trim())}
               className="rounded-lg bg-sky-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-sky-500 dark:hover:bg-sky-600"
             >
               {isLoading ? 'Calculating...' : 'Find Roles'}
             </button>
             <button
               type="button"
-              onClick={() => {
-                setActionsInput('');
-                setResults([]);
-                setError(null);
-                setSearchResults([]);
-              }}
+              onClick={handleClear}
               className="rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             >
               Clear
