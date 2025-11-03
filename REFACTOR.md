@@ -75,6 +75,48 @@ RBAC Calculator Refactoring Plan
 
 ## Changelog
 
+### 2025-11-03 - Phase 1 Complete ✅
+**Completed Items:**
+- [x] Phase 1.1: Created `src/lib/downloadUtils.ts` (commit b09a2e9)
+  - Consolidated 4 duplicate file download implementations
+  - Added convenience functions: downloadJSON, downloadCSV, downloadExcel
+  - Updated exportUtils.ts, rbacExportUtils.ts, RoleCreator.tsx
+  - Removed ~60 lines of duplicate code
+
+- [x] Phase 1.2: Created `src/lib/filenameUtils.ts` (commit b09a2e9)
+  - Extracted timestamp generation and pluralization logic
+  - Added helpers: getDateTimestamp, sanitizeForFilename, pluralize
+  - Created filename generators: generateQueryFilename, generateCountFilename, generateNameFilename
+  - Updated exportUtils.ts and rbacExportUtils.ts to use shared utilities
+
+- [x] Phase 1.3: Created `src/lib/rbacUtils.ts` (commit 3d0b24c)
+  - Shared calculatePermissionCount between client and scripts
+  - Node-safe implementation with minimal type requirements
+  - Updated rbacService.ts to import and re-export
+  - Updated scripts/update-rbac-data.ts to use shared function
+  - Removed ~85 lines of duplicate code
+  - Verified: Successfully computes permissions for 808 roles
+
+- [x] Phase 1.4: Created `src/config/privilegedRoles.ts` (commit 1cde1a5)
+  - Centralized PRIVILEGED_ROLES constant with 16 privileged roles
+  - Added comprehensive documentation and best practices
+  - Created helpers: isPrivilegedRole, getPrivilegedRoles, countPrivilegedRoles
+  - Updated RolePermissionsTable.tsx to use shared config
+  - Removed ~27 lines of duplicate code
+
+**Phase 1 Summary:**
+- **Code reduction**: ~172 lines removed through deduplication
+- **New utilities**: 4 shared modules created (downloadUtils, filenameUtils, rbacUtils, privilegedRoles)
+- **Build status**: ✅ All builds passing
+- **Test status**: ✅ Script validation successful (808 roles processed)
+- **Commits**: 4 focused commits created
+
+**What to Test Manually:**
+- RBAC Calculator: Verify all 4 modes work (scope-based, role-based, custom, role explorer)
+- Export functions: Test JSON/CSV/Excel export from RBAC Calculator and Role Permissions Table
+- Role Creator: Test custom role export with filename generation
+- Privileged role warnings: Verify warning banner appears when selecting Owner/Contributor roles
+
 ### 2025-11-03 - Refactor Plan Updated
 - Added sequencing strategy based on code review feedback
 - Inserted Phase 3a (Test Infrastructure) as blocker for high-risk phases
