@@ -6,7 +6,7 @@ export default function Document() {
       <Head>
         <meta
           name="keywords"
-          content="Azure Hub, Azure networking tools, Azure IP lookup, Azure service tags, tenant insights, subnet calculator, region latency, Microsoft Azure diagnostics"
+          content="Azure Hub, Azure networking tools, Azure IP lookup, Azure service tags, tenant insights, subnet calculator, Microsoft Azure diagnostics"
         />
       </Head>
       <body className="bg-slate-100">

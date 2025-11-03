@@ -11,7 +11,6 @@ type IconKey =
   | 'serviceTags'
   | 'tenant'
   | 'subnet'
-  | 'latency'
   | 'rbac'
   | 'github'
   | 'help';
@@ -107,18 +106,6 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
       <path
         fill="currentColor"
         d="M5 3a2 2 0 00-2 2v5h18V5a2 2 0 00-2-2H5zm16 9H3v5a2 2 0 002 2h6v-3H9a1 1 0 110-2h6a1 1 0 010 2h-2v3h6a2 2 0 002-2v-5z"
-      />
-    </svg>
-  ),
-  latency: (active: boolean) => (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
-    >
-      <path
-        fill="currentColor"
-        d="M5 4a1 1 0 011.78-.62l4.22 5.62 2.19-2.73a1 1 0 011.51 0l6 7.5A1 1 0 0119.98 16H4.02a1 1 0 01-.81-1.59L5 11.53V4zm14 14a1 1 0 110 2H5a1 1 0 110-2h14z"
       />
     </svg>
   ),
