@@ -1,32 +1,13 @@
 import { useState, useMemo } from 'react';
 import type { AzureRole } from '@/types/rbac';
 import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON } from '@/lib/rbacExportUtils';
+import { getPrivilegedRoles, isPrivilegedRole } from '@/config/privilegedRoles';
 
 interface RolePermissionsTableProps {
   roles: AzureRole[];
 }
 
 type ExportFormat = 'json' | 'csv' | 'excel';
-
-// Highly privileged roles that should trigger warnings
-const PRIVILEGED_ROLES = [
-  'Owner',
-  'Contributor',
-  'User Access Administrator',
-  'Azure Service Deploy Release Management Contributor',
-  'Cognitive Services Contributor',
-  'Cosmos DB Account Reader Role',
-  'DevTest Labs User',
-  'DocumentDB Account Contributor',
-  'Intelligent Systems Account Contributor',
-  'Logic App Contributor',
-  'Redis Cache Contributor',
-  'Scheduler Job Collections Contributor',
-  'Security Admin',
-  'Security Manager (Legacy)',
-  'SQL Security Manager',
-  'Storage Account Contributor'
-];
 
 export default function RolePermissionsTable({ roles }: RolePermissionsTableProps) {
   const [isExporting, setIsExporting] = useState(false);
@@ -74,15 +55,12 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
   };
 
   // Check if any of the selected roles are privileged
-  const hasPrivilegedRoles = useMemo(
-    () => roles.some(role => PRIVILEGED_ROLES.includes(role.roleName)),
+  const privilegedRolesInSelection = useMemo(
+    () => getPrivilegedRoles(roles),
     [roles]
   );
 
-  const privilegedRolesInSelection = useMemo(
-    () => roles.filter(role => PRIVILEGED_ROLES.includes(role.roleName)),
-    [roles]
-  );
+  const hasPrivilegedRoles = privilegedRolesInSelection.length > 0;
 
   return (
     <div className="space-y-4">
@@ -185,7 +163,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
             <tbody>
               {roles.map((role, index) => {
                 const isEven = index % 2 === 0;
-                const isPrivileged = PRIVILEGED_ROLES.includes(role.roleName);
+                const isPrivileged = isPrivilegedRole(role.roleName);
 
                 // Aggregate all actions and data actions
                 const allActions: string[] = [];
