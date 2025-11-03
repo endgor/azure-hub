@@ -366,6 +366,12 @@ export default function RbacCalculatorPage() {
                       {actionSearch ? 'No actions match your filter' : 'No actions available for this service'}
                     </div>
                   )}
+
+                  {availableActions.length > 0 && (
+                    <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800 dark:border-amber-400/30 dark:bg-amber-500/10 dark:text-amber-300">
+                      <strong>Note:</strong> Simple mode only shows actions explicitly defined in roles. Some actions (like bastionHosts) may be covered by wildcards (e.g., <code className="rounded bg-amber-100 px-1 py-0.5 font-mono dark:bg-amber-900/40">Microsoft.Network/*</code>) and won&apos;t appear in this list. Use <strong>Advanced mode</strong> to search for any action.
+                    </div>
+                  )}
                 </div>
               )}
 
