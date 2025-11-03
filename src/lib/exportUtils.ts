@@ -75,18 +75,9 @@ export function generateFilename(query: string, format: 'csv' | 'xlsx'): string 
 }
 
 function formatCellValue(value: ExportRow[keyof ExportRow]): string | number {
-  if (value === null || value === undefined) {
-    return '';
-  }
-
-  if (typeof value === 'number' && Number.isFinite(value)) {
-    return value;
-  }
-
-  if (typeof value === 'boolean') {
-    return value ? 'TRUE' : 'FALSE';
-  }
-
+  if (value == null) return '';
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
   return String(value);
 }
 
@@ -100,26 +91,18 @@ function normaliseRowFills(rowFills: (string | null | undefined)[], rowCount: nu
 }
 
 function normaliseExcelColor(hex: string | null): string | null {
-  if (!hex) {
-    return null;
-  }
+  if (!hex) return null;
+
   let value = hex.trim();
-  if (!value) {
-    return null;
-  }
-  if (value.startsWith('#')) {
-    value = value.slice(1);
-  }
+  if (!value) return null;
+
+  value = value.startsWith('#') ? value.slice(1) : value;
+
   if (value.length === 3 && /^[0-9a-fA-F]+$/.test(value)) {
-    value = value
-      .split('')
-      .map((char) => char + char)
-      .join('');
+    value = value.split('').map(char => char + char).join('');
   }
-  if (!/^[0-9a-fA-F]{6}$/.test(value)) {
-    return null;
-  }
-  return `FF${value.toUpperCase()}`;
+
+  return /^[0-9a-fA-F]{6}$/.test(value) ? `FF${value.toUpperCase()}` : null;
 }
 
 /**

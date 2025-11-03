@@ -1,6 +1,6 @@
 import React, { memo, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import { buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
+import { buildUrlWithQuery } from '@/lib/queryUtils';
 
 interface PaginationProps {
   currentPage: number;
@@ -66,7 +66,7 @@ const Pagination: React.FC<PaginationProps> = memo(({
 
   // Helper to build URL with query params - memoized
   const getPageUrl = useCallback((page: number) => {
-    return buildUrlWithQueryOrBasePath(basePath, {
+    return buildUrlWithQuery(basePath, {
       ipOrDomain: query?.ipOrDomain,
       region: query?.region,
       service: query?.service,
@@ -75,7 +75,7 @@ const Pagination: React.FC<PaginationProps> = memo(({
   }, [basePath, query?.ipOrDomain, query?.region, query?.service]);
 
   const getAllUrl = useMemo(() => {
-    return buildUrlWithQueryOrBasePath(basePath, {
+    return buildUrlWithQuery(basePath, {
       ipOrDomain: query?.ipOrDomain,
       region: query?.region,
       service: query?.service,

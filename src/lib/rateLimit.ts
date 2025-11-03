@@ -25,9 +25,7 @@ class RateLimiter {
   }
 
   private startCleanup(): void {
-    if (this.cleanupInterval) {
-      clearInterval(this.cleanupInterval);
-    }
+    clearInterval(this.cleanupInterval!);
     this.cleanupInterval = setInterval(() => {
       const now = Date.now();
       const keysToDelete: string[] = [];

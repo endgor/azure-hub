@@ -19,13 +19,7 @@ const LookupForm = memo(function LookupForm({
   // Set initial query on component load
   useEffect(() => {
     // Prioritize showing a simple value in this order: IP/domain -> service -> region
-    if (initialValue) {
-      setSearchQuery(initialValue);
-    } else if (initialService) {
-      setSearchQuery(initialService);
-    } else if (initialRegion) {
-      setSearchQuery(initialRegion);
-    }
+    setSearchQuery(initialValue || initialService || initialRegion);
   }, [initialValue, initialRegion, initialService]);
   
   // Reset loading state when query parameters change

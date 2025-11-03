@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/clientIpService';
-import { buildUrlWithQuery, buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
+import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 
 /**
@@ -24,6 +24,30 @@ function isHostname(input: string): boolean {
 
   // Likely a hostname
   return true;
+}
+
+/**
+ * Deduplicate Azure IP address results based on IP prefix and service tag
+ */
+function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
+  return results.filter(
+    (item, index, array) =>
+      index ===
+      array.findIndex(
+        (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
+      )
+  );
+}
+
+/**
+ * Search for Azure IP addresses by both service and region in parallel
+ */
+async function searchServiceAndRegion(query: string): Promise<AzureIpAddress[]> {
+  const [serviceResults, regionResults] = await Promise.all([
+    searchAzureIpAddresses({ service: query }),
+    searchAzureIpAddresses({ region: query })
+  ]);
+  return deduplicateResults([...serviceResults, ...regionResults]);
 }
 
 const clientFetcher = async (key: string): Promise<ApiResponse> => {
@@ -57,62 +81,30 @@ const clientFetcher = async (key: string): Promise<ApiResponse> => {
           const dnsData = await dnsResponse.json();
 
           if (dnsData.ipAddresses && dnsData.ipAddresses.length > 0) {
-            // For each resolved IP, check Azure service tags
-            const allMatches: AzureIpAddress[] = [];
-
-            for (const resolvedIp of dnsData.ipAddresses) {
+            // For each resolved IP, check Azure service tags in parallel
+            const matchPromises = dnsData.ipAddresses.map(async (resolvedIp: string) => {
               const matches = await checkIpAddress(resolvedIp);
               // Tag each result with DNS info
               matches.forEach(match => {
                 match.resolvedFrom = ipOrDomain;
                 match.resolvedIp = resolvedIp;
               });
-              allMatches.push(...matches);
-            }
+              return matches;
+            });
 
-            results = allMatches;
+            results = (await Promise.all(matchPromises)).flat();
           } else if (dnsData.error) {
             // DNS lookup failed, fall back to service/region search
-            const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-            const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-            const combinedResults = [...serviceResults, ...regionResults];
-            const uniqueResults = combinedResults.filter(
-              (item, index, array) =>
-                index ===
-                array.findIndex(
-                  (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-                )
-            );
-            results = uniqueResults;
+            results = await searchServiceAndRegion(ipOrDomain);
           }
         } catch (dnsError) {
           // If DNS lookup fails, fall back to service/region search
-          const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-          const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-          const combinedResults = [...serviceResults, ...regionResults];
-          const uniqueResults = combinedResults.filter(
-            (item, index, array) =>
-              index ===
-              array.findIndex(
-                (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-              )
-          );
-          results = uniqueResults;
+          results = await searchServiceAndRegion(ipOrDomain);
         }
       }
       // Otherwise treat as service/region search
       else {
-        const serviceResults = await searchAzureIpAddresses({ service: ipOrDomain });
-        const regionResults = await searchAzureIpAddresses({ region: ipOrDomain });
-        const combinedResults = [...serviceResults, ...regionResults];
-        const uniqueResults = combinedResults.filter(
-          (item, index, array) =>
-            index ===
-            array.findIndex(
-              (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-            )
-        );
-        results = uniqueResults;
+        results = await searchServiceAndRegion(ipOrDomain);
       }
     } else {
       results = await searchAzureIpAddresses({ region, service });
@@ -191,7 +183,12 @@ export default function IpLookupPage() {
   const apiUrl = useMemo(() => {
     if (!router.isReady) return null;
 
-    const url = buildUrlWithQuery('/client/ipAddress', {
+    // Don't fetch if there are no search parameters
+    if (!initialQuery && !initialRegion && !initialService) {
+      return null;
+    }
+
+    return buildUrlWithQuery('/client/ipAddress', {
       ipOrDomain: initialQuery,
       region: initialRegion,
       service: initialService,
@@ -199,8 +196,6 @@ export default function IpLookupPage() {
       // Only include pageSize if it's 'all' (numeric sizes are handled client-side)
       pageSize: initialPageSize === 'all' ? 'all' : undefined
     });
-
-    return url || null;
   }, [router.isReady, initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
 
   useEffect(() => {
@@ -242,7 +237,7 @@ export default function IpLookupPage() {
   const totalPages = Math.ceil(totalResults / (effectivePageSize || DEFAULT_PAGE_SIZE));
 
   const handlePageSizeChange = useCallback((newPageSize: number | 'all') => {
-    const url = buildUrlWithQueryOrBasePath('/tools/ip-lookup', {
+    const url = buildUrlWithQuery('/tools/ip-lookup', {
       ipOrDomain: initialQuery,
       region: initialRegion,
       service: initialService,
