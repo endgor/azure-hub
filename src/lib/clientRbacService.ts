@@ -184,6 +184,42 @@ export async function getServiceNamespaces(): Promise<string[]> {
 }
 
 /**
+ * Get all actions for a specific service namespace
+ */
+export async function getActionsByService(serviceNamespace: string): Promise<Operation[]> {
+  if (!serviceNamespace) {
+    return [];
+  }
+
+  const actionsMap = await extractActionsFromRoles();
+  const namespaceLower = serviceNamespace.toLowerCase();
+  const results: Operation[] = [];
+
+  // Convert Map to array for iteration
+  const actionsArray = Array.from(actionsMap.entries());
+
+  for (const [actionName, actionData] of actionsArray) {
+    if (actionName.toLowerCase().startsWith(namespaceLower)) {
+      // Parse action to create a friendly display name
+      const parts = actionName.split('/');
+      const provider = parts[0] || '';
+      const resource = parts.slice(1, -1).join('/') || '';
+      const operation = parts[parts.length - 1] || '';
+
+      results.push({
+        name: actionName,
+        displayName: `${operation} ${resource}`.trim() || actionName,
+        description: `Used by ${actionData.roleCount} role${actionData.roleCount > 1 ? 's' : ''}`,
+        provider
+      });
+    }
+  }
+
+  // Sort by action name for better browsing
+  return results.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/**
  * Filter roles by service namespace
  */
 export async function filterRolesByService(serviceNamespace: string): Promise<AzureRole[]> {
