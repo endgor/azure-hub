@@ -218,6 +218,11 @@ const NAV_SECTIONS: NavSection[] = [
         label: 'Tenant Lookup',
         href: '/tools/tenant-lookup',
         icon: 'tenant'
+      },
+      {
+        label: 'RBAC Calculator',
+        href: '/tools/rbac-calculator',
+        icon: 'rbac'
       }
     ]
   }
