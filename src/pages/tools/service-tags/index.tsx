@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import { getAllServiceTags } from '@/lib/clientIpService';
+import { filterAndSortByQuery } from '@/lib/searchUtils';
 
 const clientServiceTagsFetcher = async () => {
   try {
@@ -41,16 +42,14 @@ export default function ServiceTags() {
     fetchServiceTags();
   }, []);
 
-  // Filter service tags based on search term
+  // Filter service tags based on search term with intelligent sorting
   const filteredServiceTags = useMemo(() => {
     if (!data?.serviceTags) return [];
-    
+
     if (!searchTerm.trim()) return data.serviceTags;
-    
-    const searchLower = searchTerm.toLowerCase();
-    return data.serviceTags.filter(tag => 
-      tag.toLowerCase().includes(searchLower)
-    );
+
+    // Use intelligent sorting: exact matches first, then starts with, then alphabetical
+    return filterAndSortByQuery(data.serviceTags, searchTerm, (tag) => tag);
   }, [data?.serviceTags, searchTerm]);
 
   return (

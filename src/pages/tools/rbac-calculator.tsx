@@ -1,11 +1,13 @@
-import { useState, useCallback, useEffect, FormEvent } from 'react';
+import { useState, useCallback, useEffect, FormEvent, useRef } from 'react';
 import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
+import RoleCreator from '@/components/RoleCreator';
 import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
 import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
+import { intelligentSearchSort, filterAndSortByQuery } from '@/lib/searchUtils';
 
-type InputMode = 'simple' | 'advanced' | 'roleExplorer';
+type InputMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
 
 export default function RbacCalculatorPage() {
   const [inputMode, setInputMode] = useState<InputMode>('simple');
@@ -32,12 +34,42 @@ export default function RbacCalculatorPage() {
   const [showRoleResults, setShowRoleResults] = useState(false);
   const [isLoadingServices, setIsLoadingServices] = useState(false);
 
+  // Refs for click-outside detection
+  const serviceDropdownRef = useRef<HTMLDivElement>(null);
+  const roleSearchDropdownRef = useRef<HTMLDivElement>(null);
+  const advancedSearchDropdownRef = useRef<HTMLDivElement>(null);
+
   // Load disclaimer preference from localStorage
   useEffect(() => {
     const dismissed = localStorage.getItem('rbac-disclaimer-dismissed');
     if (dismissed === 'true') {
       setShowDisclaimer(false);
     }
+  }, []);
+
+  // Click-outside handler for dropdowns
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // Hide service dropdown if clicked outside
+      if (serviceDropdownRef.current && !serviceDropdownRef.current.contains(event.target as Node)) {
+        setShowServiceDropdown(false);
+      }
+
+      // Hide role search dropdown if clicked outside
+      if (roleSearchDropdownRef.current && !roleSearchDropdownRef.current.contains(event.target as Node)) {
+        setRoleSearchResults([]);
+      }
+
+      // Hide advanced search dropdown if clicked outside
+      if (advancedSearchDropdownRef.current && !advancedSearchDropdownRef.current.contains(event.target as Node)) {
+        setSearchResults([]);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const handleDismissDisclaimer = () => {
@@ -59,9 +91,9 @@ export default function RbacCalculatorPage() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Load roles for Role Explorer mode
+  // Load roles for Role Explorer and Role Creator modes
   useEffect(() => {
-    if (inputMode === 'roleExplorer') {
+    if (inputMode === 'roleExplorer' || inputMode === 'roleCreator') {
       const loadRoles = async () => {
         try {
           setIsLoading(true);
@@ -126,6 +158,11 @@ export default function RbacCalculatorPage() {
     e.preventDefault();
     setError(null);
     setResults([]);
+
+    // Role Explorer mode doesn't use form submission
+    if (inputMode === 'roleExplorer') {
+      return;
+    }
 
     let actions: string[] = [];
 
@@ -241,13 +278,20 @@ export default function RbacCalculatorPage() {
       return;
     }
 
-    const queryLower = query.toLowerCase();
-    const results = availableRoles.filter(role =>
-      role.roleName.toLowerCase().includes(queryLower) &&
+    // Filter out already selected roles
+    const filteredRoles = availableRoles.filter(role =>
       !selectedRoles.some(selected => selected.id === role.id)
-    ).slice(0, 10);
+    );
 
-    setRoleSearchResults(results);
+    // Use intelligent sorting: exact matches first, then starts with, then alphabetical
+    const sortedResults = filterAndSortByQuery(
+      filteredRoles,
+      query,
+      (role) => role.roleName,
+      10
+    );
+
+    setRoleSearchResults(sortedResults);
   }, [availableRoles, selectedRoles]);
 
   const handleAddRole = useCallback((role: AzureRole) => {
@@ -278,10 +322,10 @@ export default function RbacCalculatorPage() {
     setActionSearch('');
   }, []);
 
-  const filteredServices = availableServices.filter(service => {
-    if (!serviceSearch) return true;
-    return service.toLowerCase().includes(serviceSearch.toLowerCase());
-  });
+  // Use intelligent sorting for service search: exact matches first, then starts with, then alphabetical
+  const filteredServices = serviceSearch
+    ? filterAndSortByQuery(availableServices, serviceSearch, (service) => service)
+    : availableServices;
 
   const filteredActions = availableActions.filter(action => {
     if (!actionSearch) return true;
@@ -338,6 +382,7 @@ export default function RbacCalculatorPage() {
                   <li>Role ranking is based on namespace relevance and permission scope, not on risk assessment or privilege level beyond basic categorization.</li>
                   <li>Some permissions may not be available in any built-in role. In such cases, you&apos;ll need to create a custom role.</li>
                   <li>Always review the full list of permissions granted by a role before assignment to ensure it meets your security requirements.</li>
+                  <li><strong>⚠️ Important:</strong> Always verify the results and test role assignments in a non-production environment before deploying to production. You are using this tool at your own risk.</li>
                 </ul>
               </div>
             </div>
@@ -378,12 +423,29 @@ export default function RbacCalculatorPage() {
           >
             Role Explorer
           </button>
+          <button
+            type="button"
+            onClick={() => setInputMode('roleCreator')}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              inputMode === 'roleCreator'
+                ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+            }`}
+          >
+            Role Creator
+          </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {inputMode === 'roleCreator' ? (
+          <RoleCreator
+            availableRoles={availableRoles}
+            onSearchActions={searchOperations}
+          />
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
           {inputMode === 'simple' ? (
             <>
-              <div className="space-y-2 relative max-w-2xl">
+              <div className="space-y-2 relative max-w-2xl" ref={serviceDropdownRef}>
                 <label
                   htmlFor="service-search"
                   className="block text-sm font-medium text-slate-700 dark:text-slate-200"
@@ -404,10 +466,6 @@ export default function RbacCalculatorPage() {
                       }
                     }}
                     onFocus={() => setShowServiceDropdown(true)}
-                    onBlur={() => {
-                      // Delay to allow click on dropdown item
-                      setTimeout(() => setShowServiceDropdown(false), 200);
-                    }}
                     placeholder={isLoadingServices ? "Loading services..." : "Search for a service (e.g., Compute, Storage, Network)"}
                     disabled={isLoadingServices}
                     className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-10 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400 disabled:opacity-60 disabled:cursor-not-allowed"
@@ -563,7 +621,7 @@ export default function RbacCalculatorPage() {
             </>
           ) : inputMode === 'advanced' ? (
             <>
-              <div className="space-y-2">
+              <div className="space-y-2" ref={advancedSearchDropdownRef}>
                 <label
                   htmlFor="actions"
                   className="block text-sm font-medium text-slate-700 dark:text-slate-200"
@@ -615,7 +673,7 @@ export default function RbacCalculatorPage() {
           ) : (
             <>
               <div className="space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-2" ref={roleSearchDropdownRef}>
                   <label
                     htmlFor="role-search"
                     className="block text-sm font-medium text-slate-700 dark:text-slate-200"
@@ -745,21 +803,22 @@ export default function RbacCalculatorPage() {
           </div>
           )}
         </form>
+        )}
 
-        {isLoading && (
+        {isLoading && inputMode !== 'roleCreator' && (
           <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
             <p className="text-slate-600 dark:text-slate-300">Calculating least privileged roles...</p>
           </div>
         )}
 
-        {error && (
+        {error && inputMode !== 'roleCreator' && (
           <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
             {error}
           </div>
         )}
 
-        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && (
+        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
           <RoleResultsTable results={results} />
         )}
 
@@ -767,7 +826,7 @@ export default function RbacCalculatorPage() {
           <RolePermissionsTable roles={selectedRoles} />
         )}
 
-        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && (
+        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
           <section className="space-y-4">
             <div>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
