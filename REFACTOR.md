@@ -75,6 +75,43 @@ RBAC Calculator Refactoring Plan
 
 ## Changelog
 
+### 2025-11-03 - Phase 3 Complete ✅
+**Completed Items:**
+- [x] Phase 3.1: Created `src/hooks/useClickOutside.ts` (commit 56b0bc7)
+  - Click-outside detection for dropdowns/modals
+  - Mouse and touch event support
+  - Conditional activation with enabled flag
+  - useClickOutsideMultiple for multiple refs
+  - SSR-safe event listener management
+
+- [x] Phase 3.2: Created `src/hooks/useLocalStorageState.ts` (commit 56b0bc7)
+  - useState-like hook with localStorage persistence
+  - SSR-safe: defers localStorage reads to useEffect
+  - Tab/window synchronization via storage events
+  - Convenience hooks: useLocalStorageBoolean, useLocalStorageNumber
+  - Custom serializer/deserializer support
+  - Graceful error handling
+
+- [x] Phase 3.3: Created `src/hooks/useTableSort.ts` (commit 56b0bc7)
+  - Sortable table functionality with memoized sorting
+  - Click-to-toggle sort direction (asc ⟷ desc)
+  - Custom comparator support per field
+  - getSortIndicator for sort arrows (▲ ▼)
+  - getSortProps with onClick, className, aria-sort
+  - Type-safe with generics
+
+**Phase 3 Summary:**
+- **New hooks**: 3 custom hooks created
+- **Total lines added**: ~565 lines of reusable logic
+- **Build status**: ✅ All builds passing
+- **Features**: SSR-safe, TypeScript, accessibility, performance optimized
+- **Documentation**: Comprehensive JSDoc with usage examples
+
+**Ready for Phase 3a:**
+- Hooks ready to replace inline implementations
+- Can refactor 4+ click-outside patterns
+- Foundation laid for test infrastructure
+
 ### 2025-11-03 - Phase 2 Complete ✅
 **Completed Items:**
 - [x] Phase 2.1: Created `src/components/shared/DismissibleBanner.tsx` (commit 776387a)
