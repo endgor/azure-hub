@@ -22,6 +22,20 @@ export default function RbacCalculatorPage() {
   const [isLoadingActions, setIsLoadingActions] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
+
+  // Load disclaimer preference from localStorage
+  useEffect(() => {
+    const dismissed = localStorage.getItem('rbac-disclaimer-dismissed');
+    if (dismissed === 'true') {
+      setShowDisclaimer(false);
+    }
+  }, []);
+
+  const handleDismissDisclaimer = () => {
+    setShowDisclaimer(false);
+    localStorage.setItem('rbac-disclaimer-dismissed', 'true');
+  };
 
   useEffect(() => {
     const loadServices = async () => {
@@ -205,6 +219,40 @@ export default function RbacCalculatorPage() {
             Enter the Azure actions you need, the calculator will retrieve the least privileged built-in roles that grant those permissions.
           </p>
         </div>
+
+        {/* Disclaimer Banner */}
+        {showDisclaimer && (
+          <div className="relative rounded-xl border border-blue-200 bg-blue-50 p-5 dark:border-blue-400/30 dark:bg-blue-500/10">
+            <button
+              onClick={handleDismissDisclaimer}
+              className="absolute right-3 top-3 rounded-lg p-1 text-blue-600 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-900/30"
+              aria-label="Dismiss disclaimer"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div className="space-y-3 pr-8">
+              <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-200">
+                Important Information
+              </h3>
+              <div className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+                <p>
+                  This tool helps you find <strong>built-in roles</strong> in Azure that provide the least privilege for a specific set of actions. It searches through Azure&apos;s built-in role definitions and ranks them by relevance to your required permissions.
+                </p>
+                <p>
+                  <strong>Please note:</strong>
+                </p>
+                <ul className="list-disc space-y-1 pl-5">
+                  <li>Only <strong>built-in roles</strong> are searched. Some services may require <strong>custom roles</strong> for specific permission combinations.</li>
+                  <li>Role ranking is based on namespace relevance and permission scope, not on risk assessment or privilege level beyond basic categorization.</li>
+                  <li>Some permissions may not be available in any built-in role. In such cases, you&apos;ll need to create a custom role.</li>
+                  <li>Always review the full list of permissions granted by a role before assignment to ensure it meets your security requirements.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex gap-2 rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-900 w-fit">
           <button
