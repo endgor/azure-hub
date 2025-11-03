@@ -8,7 +8,8 @@
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
-    "update-ip-data": "ts-node scripts/update-ip-data.ts"
+    "update-ip-data": "ts-node scripts/update-ip-data.ts",
+    "update-rbac-data": "ts-node scripts/update-rbac-data.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",

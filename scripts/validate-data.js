@@ -21,13 +21,24 @@ try {
   
   console.log(`Found ${jsonFiles.length} JSON files in data directory`);
   
-  // Check if we have required data files
-  const requiredFiles = ['AzureCloud.json', 'AzureChinaCloud.json', 'AzureUSGovernment.json', 'file-metadata.json'];
-  const missingFiles = requiredFiles.filter(file => !jsonFiles.includes(file));
+  // Check if we have required IP data files
+  const requiredIpFiles = ['AzureCloud.json', 'AzureChinaCloud.json', 'AzureUSGovernment.json', 'file-metadata.json'];
+  const missingIpFiles = requiredIpFiles.filter(file => !jsonFiles.includes(file));
 
-  if (missingFiles.length > 0) {
-    console.error(`ERROR: Missing required data files: ${missingFiles.join(', ')}`);
+  if (missingIpFiles.length > 0) {
+    console.error(`ERROR: Missing required IP data files: ${missingIpFiles.join(', ')}`);
     console.error('Please run "npm run update-ip-data" to download the latest Azure IP ranges.');
+    process.exit(1);
+  }
+
+  // Check if we have required RBAC data files
+  const requiredRbacFiles = ['roles-extended.json'];
+  const missingRbacFiles = requiredRbacFiles.filter(file => !jsonFiles.includes(file));
+
+  if (missingRbacFiles.length > 0) {
+    console.error(`ERROR: Missing required RBAC data files: ${missingRbacFiles.join(', ')}`);
+    console.error('Please run "npm run update-rbac-data" to fetch Azure role definitions.');
+    console.error('Note: You need to be logged in to Azure CLI (run "az login" first).');
     process.exit(1);
   }
   
