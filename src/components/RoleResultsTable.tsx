@@ -5,17 +5,23 @@ interface RoleResultsTableProps {
   results: LeastPrivilegeResult[];
 }
 
-type SortField = 'roleName' | 'permissionCount' | 'roleType';
+type SortField = 'roleName' | 'permissionCount' | 'roleType' | 'default';
 type SortDirection = 'asc' | 'desc';
 
 const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResultsTableProps) {
-  const [sortField, setSortField] = useState<SortField>('permissionCount');
+  const [sortField, setSortField] = useState<SortField>('default');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
-  // Sort the results
+  // Sort the results (or maintain backend order if default)
   const sortedResults = useMemo(() => {
     if (!results || results.length === 0) return [];
+
+    // If 'default', maintain the order from backend (already optimally sorted by relevance)
+    if (sortField === 'default') {
+      return results;
+    }
+
     return [...results].sort((a, b) => {
       let comparison = 0;
 
@@ -104,15 +110,6 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                 </th>
                 <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">
                   <button
-                    onClick={() => handleSort('permissionCount')}
-                    className="flex items-center hover:text-sky-600 dark:hover:text-sky-400"
-                  >
-                    Permission Count
-                    <SortIcon field="permissionCount" />
-                  </button>
-                </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">
-                  <button
                     onClick={() => handleSort('roleType')}
                     className="flex items-center hover:text-sky-600 dark:hover:text-sky-400"
                   >
@@ -138,11 +135,11 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                       isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'
                     }`}
                   >
-                    <td className="px-4 py-3" colSpan={5}>
+                    <td className="px-4 py-3" colSpan={4}>
                       <div className="space-y-3">
                         {/* Main Row */}
                         <div className="grid grid-cols-12 gap-4 items-center">
-                          <div className="col-span-4">
+                          <div className="col-span-5">
                             <div className="font-medium text-slate-900 dark:text-slate-100">
                               {result.role.roleName}
                             </div>
@@ -151,9 +148,6 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                                 Exact Match
                               </span>
                             )}
-                          </div>
-                          <div className="col-span-2 text-slate-600 dark:text-slate-300">
-                            {result.permissionCount.toFixed(0)}
                           </div>
                           <div className="col-span-2">
                             <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -164,7 +158,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                               {result.role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom'}
                             </span>
                           </div>
-                          <div className="col-span-3 text-slate-600 dark:text-slate-300">
+                          <div className="col-span-4 text-slate-600 dark:text-slate-300">
                             {result.matchingActions.length} {result.matchingActions.length === 1 ? 'action' : 'actions'}
                           </div>
                           <div className="col-span-1 flex justify-end">
@@ -285,13 +279,13 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
         </h3>
         <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
           <p>
-            <strong className="text-slate-900 dark:text-slate-100">Permission Count:</strong> Lower numbers indicate more restrictive (least privileged) roles. This is calculated based on the breadth of actions granted, with wildcards weighted more heavily.
+            <strong className="text-slate-900 dark:text-slate-100">Recommended Order:</strong> Roles are ranked by relevance to your requested permissions. Domain-specific roles (e.g., &ldquo;Billing Reader&rdquo;) rank higher than generic broad roles (e.g., &ldquo;Reader&rdquo;) for namespace-specific permissions.
           </p>
           <p>
             <strong className="text-slate-900 dark:text-slate-100">Exact Match:</strong> Roles that grant exactly the permissions you requested without additional access.
           </p>
           <p>
-            <strong className="text-slate-900 dark:text-slate-100">Tip:</strong> Always prefer roles with the lowest permission count and &ldquo;Exact Match&rdquo; badges when available.
+            <strong className="text-slate-900 dark:text-slate-100">Tip:</strong> The top result is usually your best choice for least privilege access. You can click column headers to re-sort if needed.
           </p>
         </div>
       </div>

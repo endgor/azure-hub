@@ -268,13 +268,14 @@ export function calculateLeastPrivilegedRoles(
   // 1. Exact matches first
   // 2. Then by namespace relevance (higher is better)
   // 3. Finally by permission count (lower is better)
+  const allRequiredActions = [...input.requiredActions, ...(input.requiredDataActions || [])];
+
   results.sort((a, b) => {
     // Exact matches always come first
     if (a.isExactMatch && !b.isExactMatch) return -1;
     if (!a.isExactMatch && b.isExactMatch) return 1;
 
     // Calculate namespace relevance for both roles
-    const allRequiredActions = [...input.requiredActions, ...(input.requiredDataActions || [])];
     const relevanceA = calculateNamespaceRelevance(a.role, allRequiredActions);
     const relevanceB = calculateNamespaceRelevance(b.role, allRequiredActions);
 
