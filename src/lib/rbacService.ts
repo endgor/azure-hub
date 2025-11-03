@@ -142,14 +142,73 @@ export function getServiceFromPermission(permission: string): string {
 }
 
 /**
+ * Calculates namespace relevance score for a role based on required permissions.
+ * Higher score = more relevant to the specific namespace of required permissions.
+ *
+ * Scoring:
+ * - Actions matching the exact namespace: +100 points per action
+ * - Actions with broader wildcards (e.g., asterisk/read): -50 points penalty
+ * - Role name matching namespace: +200 bonus
+ *
+ * This helps prioritize domain-specific roles (e.g., "Billing Reader" for billing permissions)
+ * over generic broad roles (e.g., "Reader" with asterisk/read).
+ */
+function calculateNamespaceRelevance(role: AzureRole, requiredActions: string[]): number {
+  let relevanceScore = 0;
+
+  // Extract unique namespaces from required actions
+  const requiredNamespaces = new Set(
+    requiredActions
+      .filter(a => a && !a.startsWith('*'))
+      .map(a => getServiceFromPermission(a))
+      .filter(ns => ns)
+  );
+
+  if (requiredNamespaces.size === 0) {
+    return 0; // No specific namespace to match
+  }
+
+  // Check role actions for namespace matches
+  for (const permission of role.permissions) {
+    for (const action of permission.actions) {
+      if (action === '*' || action === '*/read') {
+        // Penalize overly broad wildcards
+        relevanceScore -= 50;
+      } else {
+        const actionNamespace = getServiceFromPermission(action);
+        if (requiredNamespaces.has(actionNamespace)) {
+          // Bonus for matching the required namespace
+          relevanceScore += 100;
+        }
+      }
+    }
+  }
+
+  // Bonus if role name mentions the namespace
+  const roleName = role.roleName.toLowerCase();
+  const namespaceArray = Array.from(requiredNamespaces);
+  for (const namespace of namespaceArray) {
+    const namespaceParts = namespace.toLowerCase().split('.');
+    // Check if any part of namespace appears in role name
+    if (namespaceParts.some(part => part.length > 3 && roleName.includes(part))) {
+      relevanceScore += 200;
+    }
+  }
+
+  return relevanceScore;
+}
+
+/**
  * Finds roles that satisfy all required permissions, ranked by privilege level.
  * Returns roles sorted by least privileged first (exact matches prioritized).
  *
- * Filtering logic:
- * 1. Role must have ALL required actions (control plane permissions)
- * 2. Role must have ALL required data actions (data plane permissions), if specified
- * 3. Roles are ranked by permission score (lower = more restrictive)
- * 4. Exact matches (roles with only required permissions) appear first
+ * Ranking logic (in order of priority):
+ * 1. Exact matches first (roles with only the required permissions)
+ * 2. Namespace relevance (higher = more specific to the domain)
+ * 3. Permission count (lower = more restrictive)
+ *
+ * This ensures domain-specific roles (e.g., "Billing Reader") rank higher than
+ * generic broad roles (e.g., "Reader" with asterisk/read) when searching for specific permissions.
  */
 export function calculateLeastPrivilegedRoles(
   roles: AzureRole[],
@@ -205,10 +264,26 @@ export function calculateLeastPrivilegedRoles(
     }
   }
 
-  // Sort: exact matches first, then by permission count (ascending)
+  // Sort with improved ranking:
+  // 1. Exact matches first
+  // 2. Then by namespace relevance (higher is better)
+  // 3. Finally by permission count (lower is better)
   results.sort((a, b) => {
+    // Exact matches always come first
     if (a.isExactMatch && !b.isExactMatch) return -1;
     if (!a.isExactMatch && b.isExactMatch) return 1;
+
+    // Calculate namespace relevance for both roles
+    const allRequiredActions = [...input.requiredActions, ...(input.requiredDataActions || [])];
+    const relevanceA = calculateNamespaceRelevance(a.role, allRequiredActions);
+    const relevanceB = calculateNamespaceRelevance(b.role, allRequiredActions);
+
+    // Higher relevance = better match (descending)
+    if (relevanceA !== relevanceB) {
+      return relevanceB - relevanceA;
+    }
+
+    // If relevance is equal, use permission count (ascending)
     return a.permissionCount - b.permissionCount;
   });
 
