@@ -1,5 +1,7 @@
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import * as XLSX from 'xlsx';
+import { downloadFile, downloadJSON, downloadExcel } from './downloadUtils';
+import { generateCountFilename } from './filenameUtils';
 
 /**
  * Azure-compatible role definition format for export
@@ -72,33 +74,12 @@ export function exportRolesToAzureJSON(
 }
 
 /**
- * Triggers browser file download for JSON content
- */
-function downloadJSON(content: string, filename: string): void {
-  const blob = new Blob([content], { type: 'application/json' });
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  window.URL.revokeObjectURL(url);
-}
-
-/**
  * Generates a descriptive filename for role export
  * @param roleCount Number of roles being exported
  * @returns Formatted filename with timestamp
  */
 export function generateRoleExportFilename(roleCount: number): string {
-  const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  const roleLabel = roleCount === 1 ? 'role' : 'roles';
-  return `azure-rbac-${roleCount}-${roleLabel}_${timestamp}.json`;
+  return generateCountFilename(roleCount, 'json');
 }
 
 /**
@@ -179,7 +160,7 @@ export function exportRolesToCSV(
     .join('\n');
 
   // Trigger download
-  downloadFile(csvContent, filename, 'text/csv');
+  downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
 }
 
 /**
@@ -276,19 +257,7 @@ export async function exportRolesToExcel(
 
   // Generate Excel file and trigger download
   const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  window.URL.revokeObjectURL(url);
+  downloadExcel(wbout, filename);
 }
 
 /**
@@ -328,23 +297,4 @@ export function exportRolesToJSON(
 
   // Trigger download
   downloadFile(jsonContent, filename, 'application/json');
-}
-
-/**
- * Generic file download function
- */
-function downloadFile(content: string | Blob, filename: string, mimeType: string): void {
-  const blob = content instanceof Blob ? content : new Blob([content], { type: mimeType });
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  window.URL.revokeObjectURL(url);
 }

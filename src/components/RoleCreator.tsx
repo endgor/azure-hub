@@ -2,6 +2,8 @@ import { useState, useCallback, useEffect } from 'react';
 import type { AzureRole } from '@/types/rbac';
 import { RBAC_TEMPLATES, getTemplateCategories, type RbacTemplate } from '@/lib/rbacTemplates';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
+import { downloadJSON } from '@/lib/downloadUtils';
+import { generateNameFilename } from '@/lib/filenameUtils';
 
 interface CustomRoleDefinition {
   roleName: string;
@@ -390,20 +392,8 @@ export default function RoleCreator({ availableRoles, onSearchActions }: RoleCre
     };
 
     const jsonContent = JSON.stringify(exportData, null, 2);
-    const blob = new Blob([jsonContent], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-
-    const filename = `${customRole.roleName.replace(/[^a-zA-Z0-9-_]/g, '_')}_custom_role.json`;
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    link.style.visibility = 'hidden';
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    window.URL.revokeObjectURL(url);
+    const filename = generateNameFilename(customRole.roleName, 'json', 'custom_role');
+    downloadJSON(jsonContent, filename);
   }, [customRole, manuallyAddedActions]);
 
   // Deduplicate all actions

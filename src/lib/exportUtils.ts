@@ -1,4 +1,6 @@
 import { AzureIpAddress } from '@/types/azure';
+import { downloadFile, downloadExcel } from './downloadUtils';
+import { generateQueryFilename } from './filenameUtils';
 
 /** Generic row type for CSV/Excel export */
 export type ExportRow = Record<string, string | number | boolean | null | undefined>;
@@ -50,7 +52,7 @@ export async function exportToExcel<T extends ExportRow>(
   options?: ExcelExportOptions
 ): Promise<void> {
   if (data.length === 0) {
-    downloadFile(new Blob([], { type: EXCEL_MIME_TYPE }), filename, EXCEL_MIME_TYPE);
+    downloadExcel(new Blob([]), filename);
     return;
   }
 
@@ -59,39 +61,17 @@ export async function exportToExcel<T extends ExportRow>(
   const rowFills = normaliseRowFills(options?.rowFills ?? [], rows.length);
 
   const buffer = await createWorkbookBuffer(headers, rows, sheetName, rowFills);
-  downloadFile(new Blob([buffer as BlobPart], { type: EXCEL_MIME_TYPE }), filename, EXCEL_MIME_TYPE);
+  downloadExcel(buffer, filename);
 }
 
 const EXCEL_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-/**
- * Triggers browser file download using Blob URL and hidden anchor element.
- * Automatically cleans up the Blob URL after download starts.
- */
-function downloadFile(data: string | Blob, filename: string, mimeType: string): void {
-  const blob = typeof data === 'string' ? new Blob([data], { type: mimeType }) : data;
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  window.URL.revokeObjectURL(url);
-}
 
 /**
  * Generates a descriptive filename with sanitized query and ISO date.
  * Example: "azure-ip-ranges_192_168_0_0_2024-01-15.xlsx"
  */
 export function generateFilename(query: string, format: 'csv' | 'xlsx'): string {
-  const sanitizedQuery = query.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  return `azure-ip-ranges_${sanitizedQuery}_${timestamp}.${format}`;
+  return generateQueryFilename(query, format, 'azure-ip-ranges');
 }
 
 /**
