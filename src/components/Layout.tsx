@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ReactNode, ReactElement } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -48,7 +48,7 @@ const DEFAULT_KEYWORDS = [
   'Azure networking utilities'
 ];
 
-const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
+const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
   dashboard: (active: boolean) => (
     <svg
       viewBox="0 0 24 24"

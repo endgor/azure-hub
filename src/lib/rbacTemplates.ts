@@ -11,6 +11,7 @@ export interface RbacTemplate {
   actions: string[];
   dataActions?: string[];
   notActions?: string[];
+  notDataActions?: string[];
   /** Microsoft documentation link explaining why these permissions are needed */
   sourceUrl?: string;
   /** Additional notes or warnings for users */
@@ -126,7 +127,7 @@ export function getTemplatesByCategory(category: RbacTemplate['category']): Rbac
  * Get all unique categories
  */
 export function getTemplateCategories(): RbacTemplate['category'][] {
-  return [...new Set(RBAC_TEMPLATES.map(t => t.category))];
+  return Array.from(new Set(RBAC_TEMPLATES.map(t => t.category)));
 }
 
 /**
