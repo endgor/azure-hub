@@ -3,6 +3,7 @@ const MAX_CACHE_SIZE = 500;
 
 export function getCachedNormalization(str: string): string {
   let normalized = normalizationCache.get(str);
+
   if (normalized === undefined) {
     normalized = str.replace(/[-\s]/g, '').toLowerCase();
 
@@ -12,11 +13,11 @@ export function getCachedNormalization(str: string): string {
         normalizationCache.delete(firstKey);
       }
     }
-
-    normalizationCache.set(str, normalized);
-  } else {
-    normalizationCache.delete(str);
-    normalizationCache.set(str, normalized);
   }
+
+  // Always update position in cache (LRU)
+  normalizationCache.delete(str);
+  normalizationCache.set(str, normalized);
+
   return normalized;
 }

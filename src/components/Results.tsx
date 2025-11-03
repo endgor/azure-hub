@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Tooltip from './Tooltip';
 import ExportDropdown from './ExportDropdown';
-import { buildUrlWithQueryOrBasePath } from '@/lib/queryUtils';
+import { buildUrlWithQuery } from '@/lib/queryUtils';
 
 // Network features descriptions
 const networkFeaturesInfo = (
@@ -60,7 +60,7 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
   // Helper to build URL for pagination (for URL-based navigation)
   const getPageUrl = useCallback((page: number) => {
     if (!pagination?.basePath) return '#';
-    return buildUrlWithQueryOrBasePath(pagination.basePath, {
+    return buildUrlWithQuery(pagination.basePath, {
       ipOrDomain: pagination.query?.ipOrDomain,
       region: pagination.query?.region,
       service: pagination.query?.service,
@@ -70,7 +70,7 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
 
   const getAllUrl = useCallback(() => {
     if (!pagination?.basePath) return '#';
-    return buildUrlWithQueryOrBasePath(pagination.basePath, {
+    return buildUrlWithQuery(pagination.basePath, {
       ipOrDomain: pagination.query?.ipOrDomain,
       region: pagination.query?.region,
       service: pagination.query?.service,
@@ -85,14 +85,8 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
   
   // Handle column sort - memoized to prevent re-renders
   const handleSort = useCallback((field: SortField) => {
-    if (field === sortField) {
-      // Toggle direction if same field
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      // New field, default to ascending
-      setSortField(field);
-      setSortDirection('asc');
-    }
+    setSortField(field);
+    setSortDirection(field === sortField && sortDirection === 'asc' ? 'desc' : 'asc');
   }, [sortField, sortDirection]);
   
   // Sort the results - memoized to avoid unnecessary computations
@@ -101,10 +95,8 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
     return [...results].sort((a, b) => {
       const fieldA = a[sortField] || '';
       const fieldB = b[sortField] || '';
-      
-      if (fieldA < fieldB) return sortDirection === 'asc' ? -1 : 1;
-      if (fieldA > fieldB) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
+      const comparison = fieldA < fieldB ? -1 : fieldA > fieldB ? 1 : 0;
+      return sortDirection === 'asc' ? comparison : -comparison;
     });
   }, [results, sortField, sortDirection]);
   

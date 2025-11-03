@@ -23,15 +23,8 @@ function matchesSearchTerm(target: string, searchTerm: string): boolean {
   const targetLower = target.toLowerCase();
   const searchLower = searchTerm.toLowerCase();
 
-  // Exact match (case insensitive)
-  if (targetLower === searchLower) {
-    return true;
-  }
-
-  // Substring match
-  if (targetLower.includes(searchLower)) {
-    return true;
-  }
+  // Substring match (covers exact match too)
+  if (targetLower.includes(searchLower)) return true;
 
   // Normalized match (handles "WestEurope" vs "West Europe")
   const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));

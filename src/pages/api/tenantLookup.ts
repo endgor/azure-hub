@@ -77,13 +77,7 @@ class MissingCredentialsError extends Error {
 let cachedCredential: TokenCredential | null = null;
 
 function getEnvValue(...keys: string[]): string | undefined {
-  for (const key of keys) {
-    const value = process.env[key];
-    if (value) {
-      return value;
-    }
-  }
-  return undefined;
+  return keys.map(key => process.env[key]).find(value => value);
 }
 
 function getCredential(): TokenCredential {
@@ -121,13 +115,8 @@ function formatTenantScope(subScope?: string): string | undefined {
 function normalizeDomain(rawDomain: string | null): string | null {
   if (!rawDomain) return null;
   const trimmed = rawDomain.trim().toLowerCase();
-  if (!trimmed) return null;
-  const domainRegex =
-    /^(?=.{1,255}$)(?!-)(?:[a-z0-9-]{0,62}[a-z0-9]\.)+[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$/i;
-  if (!domainRegex.test(trimmed)) {
-    return null;
-  }
-  return trimmed;
+  const domainRegex = /^(?=.{1,255}$)(?!-)(?:[a-z0-9-]{0,62}[a-z0-9]\.)+[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$/i;
+  return trimmed && domainRegex.test(trimmed) ? trimmed : null;
 }
 
 async function fetchTenantInformation(domain: string, credential: TokenCredential) {
