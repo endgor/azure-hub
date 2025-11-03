@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo } from 'react';
 import type { LeastPrivilegeResult } from '@/types/rbac';
 
 interface RoleResultsTableProps {
@@ -129,58 +129,59 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                 const isEven = index % 2 === 0;
 
                 return (
-                  <tr
-                    key={result.role.id}
-                    className={`border-b border-slate-100 dark:border-slate-800 ${
-                      isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'
-                    }`}
-                  >
-                    <td className="px-4 py-3" colSpan={4}>
-                      <div className="space-y-3">
-                        {/* Main Row */}
-                        <div className="grid grid-cols-12 gap-4 items-center">
-                          <div className="col-span-5">
-                            <div className="font-medium text-slate-900 dark:text-slate-100">
-                              {result.role.roleName}
-                            </div>
-                            {result.isExactMatch && (
-                              <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
-                                Exact Match
-                              </span>
-                            )}
-                          </div>
-                          <div className="col-span-2">
-                            <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-                              result.role.roleType === 'BuiltInRole'
-                                ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                                : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
-                            }`}>
-                              {result.role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom'}
-                            </span>
-                          </div>
-                          <div className="col-span-4 text-slate-600 dark:text-slate-300">
-                            {result.matchingActions.length} {result.matchingActions.length === 1 ? 'action' : 'actions'}
-                          </div>
-                          <div className="col-span-1 flex justify-end">
-                            <button
-                              onClick={() => toggleRow(result.role.id)}
-                              className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
-                              aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
-                            >
-                              <svg
-                                className={`h-5 w-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </button>
-                          </div>
+                  <React.Fragment key={result.role.id}>
+                    {/* Main Row */}
+                    <tr
+                      className={`border-b border-slate-100 dark:border-slate-800 ${
+                        isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'
+                      }`}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="font-medium text-slate-900 dark:text-slate-100">
+                          {result.role.roleName}
                         </div>
+                        {result.isExactMatch && (
+                          <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
+                            Exact Match
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
+                          result.role.roleType === 'BuiltInRole'
+                            ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+                            : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
+                        }`}>
+                          {result.role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
+                        {result.matchingActions.length} {result.matchingActions.length === 1 ? 'action' : 'actions'}
+                      </td>
+                      <td className="px-4 py-3 w-16">
+                        <button
+                          onClick={() => toggleRow(result.role.id)}
+                          className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                          aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
+                        >
+                          <svg
+                            className={`h-5 w-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
 
-                        {/* Expanded Details */}
-                        {isExpanded && (
+                    {/* Expanded Details Row */}
+                    {isExpanded && (
+                      <tr
+                        className={isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'}
+                      >
+                        <td colSpan={4} className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
                           <div className="space-y-4 border-t border-slate-200 pt-3 dark:border-slate-700">
                             {/* Description */}
                             {result.role.description && (
@@ -261,10 +262,10 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                               </div>
                             </div>
                           </div>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 );
               })}
             </tbody>
