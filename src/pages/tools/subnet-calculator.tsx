@@ -65,6 +65,78 @@ function subnetLabel(subnet: LeafSubnet) {
   return `${inetNtoa(subnet.network)}${formatPrefix(subnet.prefix)}`;
 }
 
+function mergeChildProperties<T>(
+  current: Record<string, T>,
+  childIds: [string, string],
+  parentId: string,
+  conflictValue: T | undefined
+): Record<string, T> {
+  const leftValue = current[childIds[0]];
+  const rightValue = current[childIds[1]];
+  const next = { ...current };
+  let mutated = false;
+
+  if (childIds[0] in next) {
+    delete next[childIds[0]];
+    mutated = true;
+  }
+  if (childIds[1] in next) {
+    delete next[childIds[1]];
+    mutated = true;
+  }
+
+  const mergedValue =
+    leftValue && rightValue
+      ? leftValue === rightValue
+        ? leftValue
+        : conflictValue
+      : leftValue || rightValue || conflictValue;
+
+  if (mergedValue) {
+    if (next[parentId] !== mergedValue) {
+      next[parentId] = mergedValue;
+      mutated = true;
+    }
+  } else if (parentId in next) {
+    delete next[parentId];
+    mutated = true;
+  }
+
+  return mutated ? next : current;
+}
+
+function cleanupRemovedLeaves<T>(
+  current: Record<string, T>,
+  validLeafIds: Set<string>
+): Record<string, T> {
+  let mutated = false;
+  const next: Record<string, T> = {};
+
+  Object.entries(current).forEach(([leafId, value]) => {
+    if (validLeafIds.has(leafId)) {
+      next[leafId] = value;
+    } else {
+      mutated = true;
+    }
+  });
+
+  return mutated ? next : current;
+}
+
+function createSubnetState(network: string, prefix: number): State;
+function createSubnetState(network: number, prefix: number): State;
+function createSubnetState(network: string | number, prefix: number): State {
+  const ipValue = typeof network === 'string' ? inetAtov(network)! : network;
+  const normalised = normaliseNetwork(ipValue, prefix);
+  const { rootId, tree } = createInitialTree(normalised, prefix);
+  return {
+    rootId,
+    tree,
+    baseNetwork: normalised,
+    basePrefix: prefix
+  };
+}
+
 export default function SubnetCalculatorPage(): JSX.Element {
   const [formFields, setFormFields] = useState({
     network: DEFAULT_NETWORK,
@@ -78,17 +150,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
   const [rowComments, setRowComments] = useState<Record<string, string>>({});
   const [activeCommentRow, setActiveCommentRow] = useState<string | null>(null);
   const [commentDraft, setCommentDraft] = useState('');
-  const [state, setState] = useState<State>(() => {
-    const ipValue = inetAtov(DEFAULT_NETWORK)!;
-    const normalised = normaliseNetwork(ipValue, DEFAULT_PREFIX);
-    const { rootId, tree } = createInitialTree(normalised, DEFAULT_PREFIX);
-    return {
-      rootId,
-      tree,
-      baseNetwork: normalised,
-      basePrefix: DEFAULT_PREFIX
-    };
-  });
+  const [state, setState] = useState<State>(() => createSubnetState(DEFAULT_NETWORK, DEFAULT_PREFIX));
   const router = useRouter();
   const [hasRestoredShare, setHasRestoredShare] = useState(false);
   const shareTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -221,35 +283,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
   useEffect(() => {
     const leafIds = new Set(leaves.map((leaf) => leaf.id));
 
-    setRowColors((current) => {
-      let mutated = false;
-      const next: Record<string, string> = {};
-
-      Object.entries(current).forEach(([leafId, color]) => {
-        if (leafIds.has(leafId)) {
-          next[leafId] = color;
-        } else {
-          mutated = true;
-        }
-      });
-
-      return mutated ? next : current;
-    });
-
-    setRowComments((current) => {
-      let mutated = false;
-      const next: Record<string, string> = {};
-
-      Object.entries(current).forEach(([leafId, comment]) => {
-        if (leafIds.has(leafId)) {
-          next[leafId] = comment;
-        } else {
-          mutated = true;
-        }
-      });
-
-      return mutated ? next : current;
-    });
+    setRowColors((current) => cleanupRemovedLeaves(current, leafIds));
+    setRowComments((current) => cleanupRemovedLeaves(current, leafIds));
 
     if (activeCommentRow && !leafIds.has(activeCommentRow)) {
       setActiveCommentRow(null);
@@ -393,9 +428,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
   };
 
   const handleReset = () => {
-    const ipValue = inetAtov(DEFAULT_NETWORK)!;
-    const normalised = normaliseNetwork(ipValue, DEFAULT_PREFIX);
-    const { rootId, tree } = createInitialTree(normalised, DEFAULT_PREFIX);
     setFormFields({
       network: DEFAULT_NETWORK,
       prefix: DEFAULT_PREFIX.toString()
@@ -405,12 +437,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
     setIsColorModeActive(false);
     setRowComments({});
     closeCommentEditor();
-    setState({
-      rootId,
-      tree,
-      baseNetwork: normalised,
-      basePrefix: DEFAULT_PREFIX
-    });
+    setState(createSubnetState(DEFAULT_NETWORK, DEFAULT_PREFIX));
   };
 
   const handleSplit = (nodeId: string) => {
@@ -481,78 +508,8 @@ export default function SubnetCalculatorPage(): JSX.Element {
     });
 
     if (canJoinNode && childIds) {
-      setRowColors((current) => {
-        const next = { ...current };
-        let mutated = false;
-
-        const leftColor = next[childIds[0]];
-        const rightColor = next[childIds[1]];
-
-        if (childIds[0] in next) {
-          delete next[childIds[0]];
-          mutated = true;
-        }
-        if (childIds[1] in next) {
-          delete next[childIds[1]];
-          mutated = true;
-        }
-
-        const mergedColor =
-          leftColor && rightColor
-            ? leftColor === rightColor
-              ? leftColor
-              : undefined
-            : leftColor || rightColor;
-
-        if (mergedColor) {
-          if (next[nodeId] !== mergedColor) {
-            next[nodeId] = mergedColor;
-            mutated = true;
-          }
-        } else if (nodeId in next) {
-          delete next[nodeId];
-          mutated = true;
-        }
-
-        return mutated ? next : current;
-      });
-    }
-
-    if (canJoinNode && childIds) {
-      setRowComments((current) => {
-        const leftComment = current[childIds[0]];
-        const rightComment = current[childIds[1]];
-        const next = { ...current };
-        let mutated = false;
-
-        if (childIds[0] in next) {
-          delete next[childIds[0]];
-          mutated = true;
-        }
-        if (childIds[1] in next) {
-          delete next[childIds[1]];
-          mutated = true;
-        }
-
-        const mergedComment =
-          leftComment && rightComment
-            ? leftComment === rightComment
-              ? leftComment
-              : ''
-            : leftComment || rightComment || '';
-
-        if (mergedComment) {
-          if (next[nodeId] !== mergedComment) {
-            next[nodeId] = mergedComment;
-            mutated = true;
-          }
-        } else if (nodeId in next) {
-          delete next[nodeId];
-          mutated = true;
-        }
-
-        return mutated ? next : current;
-      });
+      setRowColors((current) => mergeChildProperties(current, childIds, nodeId, undefined));
+      setRowComments((current) => mergeChildProperties(current, childIds, nodeId, ''));
 
       if (activeCommentRow && (childIds.includes(activeCommentRow) || activeCommentRow === nodeId)) {
         closeCommentEditor();
@@ -931,13 +888,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                           }
                           setResetPulse(true);
                           resetTimerRef.current = setTimeout(() => setResetPulse(false), 500);
-                          const { rootId, tree } = createInitialTree(state.baseNetwork, state.basePrefix);
-                          setState({
-                            rootId,
-                            tree,
-                            baseNetwork: state.baseNetwork,
-                            basePrefix: state.basePrefix
-                          });
+                          setState(createSubnetState(state.baseNetwork, state.basePrefix));
                         }}
                         className="flex h-full w-full items-center justify-center bg-slate-200 px-1 py-2 text-slate-700 transition hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus:ring-slate-500 dark:focus:ring-offset-slate-900"
                         title="Reset subnet plan to the base network"
