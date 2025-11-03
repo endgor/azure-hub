@@ -20,7 +20,8 @@
     "next": "^14.0.4",
     "papaparse": "^5.5.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.4.6",
@@ -29,6 +30,7 @@
     "@types/papaparse": "^5.3.16",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
+    "@types/xlsx": "^0.0.35",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.33",

@@ -1,5 +1,5 @@
 import { AzureRole, Operation, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
-import { calculateLeastPrivilegedRoles, extractServiceNamespaces } from './rbacService';
+import { calculateLeastPrivilegedRoles, extractServiceNamespaces, matchesWildcard } from './rbacService';
 
 /**
  * In-memory cache for Azure RBAC data (roles and permissions).
@@ -8,8 +8,10 @@ import { calculateLeastPrivilegedRoles, extractServiceNamespaces } from './rbacS
  */
 let rolesCache: AzureRole[] | null = null;
 let permissionsCache: Operation[] | null = null;
+let actionsMapCache: Map<string, { name: string; roleCount: number }> | null = null;
 let rolesCacheExpiry = 0;
 let permissionsCacheExpiry = 0;
+let actionsMapCacheExpiry = 0;
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
 
 /**
@@ -101,40 +103,133 @@ export async function loadPermissions(): Promise<Operation[]> {
  * Fallback: Extracts all unique actions from role definitions.
  * Used when permissions.json is unavailable (Simple mode).
  * Filters out wildcard actions and counts role usage for each action.
+ *
+ * Improvements:
+ * - Case-insensitive deduplication (normalizes to lowercase keys)
+ * - Counts ALL roles that grant the permission (including via wildcards)
+ * - Prefers canonical casing (most commonly used variant)
+ * - Cached for 6 hours to avoid expensive recomputation
  */
 async function extractActionsFromRoles(): Promise<Map<string, { name: string; roleCount: number }>> {
-  const roles = await loadRoleDefinitions();
-  const actionsMap = new Map<string, { name: string; roleCount: number }>();
+  const now = Date.now();
 
-  for (const role of roles) {
+  // Return cached data if available and not expired
+  if (actionsMapCache && actionsMapCacheExpiry > now) {
+    return actionsMapCache;
+  }
+
+  const roles = await loadRoleDefinitions();
+
+  // First pass: Collect explicit actions, track casing variants and which roles have them
+  const explicitActionRoles = new Map<string, Set<number>>(); // lowercase action -> role indices
+  const actionCasingMap = new Map<string, Map<string, number>>(); // lowercase action -> casing variants
+
+  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
+    const role = roles[roleIndex];
     for (const permission of role.permissions) {
       // Process regular actions
       for (const action of permission.actions) {
-        if (!action.includes('*')) { // Skip wildcard actions
-          const existing = actionsMap.get(action);
-          if (existing) {
-            existing.roleCount++;
-          } else {
-            actionsMap.set(action, { name: action, roleCount: 1 });
+        if (!action.includes('*')) {
+          const lowerAction = action.toLowerCase();
+
+          // Track casing variants
+          if (!actionCasingMap.has(lowerAction)) {
+            actionCasingMap.set(lowerAction, new Map());
           }
+          const casingVariants = actionCasingMap.get(lowerAction)!;
+          casingVariants.set(action, (casingVariants.get(action) || 0) + 1);
+
+          // Track which roles have this action explicitly
+          if (!explicitActionRoles.has(lowerAction)) {
+            explicitActionRoles.set(lowerAction, new Set());
+          }
+          explicitActionRoles.get(lowerAction)!.add(roleIndex);
         }
       }
 
-      // Process data actions (data plane operations)
+      // Process data actions
       if (permission.dataActions) {
         for (const dataAction of permission.dataActions) {
           if (!dataAction.includes('*')) {
-            const existing = actionsMap.get(dataAction);
-            if (existing) {
-              existing.roleCount++;
-            } else {
-              actionsMap.set(dataAction, { name: dataAction, roleCount: 1 });
+            const lowerAction = dataAction.toLowerCase();
+
+            if (!actionCasingMap.has(lowerAction)) {
+              actionCasingMap.set(lowerAction, new Map());
             }
+            const casingVariants = actionCasingMap.get(lowerAction)!;
+            casingVariants.set(dataAction, (casingVariants.get(dataAction) || 0) + 1);
+
+            if (!explicitActionRoles.has(lowerAction)) {
+              explicitActionRoles.set(lowerAction, new Set());
+            }
+            explicitActionRoles.get(lowerAction)!.add(roleIndex);
           }
         }
       }
     }
   }
+
+  // Second pass: Collect all wildcard patterns from roles
+  // This is a much smaller list than all actions (typically < 100 vs thousands of actions)
+  const wildcardPatterns: Array<{ pattern: string; roleIndex: number; notActions: string[] }> = [];
+
+  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
+    const role = roles[roleIndex];
+    for (const permission of role.permissions) {
+      for (const action of permission.actions) {
+        if (action.includes('*')) {
+          wildcardPatterns.push({
+            pattern: action,
+            roleIndex,
+            notActions: permission.notActions
+          });
+        }
+      }
+    }
+  }
+
+  // Third pass: For each action, count roles (explicit + wildcard matches)
+  const actionsMap = new Map<string, { name: string; roleCount: number }>();
+
+  for (const [lowerAction, casingVariants] of Array.from(actionCasingMap.entries())) {
+    // Choose canonical casing (most commonly used variant)
+    let canonicalName = '';
+    let maxCount = 0;
+
+    for (const [casing, count] of Array.from(casingVariants.entries())) {
+      if (count > maxCount) {
+        maxCount = count;
+        canonicalName = casing;
+      }
+    }
+
+    // Start with explicit role indices
+    const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
+
+    // Add roles that grant via wildcards
+    for (const { pattern, roleIndex, notActions } of wildcardPatterns) {
+      if (matchesWildcard(pattern, canonicalName)) {
+        // Check if it's not denied
+        let isDenied = false;
+        for (const deniedAction of notActions) {
+          if (matchesWildcard(deniedAction, canonicalName)) {
+            isDenied = true;
+            break;
+          }
+        }
+
+        if (!isDenied) {
+          roleSet.add(roleIndex);
+        }
+      }
+    }
+
+    actionsMap.set(lowerAction, { name: canonicalName, roleCount: roleSet.size });
+  }
+
+  // Cache the result
+  actionsMapCache = actionsMap;
+  actionsMapCacheExpiry = now + CACHE_TTL;
 
   return actionsMap;
 }
@@ -176,9 +271,10 @@ export async function searchOperations(query: string): Promise<Operation[]> {
   const queryLower = query.toLowerCase();
   const results: Operation[] = [];
 
-  for (const [actionName, actionData] of Array.from(actionsMap.entries())) {
-    if (actionName.toLowerCase().includes(queryLower)) {
-      results.push(createOperationFromAction(actionName, actionData.roleCount));
+  for (const [lowerActionKey, actionData] of Array.from(actionsMap.entries())) {
+    // actionsMap keys are now lowercase, so compare directly
+    if (lowerActionKey.includes(queryLower)) {
+      results.push(createOperationFromAction(actionData.name, actionData.roleCount));
     }
   }
 
@@ -210,9 +306,10 @@ export async function getActionsByService(serviceNamespace: string): Promise<Ope
   const namespaceLower = serviceNamespace.toLowerCase();
   const results: Operation[] = [];
 
-  for (const [actionName, actionData] of Array.from(actionsMap.entries())) {
-    if (actionName.toLowerCase().startsWith(namespaceLower + '/')) {
-      results.push(createOperationFromAction(actionName, actionData.roleCount));
+  for (const [lowerActionKey, actionData] of Array.from(actionsMap.entries())) {
+    // actionsMap keys are now lowercase, so compare directly
+    if (lowerActionKey.startsWith(namespaceLower + '/')) {
+      results.push(createOperationFromAction(actionData.name, actionData.roleCount));
     }
   }
 
@@ -226,4 +323,17 @@ export async function getActionsByService(serviceNamespace: string): Promise<Ope
 export async function calculateLeastPrivilege(input: LeastPrivilegeInput): Promise<LeastPrivilegeResult[]> {
   const roles = await loadRoleDefinitions();
   return calculateLeastPrivilegedRoles(roles, input);
+}
+
+/**
+ * Pre-loads and caches the actions map in the background.
+ * Call this on page load to avoid UI freezing when user first selects a service.
+ * Subsequent calls will return immediately if cache is warm.
+ */
+export async function preloadActionsCache(): Promise<void> {
+  try {
+    await extractActionsFromRoles();
+  } catch (error) {
+    console.warn('Failed to preload actions cache:', error);
+  }
 }
