@@ -439,7 +439,6 @@ export default function SubnetCalculatorPage(): JSX.Element {
         delete next[nodeId];
         if (color) {
           next[`${nodeId}-0`] = color;
-          next[`${nodeId}-1`] = color;
         }
         return next;
       });
