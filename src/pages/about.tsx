@@ -2,14 +2,31 @@ import Layout from '@/components/Layout';
 import Link from 'next/link';
 import DefinitionsTable from '@/components/DefinitionsTable';
 import { GetStaticProps } from 'next';
-import { getFileMetadata } from '@/lib/ipService';
+import { getFileMetadata, getRbacFileDate } from '@/lib/ipService';
 import { AzureFileMetadata } from '@/types/azure';
 
 interface AboutProps {
   fileMetadata: AzureFileMetadata[];
+  rbacLastRetrieved: string | null;
 }
 
-export default function About({ fileMetadata }: AboutProps) {
+export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
+  const formatDate = (isoDate: string | null) => {
+    if (!isoDate) return 'Unknown';
+    try {
+      return new Date(isoDate).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      });
+    } catch {
+      return 'Unknown';
+    }
+  };
+
   return (
     <Layout
       title="About Azure Hub"
@@ -36,6 +53,19 @@ export default function About({ fileMetadata }: AboutProps) {
             table updates automatically whenever Microsoft publishes new payloads.
           </p>
           <DefinitionsTable metadata={fileMetadata} />
+        </div>
+
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+          <h2 className="text-2xl font-semibold text-slate-900">RBAC Role Definitions</h2>
+          <p className="text-base text-slate-600">
+            Built-in Azure role definitions are retrieved from the Azure Resource Manager API and updated periodically to
+            ensure the RBAC Calculator has the latest role permissions.
+          </p>
+          {rbacLastRetrieved && (
+            <p className="text-sm text-slate-500">
+              <strong>Last retrieved:</strong> {formatDate(rbacLastRetrieved)}
+            </p>
+          )}
         </div>
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
@@ -68,6 +98,17 @@ export default function About({ fileMetadata }: AboutProps) {
               </Link>{' '}
               for the Visual Subnet Calculator.
             </li>
+            <li>
+              <Link
+                href="https://github.com/vjirovsky/azure-rbac-least-calculator"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-sky-600 hover:text-sky-700"
+              >
+                Václav Jirovsky
+              </Link>{' '}
+              for the inspiration for the RBAC Calculator.
+            </li>
           </ul>
         </div>
       </section>
@@ -78,15 +119,18 @@ export default function About({ fileMetadata }: AboutProps) {
 export const getStaticProps: GetStaticProps<AboutProps> = async () => {
   try {
     const fileMetadata = await getFileMetadata();
+    const rbacLastRetrieved = await getRbacFileDate();
     return {
       props: {
         fileMetadata,
+        rbacLastRetrieved,
       },
     };
   } catch (error) {
     return {
       props: {
         fileMetadata: [],
+        rbacLastRetrieved: null,
       },
     };
   }

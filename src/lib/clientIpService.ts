@@ -2,20 +2,30 @@ import IPCIDR from 'ip-cidr';
 import { AzureIpAddress, AzureCloudVersions } from '../types/azure';
 import { getCachedNormalization } from './normalization';
 
-// Client-side cache
+/**
+ * In-memory cache for Azure IP data and versions.
+ * Reduces API calls and improves performance on repeated lookups.
+ * Cache expires after 6 hours to balance freshness with performance.
+ */
 let azureIpAddressCache: AzureIpAddress[] | null = null;
 let azureVersionsCache: AzureCloudVersions | null = null;
 let ipCacheExpiry = 0;
 let versionsCacheExpiry = 0;
-const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
 
 export interface SearchOptions {
-  region?: string;
-  service?: string;
+  region?: string; // Region name (e.g., "westeurope", "East US")
+  service?: string; // Service name or tag (e.g., "AzureStorage", "SQL")
 }
 
 /**
- * Check if a search term matches a target string using various strategies
+ * Multi-strategy search term matcher with normalization.
+ * Handles:
+ * 1. Substring matching (case-insensitive)
+ * 2. Normalized matching for camelCase/PascalCase variations
+ *    (e.g., "WestEurope" matches "west europe")
+ *
+ * Uses LRU-cached normalization for performance.
  */
 function matchesSearchTerm(target: string, searchTerm: string): boolean {
   if (!target) return false;
@@ -23,10 +33,10 @@ function matchesSearchTerm(target: string, searchTerm: string): boolean {
   const targetLower = target.toLowerCase();
   const searchLower = searchTerm.toLowerCase();
 
-  // Substring match (covers exact match too)
+  // Strategy 1: Direct substring match
   if (targetLower.includes(searchLower)) return true;
 
-  // Normalized match (handles "WestEurope" vs "West Europe")
+  // Strategy 2: Normalized match (splits camelCase and removes extra spaces)
   const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));
   const normalizedSearch = getCachedNormalization(searchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
 
@@ -34,32 +44,39 @@ function matchesSearchTerm(target: string, searchTerm: string): boolean {
 }
 
 /**
- * Load Azure IP data from static files
+ * Loads and caches Azure Public Cloud IP ranges from static JSON file.
+ * Data structure: Service tags containing IP address prefixes.
+ * Flattens nested structure into searchable flat list of IP ranges.
+ *
+ * Cache behavior:
+ * - Returns cached data if available and not expired (< 6 hours old)
+ * - Otherwise fetches from /data/AzureCloud.json and caches result
+ *
+ * Data source is updated periodically by build scripts (see scripts/update-ip-data.ts).
  */
 async function loadAzureIpData(): Promise<AzureIpAddress[]> {
   const now = Date.now();
-  
-  // Check if cache is valid
+
   if (azureIpAddressCache && ipCacheExpiry > now) {
-    return azureIpAddressCache;
+    return azureIpAddressCache; // Return cached data
   }
 
   try {
-    // Load the main Azure Public Cloud data
     const response = await fetch('/data/AzureCloud.json');
     if (!response.ok) {
       throw new Error(`Failed to load Azure IP data: ${response.statusText}`);
     }
-    
+
     const data = await response.json();
     const ipRanges: AzureIpAddress[] = [];
 
-    // Process the service tags and extract IP ranges
+    // Process service tags: each tag contains multiple IP prefixes
     if (data.values && Array.isArray(data.values)) {
       for (const serviceTag of data.values) {
         const { name: serviceTagId, properties } = serviceTag;
         const { addressPrefixes = [], systemService, region } = properties || {};
-        
+
+        // Flatten: one entry per IP prefix
         for (const ipRange of addressPrefixes) {
           ipRanges.push({
             serviceTagId,
@@ -73,7 +90,7 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
       }
     }
 
-    // Cache the results
+    // Update cache
     azureIpAddressCache = ipRanges;
     ipCacheExpiry = now + CACHE_TTL;
 
@@ -84,12 +101,16 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
 }
 
 /**
- * Check if an IP address is in Azure
+ * Checks if an IP address belongs to Azure by testing against all CIDR ranges.
+ * Uses ip-cidr library for accurate CIDR containment checking.
+ * Returns all matching service tags (an IP may belong to multiple tags).
+ *
+ * Example: "13.107.42.14" might match both "AzureFrontDoor.Frontend" and "AzureFrontDoor.FirstParty"
  */
 export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[]> {
   const azureIpRanges = await loadAzureIpData();
   const matches: AzureIpAddress[] = [];
-  
+
   for (const azureIpRange of azureIpRanges) {
     try {
       const cidr = new IPCIDR(azureIpRange.ipAddressPrefix);
@@ -97,54 +118,62 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
         matches.push(azureIpRange);
       }
     } catch (error) {
-      // Skip invalid CIDR ranges
+      // Skip invalid CIDR ranges (malformed data)
       continue;
     }
   }
-  
+
   return matches;
 }
 
 /**
- * Search for Azure IP addresses by region and/or service
+ * Searches Azure IP ranges by region and/or service name.
+ * Filters are cumulative (AND logic): results must match all specified filters.
+ *
+ * Search behavior:
+ * - Region: matches against the 'region' field
+ * - Service: matches against both 'systemService' and 'serviceTagId'
+ * - Uses fuzzy matching (handles camelCase variations, substring matches)
+ *
+ * Returns empty array if no filters specified.
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
   const { region, service } = options;
-  
+
   if (!region && !service) {
-    return [];
+    return []; // Require at least one filter
   }
-  
+
   const azureIpAddressList = await loadAzureIpData();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
     return [];
   }
-  
+
   let results = [...azureIpAddressList];
-  
-  // Filter by region if specified
+
+  // Filter by region (if specified)
   if (region) {
     results = results.filter(ip => matchesSearchTerm(ip.region, region));
   }
-  
-  // Filter by service if specified
+
+  // Filter by service (if specified)
   if (service) {
     results = results.filter(ip => {
-      // Match by systemService first
+      // Check systemService first (e.g., "AzureStorage")
       if (ip.systemService && matchesSearchTerm(ip.systemService, service)) {
         return true;
       }
-
-      // Then by serviceTagId
+      // Then check serviceTagId (e.g., "Storage.WestEurope")
       return matchesSearchTerm(ip.serviceTagId, service);
     });
   }
-  
+
   return results;
 }
 
 /**
- * Get all unique service tags
+ * Returns sorted list of all unique service tag names.
+ * Used for populating dropdown/autocomplete UI elements.
  */
 export async function getAllServiceTags(): Promise<string[]> {
   const azureIpData = await loadAzureIpData();
@@ -153,24 +182,30 @@ export async function getAllServiceTags(): Promise<string[]> {
 }
 
 /**
- * Get IP ranges for a specific service tag
+ * Retrieves all IP ranges for a specific service tag (case-insensitive).
+ * Example: "Storage.WestEurope" returns all IP prefixes for that tag.
  */
 export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpAddress[]> {
   const azureIpData = await loadAzureIpData();
-  return azureIpData.filter(ip => 
+  return azureIpData.filter(ip =>
     ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase()
   );
 }
 
 /**
- * Get version information for all clouds from file metadata
+ * Loads version/change numbers for all Azure cloud environments.
+ * Used to display data freshness on UI and track when data was last updated.
+ *
+ * Data source: file-metadata.json (generated by update scripts).
+ * Contains changeNumber for each cloud: AzureCloud, AzureChinaCloud, AzureUSGovernment.
+ *
+ * Cached for 6 hours like IP data.
  */
 export async function getVersions(): Promise<AzureCloudVersions> {
   const now = Date.now();
 
-  // Check if cache is valid
   if (azureVersionsCache && versionsCacheExpiry > now) {
-    return azureVersionsCache;
+    return azureVersionsCache; // Return cached versions
   }
 
   try {
@@ -181,13 +216,14 @@ export async function getVersions(): Promise<AzureCloudVersions> {
 
     const metadata = await response.json();
 
-    // Transform file metadata into versions format
+    // Transform array to version map keyed by cloud name
     const versions: AzureCloudVersions = {};
     metadata.forEach((file: any) => {
       const cloudKey = file.cloud as keyof AzureCloudVersions;
       versions[cloudKey] = file.changeNumber.toString();
     });
 
+    // Update cache
     azureVersionsCache = versions;
     versionsCacheExpiry = now + CACHE_TTL;
 

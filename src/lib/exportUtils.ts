@@ -1,7 +1,9 @@
 import { AzureIpAddress } from '@/types/azure';
 
+/** Generic row type for CSV/Excel export */
 export type ExportRow = Record<string, string | number | boolean | null | undefined>;
 
+/** Specific export format for Azure IP address data */
 export type ExportData = ExportRow & {
   'Service Tag': string;
   'IP Range': string;
@@ -10,10 +12,12 @@ export type ExportData = ExportRow & {
   'Network Features': string;
 };
 
+/** Options for Excel export, including row background colors */
 interface ExcelExportOptions {
-  rowFills?: (string | null | undefined)[];
+  rowFills?: (string | null | undefined)[]; // Hex colors for row backgrounds
 }
 
+/** Transforms Azure IP data into export-ready format */
 export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
   return results.map((result) => ({
     'Service Tag': result.serviceTagId || '',
@@ -24,13 +28,21 @@ export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
   }));
 }
 
+/**
+ * Exports data to CSV format using PapaParse library.
+ * Uses dynamic import to reduce initial bundle size.
+ */
 export async function exportToCSV<T extends ExportRow>(data: T[], filename: string = 'azure-ip-ranges.csv'): Promise<void> {
-  // Dynamic import to reduce initial bundle size
   const Papa = (await import('papaparse')).default;
   const csv = Papa.unparse(data);
   downloadFile(csv, filename, 'text/csv;charset=utf-8;');
 }
 
+/**
+ * Exports data to Excel (.xlsx) format with optional row styling.
+ * Creates a valid Office Open XML workbook from scratch without external Excel libraries.
+ * Uses JSZip to package XML files into .xlsx format (which is a ZIP archive).
+ */
 export async function exportToExcel<T extends ExportRow>(
   data: T[],
   filename: string = 'azure-ip-ranges.xlsx',
@@ -52,6 +64,10 @@ export async function exportToExcel<T extends ExportRow>(
 
 const EXCEL_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
+/**
+ * Triggers browser file download using Blob URL and hidden anchor element.
+ * Automatically cleans up the Blob URL after download starts.
+ */
 function downloadFile(data: string | Blob, filename: string, mimeType: string): void {
   const blob = typeof data === 'string' ? new Blob([data], { type: mimeType }) : data;
   const url = window.URL.createObjectURL(blob);
@@ -68,12 +84,20 @@ function downloadFile(data: string | Blob, filename: string, mimeType: string): 
   window.URL.revokeObjectURL(url);
 }
 
+/**
+ * Generates a descriptive filename with sanitized query and ISO date.
+ * Example: "azure-ip-ranges_192_168_0_0_2024-01-15.xlsx"
+ */
 export function generateFilename(query: string, format: 'csv' | 'xlsx'): string {
   const sanitizedQuery = query.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  const timestamp = new Date().toISOString().slice(0, 10);
+  const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   return `azure-ip-ranges_${sanitizedQuery}_${timestamp}.${format}`;
 }
 
+/**
+ * Formats cell values for Excel export.
+ * Preserves numbers as numeric type, converts booleans to TRUE/FALSE strings.
+ */
 function formatCellValue(value: ExportRow[keyof ExportRow]): string | number {
   if (value == null) return '';
   if (typeof value === 'number' && Number.isFinite(value)) return value;
@@ -81,6 +105,10 @@ function formatCellValue(value: ExportRow[keyof ExportRow]): string | number {
   return String(value);
 }
 
+/**
+ * Normalizes row fill colors array to match row count.
+ * Pads with null if too short, truncates if too long.
+ */
 function normaliseRowFills(rowFills: (string | null | undefined)[], rowCount: number): (string | null)[] {
   const result: (string | null)[] = [];
   for (let index = 0; index < rowCount; index += 1) {
@@ -90,6 +118,12 @@ function normaliseRowFills(rowFills: (string | null | undefined)[], rowCount: nu
   return result;
 }
 
+/**
+ * Converts hex color to Excel ARGB format (FF + RGB).
+ * Supports 3-char (#F00) and 6-char (#FF0000) hex codes.
+ * Returns null for invalid colors.
+ * Example: "#FF0000" -> "FFFF0000" (fully opaque red)
+ */
 function normaliseExcelColor(hex: string | null): string | null {
   if (!hex) return null;
 
@@ -98,15 +132,18 @@ function normaliseExcelColor(hex: string | null): string | null {
 
   value = value.startsWith('#') ? value.slice(1) : value;
 
+  // Expand 3-char hex to 6-char (#F00 -> #FF0000)
   if (value.length === 3 && /^[0-9a-fA-F]+$/.test(value)) {
     value = value.split('').map(char => char + char).join('');
   }
 
+  // Return ARGB format (Alpha = FF for fully opaque)
   return /^[0-9a-fA-F]{6}$/.test(value) ? `FF${value.toUpperCase()}` : null;
 }
 
 /**
- * Build data rows with styling
+ * Builds data row XML strings with cell styling applied.
+ * Row numbers start at 2 (row 1 is header).
  */
 function buildDataRows(
   rows: Array<Array<string | number>>,
@@ -121,12 +158,22 @@ function buildDataRows(
       }
       return { type: 'string' as const, value: String(cell ?? '') };
     });
-    return buildRowXml(index + 2, cellPayloads, styleId);
+    return buildRowXml(index + 2, cellPayloads, styleId); // +2 because row 1 is header
   });
 }
 
 /**
- * Populate ZIP file structure with Excel XML files
+ * Populates ZIP archive with all required Excel XML files.
+ * Excel .xlsx format is a ZIP containing XML files following Office Open XML spec.
+ *
+ * Required structure:
+ * - [Content_Types].xml: MIME types for all parts
+ * - _rels/.rels: Relationships between parts
+ * - docProps/app.xml & core.xml: Document metadata
+ * - xl/workbook.xml: Workbook definition
+ * - xl/styles.xml: Cell formatting and styles
+ * - xl/worksheets/sheet1.xml: Worksheet data
+ * - xl/_rels/workbook.xml.rels: Workbook relationships
  */
 function populateZipStructure(
   zip: any,
@@ -147,31 +194,39 @@ function populateZipStructure(
   xlFolder?.folder('_rels')?.file('workbook.xml.rels', buildWorkbookRelsXml());
 }
 
+/**
+ * Creates a complete Excel workbook buffer from data and styling.
+ * Main orchestration function that:
+ * 1. Generates all required XML content
+ * 2. Packages XML files into ZIP archive
+ * 3. Returns compressed binary buffer ready for download
+ *
+ * Uses dynamic imports for JSZip to reduce initial bundle size.
+ */
 async function createWorkbookBuffer(
   headers: string[],
   rows: Array<Array<string | number>>,
   sheetName: string,
   rowFills: (string | null)[]
 ): Promise<Uint8Array> {
-  // Dynamic import to reduce initial bundle size
   const JSZip = (await import('jszip')).default;
   const zip = new JSZip();
   const now = new Date().toISOString();
   const escapedSheetName = escapeXml(sheetName);
 
-  // Build header row
+  // Build header row (row 1)
   const headerRow = buildRowXml(1, headers.map((text) => ({ type: 'string', value: text })), 0);
 
-  // Build data rows with styling
+  // Build data rows with styling (rows 2+)
   const colorStyles = buildColorStyleMap(rowFills);
   const dataRows = buildDataRows(rows, rowFills, colorStyles);
 
-  // Build worksheet XML
+  // Generate worksheet XML
   const dimension = buildDimension(headers.length, rows.length + 1);
   const sheetXml = buildWorksheetXml(dimension, headerRow, dataRows.join(''));
   const stylesXml = buildStylesXml(colorStyles);
 
-  // Populate ZIP structure
+  // Package all XML files into ZIP
   populateZipStructure(zip, sheetXml, stylesXml, escapedSheetName, now);
 
   return zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
@@ -253,18 +308,24 @@ function buildWorkbookRelsXml(): string {
 </Relationships>`;
 }
 
+/**
+ * Generates Excel styles XML with custom cell background colors.
+ * Creates fill definitions for each unique row color and maps them to style IDs.
+ * Style ID 0 is reserved for default (no fill).
+ */
 function buildStylesXml(colorStyles: Map<string, number>): string {
   const fills: string[] = [
-    '<fill><patternFill patternType="none"/></fill>',
-    '<fill><patternFill patternType="gray125"/></fill>'
+    '<fill><patternFill patternType="none"/></fill>', // Default fill
+    '<fill><patternFill patternType="gray125"/></fill>' // Gray pattern (Excel standard)
   ];
   const cellXfs: string[] = [
-    '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
+    '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' // Default style
   ];
 
+  // Add custom color fills
   const colors = Array.from(colorStyles.entries()).filter(([key]) => key);
   colors.forEach(([color, styleIndex]) => {
-    const fillId = 1 + styleIndex; // styleIndex starts at 1
+    const fillId = 1 + styleIndex; // Offset by 1 (0 is default)
     fills.push(
       `<fill><patternFill patternType="solid"><fgColor rgb="${color}"/><bgColor indexed="64"/></patternFill></fill>`
     );
@@ -315,12 +376,21 @@ function buildWorksheetXml(dimension: string, headerRow: string, dataRows: strin
 </worksheet>`;
 }
 
+/**
+ * Calculates Excel worksheet dimension range (e.g., "A1:Z100").
+ * Used in worksheet XML to define the used range.
+ */
 function buildDimension(columnCount: number, rowCount: number): string {
   const lastColumn = columnCount > 0 ? columnLetter(columnCount - 1) : 'A';
   const lastRow = Math.max(rowCount, 1);
   return `A1:${lastColumn}${lastRow}`;
 }
 
+/**
+ * Generates Excel row XML with cells.
+ * Handles both numeric cells (<v> tag) and string cells (inlineStr with <t> tag).
+ * Applies style ID for row background colors.
+ */
 function buildRowXml(
   rowNumber: number,
   cells: Array<{ type: 'string' | 'number'; value: string }>,
@@ -335,7 +405,7 @@ function buildRowXml(
       }
       const text = escapeXml(cell.value);
       if (!text && styleId === 0) {
-        return `<c r="${cellRef}"/>`;
+        return `<c r="${cellRef}"/>`; // Empty cell
       }
       return `<c r="${cellRef}" t="inlineStr"${styleAttr}><is><t>${text}</t></is></c>`;
     })
@@ -343,6 +413,11 @@ function buildRowXml(
   return `<row r="${rowNumber}">${columns}</row>`;
 }
 
+/**
+ * Creates a map of unique colors to style IDs.
+ * Style ID 0 is reserved for default (no background color).
+ * Each unique color gets an incrementing style ID starting from 1.
+ */
 function buildColorStyleMap(rowFills: (string | null)[]): Map<string, number> {
   const map = new Map<string, number>();
   let styleIndex = 1; // 0 reserved for default
@@ -352,11 +427,15 @@ function buildColorStyleMap(rowFills: (string | null)[]): Map<string, number> {
       styleIndex += 1;
     }
   });
-  // ensure empty key maps to default for convenience
-  map.set('', 0);
+  map.set('', 0); // Ensure empty key maps to default
   return map;
 }
 
+/**
+ * Converts zero-based column index to Excel column letter.
+ * Uses base-26 conversion with A-Z.
+ * Examples: 0->A, 25->Z, 26->AA, 701->ZZ
+ */
 function columnLetter(index: number): string {
   let dividend = index + 1;
   let columnLabel = '';
@@ -368,6 +447,7 @@ function columnLetter(index: number): string {
   return columnLabel;
 }
 
+/** Escapes special XML characters to prevent malformed XML or injection */
 function escapeXml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
