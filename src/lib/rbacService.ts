@@ -1,4 +1,8 @@
 import { AzureRole, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
+import { calculatePermissionCount } from './rbacUtils';
+
+// Re-export for external consumers
+export { calculatePermissionCount };
 
 /**
  * Check if a permission action matches a wildcard pattern
@@ -77,58 +81,6 @@ export function hasPermission(role: AzureRole, requiredAction: string): boolean 
 /** Checks if role has a specific data action permission (data plane operation) */
 export function hasDataPermission(role: AzureRole, requiredDataAction: string): boolean {
   return checkPermissionAccess(role, requiredDataAction, 'dataAction');
-}
-
-/**
- * Calculates weighted permission score to rank roles by privilege level.
- * Lower score = more restrictive = least privileged.
- *
- * Scoring system:
- * - Full wildcard ('*'): 10,000 points (highest privilege)
- * - Partial wildcards (e.g., 'Microsoft.Storage/*'): 100-1000 points
- *   (inversely proportional to specificity: fewer segments = higher score)
- * - Exact permissions: 1 point each
- * - Deny rules (notActions/notDataActions): -0.5 points each (reduces privilege)
- *
- * This heuristic helps identify roles with narrower permissions.
- */
-export function calculatePermissionCount(role: AzureRole): number {
-  let count = 0;
-
-  for (const permission of role.permissions) {
-    for (const action of permission.actions) {
-      if (action === '*') {
-        count += 10000; // Full wildcard: maximum privilege
-      } else if (action.includes('*')) {
-        const parts = action.split('/');
-        // Broader wildcards score higher (e.g., 'Microsoft.Storage/*' > 'Microsoft.Storage/storageAccounts/*/read')
-        count += Math.max(100, 1000 / parts.length);
-      } else {
-        count += 1; // Specific permission: minimal privilege
-      }
-    }
-
-    count -= permission.notActions.length * 0.5; // Denies reduce privilege
-
-    if (permission.dataActions) {
-      for (const dataAction of permission.dataActions) {
-        if (dataAction === '*') {
-          count += 10000;
-        } else if (dataAction.includes('*')) {
-          const parts = dataAction.split('/');
-          count += Math.max(100, 1000 / parts.length);
-        } else {
-          count += 1;
-        }
-      }
-    }
-
-    if (permission.notDataActions) {
-      count -= permission.notDataActions.length * 0.5;
-    }
-  }
-
-  return Math.max(0, count);
 }
 
 /**

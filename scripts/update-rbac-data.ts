@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
+import { calculatePermissionCount } from '../src/lib/rbacUtils';
 
 // Type definitions (inline to avoid import issues with ts-node)
 interface RolePermission {
@@ -41,56 +42,6 @@ const PERMISSIONS_FILE = path.join(DATA_DIR, 'permissions.json');
 
 const debugEnv = process.env.DEBUG_UPDATE_RBAC_DATA ?? '';
 const DEBUG_LOGS = debugEnv === '1' || debugEnv.toLowerCase() === 'true';
-
-/**
- * Calculate the total number of permissions granted by a role
- * This helps rank roles by "least privileged" (fewer permissions = more restrictive)
- */
-function calculatePermissionCount(role: AzureRole): number {
-  let count = 0;
-
-  for (const permission of role.permissions) {
-    // Count actions
-    for (const action of permission.actions) {
-      if (action === '*') {
-        // Full wildcard - this is a very permissive role
-        count += 10000;
-      } else if (action.includes('*')) {
-        // Partial wildcard - estimate based on scope
-        const parts = action.split('/');
-        // More specific wildcards get lower counts
-        count += Math.max(100, 1000 / parts.length);
-      } else {
-        // Specific action
-        count += 1;
-      }
-    }
-
-    // Subtract for notActions (they restrict permissions)
-    count -= permission.notActions.length * 0.5;
-
-    // Count dataActions
-    if (permission.dataActions) {
-      for (const dataAction of permission.dataActions) {
-        if (dataAction === '*') {
-          count += 10000;
-        } else if (dataAction.includes('*')) {
-          const parts = dataAction.split('/');
-          count += Math.max(100, 1000 / parts.length);
-        } else {
-          count += 1;
-        }
-      }
-    }
-
-    // Subtract for notDataActions
-    if (permission.notDataActions) {
-      count -= permission.notDataActions.length * 0.5;
-    }
-  }
-
-  return Math.max(0, count);
-}
 
 function logDebug(...args: unknown[]): void {
   if (DEBUG_LOGS) {
