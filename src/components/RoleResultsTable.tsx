@@ -1,5 +1,6 @@
 import React, { useState, useMemo, memo } from 'react';
 import type { LeastPrivilegeResult } from '@/types/rbac';
+import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
 
 interface RoleResultsTableProps {
   results: LeastPrivilegeResult[];
@@ -12,6 +13,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
   const [sortField, setSortField] = useState<SortField>('default');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
 
   // Sort the results (or maintain backend order if default)
   const sortedResults = useMemo(() => {
@@ -60,6 +62,38 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
     setExpandedRows(newExpanded);
   };
 
+  const toggleRoleSelection = (roleId: string) => {
+    const newSelected = new Set(selectedRoles);
+    if (newSelected.has(roleId)) {
+      newSelected.delete(roleId);
+    } else {
+      newSelected.add(roleId);
+    }
+    setSelectedRoles(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedRoles.size === sortedResults.length) {
+      // Deselect all
+      setSelectedRoles(new Set());
+    } else {
+      // Select all
+      setSelectedRoles(new Set(sortedResults.map(r => r.role.id)));
+    }
+  };
+
+  const handleExport = () => {
+    const selectedResults = sortedResults.filter(r => selectedRoles.has(r.role.id));
+    if (selectedResults.length === 0) {
+      return;
+    }
+    const filename = generateRoleExportFilename(selectedResults.length);
+    exportRolesToAzureJSON(selectedResults, filename);
+  };
+
+  const allSelected = sortedResults.length > 0 && selectedRoles.size === sortedResults.length;
+  const someSelected = selectedRoles.size > 0 && selectedRoles.size < sortedResults.length;
+
   const SortIcon = ({ field }: { field: SortField }) => {
     if (sortField !== field) {
       return (
@@ -89,8 +123,24 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-300">
             Found {results.length} {results.length === 1 ? 'role' : 'roles'} matching your requirements
+            {selectedRoles.size > 0 && (
+              <span className="ml-2 text-sky-600 dark:text-sky-400">
+                ({selectedRoles.size} selected)
+              </span>
+            )}
           </p>
         </div>
+        <button
+          onClick={handleExport}
+          disabled={selectedRoles.size === 0}
+          className="flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-sky-500 dark:hover:bg-sky-600"
+          title={selectedRoles.size === 0 ? 'Select at least one role to export' : 'Export selected roles to Azure-compatible JSON'}
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Export {selectedRoles.size > 0 ? `(${selectedRoles.size})` : ''}
+        </button>
       </div>
 
       {/* Results Table */}
@@ -99,6 +149,20 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
           <table className="w-full text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
               <tr>
+                <th className="w-12 px-4 py-3">
+                  <input
+                    type="checkbox"
+                    checked={allSelected}
+                    ref={input => {
+                      if (input) {
+                        input.indeterminate = someSelected;
+                      }
+                    }}
+                    onChange={toggleSelectAll}
+                    className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-2 focus:ring-sky-500/50 dark:border-slate-600 dark:bg-slate-800"
+                    aria-label="Select all roles"
+                  />
+                </th>
                 <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">
                   <button
                     onClick={() => handleSort('roleName')}
@@ -136,6 +200,15 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                         isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'
                       }`}
                     >
+                      <td className="px-4 py-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedRoles.has(result.role.id)}
+                          onChange={() => toggleRoleSelection(result.role.id)}
+                          className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-2 focus:ring-sky-500/50 dark:border-slate-600 dark:bg-slate-800"
+                          aria-label={`Select ${result.role.roleName}`}
+                        />
+                      </td>
                       <td className="px-4 py-3">
                         <div className="font-medium text-slate-900 dark:text-slate-100">
                           {result.role.roleName}
@@ -181,7 +254,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                       <tr
                         className={isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'}
                       >
-                        <td colSpan={4} className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+                        <td colSpan={5} className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
                           <div className="space-y-4 border-t border-slate-200 pt-3 dark:border-slate-700">
                             {/* Description */}
                             {result.role.description && (

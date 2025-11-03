@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect, FormEvent } from 'react';
 import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
-import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService } from '@/lib/clientRbacService';
-import type { LeastPrivilegeResult, Operation } from '@/types/rbac';
+import RolePermissionsTable from '@/components/RolePermissionsTable';
+import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
+import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
 
-type InputMode = 'simple' | 'advanced';
+type InputMode = 'simple' | 'advanced' | 'roleExplorer';
 
 export default function RbacCalculatorPage() {
   const [inputMode, setInputMode] = useState<InputMode>('simple');
@@ -21,8 +22,15 @@ export default function RbacCalculatorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingActions, setIsLoadingActions] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSearching, setIsSearching] = useState(false);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
+
+  // Role Explorer mode state
+  const [availableRoles, setAvailableRoles] = useState<AzureRole[]>([]);
+  const [roleSearchQuery, setRoleSearchQuery] = useState('');
+  const [selectedRoles, setSelectedRoles] = useState<AzureRole[]>([]);
+  const [roleSearchResults, setRoleSearchResults] = useState<AzureRole[]>([]);
+  const [showRoleResults, setShowRoleResults] = useState(false);
+  const [isLoadingServices, setIsLoadingServices] = useState(false);
 
   // Load disclaimer preference from localStorage
   useEffect(() => {
@@ -37,17 +45,61 @@ export default function RbacCalculatorPage() {
     localStorage.setItem('rbac-disclaimer-dismissed', 'true');
   };
 
+  // Defer actions cache preload to idle time (non-blocking)
   useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => preloadActionsCache(), { timeout: 2000 });
+      } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(() => preloadActionsCache(), 100);
+      }
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  // Load roles for Role Explorer mode
+  useEffect(() => {
+    if (inputMode === 'roleExplorer') {
+      const loadRoles = async () => {
+        try {
+          setIsLoading(true);
+          const roles = await loadRoleDefinitions();
+          // Only show built-in roles
+          const builtInRoles = roles.filter(role => role.roleType === 'BuiltInRole');
+          setAvailableRoles(builtInRoles);
+          setIsLoading(false);
+        } catch (err) {
+          console.error('Failed to load roles:', err);
+          setError('Failed to load role definitions. Please try again.');
+          setIsLoading(false);
+        }
+      };
+      loadRoles();
+    }
+  }, [inputMode]);
+
+  // Lazy load services only when Simple mode is active
+  useEffect(() => {
+    if (inputMode !== 'simple' || availableServices.length > 0) {
+      return;
+    }
+
     const loadServices = async () => {
       try {
+        setIsLoadingServices(true);
         const services = await getServiceNamespaces();
         setAvailableServices(services);
       } catch (err) {
         console.error('Failed to load services:', err);
+      } finally {
+        setIsLoadingServices(false);
       }
     };
+
     loadServices();
-  }, []);
+  }, [inputMode, availableServices.length]);
 
   useEffect(() => {
     const loadActions = async () => {
@@ -128,16 +180,12 @@ export default function RbacCalculatorPage() {
       return;
     }
 
-    setIsSearching(true);
-
     try {
       const operations = await searchOperations(query.trim());
       setSearchResults(operations.slice(0, 10));
     } catch (err) {
       console.warn('Search failed:', err);
       setSearchResults([]);
-    } finally {
-      setIsSearching(false);
     }
   }, []);
 
@@ -179,7 +227,49 @@ export default function RbacCalculatorPage() {
     setResults([]);
     setError(null);
     setSearchResults([]);
+    setRoleSearchQuery('');
+    setSelectedRoles([]);
+    setRoleSearchResults([]);
+    setShowRoleResults(false);
   }, []);
+
+  const handleRoleSearch = useCallback((query: string) => {
+    setRoleSearchQuery(query);
+
+    if (!query.trim() || query.length < 2) {
+      setRoleSearchResults([]);
+      return;
+    }
+
+    const queryLower = query.toLowerCase();
+    const results = availableRoles.filter(role =>
+      role.roleName.toLowerCase().includes(queryLower) &&
+      !selectedRoles.some(selected => selected.id === role.id)
+    ).slice(0, 10);
+
+    setRoleSearchResults(results);
+  }, [availableRoles, selectedRoles]);
+
+  const handleAddRole = useCallback((role: AzureRole) => {
+    setSelectedRoles(prev => [...prev, role]);
+    setRoleSearchQuery('');
+    setRoleSearchResults([]);
+  }, []);
+
+  const handleRemoveRole = useCallback((roleId: string) => {
+    setSelectedRoles(prev => prev.filter(r => r.id !== roleId));
+  }, []);
+
+  const handleGenerateRolePermissions = useCallback(() => {
+    setError(null);
+
+    if (selectedRoles.length === 0) {
+      setError('Please select at least one role');
+      return;
+    }
+
+    setShowRoleResults(true);
+  }, [selectedRoles]);
 
   const handleSelectService = useCallback((service: string) => {
     setSelectedService(service);
@@ -277,6 +367,17 @@ export default function RbacCalculatorPage() {
           >
             Advanced
           </button>
+          <button
+            type="button"
+            onClick={() => setInputMode('roleExplorer')}
+            className={`rounded-md px-4 py-2 text-sm font-medium transition ${
+              inputMode === 'roleExplorer'
+                ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
+            }`}
+          >
+            Role Explorer
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -307,23 +408,28 @@ export default function RbacCalculatorPage() {
                       // Delay to allow click on dropdown item
                       setTimeout(() => setShowServiceDropdown(false), 200);
                     }}
-                    placeholder="Search for a service (e.g., Compute, Storage, Network)"
-                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-10 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                    placeholder={isLoadingServices ? "Loading services..." : "Search for a service (e.g., Compute, Storage, Network)"}
+                    disabled={isLoadingServices}
+                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-10 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400 disabled:opacity-60 disabled:cursor-not-allowed"
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg
-                      className="h-5 w-5 text-sky-500 dark:text-sky-400"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
-                      />
-                    </svg>
+                    {isLoadingServices ? (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+                    ) : (
+                      <svg
+                        className="h-5 w-5 text-sky-500 dark:text-sky-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
+                        />
+                      </svg>
+                    )}
                   </div>
 
                   {showServiceDropdown && filteredServices.length > 0 && (
@@ -455,7 +561,7 @@ export default function RbacCalculatorPage() {
                 </div>
               )}
             </>
-          ) : (
+          ) : inputMode === 'advanced' ? (
             <>
               <div className="space-y-2">
                 <label
@@ -506,9 +612,122 @@ export default function RbacCalculatorPage() {
                 </div>
               )}
             </>
+          ) : (
+            <>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="role-search"
+                    className="block text-sm font-medium text-slate-700 dark:text-slate-200"
+                  >
+                    Search for Azure Built-in Roles
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="role-search"
+                      value={roleSearchQuery}
+                      onChange={(e) => handleRoleSearch(e.target.value)}
+                      placeholder="Type to search for roles (e.g., Contributor, Reader, Owner)"
+                      className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-10 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <svg
+                        className="h-5 w-5 text-sky-500 dark:text-sky-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
+                        />
+                      </svg>
+                    </div>
+
+                    {/* Dropdown results */}
+                    {roleSearchResults.length > 0 && (
+                      <div className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900 max-h-60 overflow-y-auto">
+                        {roleSearchResults.map((role) => (
+                          <button
+                            key={role.id}
+                            type="button"
+                            onClick={() => handleAddRole(role)}
+                            className="w-full text-left px-4 py-2 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0"
+                          >
+                            <div className="text-sm text-slate-900 dark:text-slate-100">
+                              {role.roleName}
+                            </div>
+                            {role.description && (
+                              <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
+                                {role.description}
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Selected roles chips */}
+                {selectedRoles.length > 0 && (
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
+                      Selected Roles ({selectedRoles.length})
+                    </label>
+                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
+                      <div className="flex flex-wrap gap-2">
+                        {selectedRoles.map((role) => (
+                          <div
+                            key={role.id}
+                            className="group flex items-center gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-1.5 dark:border-sky-800 dark:bg-sky-900/30"
+                          >
+                            <span className="text-sm text-sky-700 dark:text-sky-300">
+                              {role.roleName}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveRole(role.id)}
+                              className="shrink-0 text-sky-600 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-200"
+                              aria-label={`Remove ${role.roleName}`}
+                            >
+                              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={handleGenerateRolePermissions}
+                    disabled={isLoading || selectedRoles.length === 0}
+                    className="rounded-lg bg-sky-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-sky-500 dark:hover:bg-sky-600"
+                  >
+                    Generate
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+            </>
           )}
 
-          <div className="flex gap-3">
+          {inputMode !== 'roleExplorer' && (
+            <div className="flex gap-3">
             <button
               type="submit"
               disabled={isLoading || (inputMode === 'simple' ? selectedActions.length === 0 : !actionsInput.trim())}
@@ -524,6 +743,7 @@ export default function RbacCalculatorPage() {
               Clear
             </button>
           </div>
+          )}
         </form>
 
         {isLoading && (
@@ -539,11 +759,15 @@ export default function RbacCalculatorPage() {
           </div>
         )}
 
-        {!isLoading && !error && results.length > 0 && (
+        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && (
           <RoleResultsTable results={results} />
         )}
 
-        {results.length === 0 && !isLoading && (
+        {inputMode === 'roleExplorer' && showRoleResults && selectedRoles.length > 0 && !isLoading && (
+          <RolePermissionsTable roles={selectedRoles} />
+        )}
+
+        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && (
           <section className="space-y-4">
             <div>
               <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
