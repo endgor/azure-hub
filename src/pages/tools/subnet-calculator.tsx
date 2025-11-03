@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ChangeEvent, FormEvent } from 'react';
+import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SubnetExportButton from '@/components/SubnetExportButton';
@@ -137,7 +137,7 @@ function createSubnetState(network: string | number, prefix: number): State {
   };
 }
 
-export default function SubnetCalculatorPage(): JSX.Element {
+export default function SubnetCalculatorPage(): ReactElement {
   const [formFields, setFormFields] = useState({
     network: DEFAULT_NETWORK,
     prefix: DEFAULT_PREFIX.toString()
@@ -796,7 +796,7 @@ export default function SubnetCalculatorPage(): JSX.Element {
                   const path = getNodePath(state.tree, leaf.id);
                   const canSplit = leaf.prefix < 32;
                   const segments = [...path].reverse();
-                  const joinCells: JSX.Element[] = [];
+                  const joinCells: ReactElement[] = [];
               const rowColor = rowColors[leaf.id];
               const rowBackground = rowColor
                 ? ''

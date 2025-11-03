@@ -1,8 +1,10 @@
-import { useState, useCallback, useEffect, FormEvent, useRef } from 'react';
+import { useState, useCallback, useEffect, FormEvent, useRef, useMemo } from 'react';
 import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
 import RoleCreator from '@/components/RoleCreator';
+import SelectionChips from '@/components/SelectionChips';
+import ActionSuggestionList from '@/components/ActionSuggestionList';
 import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
 import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
 import { intelligentSearchSort, filterAndSortByQuery } from '@/lib/searchUtils';
@@ -336,6 +338,26 @@ export default function RbacCalculatorPage() {
     );
   });
 
+  const selectedActionChips = useMemo(
+    () =>
+      selectedActions.map(action => ({
+        id: action,
+        content: <span className="font-mono text-xs break-all">{action}</span>,
+        removeAriaLabel: `Remove ${action}`
+      })),
+    [selectedActions]
+  );
+
+  const selectedRoleChips = useMemo(
+    () =>
+      selectedRoles.map(role => ({
+        id: role.id,
+        content: <span className="text-sm">{role.roleName}</span>,
+        removeAriaLabel: `Remove ${role.roleName}`
+      })),
+    [selectedRoles]
+  );
+
   return (
     <Layout
       title="RBAC Least Privilege Calculator"
@@ -587,37 +609,11 @@ export default function RbacCalculatorPage() {
                 </div>
               )}
 
-              {selectedActions.length > 0 && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
-                    Selected Actions ({selectedActions.length})
-                  </label>
-                  <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
-                    <div className="flex flex-wrap gap-2">
-                      {selectedActions.map((action) => (
-                        <div
-                          key={action}
-                          className="group flex items-center gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-1.5 dark:border-sky-800 dark:bg-sky-900/30"
-                        >
-                          <span className="font-mono text-xs text-sky-700 dark:text-sky-300 break-all">
-                            {action}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveAction(action)}
-                            className="shrink-0 text-sky-600 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-200"
-                            aria-label={`Remove ${action}`}
-                          >
-                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+              <SelectionChips
+                heading="Selected Actions"
+                items={selectedActionChips}
+                onRemove={handleRemoveAction}
+              />
             </>
           ) : inputMode === 'advanced' ? (
             <>
@@ -648,25 +644,14 @@ export default function RbacCalculatorPage() {
                       Suggested Actions
                     </p>
                   </div>
-                  <div className="max-h-60 overflow-y-auto">
-                    {searchResults.map((operation) => (
-                      <button
-                        key={operation.name}
-                        type="button"
-                        onClick={() => handleAddActionAdvanced(operation.name)}
-                        className="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition border-b border-slate-100 dark:border-slate-800 last:border-0"
-                      >
-                        <div className="font-mono text-sm text-sky-600 dark:text-sky-400">
-                          {operation.name}
-                        </div>
-                        {operation.displayName && (
-                          <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                            {operation.displayName}
-                          </div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+                  <ActionSuggestionList
+                    suggestions={searchResults.map((operation) => ({
+                      id: operation.name,
+                      name: operation.name,
+                      detail: operation.displayName || undefined
+                    }))}
+                    onSelect={handleAddActionAdvanced}
+                  />
                 </div>
               )}
             </>
@@ -730,38 +715,11 @@ export default function RbacCalculatorPage() {
                   </div>
                 </div>
 
-                {/* Selected roles chips */}
-                {selectedRoles.length > 0 && (
-                  <div className="space-y-2">
-                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
-                      Selected Roles ({selectedRoles.length})
-                    </label>
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
-                      <div className="flex flex-wrap gap-2">
-                        {selectedRoles.map((role) => (
-                          <div
-                            key={role.id}
-                            className="group flex items-center gap-2 rounded-md border border-sky-200 bg-sky-50 px-3 py-1.5 dark:border-sky-800 dark:bg-sky-900/30"
-                          >
-                            <span className="text-sm text-sky-700 dark:text-sky-300">
-                              {role.roleName}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveRole(role.id)}
-                              className="shrink-0 text-sky-600 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-200"
-                              aria-label={`Remove ${role.roleName}`}
-                            >
-                              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <SelectionChips
+                  heading="Selected Roles"
+                  items={selectedRoleChips}
+                  onRemove={handleRemoveRole}
+                />
 
                 <div className="flex gap-3">
                   <button

@@ -17,26 +17,26 @@
     "@vercel/speed-insights": "^1.2.0",
     "ip-cidr": "^3.1.0",
     "jszip": "^3.10.1",
-    "next": "^14.0.4",
+    "next": "^15.0.0",
     "papaparse": "^5.5.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^15.4.6",
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/node": "^20.17.47",
+    "@next/bundle-analyzer": "^15.5.6",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^20.19.24",
     "@types/papaparse": "^5.3.16",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@types/xlsx": "^0.0.35",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.33",
-    "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.7",
+    "eslint-config-next": "^15.0.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3"
   }
 }

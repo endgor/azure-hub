@@ -59,7 +59,7 @@ export async function exportToExcel<T extends ExportRow>(
   const rowFills = normaliseRowFills(options?.rowFills ?? [], rows.length);
 
   const buffer = await createWorkbookBuffer(headers, rows, sheetName, rowFills);
-  downloadFile(new Blob([buffer], { type: EXCEL_MIME_TYPE }), filename, EXCEL_MIME_TYPE);
+  downloadFile(new Blob([buffer as BlobPart], { type: EXCEL_MIME_TYPE }), filename, EXCEL_MIME_TYPE);
 }
 
 const EXCEL_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
