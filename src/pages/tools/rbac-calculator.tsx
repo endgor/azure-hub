@@ -202,7 +202,7 @@ export default function RbacCalculatorPage() {
             RBAC Least Privilege Calculator
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
-            Enter the Azure actions you need, and we&rsquo;ll find the least privileged built-in roles that grant those permissions.
+            Enter the Azure actions you need, the calculator will retrieve the least privileged built-in roles that grant those permissions.
           </p>
         </div>
 
