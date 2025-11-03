@@ -73,27 +73,105 @@ export async function loadPermissions(): Promise<Operation[]> {
 }
 
 /**
+ * Extract all unique actions from roles
+ * This is used when permissions.json is not available
+ */
+async function extractActionsFromRoles(): Promise<Map<string, { name: string; roleCount: number }>> {
+  const roles = await loadRoleDefinitions();
+  const actionsMap = new Map<string, { name: string; roleCount: number }>();
+
+  for (const role of roles) {
+    for (const permission of role.permissions) {
+      // Add actions
+      for (const action of permission.actions) {
+        // Skip wildcards for search
+        if (!action.includes('*')) {
+          const existing = actionsMap.get(action);
+          if (existing) {
+            existing.roleCount++;
+          } else {
+            actionsMap.set(action, { name: action, roleCount: 1 });
+          }
+        }
+      }
+
+      // Add dataActions
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (!dataAction.includes('*')) {
+            const existing = actionsMap.get(dataAction);
+            if (existing) {
+              existing.roleCount++;
+            } else {
+              actionsMap.set(dataAction, { name: dataAction, roleCount: 1 });
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return actionsMap;
+}
+
+/**
  * Search for operations by keyword
- * Searches in name, displayName, and description
+ * Searches in action names extracted from roles
  */
 export async function searchOperations(query: string): Promise<Operation[]> {
   if (!query || query.trim().length < 2) {
     return [];
   }
 
+  // Try to load from permissions file first
   const permissions = await loadPermissions();
+
+  if (permissions.length > 0) {
+    // If we have permissions data, use it
+    const queryLower = query.toLowerCase();
+    return permissions.filter(operation => {
+      const nameLower = operation.name.toLowerCase();
+      const displayNameLower = operation.displayName?.toLowerCase() || '';
+      const descriptionLower = operation.description?.toLowerCase() || '';
+
+      return (
+        nameLower.includes(queryLower) ||
+        displayNameLower.includes(queryLower) ||
+        descriptionLower.includes(queryLower)
+      );
+    });
+  }
+
+  // Fallback: extract actions from roles
+  const actionsMap = await extractActionsFromRoles();
   const queryLower = query.toLowerCase();
+  const results: Operation[] = [];
 
-  return permissions.filter(operation => {
-    const nameLower = operation.name.toLowerCase();
-    const displayNameLower = operation.displayName?.toLowerCase() || '';
-    const descriptionLower = operation.description?.toLowerCase() || '';
+  // Convert Map to array for iteration
+  const actionsArray = Array.from(actionsMap.entries());
 
-    return (
-      nameLower.includes(queryLower) ||
-      displayNameLower.includes(queryLower) ||
-      descriptionLower.includes(queryLower)
-    );
+  for (const [actionName, actionData] of actionsArray) {
+    if (actionName.toLowerCase().includes(queryLower)) {
+      // Parse action to create a friendly display name
+      const parts = actionName.split('/');
+      const provider = parts[0] || '';
+      const resource = parts.slice(1, -1).join('/') || '';
+      const operation = parts[parts.length - 1] || '';
+
+      results.push({
+        name: actionName,
+        displayName: `${operation} ${resource}`.trim() || actionName,
+        description: `Used by ${actionData.roleCount} role${actionData.roleCount > 1 ? 's' : ''}`,
+        provider
+      });
+    }
+  }
+
+  // Sort by role count (more popular actions first)
+  return results.sort((a, b) => {
+    const aCount = parseInt(a.description?.match(/\d+/)?.[0] || '0');
+    const bCount = parseInt(b.description?.match(/\d+/)?.[0] || '0');
+    return bCount - aCount;
   });
 }
 
