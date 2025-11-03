@@ -23,7 +23,6 @@ export default function RbacCalculatorPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
 
-  // Load available services on mount
   useEffect(() => {
     const loadServices = async () => {
       try {
@@ -36,7 +35,6 @@ export default function RbacCalculatorPage() {
     loadServices();
   }, []);
 
-  // Load actions when service is selected
   useEffect(() => {
     const loadActions = async () => {
       if (!selectedService) {
@@ -58,7 +56,6 @@ export default function RbacCalculatorPage() {
     loadActions();
   }, [selectedService]);
 
-  // Handle form submission
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -77,7 +74,6 @@ export default function RbacCalculatorPage() {
         setError('Please enter at least one action');
         return;
       }
-      // Parse actions from textarea (one per line)
       actions = actionsInput
         .split('\n')
         .map(line => line.trim())
@@ -92,7 +88,6 @@ export default function RbacCalculatorPage() {
     setIsLoading(true);
 
     try {
-      // Calculate least privileged roles
       const leastPrivilegedRoles = await calculateLeastPrivilege({
         requiredActions: actions,
         requiredDataActions: []
@@ -111,8 +106,6 @@ export default function RbacCalculatorPage() {
     }
   }, [inputMode, selectedActions, actionsInput]);
 
-
-  // Handle search for advanced mode (original behavior)
   const handleAdvancedSearch = useCallback(async (query: string) => {
     setActionsInput(query);
 
@@ -134,19 +127,16 @@ export default function RbacCalculatorPage() {
     }
   }, []);
 
-  // Add action in simple mode
   const handleAddActionSimple = useCallback((action: string) => {
     if (!selectedActions.includes(action)) {
       setSelectedActions(prev => [...prev, action]);
     }
   }, [selectedActions]);
 
-  // Remove action in simple mode
   const handleRemoveAction = useCallback((action: string) => {
     setSelectedActions(prev => prev.filter(a => a !== action));
   }, []);
 
-  // Add action in advanced mode
   const handleAddActionAdvanced = useCallback((action: string) => {
     const currentActions = actionsInput.split('\n').filter(line => line.trim());
     if (!currentActions.includes(action)) {
@@ -155,7 +145,6 @@ export default function RbacCalculatorPage() {
     setSearchResults([]);
   }, [actionsInput]);
 
-  // Load example actions
   const handleLoadExample = useCallback((actions: readonly string[]) => {
     if (inputMode === 'simple') {
       setSelectedActions([...actions]);
@@ -165,7 +154,6 @@ export default function RbacCalculatorPage() {
     setSearchResults([]);
   }, [inputMode]);
 
-  // Clear all
   const handleClear = useCallback(() => {
     setActionsInput('');
     setSelectedActions([]);
@@ -179,7 +167,6 @@ export default function RbacCalculatorPage() {
     setSearchResults([]);
   }, []);
 
-  // Handle service selection
   const handleSelectService = useCallback((service: string) => {
     setSelectedService(service);
     setServiceSearch(service);
@@ -187,13 +174,11 @@ export default function RbacCalculatorPage() {
     setActionSearch('');
   }, []);
 
-  // Filter services based on search
   const filteredServices = availableServices.filter(service => {
     if (!serviceSearch) return true;
     return service.toLowerCase().includes(serviceSearch.toLowerCase());
   });
 
-  // Filter actions based on search
   const filteredActions = availableActions.filter(action => {
     if (!actionSearch) return true;
     const searchLower = actionSearch.toLowerCase();
@@ -221,7 +206,6 @@ export default function RbacCalculatorPage() {
           </p>
         </div>
 
-        {/* Mode Toggle */}
         <div className="flex gap-2 rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-900 w-fit">
           <button
             type="button"
@@ -247,13 +231,10 @@ export default function RbacCalculatorPage() {
           </button>
         </div>
 
-        {/* Input Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {inputMode === 'simple' ? (
-            /* Simple Mode */
             <>
-              {/* Step 1: Select Service - Searchable Dropdown */}
-              <div className="space-y-2 relative">
+              <div className="space-y-2 relative max-w-2xl">
                 <label
                   htmlFor="service-search"
                   className="block text-sm font-medium text-slate-700 dark:text-slate-200"
@@ -283,7 +264,7 @@ export default function RbacCalculatorPage() {
                   />
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                     <svg
-                      className="h-5 w-5 text-slate-400"
+                      className="h-5 w-5 text-sky-500 dark:text-sky-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -292,12 +273,11 @@ export default function RbacCalculatorPage() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
                       />
                     </svg>
                   </div>
 
-                  {/* Dropdown List */}
                   {showServiceDropdown && filteredServices.length > 0 && (
                     <div className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900 max-h-80 overflow-y-auto">
                       {filteredServices.map((service) => (
@@ -315,19 +295,14 @@ export default function RbacCalculatorPage() {
                     </div>
                   )}
 
-                  {/* No results message */}
                   {showServiceDropdown && serviceSearch && filteredServices.length === 0 && (
                     <div className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white p-4 text-center text-sm text-slate-600 shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
                       No services match &ldquo;{serviceSearch}&rdquo;
                     </div>
                   )}
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Type to search Azure services (e.g., Compute, Storage, Network)
-                </p>
               </div>
 
-              {/* Step 2: Select Actions (only show if service selected) */}
               {selectedService && (
                 <div className="space-y-2">
                   <label
@@ -394,7 +369,6 @@ export default function RbacCalculatorPage() {
                 </div>
               )}
 
-              {/* Selected Actions */}
               {selectedActions.length > 0 && (
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
@@ -428,7 +402,6 @@ export default function RbacCalculatorPage() {
               )}
             </>
           ) : (
-            /* Advanced Mode */
             <>
               <div className="space-y-2">
                 <label
@@ -441,7 +414,7 @@ export default function RbacCalculatorPage() {
                   id="actions"
                   value={actionsInput}
                   onChange={(e) => handleAdvancedSearch(e.target.value)}
-                  placeholder="Microsoft.Compute/virtualMachines/read&#10;Microsoft.Compute/virtualMachines/start/action&#10;Microsoft.Compute/virtualMachines/restart/action"
+                  placeholder={'Microsoft.Compute/virtualMachines/read\nMicrosoft.Compute/virtualMachines/start/action\nMicrosoft.Compute/virtualMachines/restart/action'}
                   rows={8}
                   className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
                 />
@@ -450,7 +423,6 @@ export default function RbacCalculatorPage() {
                 </p>
               </div>
 
-              {/* Search suggestions for advanced mode */}
               {searchResults.length > 0 && (
                 <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <div className="p-3 border-b border-slate-200 dark:border-slate-700">
@@ -500,7 +472,6 @@ export default function RbacCalculatorPage() {
           </div>
         </form>
 
-        {/* Loading State */}
         {isLoading && (
           <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
@@ -508,19 +479,16 @@ export default function RbacCalculatorPage() {
           </div>
         )}
 
-        {/* Error State */}
         {error && (
           <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
             {error}
           </div>
         )}
 
-        {/* Results */}
         {!isLoading && !error && results.length > 0 && (
           <RoleResultsTable results={results} />
         )}
 
-        {/* Sample Queries */}
         {results.length === 0 && !isLoading && (
           <section className="space-y-4">
             <div>

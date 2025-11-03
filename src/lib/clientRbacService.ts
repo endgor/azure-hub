@@ -1,20 +1,32 @@
 import { AzureRole, Operation, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
 import { calculateLeastPrivilegedRoles, extractServiceNamespaces } from './rbacService';
 
-// Client-side cache
 let rolesCache: AzureRole[] | null = null;
 let permissionsCache: Operation[] | null = null;
 let rolesCacheExpiry = 0;
 let permissionsCacheExpiry = 0;
-const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+const CACHE_TTL = 6 * 60 * 60 * 1000;
 
 /**
- * Load Azure role definitions from static file
+ * Parse action name into a friendly Operation object
  */
+function createOperationFromAction(actionName: string, roleCount: number): Operation {
+  const parts = actionName.split('/');
+  const provider = parts[0] || '';
+  const resource = parts.slice(1, -1).join('/') || '';
+  const operation = parts[parts.length - 1] || '';
+
+  return {
+    name: actionName,
+    displayName: `${operation} ${resource}`.trim() || actionName,
+    description: `Used by ${roleCount} role${roleCount > 1 ? 's' : ''}`,
+    provider
+  };
+}
+
 export async function loadRoleDefinitions(): Promise<AzureRole[]> {
   const now = Date.now();
 
-  // Check if cache is valid
   if (rolesCache && rolesCacheExpiry > now) {
     return rolesCache;
   }
@@ -26,8 +38,6 @@ export async function loadRoleDefinitions(): Promise<AzureRole[]> {
     }
 
     const roles = await response.json() as AzureRole[];
-
-    // Cache the results
     rolesCache = roles;
     rolesCacheExpiry = now + CACHE_TTL;
 
@@ -37,13 +47,9 @@ export async function loadRoleDefinitions(): Promise<AzureRole[]> {
   }
 }
 
-/**
- * Load Azure permissions (operations) from static file
- */
 export async function loadPermissions(): Promise<Operation[]> {
   const now = Date.now();
 
-  // Check if cache is valid
   if (permissionsCache && permissionsCacheExpiry > now) {
     return permissionsCache;
   }
@@ -51,7 +57,6 @@ export async function loadPermissions(): Promise<Operation[]> {
   try {
     const response = await fetch('/data/permissions.json');
     if (!response.ok) {
-      // Permissions file is optional, return empty array if not found
       if (response.status === 404) {
         console.warn('Permissions file not found - search functionality will be limited');
         return [];
@@ -60,8 +65,6 @@ export async function loadPermissions(): Promise<Operation[]> {
     }
 
     const permissions = await response.json() as Operation[];
-
-    // Cache the results
     permissionsCache = permissions;
     permissionsCacheExpiry = now + CACHE_TTL;
 
@@ -73,8 +76,7 @@ export async function loadPermissions(): Promise<Operation[]> {
 }
 
 /**
- * Extract all unique actions from roles
- * This is used when permissions.json is not available
+ * Extract all unique actions from roles (fallback when permissions.json unavailable)
  */
 async function extractActionsFromRoles(): Promise<Map<string, { name: string; roleCount: number }>> {
   const roles = await loadRoleDefinitions();
@@ -82,9 +84,7 @@ async function extractActionsFromRoles(): Promise<Map<string, { name: string; ro
 
   for (const role of roles) {
     for (const permission of role.permissions) {
-      // Add actions
       for (const action of permission.actions) {
-        // Skip wildcards for search
         if (!action.includes('*')) {
           const existing = actionsMap.get(action);
           if (existing) {
@@ -95,7 +95,6 @@ async function extractActionsFromRoles(): Promise<Map<string, { name: string; ro
         }
       }
 
-      // Add dataActions
       if (permission.dataActions) {
         for (const dataAction of permission.dataActions) {
           if (!dataAction.includes('*')) {
@@ -114,20 +113,14 @@ async function extractActionsFromRoles(): Promise<Map<string, { name: string; ro
   return actionsMap;
 }
 
-/**
- * Search for operations by keyword
- * Searches in action names extracted from roles
- */
 export async function searchOperations(query: string): Promise<Operation[]> {
   if (!query || query.trim().length < 2) {
     return [];
   }
 
-  // Try to load from permissions file first
   const permissions = await loadPermissions();
 
   if (permissions.length > 0) {
-    // If we have permissions data, use it
     const queryLower = query.toLowerCase();
     return permissions.filter(operation => {
       const nameLower = operation.name.toLowerCase();
@@ -142,32 +135,16 @@ export async function searchOperations(query: string): Promise<Operation[]> {
     });
   }
 
-  // Fallback: extract actions from roles
   const actionsMap = await extractActionsFromRoles();
   const queryLower = query.toLowerCase();
   const results: Operation[] = [];
 
-  // Convert Map to array for iteration
-  const actionsArray = Array.from(actionsMap.entries());
-
-  for (const [actionName, actionData] of actionsArray) {
+  for (const [actionName, actionData] of Array.from(actionsMap.entries())) {
     if (actionName.toLowerCase().includes(queryLower)) {
-      // Parse action to create a friendly display name
-      const parts = actionName.split('/');
-      const provider = parts[0] || '';
-      const resource = parts.slice(1, -1).join('/') || '';
-      const operation = parts[parts.length - 1] || '';
-
-      results.push({
-        name: actionName,
-        displayName: `${operation} ${resource}`.trim() || actionName,
-        description: `Used by ${actionData.roleCount} role${actionData.roleCount > 1 ? 's' : ''}`,
-        provider
-      });
+      results.push(createOperationFromAction(actionName, actionData.roleCount));
     }
   }
 
-  // Sort by role count (more popular actions first)
   return results.sort((a, b) => {
     const aCount = parseInt(a.description?.match(/\d+/)?.[0] || '0');
     const bCount = parseInt(b.description?.match(/\d+/)?.[0] || '0');
@@ -175,17 +152,11 @@ export async function searchOperations(query: string): Promise<Operation[]> {
   });
 }
 
-/**
- * Get all unique service namespaces from roles
- */
 export async function getServiceNamespaces(): Promise<string[]> {
   const roles = await loadRoleDefinitions();
   return extractServiceNamespaces(roles);
 }
 
-/**
- * Get all actions for a specific service namespace
- */
 export async function getActionsByService(serviceNamespace: string): Promise<Operation[]> {
   if (!serviceNamespace) {
     return [];
@@ -195,96 +166,16 @@ export async function getActionsByService(serviceNamespace: string): Promise<Ope
   const namespaceLower = serviceNamespace.toLowerCase();
   const results: Operation[] = [];
 
-  // Convert Map to array for iteration
-  const actionsArray = Array.from(actionsMap.entries());
-
-  for (const [actionName, actionData] of actionsArray) {
-    if (actionName.toLowerCase().startsWith(namespaceLower)) {
-      // Parse action to create a friendly display name
-      const parts = actionName.split('/');
-      const provider = parts[0] || '';
-      const resource = parts.slice(1, -1).join('/') || '';
-      const operation = parts[parts.length - 1] || '';
-
-      results.push({
-        name: actionName,
-        displayName: `${operation} ${resource}`.trim() || actionName,
-        description: `Used by ${actionData.roleCount} role${actionData.roleCount > 1 ? 's' : ''}`,
-        provider
-      });
+  for (const [actionName, actionData] of Array.from(actionsMap.entries())) {
+    if (actionName.toLowerCase().startsWith(namespaceLower + '/')) {
+      results.push(createOperationFromAction(actionName, actionData.roleCount));
     }
   }
 
-  // Sort by action name for better browsing
-  return results.sort((a, b) => a.name.localeCompare(b.name));
+  return results.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 }
 
-/**
- * Filter roles by service namespace
- */
-export async function filterRolesByService(serviceNamespace: string): Promise<AzureRole[]> {
-  if (!serviceNamespace) {
-    return [];
-  }
-
-  const roles = await loadRoleDefinitions();
-  const namespaceLower = serviceNamespace.toLowerCase();
-
-  return roles.filter(role => {
-    // Check if role has any actions matching this service namespace
-    for (const permission of role.permissions) {
-      for (const action of permission.actions) {
-        if (action.toLowerCase().startsWith(namespaceLower)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  });
-}
-
-/**
- * Calculate least privileged roles for given actions
- */
 export async function calculateLeastPrivilege(input: LeastPrivilegeInput): Promise<LeastPrivilegeResult[]> {
   const roles = await loadRoleDefinitions();
   return calculateLeastPrivilegedRoles(roles, input);
-}
-
-/**
- * Search roles by name or description
- */
-export async function searchRoles(query: string): Promise<AzureRole[]> {
-  if (!query || query.trim().length < 2) {
-    return [];
-  }
-
-  const roles = await loadRoleDefinitions();
-  const queryLower = query.toLowerCase();
-
-  return roles.filter(role => {
-    const nameLower = role.roleName?.toLowerCase() || '';
-    const descriptionLower = role.description?.toLowerCase() || '';
-
-    return (
-      nameLower.includes(queryLower) ||
-      descriptionLower.includes(queryLower)
-    );
-  });
-}
-
-/**
- * Get a specific role by ID
- */
-export async function getRoleById(roleId: string): Promise<AzureRole | null> {
-  const roles = await loadRoleDefinitions();
-  return roles.find(role => role.id === roleId) || null;
-}
-
-/**
- * Get roles by type (BuiltInRole or CustomRole)
- */
-export async function getRolesByType(roleType: 'BuiltInRole' | 'CustomRole'): Promise<AzureRole[]> {
-  const roles = await loadRoleDefinitions();
-  return roles.filter(role => role.roleType === roleType);
 }
