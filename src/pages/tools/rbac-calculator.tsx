@@ -12,6 +12,8 @@ export default function RbacCalculatorPage() {
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
   const [selectedService, setSelectedService] = useState('');
   const [availableServices, setAvailableServices] = useState<string[]>([]);
+  const [serviceSearch, setServiceSearch] = useState('');
+  const [showServiceDropdown, setShowServiceDropdown] = useState(false);
   const [actionSearch, setActionSearch] = useState('');
   const [availableActions, setAvailableActions] = useState<Operation[]>([]);
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
@@ -168,12 +170,28 @@ export default function RbacCalculatorPage() {
     setActionsInput('');
     setSelectedActions([]);
     setSelectedService('');
+    setServiceSearch('');
+    setShowServiceDropdown(false);
     setActionSearch('');
     setAvailableActions([]);
     setResults([]);
     setError(null);
     setSearchResults([]);
   }, []);
+
+  // Handle service selection
+  const handleSelectService = useCallback((service: string) => {
+    setSelectedService(service);
+    setServiceSearch(service);
+    setShowServiceDropdown(false);
+    setActionSearch('');
+  }, []);
+
+  // Filter services based on search
+  const filteredServices = availableServices.filter(service => {
+    if (!serviceSearch) return true;
+    return service.toLowerCase().includes(serviceSearch.toLowerCase());
+  });
 
   // Filter actions based on search
   const filteredActions = availableActions.filter(action => {
@@ -234,32 +252,78 @@ export default function RbacCalculatorPage() {
           {inputMode === 'simple' ? (
             /* Simple Mode */
             <>
-              {/* Step 1: Select Service */}
-              <div className="space-y-2">
+              {/* Step 1: Select Service - Searchable Dropdown */}
+              <div className="space-y-2 relative">
                 <label
-                  htmlFor="service-select"
+                  htmlFor="service-search"
                   className="block text-sm font-medium text-slate-700 dark:text-slate-200"
                 >
                   Step 1: Select Azure Service
                 </label>
-                <select
-                  id="service-select"
-                  value={selectedService}
-                  onChange={(e) => {
-                    setSelectedService(e.target.value);
-                    setActionSearch('');
-                  }}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-sky-400"
-                >
-                  <option value="">-- Choose a service --</option>
-                  {availableServices.map((service) => (
-                    <option key={service} value={service}>
-                      {service}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <input
+                    type="text"
+                    id="service-search"
+                    value={serviceSearch}
+                    onChange={(e) => {
+                      setServiceSearch(e.target.value);
+                      setShowServiceDropdown(true);
+                      if (e.target.value !== selectedService) {
+                        setSelectedService('');
+                        setAvailableActions([]);
+                      }
+                    }}
+                    onFocus={() => setShowServiceDropdown(true)}
+                    onBlur={() => {
+                      // Delay to allow click on dropdown item
+                      setTimeout(() => setShowServiceDropdown(false), 200);
+                    }}
+                    placeholder="Search for a service (e.g., Compute, Storage, Network)"
+                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-10 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                  />
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                    <svg
+                      className="h-5 w-5 text-slate-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  </div>
+
+                  {/* Dropdown List */}
+                  {showServiceDropdown && filteredServices.length > 0 && (
+                    <div className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900 max-h-80 overflow-y-auto">
+                      {filteredServices.map((service) => (
+                        <button
+                          key={service}
+                          type="button"
+                          onClick={() => handleSelectService(service)}
+                          className="w-full text-left px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0"
+                        >
+                          <div className="text-sm text-slate-900 dark:text-slate-100">
+                            {service}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* No results message */}
+                  {showServiceDropdown && serviceSearch && filteredServices.length === 0 && (
+                    <div className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white p-4 text-center text-sm text-slate-600 shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
+                      No services match &ldquo;{serviceSearch}&rdquo;
+                    </div>
+                  )}
+                </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Select an Azure service (e.g., Microsoft.Compute, Microsoft.Storage)
+                  Type to search Azure services (e.g., Compute, Storage, Network)
                 </p>
               </div>
 
