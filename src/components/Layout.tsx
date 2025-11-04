@@ -292,7 +292,7 @@ export default function Layout({
     };
   }, [description, keywords, router.pathname, title]);
 
-  const themeColor = isDarkMode ? '#0f172a' : '#f1f5f9';
+  const themeColor = isDarkMode ? '#000000' : '#f1f5f9';
 
   const structuredData = useMemo(
     () => ({
