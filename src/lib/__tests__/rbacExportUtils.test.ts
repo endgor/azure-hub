@@ -10,6 +10,24 @@ vi.mock('../downloadUtils', () => ({
   downloadExcel: vi.fn(),
 }));
 
+// Mock papaparse
+vi.mock('papaparse', () => ({
+  default: {
+    unparse: (data: any) => {
+      // Simple CSV generator for testing
+      if (Array.isArray(data) && data.length > 0) {
+        const headers = Object.keys(data[0]);
+        const headerRow = headers.map(h => `"${h}"`).join(',');
+        const dataRows = data.map((row: any) =>
+          headers.map(h => `"${String(row[h] ?? '').replace(/"/g, '""')}"`).join(',')
+        );
+        return [headerRow, ...dataRows].join('\n');
+      }
+      return '';
+    }
+  }
+}));
+
 describe('rbacExportUtils', () => {
   const mockRoles: AzureRole[] = [
     {
@@ -69,8 +87,8 @@ describe('rbacExportUtils', () => {
   });
 
   describe('exportRolesToCSV', () => {
-    it('should generate CSV with headers and data', () => {
-      exportRolesToCSV(mockRoles, 'test.csv');
+    it('should generate CSV with headers and data', async () => {
+      await exportRolesToCSV(mockRoles, 'test.csv');
 
       expect(downloadUtils.downloadFile).toHaveBeenCalledOnce();
       const [csvContent, filename, mimeType] = vi.mocked(downloadUtils.downloadFile).mock.calls[0];
@@ -94,7 +112,7 @@ describe('rbacExportUtils', () => {
       expect(csvContent).toContain('Data Action');
     });
 
-    it('should escape quotes in CSV values', () => {
+    it('should escape quotes in CSV values', async () => {
       const roleWithQuotes: AzureRole[] = [
         {
           ...mockRoles[0],
@@ -102,16 +120,16 @@ describe('rbacExportUtils', () => {
         },
       ];
 
-      exportRolesToCSV(roleWithQuotes, 'test.csv');
+      await exportRolesToCSV(roleWithQuotes, 'test.csv');
 
       const [csvContent] = vi.mocked(downloadUtils.downloadFile).mock.calls[0];
       expect(csvContent).toContain('Role with ""quoted"" text');
     });
 
-    it('should handle empty role array', () => {
+    it('should handle empty role array', async () => {
       const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-      exportRolesToCSV([], 'test.csv');
+      await exportRolesToCSV([], 'test.csv');
 
       expect(consoleWarnSpy).toHaveBeenCalledWith('No roles to export');
       expect(downloadUtils.downloadFile).not.toHaveBeenCalled();
@@ -119,8 +137,8 @@ describe('rbacExportUtils', () => {
       consoleWarnSpy.mockRestore();
     });
 
-    it('should include all permission types in CSV', () => {
-      exportRolesToCSV(mockRoles, 'test.csv');
+    it('should include all permission types in CSV', async () => {
+      await exportRolesToCSV(mockRoles, 'test.csv');
 
       const [csvContent] = vi.mocked(downloadUtils.downloadFile).mock.calls[0];
 

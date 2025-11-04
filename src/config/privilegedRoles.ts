@@ -54,19 +54,7 @@ export const PRIVILEGED_ROLES = [
   // Security-related privileged roles
   'Security Admin',
   'Security Manager (Legacy)',
-  'SQL Security Manager',
-
-  // Service-specific contributor roles
-  'Azure Service Deploy Release Management Contributor',
-  'Cognitive Services Contributor',
-  'Cosmos DB Account Reader Role',
-  'DevTest Labs User',
-  'DocumentDB Account Contributor',
-  'Intelligent Systems Account Contributor',
-  'Logic App Contributor',
-  'Redis Cache Contributor',
-  'Scheduler Job Collections Contributor',
-  'Storage Account Contributor'
+  'SQL Security Manager'
 ] as const;
 
 /**

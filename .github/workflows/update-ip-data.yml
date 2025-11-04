@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Update Azure IP data
-        run: npx ts-node scripts/update-ip-data.ts
+        run: npx ts-node scripts/updateIpData.ts
 
       - name: Azure Login
         uses: azure/login@v1
@@ -42,7 +42,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Update Azure RBAC data
-        run: npx ts-node scripts/update-rbac-data.ts
+        run: npx ts-node scripts/updateRbacData.ts
 
       - name: Commit and push if changed
         run: |

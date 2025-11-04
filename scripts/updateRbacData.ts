@@ -39,6 +39,7 @@ const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 // Output file paths
 const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
 const PERMISSIONS_FILE = path.join(DATA_DIR, 'permissions.json');
+const ACTIONS_CACHE_FILE = path.join(DATA_DIR, 'actions-cache.json');
 
 const debugEnv = process.env.DEBUG_UPDATE_RBAC_DATA ?? '';
 const DEBUG_LOGS = debugEnv === '1' || debugEnv.toLowerCase() === 'true';
@@ -239,6 +240,147 @@ function transformOperations(operations: Operation[]): Operation[] {
 }
 
 /**
+ * Check if a permission action matches a wildcard pattern
+ * (Replicated from rbacService.ts for build-time generation)
+ */
+function matchesWildcard(pattern: string, action: string): boolean {
+  if (!pattern || !action) return false;
+
+  const normalizedPattern = pattern.toLowerCase();
+  const normalizedAction = action.toLowerCase();
+
+  if (normalizedPattern === normalizedAction) return true;
+  if (normalizedPattern === '*') return true;
+
+  const regexPattern = normalizedPattern
+    .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+    .replace(/\*/g, '.*');
+
+  const regex = new RegExp(`^${regexPattern}$`);
+  return regex.test(normalizedAction);
+}
+
+/**
+ * Generate pre-computed actions cache to avoid expensive runtime computation
+ * This replicates the logic from clientRbacService.extractActionsFromRoles
+ * but runs at build time to drastically improve page load performance
+ */
+function generateActionsCache(roles: AzureRole[]): Array<{ key: string; name: string; roleCount: number }> {
+  console.info('Generating pre-computed actions cache...');
+
+  // First pass: Collect explicit actions, track casing variants and which roles have them
+  const explicitActionRoles = new Map<string, Set<number>>();
+  const actionCasingMap = new Map<string, Map<string, number>>();
+
+  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
+    const role = roles[roleIndex];
+    for (const permission of role.permissions) {
+      // Process regular actions
+      for (const action of permission.actions) {
+        if (!action.includes('*')) {
+          const lowerAction = action.toLowerCase();
+
+          if (!actionCasingMap.has(lowerAction)) {
+            actionCasingMap.set(lowerAction, new Map());
+          }
+          const casingVariants = actionCasingMap.get(lowerAction)!;
+          casingVariants.set(action, (casingVariants.get(action) || 0) + 1);
+
+          if (!explicitActionRoles.has(lowerAction)) {
+            explicitActionRoles.set(lowerAction, new Set());
+          }
+          explicitActionRoles.get(lowerAction)!.add(roleIndex);
+        }
+      }
+
+      // Process data actions
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (!dataAction.includes('*')) {
+            const lowerAction = dataAction.toLowerCase();
+
+            if (!actionCasingMap.has(lowerAction)) {
+              actionCasingMap.set(lowerAction, new Map());
+            }
+            const casingVariants = actionCasingMap.get(lowerAction)!;
+            casingVariants.set(dataAction, (casingVariants.get(dataAction) || 0) + 1);
+
+            if (!explicitActionRoles.has(lowerAction)) {
+              explicitActionRoles.set(lowerAction, new Set());
+            }
+            explicitActionRoles.get(lowerAction)!.add(roleIndex);
+          }
+        }
+      }
+    }
+  }
+
+  // Second pass: Collect all wildcard patterns from roles
+  const wildcardPatterns: Array<{ pattern: string; roleIndex: number; notActions: string[] }> = [];
+
+  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
+    const role = roles[roleIndex];
+    for (const permission of role.permissions) {
+      for (const action of permission.actions) {
+        if (action.includes('*')) {
+          wildcardPatterns.push({
+            pattern: action,
+            roleIndex,
+            notActions: permission.notActions
+          });
+        }
+      }
+    }
+  }
+
+  // Third pass: For each action, count roles (explicit + wildcard matches)
+  const actionsCache: Array<{ key: string; name: string; roleCount: number }> = [];
+
+  for (const [lowerAction, casingVariants] of Array.from(actionCasingMap.entries())) {
+    // Choose canonical casing (most commonly used variant)
+    let canonicalName = '';
+    let maxCount = 0;
+
+    for (const [casing, count] of Array.from(casingVariants.entries())) {
+      if (count > maxCount) {
+        maxCount = count;
+        canonicalName = casing;
+      }
+    }
+
+    // Start with explicit role indices
+    const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
+
+    // Add roles that grant via wildcards
+    for (const { pattern, roleIndex, notActions } of wildcardPatterns) {
+      if (matchesWildcard(pattern, canonicalName)) {
+        // Check if it's not denied
+        let isDenied = false;
+        for (const deniedAction of notActions) {
+          if (matchesWildcard(deniedAction, canonicalName)) {
+            isDenied = true;
+            break;
+          }
+        }
+
+        if (!isDenied) {
+          roleSet.add(roleIndex);
+        }
+      }
+    }
+
+    actionsCache.push({
+      key: lowerAction,
+      name: canonicalName,
+      roleCount: roleSet.size
+    });
+  }
+
+  console.info(`Generated cache with ${actionsCache.length} unique actions`);
+  return actionsCache;
+}
+
+/**
  * Main function to update RBAC data
  */
 async function updateRbacData(): Promise<void> {
@@ -265,6 +407,12 @@ async function updateRbacData(): Promise<void> {
     fs.writeFileSync(ROLES_FILE, JSON.stringify(extendedRoles, null, 2), 'utf8');
     console.info(`✓ Roles data saved\n`);
 
+    // Generate and save pre-computed actions cache
+    const actionsCache = generateActionsCache(extendedRoles);
+    console.info(`Writing ${actionsCache.length} actions to ${ACTIONS_CACHE_FILE}...`);
+    fs.writeFileSync(ACTIONS_CACHE_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
+    console.info(`✓ Actions cache saved\n`);
+
     // Fetch and save operations (permissions)
     let operations: Operation[] = [];
     try {
@@ -283,6 +431,7 @@ async function updateRbacData(): Promise<void> {
     console.info('RBAC data update completed successfully!');
     console.info('\nGenerated files:');
     console.info(`  - ${ROLES_FILE}`);
+    console.info(`  - ${ACTIONS_CACHE_FILE}`);
     if (operations.length > 0) {
       console.info(`  - ${PERMISSIONS_FILE}`);
     }

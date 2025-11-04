@@ -1,4 +1,4 @@
-import React, { useState, useMemo, memo } from 'react';
+import React, { useState, useMemo, memo, useEffect } from 'react';
 import type { LeastPrivilegeResult } from '@/types/rbac';
 import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
 
@@ -14,6 +14,12 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
+
+  // Clear selections and expansions when results change
+  useEffect(() => {
+    setSelectedRoles(new Set());
+    setExpandedRows(new Set());
+  }, [results]);
 
   // Sort the results (or maintain backend order if default)
   const sortedResults = useMemo(() => {

@@ -1,4 +1,5 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
 
 /**
  * Color variant for the banner.
@@ -102,29 +103,20 @@ export default function DismissibleBanner({
   onDismiss,
   visible,
 }: DismissibleBannerProps) {
-  // For controlled mode, use visible prop directly
-  // For uncontrolled mode, manage state internally with localStorage
-  const [isDismissed, setIsDismissed] = useState(false);
-  const isControlled = visible !== undefined;
-  const isVisible = isControlled ? visible : !isDismissed;
+  // Use shared localStorage hook for uncontrolled mode
+  const [isDismissedFromStorage, setIsDismissedInStorage] = useLocalStorageBoolean(
+    storageKey ? `banner-dismissed-${storageKey}` : 'banner-dismissed-fallback',
+    false
+  );
 
-  // Load dismissed state from localStorage (SSR-safe)
-  useEffect(() => {
-    if (!isControlled && storageKey && typeof window !== 'undefined') {
-      const dismissed = localStorage.getItem(`banner-dismissed-${storageKey}`);
-      if (dismissed === 'true') {
-        setIsDismissed(true);
-      }
-    }
-  }, [storageKey, isControlled]);
+  // For controlled mode, use visible prop directly
+  // For uncontrolled mode, manage state with localStorage hook
+  const isControlled = visible !== undefined;
+  const isVisible = isControlled ? visible : !isDismissedFromStorage;
 
   const handleDismiss = () => {
     if (!isControlled) {
-      setIsDismissed(true);
-      // Persist to localStorage if storageKey is provided
-      if (storageKey && typeof window !== 'undefined') {
-        localStorage.setItem(`banner-dismissed-${storageKey}`, 'true');
-      }
+      setIsDismissedInStorage(true);
     }
 
     // Call custom onDismiss callback

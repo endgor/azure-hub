@@ -1,5 +1,6 @@
 import { AzureRole, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
 import { calculatePermissionCount } from './rbacUtils';
+import { RBAC_SCORING } from '@/config/constants';
 
 // Re-export for external consumers
 export { calculatePermissionCount };
@@ -125,12 +126,12 @@ function calculateNamespaceRelevance(role: AzureRole, requiredActions: string[])
     for (const action of permission.actions) {
       if (action === '*' || action === '*/read') {
         // Penalize overly broad wildcards
-        relevanceScore -= 50;
+        relevanceScore -= RBAC_SCORING.BROAD_WILDCARD_PENALTY;
       } else {
         const actionNamespace = getServiceFromPermission(action);
         if (requiredNamespaces.has(actionNamespace)) {
           // Bonus for matching the required namespace
-          relevanceScore += 100;
+          relevanceScore += RBAC_SCORING.NAMESPACE_MATCH_BONUS;
         }
       }
     }
@@ -142,8 +143,8 @@ function calculateNamespaceRelevance(role: AzureRole, requiredActions: string[])
   for (const namespace of namespaceArray) {
     const namespaceParts = namespace.toLowerCase().split('.');
     // Check if any part of namespace appears in role name
-    if (namespaceParts.some(part => part.length > 3 && roleName.includes(part))) {
-      relevanceScore += 200;
+    if (namespaceParts.some(part => part.length > RBAC_SCORING.MIN_NAMESPACE_PART_LENGTH && roleName.includes(part))) {
+      relevanceScore += RBAC_SCORING.ROLE_NAME_MATCH_BONUS;
     }
   }
 
