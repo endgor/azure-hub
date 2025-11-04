@@ -53,7 +53,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -65,7 +65,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -77,7 +77,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -89,7 +89,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -101,7 +101,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -113,7 +113,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -125,7 +125,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
     >
       <path
         fill="currentColor"
@@ -138,7 +138,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-sky-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
       fill="none"
       stroke="currentColor"
       strokeWidth={1.5}
@@ -292,7 +292,7 @@ export default function Layout({
     };
   }, [description, keywords, router.pathname, title]);
 
-  const themeColor = isDarkMode ? '#000000' : '#f1f5f9';
+  const themeColor = isDarkMode ? '#151515' : '#f1f5f9';
 
   const structuredData = useMemo(
     () => ({
@@ -345,7 +345,7 @@ export default function Layout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>
 
-      <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
+      <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-[#151515] dark:text-slate-100">
         <div className="flex min-h-screen md:h-screen md:overflow-hidden">
           {/* Mobile menu backdrop */}
           {isMobileMenuOpen && (
@@ -358,7 +358,7 @@ export default function Layout({
 
           {/* Sidebar */}
           <aside
-            className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out dark:border-slate-800 dark:bg-slate-900/95 ${
+            className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out dark:border-[#363638] dark:bg-[#1B1B1C]/95 ${
               isSidebarCollapsed ? 'w-20' : 'w-72'
             } ${
               isMobileMenuOpen ? 'fixed inset-y-0 left-0 z-50 md:relative' : 'hidden md:flex'
@@ -366,7 +366,7 @@ export default function Layout({
           >
             <div className="flex items-center justify-between gap-3 px-4 py-5">
               <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-[#1B1B1C]">
                   <Image
                     src="/favicons/favicon-32x32.png"
                     alt="Azure Hub logo"
@@ -382,7 +382,7 @@ export default function Layout({
               </Link>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-slate-100"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
                 onClick={() => setIsSidebarCollapsed((prev) => !prev)}
                 aria-pressed={isSidebarCollapsed}
                 aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
@@ -427,8 +427,8 @@ export default function Layout({
                       const stateClasses = disabled
                         ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
                         : active
-                        ? 'bg-sky-100 text-slate-900 dark:bg-sky-900/40 dark:text-slate-100'
-                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-sky-900/30 dark:hover:text-slate-100';
+                        ? 'bg-sky-100 text-slate-900 dark:bg-[#0071e3]/10 dark:text-[#0071e3]'
+                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-[#0071e3]/5 dark:hover:text-slate-100';
 
                       return (
                         <Link
@@ -446,8 +446,8 @@ export default function Layout({
                           <span
                             className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors ${
                               active
-                                ? 'border-sky-200 bg-sky-50 dark:border-sky-800/60 dark:bg-sky-900/20'
-                                : 'border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800'
+                                ? 'border-sky-200 bg-sky-50 dark:border-[#0071e3]/30 dark:bg-[#0071e3]/10'
+                                : 'border-slate-200 bg-slate-50 dark:border-[#363638] dark:bg-[#1B1B1C]'
                             }`}
                           >
                             {ICONS[item.icon](active)}
@@ -466,7 +466,7 @@ export default function Layout({
               ))}
             </nav>
 
-            <div className="border-t border-slate-200 px-3 py-4 dark:border-slate-800">
+            <div className="border-t border-slate-200 px-3 py-4 dark:border-[#363638]">
               <div
                 className={`flex ${
                   isSidebarCollapsed
@@ -486,13 +486,13 @@ export default function Layout({
                     aria-label="Open the Azure Hub GitHub repository in a new tab"
                     className="group inline-flex"
                   >
-                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:border-sky-800 dark:group-hover:bg-slate-700 dark:group-hover:text-slate-100">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:group-hover:border-[#0071e3] dark:group-hover:bg-[#0071e3]/20 dark:group-hover:text-slate-100">
                       {ICONS.github(false)}
                     </span>
                     <span className="sr-only">GitHub repository</span>
                   </Link>
                   <Link href="/about" aria-label="Learn more about Azure Hub" className="group inline-flex">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:border-sky-800 dark:group-hover:bg-slate-700 dark:group-hover:text-slate-100">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:group-hover:border-[#0071e3] dark:group-hover:bg-[#0071e3]/20 dark:group-hover:text-slate-100">
                       {ICONS.help(false)}
                     </span>
                     <span className="sr-only">About Azure Hub</span>
@@ -500,7 +500,7 @@ export default function Layout({
                 </div>
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-500 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-sky-800 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-500 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-slate-900 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:hover:border-[#0071e3] dark:hover:bg-[#0071e3]/20 dark:hover:text-slate-100"
                   onClick={() => setIsDarkMode((prev) => !prev)}
                   aria-pressed={isDarkMode}
                   aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -513,10 +513,10 @@ export default function Layout({
 
           <div className="flex flex-1 flex-col">
             {/* Mobile header with hamburger button */}
-            <div className="flex items-center gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900 md:hidden">
+            <div className="flex items-center gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-[#363638] dark:bg-[#1B1B1C] md:hidden">
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-slate-100"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
                 onClick={() => setIsMobileMenuOpen(true)}
                 aria-label="Open navigation menu"
               >
@@ -532,7 +532,7 @@ export default function Layout({
                 </svg>
               </button>
               <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-[#1B1B1C]">
                   <Image
                     src="/favicons/favicon-32x32.png"
                     alt=""

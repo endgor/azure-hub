@@ -14,16 +14,16 @@
 .dark {
   color-scheme: dark;
   --foreground-rgb: 235, 235, 235;
-  --background-rgb: 0, 0, 0;
-  --surface-rgb: 25, 29, 39;
-  --border-rgb: 45, 49, 60;
-  --accent-rgb: 1, 87, 243;
+  --background-rgb: 21, 21, 21;
+  --surface-rgb: 27, 27, 28;
+  --border-rgb: 54, 54, 56;
+  --accent-rgb: 0, 113, 227;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-  font-family: var(--font-inter), 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', var(--font-inter), 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
   transition: color 150ms ease, background-color 150ms ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,41 +65,41 @@ body {
 }
 
 .dark .border-slate-300 {
-  border-color: rgb(60 60 60 / 0.75);
+  border-color: rgb(54 54 56 / 0.8);
 }
 
 .dark .border-slate-200 {
-  border-color: rgb(50 50 50 / 0.65);
+  border-color: rgb(54 54 56 / 0.7);
 }
 
 .dark .border-slate-100 {
-  border-color: rgb(40 40 40 / 0.5);
+  border-color: rgb(54 54 56 / 0.5);
 }
 
 .dark .bg-white {
-  background-color: rgb(25 29 39);
+  background-color: rgb(27 27 28);
 }
 
 .dark .bg-white\/95 {
-  background-color: rgb(25 29 39 / 0.95);
+  background-color: rgb(27 27 28 / 0.95);
 }
 
 .dark .bg-slate-50,
 .dark .bg-slate-100,
 .dark .bg-slate-200 {
-  background-color: rgb(30 34 45 / 0.75);
+  background-color: rgb(54 54 56 / 0.5);
 }
 
 .dark .bg-slate-700 {
-  background-color: rgb(30 34 45);
+  background-color: rgb(54 54 56);
 }
 
 .dark .bg-slate-800 {
-  background-color: rgb(25 29 39);
+  background-color: rgb(27 27 28);
 }
 
 .dark .bg-slate-900 {
-  background-color: rgb(18 18 18);
+  background-color: rgb(27 27 28);
 }
 
 .dark .ring-white\/60 {
