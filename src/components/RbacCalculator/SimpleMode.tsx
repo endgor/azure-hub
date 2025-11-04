@@ -57,7 +57,7 @@ export default function SimpleMode({
 }: SimpleModeProps) {
   return (
     <>
-      <div className="space-y-2 relative" ref={serviceDropdownRef}>
+      <div className="space-y-2 relative max-w-xl" ref={serviceDropdownRef}>
         <label
           htmlFor="service-search"
           className="block text-sm font-medium text-slate-700 dark:text-slate-200"

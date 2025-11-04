@@ -34,7 +34,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-sky-600 text-white hover:bg-sky-700 focus:ring-sky-500/50 disabled:bg-sky-600 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10',
+    'bg-sky-600 text-white hover:bg-sky-700 focus:ring-sky-500/50 disabled:bg-sky-600 dark:bg-sky-600 dark:text-white dark:hover:bg-sky-700',
   secondary:
     'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700',
   danger:
@@ -96,7 +96,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || isLoading}
-        className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium shadow-sm transition focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 ${variantStyles[variant]} ${sizeStyles[size]} ${
+        className={`${fullWidth ? 'flex' : 'inline-flex'} items-center gap-2 rounded-lg font-medium shadow-sm transition focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+          // Only apply justify-center if no justify class is provided in className
+          className.includes('justify-') ? '' : 'justify-center'
+        } ${variantStyles[variant]} ${sizeStyles[size]} ${
           fullWidth ? 'w-full' : ''
         } ${className}`}
         {...buttonProps}

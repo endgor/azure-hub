@@ -1,6 +1,7 @@
 import React, { useState, useMemo, memo, useEffect } from 'react';
 import type { LeastPrivilegeResult } from '@/types/rbac';
 import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
+import Button from '@/components/shared/Button';
 
 interface RoleResultsTableProps {
   results: LeastPrivilegeResult[];
@@ -136,17 +137,18 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
             )}
           </p>
         </div>
-        <button
+        <Button
           onClick={handleExport}
           disabled={selectedRoles.size === 0}
-          className="flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
           title={selectedRoles.size === 0 ? 'Select at least one role to export' : 'Export selected roles to Azure-compatible JSON'}
+          icon={
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          }
         >
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
           Export {selectedRoles.size > 0 ? `(${selectedRoles.size})` : ''}
-        </button>
+        </Button>
       </div>
 
       {/* Results Table */}

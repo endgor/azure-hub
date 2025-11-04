@@ -5,6 +5,7 @@ import RoleInformationSection from './RoleInformationSection';
 import ImportRoleSection from './ImportRoleSection';
 import PermissionsSection from './PermissionsSection';
 import AboutCustomRoles from './AboutCustomRoles';
+import Button from '@/components/shared/Button';
 
 interface RoleCreatorProps {
   availableRoles: AzureRole[];
@@ -110,21 +111,20 @@ export default function RoleCreator({ availableRoles, onSearchActions }: RoleCre
 
       {/* Action Buttons */}
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
           onClick={handleExport}
           disabled={!customRole.roleName.trim() || totalPermissions === 0}
-          className="rounded-lg bg-sky-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
         >
           Export as JSON
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="secondary"
           onClick={handleClear}
-          className="rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
         >
           Clear All
-        </button>
+        </Button>
       </div>
 
       {/* About Custom Roles Info */}
