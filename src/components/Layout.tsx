@@ -53,7 +53,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -65,7 +65,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -77,7 +77,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -89,7 +89,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -101,7 +101,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -113,7 +113,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -125,7 +125,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
     >
       <path
         fill="currentColor"
@@ -138,7 +138,7 @@ const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-sky-600 dark:text-[#0071e3]' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-[#0A84FF] dark:text-[#0A84FF]' : 'text-[#0A84FF]/80 dark:text-[#0A84FF]/80'}`}
       fill="none"
       stroke="currentColor"
       strokeWidth={1.5}
@@ -408,7 +408,7 @@ export default function Layout({
               </button>
             </div>
 
-            <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-6">
+            <nav className="flex-1 space-y-4 overflow-y-auto px-3 pb-6">
               {NAV_SECTIONS.map((section) => (
                 <div key={section.label}>
                   <p
@@ -418,17 +418,17 @@ export default function Layout({
                   >
                     {section.label}
                   </p>
-                  <div className="mt-2 space-y-1">
+                  <div className="mt-2 space-y-0.5">
                     {section.items.map((item) => {
                       const active = matchRoute(item.href);
                       const disabled = item.disabled;
                       const baseClasses =
-                        'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors';
+                        'group flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors';
                       const stateClasses = disabled
                         ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
                         : active
-                        ? 'bg-sky-100 text-slate-900 dark:bg-[#0071e3]/10 dark:text-[#0071e3]'
-                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-[#0071e3]/5 dark:hover:text-slate-100';
+                        ? 'bg-sky-100 text-slate-900 dark:bg-[#0A84FF]/10 dark:text-[#0A84FF]'
+                        : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-[#0A84FF]/5 dark:hover:text-slate-100';
 
                       return (
                         <Link
@@ -444,10 +444,10 @@ export default function Layout({
                           }}
                         >
                           <span
-                            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors ${
+                            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors ${
                               active
-                                ? 'border-sky-200 bg-sky-50 dark:border-[#0071e3]/30 dark:bg-[#0071e3]/10'
-                                : 'border-slate-200 bg-slate-50 dark:border-[#363638] dark:bg-[#1B1B1C]'
+                                ? 'bg-[#0A84FF]/10 dark:bg-[#0A84FF]/10'
+                                : 'bg-transparent dark:bg-transparent'
                             }`}
                           >
                             {ICONS[item.icon](active)}

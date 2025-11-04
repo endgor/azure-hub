@@ -8,7 +8,7 @@
   --background-rgb: 241, 245, 249;
   --surface-rgb: 255, 255, 255;
   --border-rgb: 226, 232, 240;
-  --accent-rgb: 56, 189, 248;
+  --accent-rgb: 0, 113, 227;
 }
 
 .dark {
@@ -123,7 +123,7 @@ body {
 }
 
 .prose a {
-  @apply font-semibold text-sky-600 underline-offset-4 hover:text-sky-500 hover:underline dark:text-sky-300 dark:hover:text-sky-200;
+  @apply font-semibold text-[#0071e3] underline-offset-4 hover:text-[#0077ed] hover:underline dark:text-[#0071e3] dark:hover:text-[#0077ed];
 }
 
 .prose ul,
@@ -133,4 +133,114 @@ body {
 
 .prose li {
   @apply mb-2;
+}
+
+/* Override sky (teal) colors to use Apple blue */
+.text-sky-600 {
+  color: #0071e3 !important;
+}
+
+.text-sky-700 {
+  color: #0060c8 !important;
+}
+
+.text-sky-500 {
+  color: #0077ed !important;
+}
+
+.text-sky-400 {
+  color: #3a8ef6 !important;
+}
+
+.text-sky-300 {
+  color: #5ca3f9 !important;
+}
+
+.text-sky-200 {
+  color: #8ec0fb !important;
+}
+
+.bg-sky-50 {
+  background-color: rgba(0, 113, 227, 0.05) !important;
+}
+
+.bg-sky-100 {
+  background-color: rgba(0, 113, 227, 0.1) !important;
+}
+
+.bg-sky-900\/20,
+.bg-sky-900\/40 {
+  background-color: rgba(0, 113, 227, 0.1) !important;
+}
+
+.bg-sky-900\/30 {
+  background-color: rgba(0, 113, 227, 0.08) !important;
+}
+
+.border-sky-200 {
+  border-color: rgba(0, 113, 227, 0.3) !important;
+}
+
+.border-sky-300 {
+  border-color: rgba(0, 113, 227, 0.4) !important;
+}
+
+.border-sky-500 {
+  border-color: #0071e3 !important;
+}
+
+.border-sky-600 {
+  border-color: #0060c8 !important;
+}
+
+.border-sky-700 {
+  border-color: #004f9e !important;
+}
+
+.border-sky-800 {
+  border-color: #003d7a !important;
+}
+
+.hover\:text-sky-500:hover,
+.hover\:text-sky-600:hover,
+.hover\:text-sky-700:hover {
+  color: #0077ed !important;
+}
+
+.hover\:bg-sky-50:hover {
+  background-color: rgba(0, 113, 227, 0.08) !important;
+}
+
+.hover\:border-sky-200:hover {
+  border-color: rgba(0, 113, 227, 0.35) !important;
+}
+
+.hover\:border-sky-300:hover {
+  border-color: rgba(0, 113, 227, 0.45) !important;
+}
+
+.focus\:ring-sky-200:focus,
+.focus\:ring-sky-500\/20:focus {
+  --tw-ring-color: rgba(0, 113, 227, 0.3) !important;
+}
+
+.dark .dark\:text-sky-300,
+.dark .dark\:text-sky-400 {
+  color: #0071e3 !important;
+}
+
+.dark .dark\:hover\:text-sky-200:hover,
+.dark .dark\:hover\:text-sky-400:hover {
+  color: #3a8ef6 !important;
+}
+
+.dark .dark\:hover\:bg-sky-900\/20:hover,
+.dark .dark\:hover\:bg-sky-900\/30:hover {
+  background-color: rgba(0, 113, 227, 0.1) !important;
+}
+
+.dark .dark\:hover\:border-sky-500:hover,
+.dark .dark\:hover\:border-sky-600:hover,
+.dark .dark\:hover\:border-sky-800:hover {
+  border-color: rgba(0, 113, 227, 0.4) !important;
 }
