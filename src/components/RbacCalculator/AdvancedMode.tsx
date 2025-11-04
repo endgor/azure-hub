@@ -7,6 +7,7 @@ interface AdvancedModeProps {
   onActionsInputChange: (value: string) => void;
   searchResults: Operation[];
   advancedSearchDropdownRef: RefObject<HTMLDivElement | null>;
+  textareaRef: RefObject<HTMLTextAreaElement | null>;
   onAddAction: (actionName: string) => void;
 }
 
@@ -23,11 +24,12 @@ export default function AdvancedMode({
   onActionsInputChange,
   searchResults,
   advancedSearchDropdownRef,
+  textareaRef,
   onAddAction,
 }: AdvancedModeProps) {
   return (
-    <>
-      <div className="space-y-2" ref={advancedSearchDropdownRef}>
+    <div ref={advancedSearchDropdownRef}>
+      <div className="space-y-2">
         <label
           htmlFor="actions"
           className="block text-sm font-medium text-slate-700 dark:text-slate-200"
@@ -35,6 +37,7 @@ export default function AdvancedMode({
           Required Actions <span className="text-slate-500">(one per line)</span>
         </label>
         <textarea
+          ref={textareaRef}
           id="actions"
           value={actionsInput}
           onChange={(e) => onActionsInputChange(e.target.value)}
@@ -64,6 +67,6 @@ export default function AdvancedMode({
           />
         </div>
       )}
-    </>
+    </div>
   );
 }

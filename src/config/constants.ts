@@ -7,7 +7,6 @@
  * Cache Configuration
  */
 export const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
-export const CACHE_TTL_HOURS = 6;
 
 /**
  * RBAC Role Relevance Scoring

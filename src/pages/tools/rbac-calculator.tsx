@@ -49,6 +49,9 @@ export default function RbacCalculatorPage() {
   const [showRoleResults, setShowRoleResults] = useState(false);
   const [isLoadingServices, setIsLoadingServices] = useState(false);
 
+  // Track textarea cursor position for advanced mode
+  const advancedTextareaRef = useRef<HTMLTextAreaElement>(null);
+
   // Refs for click-outside detection
   const serviceDropdownRef = useRef<HTMLDivElement>(null);
   const roleSearchDropdownRef = useRef<HTMLDivElement>(null);
@@ -218,13 +221,36 @@ export default function RbacCalculatorPage() {
   const handleAdvancedSearch = useCallback(async (query: string) => {
     setActionsInput(query);
 
-    if (query.trim().length < 3) {
+    // Get the current line being edited based on cursor position
+    const textarea = advancedTextareaRef.current;
+    if (!textarea) {
+      setSearchResults([]);
+      return;
+    }
+
+    const cursorPosition = textarea.selectionStart;
+    const lines = query.split('\n');
+    let charCount = 0;
+    let currentLineText = '';
+
+    // Find which line the cursor is on
+    for (const line of lines) {
+      if (cursorPosition <= charCount + line.length) {
+        currentLineText = line;
+        break;
+      }
+      charCount += line.length + 1; // +1 for newline character
+    }
+
+    // Only search based on the current line
+    const trimmedLine = currentLineText.trim();
+    if (trimmedLine.length < 3 || trimmedLine.startsWith('#')) {
       setSearchResults([]);
       return;
     }
 
     try {
-      const operations = await searchOperations(query.trim());
+      const operations = await searchOperations(trimmedLine);
       setSearchResults(operations.slice(0, 10));
     } catch (err) {
       console.warn('Search failed:', err);
@@ -243,11 +269,40 @@ export default function RbacCalculatorPage() {
   }, []);
 
   const handleAddActionAdvanced = useCallback((action: string) => {
-    const currentActions = actionsInput.split('\n').filter(line => line.trim());
-    if (!currentActions.includes(action)) {
-      setActionsInput([...currentActions, action].join('\n'));
+    const textarea = advancedTextareaRef.current;
+    if (!textarea) return;
+
+    const cursorPosition = textarea.selectionStart;
+    const lines = actionsInput.split('\n');
+    let charCount = 0;
+    let currentLineIndex = 0;
+
+    // Find which line the cursor is on
+    for (let i = 0; i < lines.length; i++) {
+      if (cursorPosition <= charCount + lines[i].length) {
+        currentLineIndex = i;
+        break;
+      }
+      charCount += lines[i].length + 1; // +1 for newline character
     }
+
+    // Replace the current line with the selected action
+    const newLines = [...lines];
+    newLines[currentLineIndex] = action;
+    const newText = newLines.join('\n');
+    setActionsInput(newText);
     setSearchResults([]);
+
+    // Move cursor to the end of the replaced line
+    setTimeout(() => {
+      if (textarea) {
+        const newCursorPosition = newLines.slice(0, currentLineIndex).join('\n').length +
+                                   (currentLineIndex > 0 ? 1 : 0) +
+                                   action.length;
+        textarea.focus();
+        textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+      }
+    }, 0);
   }, [actionsInput]);
 
   const handleLoadExample = useCallback((actions: readonly string[]) => {
@@ -458,6 +513,7 @@ export default function RbacCalculatorPage() {
                 onActionsInputChange={handleAdvancedSearch}
                 searchResults={searchResults}
                 advancedSearchDropdownRef={advancedSearchDropdownRef}
+                textareaRef={advancedTextareaRef}
                 onAddAction={handleAddActionAdvanced}
               />
             )}
