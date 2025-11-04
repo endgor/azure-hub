@@ -66,7 +66,7 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
         <button
           type="button"
           onClick={handleAdd}
-          className="rounded-lg border border-sky-600 bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50"
+          className="rounded-lg border border-sky-600 bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
         >
           Add
         </button>
