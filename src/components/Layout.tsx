@@ -382,7 +382,7 @@ export default function Layout({
               </Link>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
                 onClick={() => setIsSidebarCollapsed((prev) => !prev)}
                 aria-pressed={isSidebarCollapsed}
                 aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
@@ -486,13 +486,13 @@ export default function Layout({
                     aria-label="Open the Azure Hub GitHub repository in a new tab"
                     className="group inline-flex"
                   >
-                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:group-hover:border-[#0071e3] dark:group-hover:bg-[#0071e3]/20 dark:group-hover:text-slate-100">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
                       {ICONS.github(false)}
                     </span>
                     <span className="sr-only">GitHub repository</span>
                   </Link>
                   <Link href="/about" aria-label="Learn more about Azure Hub" className="group inline-flex">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:group-hover:border-[#0071e3] dark:group-hover:bg-[#0071e3]/20 dark:group-hover:text-slate-100">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
                       {ICONS.help(false)}
                     </span>
                     <span className="sr-only">About Azure Hub</span>
@@ -500,7 +500,7 @@ export default function Layout({
                 </div>
                 <button
                   type="button"
-                  className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-500 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-slate-900 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:hover:border-[#0071e3] dark:hover:bg-[#0071e3]/20 dark:hover:text-slate-100"
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-500 transition-colors hover:border-sky-200 hover:bg-sky-50 hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10 dark:hover:text-[#0A84FF]"
                   onClick={() => setIsDarkMode((prev) => !prev)}
                   aria-pressed={isDarkMode}
                   aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -516,7 +516,7 @@ export default function Layout({
             <div className="flex items-center gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-[#363638] dark:bg-[#1B1B1C] md:hidden">
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#616363] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
+                className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
                 onClick={() => setIsMobileMenuOpen(true)}
                 aria-label="Open navigation menu"
               >

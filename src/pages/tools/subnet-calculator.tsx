@@ -561,7 +561,7 @@ export default function SubnetCalculatorPage(): ReactElement {
             <div className="flex items-center gap-3">
               <button
                 type="submit"
-                className="inline-flex h-10 items-center justify-center rounded-lg bg-sky-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:bg-sky-500 dark:hover:bg-sky-600"
+                className="inline-flex h-10 items-center justify-center rounded-lg bg-sky-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
               >
                 Go
               </button>
@@ -1021,7 +1021,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                             <div className="flex items-center gap-2">
                               <button
                                 type="submit"
-                                className="inline-flex items-center justify-center rounded-lg bg-sky-600 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:bg-sky-500 dark:hover:bg-sky-600"
+                                className="inline-flex items-center justify-center rounded-lg bg-sky-600 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
                               >
                                 Save
                               </button>
