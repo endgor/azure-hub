@@ -6,6 +6,8 @@ import Layout from '@/components/Layout';
 import Results from '@/components/Results';
 import { AzureIpAddress } from '@/types/azure';
 import { getServiceTagDetails } from '@/lib/clientIpService';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import ErrorBox from '@/components/shared/ErrorBox';
 
 const clientServiceTagFetcher = async (serviceTagKey: string): Promise<ServiceTagDetailResponse> => {
   if (!serviceTagKey) {
@@ -187,37 +189,32 @@ export default function ServiceTagDetail() {
         {/* Loading State */}
         {isLoading && (
           <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
-            <span>Loading service tag details...</span>
+            <LoadingSpinner size="lg" label="Loading service tag details..." />
           </div>
         )}
 
         {/* Error State */}
         {error && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
-            <h3 className="font-semibold text-rose-700 dark:text-rose-200">Error loading service tag details</h3>
-            <p className="mt-1 text-rose-600 dark:text-rose-200/80">{error.message}</p>
+          <ErrorBox title="Error loading service tag details">
+            <p>{error.message}</p>
             <div className="mt-4">
               <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
                 ← Back to Service Tags
               </Link>
             </div>
-          </div>
+          </ErrorBox>
         )}
 
         {/* Not Found State */}
         {data?.notFound && (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-200">
-            <h3 className="font-semibold text-amber-700 dark:text-amber-200">Service tag not found</h3>
-            <p className="mt-1 text-amber-600 dark:text-amber-100/80">
-              {data.message || `No data found for service tag "${serviceTag}"`}
-            </p>
+          <ErrorBox variant="warning" title="Service tag not found">
+            <p>{data.message || `No data found for service tag "${serviceTag}"`}</p>
             <div className="mt-4">
               <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
                 ← Back to Service Tags
               </Link>
             </div>
-          </div>
+          </ErrorBox>
         )}
 
         {/* Results */}

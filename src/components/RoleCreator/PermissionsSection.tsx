@@ -105,7 +105,7 @@ export default function PermissionsSection({
           onDropdownVisibilityChange={onActionDropdownVisibilityChange}
           placeholder={`Search and add to ${activePermissionType} (e.g., Microsoft.Storage)`}
           formatLabel={(item) => (
-            <span className="font-mono text-sm text-sky-600 dark:text-sky-400">
+            <span className="font-mono text-xs text-sky-600 dark:text-sky-400">
               {item.label}
             </span>
           )}

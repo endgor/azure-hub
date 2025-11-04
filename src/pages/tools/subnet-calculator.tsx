@@ -3,6 +3,7 @@ import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SubnetExportButton from '@/components/SubnetExportButton';
+import ErrorBox from '@/components/shared/ErrorBox';
 import {
   DEFAULT_NETWORK,
   DEFAULT_PREFIX,
@@ -533,11 +534,11 @@ export default function SubnetCalculatorPage(): ReactElement {
         <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
           <form onSubmit={handleApplyNetwork} className="grid w-full grid-cols-1 gap-4 sm:grid-cols-[240px_160px_minmax(0,1fr)] sm:items-end">
             <label className="flex flex-col gap-2 text-sm text-slate-700 dark:text-slate-200">
-              <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">Network Address</span>
+              <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Network Address</span>
               <input
                 value={formFields.network}
                 onChange={handleFieldChange('network')}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-4 text-base font-medium text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
                 placeholder="10.0.0.0"
                 inputMode="decimal"
                 autoComplete="off"
@@ -545,13 +546,13 @@ export default function SubnetCalculatorPage(): ReactElement {
             </label>
 
             <label className="flex flex-col gap-2 text-sm text-slate-700 dark:text-slate-200 sm:w-auto">
-              <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">Network Size</span>
+              <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Network Size</span>
               <div className="flex h-10 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 shadow-sm transition focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800">
-                <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">/</span>
+                <span className="text-xs font-medium text-slate-400 dark:text-slate-500">/</span>
                 <input
                   value={formFields.prefix}
                   onChange={handleFieldChange('prefix')}
-                  className="w-12 bg-transparent text-center text-base font-semibold text-slate-900 dark:text-slate-100 focus:outline-none"
+                  className="w-12 bg-transparent text-center text-sm font-medium text-slate-900 dark:text-slate-100 focus:outline-none"
                   placeholder="16"
                   inputMode="numeric"
                 />
@@ -575,9 +576,9 @@ export default function SubnetCalculatorPage(): ReactElement {
             </div>
 
             {formError && (
-              <div className="ml-auto max-w-xs rounded-lg border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm text-rose-700 shadow-sm dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
+              <ErrorBox className="ml-auto max-w-xs">
                 {formError}
-              </div>
+              </ErrorBox>
             )}
           </form>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, memo } from 'react';
 import { useRouter } from 'next/router';
+import SearchInput from '@/components/shared/SearchInput';
 
 interface LookupFormProps {
   initialValue?: string;
@@ -111,44 +112,21 @@ const LookupForm = memo(function LookupForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6 w-full max-w-md" role="search" aria-label="Azure IP Lookup">
+    <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Azure IP Lookup">
       <label className="sr-only" htmlFor="search-query">
         Search Azure IP addresses, services, or regions
       </label>
-      <div className="relative">
-        <input
-          type="search"
-          id="search-query"
-          name="search-query"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Enter IP address, CIDR, service name, or region"
-          className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
-          aria-label="Search query"
-        />
-        <button
-          type="submit"
-          className={`absolute inset-y-0 right-0 flex items-center justify-center px-4 text-sky-500 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200 ${
-            isLoading ? 'cursor-wait opacity-70' : ''
-          }`}
-          disabled={isLoading}
-          aria-label="Run lookup"
-        >
-          {isLoading ? (
-            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-sky-500/60 border-t-transparent" />
-          ) : (
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          )}
-        </button>
-      </div>
+      <SearchInput
+        type="search"
+        id="search-query"
+        name="search-query"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Enter IP address, CIDR, service name, or region"
+        maxWidth="sm"
+        isLoading={isLoading}
+        aria-label="Search query"
+      />
     </form>
   );
 });

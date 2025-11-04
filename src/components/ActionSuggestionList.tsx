@@ -20,7 +20,7 @@ export default function ActionSuggestionList({ suggestions, onSelect }: ActionSu
           className="w-full border-b border-slate-200 px-3 py-2.5 text-left transition hover:bg-slate-50 last:border-b-0 dark:border-slate-700 dark:hover:bg-slate-800"
         >
           <div className="flex flex-col gap-0.5">
-            <div className="font-mono text-sm text-slate-900 dark:text-slate-100">
+            <div className="font-mono text-xs text-slate-900 dark:text-slate-100">
               {suggestion.name}
             </div>
             {suggestion.detail && (

@@ -62,7 +62,7 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
             ensure the RBAC Calculator has the latest role permissions.
           </p>
           {rbacLastRetrieved && (
-            <p className="text-xs text-slate-500">
+            <p className="text-sm text-slate-600">
               <strong>Last retrieved:</strong> {formatDate(rbacLastRetrieved)}
             </p>
           )}

@@ -1,5 +1,7 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import Layout from '@/components/Layout';
+import SearchInput from '@/components/shared/SearchInput';
+import ErrorBox from '@/components/shared/ErrorBox';
 
 interface TenantLookupResponse {
   input: { domain: string };
@@ -165,51 +167,29 @@ export default function TenantLookupPage() {
           </p>
         </div>
 
-        <form onSubmit={onSubmit} role="search" aria-label="Tenant lookup" className="w-full max-w-md">
+        <form onSubmit={onSubmit} role="search" aria-label="Tenant lookup">
           <label className="sr-only" htmlFor="tenant-domain">
             Enter a tenant-verified domain name
           </label>
-          <div className="relative">
-            <input
-              id="tenant-domain"
-              type="search"
-              inputMode="email"
-              autoCorrect="off"
-              autoCapitalize="none"
-              spellCheck="false"
-              placeholder="Enter tenant domain (contoso.com)"
-              value={domain}
-              onChange={(event) => setDomain(event.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
-            />
-            <button
-              type="submit"
-              className="absolute inset-y-0 right-0 flex items-center justify-center px-4 text-sky-500 transition hover:text-sky-700 disabled:cursor-not-allowed dark:text-sky-400 dark:hover:text-sky-300"
-              disabled={isLoading}
-              aria-label="Run tenant lookup"
-            >
-              {isLoading ? (
-                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-sky-500/60 border-t-transparent dark:border-sky-400/60" />
-              ) : (
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
+          <SearchInput
+            id="tenant-domain"
+            type="search"
+            inputMode="email"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder="Enter tenant domain (contoso.com)"
+            value={domain}
+            onChange={(event) => setDomain(event.target.value)}
+            maxWidth="sm"
+            isLoading={isLoading}
+          />
         </form>
 
         {error && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700 shadow-sm dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
-            <h2 className="font-semibold text-rose-800 dark:text-rose-200">Lookup failed</h2>
-            <p className="mt-1 text-rose-700 dark:text-rose-300">{error}</p>
-          </div>
+          <ErrorBox title="Lookup failed">
+            {error}
+          </ErrorBox>
         )}
 
         {result && !error && summaryFields.length > 0 && (

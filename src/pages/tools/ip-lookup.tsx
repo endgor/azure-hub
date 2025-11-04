@@ -6,6 +6,8 @@ import Results from '@/components/Results';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/clientIpService';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import ErrorBox from '@/components/shared/ErrorBox';
 
 /**
  * Check if a string is a hostname (not an IP or CIDR)
@@ -279,21 +281,20 @@ export default function IpLookupPage() {
         <div className="space-y-6">
           {isLoading && (
             <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
-              <p className="text-slate-600 dark:text-slate-300">Looking up Azure IP information...</p>
+              <LoadingSpinner size="lg" label="Looking up Azure IP information..." />
             </div>
           )}
 
           {isError && errorMessage && (
-            <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
+            <ErrorBox>
               {errorMessage}
-            </div>
+            </ErrorBox>
           )}
 
           {isNotFound && notFoundMessage && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-200">
+            <ErrorBox variant="warning">
               {notFoundMessage}
-            </div>
+            </ErrorBox>
           )}
 
           {!isLoading && !isError && results.length > 0 && (
