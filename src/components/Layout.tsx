@@ -29,10 +29,27 @@ interface NavSection {
   items: NavItem[];
 }
 
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface ToolSchema {
+  name: string;
+  applicationCategory: string;
+  operatingSystem?: string;
+  offers?: {
+    price: string;
+    priceCurrency?: string;
+  };
+}
+
 interface LayoutProps {
   title?: string;
   description?: string;
   keywords?: string[];
+  breadcrumbs?: BreadcrumbItem[];
+  toolSchema?: ToolSchema;
   children: ReactNode;
 }
 
@@ -228,6 +245,8 @@ export default function Layout({
   title = DEFAULT_TITLE,
   description = DEFAULT_DESCRIPTION,
   keywords = DEFAULT_KEYWORDS,
+  breadcrumbs,
+  toolSchema,
   children
 }: LayoutProps) {
   const router = useRouter();
@@ -310,6 +329,48 @@ export default function Layout({
     [description]
   );
 
+  const breadcrumbSchema = useMemo(() => {
+    if (!breadcrumbs || breadcrumbs.length === 0) {
+      return null;
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: item.url
+      }))
+    };
+  }, [breadcrumbs]);
+
+  const applicationSchema = useMemo(() => {
+    if (!toolSchema) {
+      return null;
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: toolSchema.name,
+      applicationCategory: toolSchema.applicationCategory,
+      operatingSystem: toolSchema.operatingSystem || 'Web Browser',
+      offers: {
+        '@type': 'Offer',
+        price: toolSchema.offers?.price || '0',
+        priceCurrency: toolSchema.offers?.priceCurrency || 'USD'
+      },
+      url: meta.url,
+      description: description,
+      author: {
+        '@type': 'Organization',
+        name: 'Azure Hub'
+      }
+    };
+  }, [toolSchema, meta.url, description]);
+
   const matchRoute = (href: string) => {
     if (!href.startsWith('/')) {
       return false;
@@ -343,6 +404,12 @@ export default function Layout({
         <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
         <meta name="theme-color" content={themeColor} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        {breadcrumbSchema && (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+        )}
+        {applicationSchema && (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(applicationSchema) }} />
+        )}
       </Head>
 
       <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-[#151515] dark:text-slate-100">
@@ -535,7 +602,7 @@ export default function Layout({
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-[#1B1B1C]">
                   <Image
                     src="/favicons/favicon-32x32.png"
-                    alt=""
+                    alt="Azure Hub logo"
                     width={20}
                     height={20}
                     priority
