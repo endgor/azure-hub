@@ -1,17 +1,17 @@
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress, AzureCloudVersions } from '../types/azure';
 import { getCachedNormalization } from './normalization';
+import { CACHE_TTL_MS, CACHE_TTL_HOURS } from '@/config/constants';
 
 /**
  * In-memory cache for Azure IP data and versions.
  * Reduces API calls and improves performance on repeated lookups.
- * Cache expires after 6 hours to balance freshness with performance.
+ * Cache expires after ${CACHE_TTL_HOURS} hours to balance freshness with performance.
  */
 let azureIpAddressCache: AzureIpAddress[] | null = null;
 let azureVersionsCache: AzureCloudVersions | null = null;
 let ipCacheExpiry = 0;
 let versionsCacheExpiry = 0;
-const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
 
 export interface SearchOptions {
   region?: string; // Region name (e.g., "westeurope", "East US")
@@ -52,7 +52,7 @@ function matchesSearchTerm(target: string, searchTerm: string): boolean {
  * - Returns cached data if available and not expired (< 6 hours old)
  * - Otherwise fetches from /data/AzureCloud.json and caches result
  *
- * Data source is updated periodically by build scripts (see scripts/update-ip-data.ts).
+ * Data source is updated periodically by build scripts (see scripts/updateIpData.ts).
  */
 async function loadAzureIpData(): Promise<AzureIpAddress[]> {
   const now = Date.now();
@@ -92,7 +92,7 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
 
     // Update cache
     azureIpAddressCache = ipRanges;
-    ipCacheExpiry = now + CACHE_TTL;
+    ipCacheExpiry = now + CACHE_TTL_MS;
 
     return ipRanges;
   } catch (error) {
@@ -225,7 +225,7 @@ export async function getVersions(): Promise<AzureCloudVersions> {
 
     // Update cache
     azureVersionsCache = versions;
-    versionsCacheExpiry = now + CACHE_TTL;
+    versionsCacheExpiry = now + CACHE_TTL_MS;
 
     return versions;
   } catch (error) {

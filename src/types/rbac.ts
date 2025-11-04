@@ -40,6 +40,8 @@ export interface Operation {
   description: string;
   origin?: string;
   provider: string;
+  /** Number of roles that grant this permission (used for sorting in fallback mode) */
+  roleCount?: number;
 }
 
 /**

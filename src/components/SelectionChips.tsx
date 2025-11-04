@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-interface SelectionChip {
+export interface SelectionChip {
   id: string;
   content: ReactNode;
   removeAriaLabel: string;

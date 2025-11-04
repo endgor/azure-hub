@@ -25,11 +25,10 @@ interface AzureRoleDefinitionExport {
 }
 
 /**
- * Converts a single LeastPrivilegeResult to Azure-compatible role definition format
+ * Converts an AzureRole to Azure-compatible role definition format.
+ * Shared helper used by multiple export functions.
  */
-function convertToAzureFormat(result: LeastPrivilegeResult): AzureRoleDefinitionExport {
-  const { role } = result;
-
+function convertRoleToAzureFormat(role: AzureRole): AzureRoleDefinitionExport {
   return {
     id: role.id,
     properties: {
@@ -47,6 +46,35 @@ function convertToAzureFormat(result: LeastPrivilegeResult): AzureRoleDefinition
 }
 
 /**
+ * Generic helper for exporting Azure role data to JSON format.
+ * Handles single vs array export and JSON formatting.
+ * @param data Array of role definitions in Azure format
+ * @param filename Output filename
+ * @param mimeType MIME type for download (defaults to application/json)
+ */
+function exportAzureRoleDefinitionsToJSON(
+  data: AzureRoleDefinitionExport[],
+  filename: string,
+  mimeType: string = 'application/json'
+): void {
+  // For single role, export as single object; for multiple, export as array
+  const exportData = data.length === 1 ? data[0] : data;
+
+  // Convert to formatted JSON
+  const jsonContent = JSON.stringify(exportData, null, 2);
+
+  // Trigger download
+  downloadFile(jsonContent, filename, mimeType);
+}
+
+/**
+ * Converts a single LeastPrivilegeResult to Azure-compatible role definition format
+ */
+function convertToAzureFormat(result: LeastPrivilegeResult): AzureRoleDefinitionExport {
+  return convertRoleToAzureFormat(result.role);
+}
+
+/**
  * Exports selected roles to Azure-compatible JSON format
  * @param results Array of selected LeastPrivilegeResult objects
  * @param filename Optional filename for the download
@@ -60,17 +88,9 @@ export function exportRolesToAzureJSON(
     return;
   }
 
-  // Convert all selected roles to Azure format
+  // Convert all selected roles to Azure format and export
   const azureRoles = results.map(convertToAzureFormat);
-
-  // For single role, export as single object; for multiple, export as array
-  const exportData = azureRoles.length === 1 ? azureRoles[0] : azureRoles;
-
-  // Convert to formatted JSON
-  const jsonContent = JSON.stringify(exportData, null, 2);
-
-  // Trigger download
-  downloadJSON(jsonContent, filename);
+  exportAzureRoleDefinitionsToJSON(azureRoles, filename);
 }
 
 /**
@@ -83,84 +103,88 @@ export function generateRoleExportFilename(roleCount: number): string {
 }
 
 /**
- * Exports Azure roles to CSV format
+ * Exports Azure roles to CSV format using PapaParse library.
  * CSV columns: Role Name, Role Type, Description, Permission Type, Permission
+ * Uses dynamic import to reduce initial bundle size.
  */
-export function exportRolesToCSV(
+export async function exportRolesToCSV(
   roles: AzureRole[],
   filename: string = 'azure-roles.csv'
-): void {
+): Promise<void> {
   if (roles.length === 0) {
     console.warn('No roles to export');
     return;
   }
 
-  // Create CSV rows
-  const rows: string[][] = [];
-
-  // Add header
-  rows.push(['Role Name', 'Role Type', 'Description', 'Permission Type', 'Permission']);
+  // Prepare data rows as objects for PapaParse
+  const rows: Array<{
+    'Role Name': string;
+    'Role Type': string;
+    'Description': string;
+    'Permission Type': string;
+    'Permission': string;
+  }> = [];
 
   // Add data rows
   for (const role of roles) {
+    const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
+    const description = role.description || '';
+
     for (const permission of role.permissions) {
       // Add actions
       for (const action of permission.actions) {
-        rows.push([
-          role.roleName,
-          role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-          role.description || '',
-          'Action',
-          action
-        ]);
+        rows.push({
+          'Role Name': role.roleName,
+          'Role Type': roleType,
+          'Description': description,
+          'Permission Type': 'Action',
+          'Permission': action
+        });
       }
 
       // Add notActions
       for (const notAction of permission.notActions) {
-        rows.push([
-          role.roleName,
-          role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-          role.description || '',
-          'Not Action',
-          notAction
-        ]);
+        rows.push({
+          'Role Name': role.roleName,
+          'Role Type': roleType,
+          'Description': description,
+          'Permission Type': 'Not Action',
+          'Permission': notAction
+        });
       }
 
       // Add dataActions
       if (permission.dataActions) {
         for (const dataAction of permission.dataActions) {
-          rows.push([
-            role.roleName,
-            role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-            role.description || '',
-            'Data Action',
-            dataAction
-          ]);
+          rows.push({
+            'Role Name': role.roleName,
+            'Role Type': roleType,
+            'Description': description,
+            'Permission Type': 'Data Action',
+            'Permission': dataAction
+          });
         }
       }
 
       // Add notDataActions
       if (permission.notDataActions) {
         for (const notDataAction of permission.notDataActions) {
-          rows.push([
-            role.roleName,
-            role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-            role.description || '',
-            'Not Data Action',
-            notDataAction
-          ]);
+          rows.push({
+            'Role Name': role.roleName,
+            'Role Type': roleType,
+            'Description': description,
+            'Permission Type': 'Not Data Action',
+            'Permission': notDataAction
+          });
         }
       }
     }
   }
 
-  // Convert to CSV string
-  const csvContent = rows
-    .map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(','))
-    .join('\n');
-
-  // Trigger download
-  downloadFile(csvContent, filename, 'text/csv;charset=utf-8;');
+  // Use PapaParse for CSV generation (handles all escaping automatically)
+  const Papa = (await import('papaparse')).default;
+  const csv = Papa.unparse(rows);
+  downloadFile(csv, filename, 'text/csv;charset=utf-8;');
 }
 
 /**
@@ -273,28 +297,7 @@ export function exportRolesToJSON(
     return;
   }
 
-  // Convert roles to Azure-compatible format
-  const azureRoles = roles.map(role => ({
-    id: role.id,
-    properties: {
-      roleName: role.roleName,
-      description: role.description || '',
-      assignableScopes: role.assignableScopes || ['/'],
-      permissions: role.permissions.map(permission => ({
-        actions: permission.actions || [],
-        notActions: permission.notActions || [],
-        dataActions: permission.dataActions || [],
-        notDataActions: permission.notDataActions || []
-      }))
-    }
-  }));
-
-  // For single role, export as single object; for multiple, export as array
-  const exportData = azureRoles.length === 1 ? azureRoles[0] : azureRoles;
-
-  // Convert to formatted JSON
-  const jsonContent = JSON.stringify(exportData, null, 2);
-
-  // Trigger download
-  downloadFile(jsonContent, filename, 'application/json');
+  // Convert roles to Azure-compatible format and export
+  const azureRoles = roles.map(convertRoleToAzureFormat);
+  exportAzureRoleDefinitionsToJSON(azureRoles, filename);
 }

@@ -1,17 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import type { AzureRole } from '@/types/rbac';
 import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON } from '@/lib/rbacExportUtils';
 import { getPrivilegedRoles, isPrivilegedRole } from '@/config/privilegedRoles';
+import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 
 interface RolePermissionsTableProps {
   roles: AzureRole[];
 }
 
-type ExportFormat = 'json' | 'csv' | 'excel';
-
 export default function RolePermissionsTable({ roles }: RolePermissionsTableProps) {
   const [isExporting, setIsExporting] = useState(false);
-  const [showExportMenu, setShowExportMenu] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(new Set());
 
   const toggleDescription = (roleId: string) => {
@@ -26,33 +24,57 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     });
   };
 
-  const handleExport = async (format: ExportFormat) => {
+  // Generate filename with timestamp
+  const generateFilename = useCallback((extension: string) => {
+    const timestamp = new Date().toISOString().slice(0, 10);
+    const roleCount = roles.length;
+    const roleLabel = roleCount === 1 ? 'role' : 'roles';
+    return `azure-rbac-${roleCount}-${roleLabel}_${timestamp}.${extension}`;
+  }, [roles.length]);
+
+  // Export handlers
+  const handleJsonExport = useCallback(async () => {
     setIsExporting(true);
-    setShowExportMenu(false);
-
     try {
-      const timestamp = new Date().toISOString().slice(0, 10);
-      const roleCount = roles.length;
-      const roleLabel = roleCount === 1 ? 'role' : 'roles';
-
-      switch (format) {
-        case 'json':
-          exportRolesToJSON(roles, `azure-rbac-${roleCount}-${roleLabel}_${timestamp}.json`);
-          break;
-        case 'csv':
-          exportRolesToCSV(roles, `azure-rbac-${roleCount}-${roleLabel}_${timestamp}.csv`);
-          break;
-        case 'excel':
-          await exportRolesToExcel(roles, `azure-rbac-${roleCount}-${roleLabel}_${timestamp}.xlsx`);
-          break;
-      }
+      exportRolesToJSON(roles, generateFilename('json'));
     } catch (error) {
-      console.error('Export failed:', error);
+      console.error('JSON export failed:', error);
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
     }
-  };
+  }, [roles, generateFilename]);
+
+  const handleCsvExport = useCallback(async () => {
+    setIsExporting(true);
+    try {
+      await exportRolesToCSV(roles, generateFilename('csv'));
+    } catch (error) {
+      console.error('CSV export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [roles, generateFilename]);
+
+  const handleExcelExport = useCallback(async () => {
+    setIsExporting(true);
+    try {
+      await exportRolesToExcel(roles, generateFilename('xlsx'));
+    } catch (error) {
+      console.error('Excel export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [roles, generateFilename]);
+
+  // Export options for ExportMenu
+  const exportOptions: ExportOption[] = useMemo(() => [
+    { label: 'JSON', format: 'json', extension: '.json', onClick: handleJsonExport },
+    { label: 'CSV', format: 'csv', extension: '.csv', onClick: handleCsvExport },
+    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport }
+  ], [handleJsonExport, handleCsvExport, handleExcelExport]);
 
   // Check if any of the selected roles are privileged
   const privilegedRolesInSelection = useMemo(
@@ -103,41 +125,12 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
             Viewing {roles.length} {roles.length === 1 ? 'role' : 'roles'}
           </p>
         </div>
-        <div className="relative">
-          <button
-            onClick={() => setShowExportMenu(!showExportMenu)}
-            onBlur={() => setTimeout(() => setShowExportMenu(false), 200)}
-            disabled={isExporting}
-            className="flex items-center gap-2 rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-sky-500 dark:hover:bg-sky-600"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            {isExporting ? 'Exporting...' : 'Export'}
-          </button>
-          {showExportMenu && (
-            <div className="absolute right-0 mt-2 w-40 rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900 z-10">
-              <button
-                onClick={() => handleExport('json')}
-                className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800 rounded-t-lg"
-              >
-                Export as JSON
-              </button>
-              <button
-                onClick={() => handleExport('csv')}
-                className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
-              >
-                Export as CSV
-              </button>
-              <button
-                onClick={() => handleExport('excel')}
-                className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800 rounded-b-lg"
-              >
-                Export as Excel
-              </button>
-            </div>
-          )}
-        </div>
+        <ExportMenu
+          options={exportOptions}
+          itemCount={roles.length}
+          itemLabel="role"
+          isExporting={isExporting}
+        />
       </div>
 
       {/* Table */}

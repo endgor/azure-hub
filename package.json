@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/validate-data.js && next build && node scripts/generate-sitemap.js",
+    "build": "node scripts/validateData.js && next build && node scripts/generateSitemap.js",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
@@ -12,8 +12,9 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "update-ip-data": "ts-node scripts/update-ip-data.ts",
-    "update-rbac-data": "ts-node scripts/update-rbac-data.ts"
+    "update-ip-data": "ts-node scripts/updateIpData.ts",
+    "update-rbac-data": "ts-node scripts/updateRbacData.ts",
+    "generate-actions-cache": "ts-node scripts/generateActionsCache.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",
