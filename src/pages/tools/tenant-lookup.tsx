@@ -159,13 +159,22 @@ export default function TenantLookupPage() {
 
   return (
     <Layout
-      title="Tenant Lookup"
+      title="Azure Tenant Lookup"
       description="Find Microsoft Entra tenant IDs, default domains, and cloud instances from any verified domain with the Azure Hub tenant lookup tool."
+      breadcrumbs={[
+        { name: 'Home', url: 'https://azurehub.org/' },
+        { name: 'Tenant Lookup', url: 'https://azurehub.org/tools/tenant-lookup/' }
+      ]}
+      toolSchema={{
+        name: 'Azure Tenant Lookup Tool',
+        applicationCategory: 'DeveloperApplication',
+        offers: { price: '0' }
+      }}
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Identity</p>
-          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Tenant Lookup</h1>
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure Tenant Lookup</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Discover Azure AD tenant information from domain names. Retrieve tenant names, GUIDs, Azure AD instances, and tenant scope details.
           </p>
