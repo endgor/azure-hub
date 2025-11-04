@@ -2,7 +2,7 @@ import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import * as XLSX from 'xlsx';
 import { downloadFile, downloadExcel, downloadCSV } from './downloadUtils';
 import { generateCountFilename } from './filenameUtils';
-import { flattenRolePermissions, countTotalPermissions } from './utils/permissionFlattener';
+import { getFlattenedPermissions, countTotalPermissions, type PermissionType } from './utils/permissionFlattener';
 
 /**
  * Azure-compatible role definition format for export
@@ -130,16 +130,25 @@ export async function exportRolesToCSV(
   for (const role of roles) {
     const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
     const description = role.description || '';
+    const flattened = getFlattenedPermissions(role);
 
-    for (const { type, permission } of flattenRolePermissions(role)) {
-      rows.push({
-        'Role Name': role.roleName,
-        'Role Type': roleType,
-        'Description': description,
-        'Permission Type': type,
-        'Permission': permission
-      });
-    }
+    // Helper to add permissions of a specific type
+    const addPermissions = (permissions: string[], type: PermissionType) => {
+      for (const permission of permissions) {
+        rows.push({
+          'Role Name': role.roleName,
+          'Role Type': roleType,
+          'Description': description,
+          'Permission Type': type,
+          'Permission': permission
+        });
+      }
+    };
+
+    addPermissions(flattened.actions, 'Action');
+    addPermissions(flattened.notActions, 'Not Action');
+    addPermissions(flattened.dataActions, 'Data Action');
+    addPermissions(flattened.notDataActions, 'Not Data Action');
   }
 
   // Use PapaParse for CSV generation (handles all escaping automatically)
@@ -184,15 +193,24 @@ export async function exportRolesToExcel(
 
   for (const role of roles) {
     const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
+    const flattened = getFlattenedPermissions(role);
 
-    for (const { type, permission } of flattenRolePermissions(role)) {
-      detailsData.push([
-        role.roleName,
-        roleType,
-        type,
-        permission
-      ]);
-    }
+    // Helper to add permissions of a specific type
+    const addPermissions = (permissions: string[], type: PermissionType) => {
+      for (const permission of permissions) {
+        detailsData.push([
+          role.roleName,
+          roleType,
+          type,
+          permission
+        ]);
+      }
+    };
+
+    addPermissions(flattened.actions, 'Action');
+    addPermissions(flattened.notActions, 'Not Action');
+    addPermissions(flattened.dataActions, 'Data Action');
+    addPermissions(flattened.notDataActions, 'Not Data Action');
   }
 
   const detailsSheet = XLSX.utils.aoa_to_sheet(detailsData);
