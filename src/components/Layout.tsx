@@ -333,14 +333,14 @@ export default function Layout({
         <meta property="og:type" content="website" />
         <meta property="og:url" content={meta.url} />
         <meta property="og:site_name" content="Azure Hub" />
-        <meta property="og:image" content="https://azurehub.org/og-image.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
         <meta property="og:image:alt" content="Azure Hub - Azure networking and identity tools" />
-        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:card" content="summary" />
         <meta property="twitter:title" content={meta.title} />
         <meta property="twitter:description" content={meta.description} />
-        <meta property="twitter:image" content="https://azurehub.org/og-image.png" />
+        <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
         <meta name="theme-color" content={themeColor} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>
