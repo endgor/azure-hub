@@ -29,6 +29,12 @@ export interface SearchInputProps extends Omit<InputHTMLAttributes<HTMLInputElem
    * Optional container class name
    */
   containerClassName?: string;
+
+  /**
+   * Optional callback when the search icon is clicked
+   * When provided, the icon becomes clickable with hover effects
+   */
+  onIconClick?: () => void;
 }
 
 const sizeClasses = {
@@ -72,6 +78,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
       maxWidth = 'sm',
       containerClassName = '',
       className = '',
+      onIconClick,
       ...inputProps
     },
     ref
@@ -103,7 +110,27 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           {...inputProps}
         />
         {shouldShowIcon && (
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-sky-500 transition dark:text-sky-300">
+          <div
+            className={`absolute inset-y-0 right-0 flex items-center pr-4 text-sky-500 transition dark:text-sky-300 ${
+              onIconClick && !isLoading
+                ? 'cursor-pointer hover:text-sky-600 dark:hover:text-sky-400'
+                : 'pointer-events-none'
+            }`}
+            onClick={onIconClick && !isLoading ? onIconClick : undefined}
+            role={onIconClick && !isLoading ? 'button' : undefined}
+            aria-label={onIconClick && !isLoading ? 'Search' : undefined}
+            tabIndex={onIconClick && !isLoading ? 0 : undefined}
+            onKeyDown={
+              onIconClick && !isLoading
+                ? (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onIconClick();
+                    }
+                  }
+                : undefined
+            }
+          >
             {isLoading ? loadingSpinner : icon !== undefined ? icon : defaultIcon}
           </div>
         )}

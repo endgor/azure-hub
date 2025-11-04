@@ -126,9 +126,13 @@ export default function TenantLookupPage() {
     [persistHistory]
   );
 
+  const performLookup = useCallback(() => {
+    void handleLookup(domain);
+  }, [domain, handleLookup]);
+
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    void handleLookup(domain);
+    performLookup();
   };
 
   const summaryFields = useMemo(() => {
@@ -183,6 +187,7 @@ export default function TenantLookupPage() {
             onChange={(event) => setDomain(event.target.value)}
             maxWidth="sm"
             isLoading={isLoading}
+            onIconClick={performLookup}
           />
         </form>
 

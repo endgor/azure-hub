@@ -28,12 +28,11 @@ const LookupForm = memo(function LookupForm({
     setIsLoading(false);
   }, [router.query]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const performSearch = useCallback(async () => {
     if (!searchQuery.trim()) return;
-    
+
     setIsLoading(true);
-    
+
     // Clean up the input - standardize spaces
     const cleanedInput = searchQuery.trim().replace(/\s+/g, ' ');
     
@@ -109,6 +108,11 @@ const LookupForm = memo(function LookupForm({
       pathname: router.pathname,
       query
     });
+  }, [searchQuery, router]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await performSearch();
   };
 
   return (
@@ -126,6 +130,7 @@ const LookupForm = memo(function LookupForm({
         maxWidth="sm"
         isLoading={isLoading}
         aria-label="Search query"
+        onIconClick={performSearch}
       />
     </form>
   );
