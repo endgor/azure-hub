@@ -2,6 +2,7 @@ import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import * as XLSX from 'xlsx';
 import { downloadFile, downloadExcel, downloadCSV } from './downloadUtils';
 import { generateCountFilename } from './filenameUtils';
+import { flattenRolePermissions, countTotalPermissions } from './utils/permissionFlattener';
 
 /**
  * Azure-compatible role definition format for export
@@ -125,59 +126,19 @@ export async function exportRolesToCSV(
     'Permission': string;
   }> = [];
 
-  // Add data rows
+  // Add data rows using flattening utility
   for (const role of roles) {
     const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
     const description = role.description || '';
 
-    for (const permission of role.permissions) {
-      // Add actions
-      for (const action of permission.actions) {
-        rows.push({
-          'Role Name': role.roleName,
-          'Role Type': roleType,
-          'Description': description,
-          'Permission Type': 'Action',
-          'Permission': action
-        });
-      }
-
-      // Add notActions
-      for (const notAction of permission.notActions) {
-        rows.push({
-          'Role Name': role.roleName,
-          'Role Type': roleType,
-          'Description': description,
-          'Permission Type': 'Not Action',
-          'Permission': notAction
-        });
-      }
-
-      // Add dataActions
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          rows.push({
-            'Role Name': role.roleName,
-            'Role Type': roleType,
-            'Description': description,
-            'Permission Type': 'Data Action',
-            'Permission': dataAction
-          });
-        }
-      }
-
-      // Add notDataActions
-      if (permission.notDataActions) {
-        for (const notDataAction of permission.notDataActions) {
-          rows.push({
-            'Role Name': role.roleName,
-            'Role Type': roleType,
-            'Description': description,
-            'Permission Type': 'Not Data Action',
-            'Permission': notDataAction
-          });
-        }
-      }
+    for (const { type, permission } of flattenRolePermissions(role)) {
+      rows.push({
+        'Role Name': role.roleName,
+        'Role Type': roleType,
+        'Description': description,
+        'Permission Type': type,
+        'Permission': permission
+      });
     }
   }
 
@@ -203,76 +164,34 @@ export async function exportRolesToExcel(
   // Create a new workbook
   const wb = XLSX.utils.book_new();
 
-  // Create summary sheet
+  // Create summary sheet using counting utility
   const summaryData: any[][] = [['Role Name', 'Role Type', 'Description', 'Total Permissions']];
 
   for (const role of roles) {
-    let totalPerms = 0;
-    for (const perm of role.permissions) {
-      totalPerms += perm.actions.length + perm.notActions.length;
-      if (perm.dataActions) totalPerms += perm.dataActions.length;
-      if (perm.notDataActions) totalPerms += perm.notDataActions.length;
-    }
-
     summaryData.push([
       role.roleName,
       role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
       role.description || '',
-      totalPerms
+      countTotalPermissions(role)
     ]);
   }
 
   const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
   XLSX.utils.book_append_sheet(wb, summarySheet, 'Summary');
 
-  // Create detailed permissions sheet
+  // Create detailed permissions sheet using flattening utility
   const detailsData: any[][] = [['Role Name', 'Role Type', 'Permission Type', 'Permission']];
 
   for (const role of roles) {
-    for (const permission of role.permissions) {
-      // Add actions
-      for (const action of permission.actions) {
-        detailsData.push([
-          role.roleName,
-          role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-          'Action',
-          action
-        ]);
-      }
+    const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
 
-      // Add notActions
-      for (const notAction of permission.notActions) {
-        detailsData.push([
-          role.roleName,
-          role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-          'Not Action',
-          notAction
-        ]);
-      }
-
-      // Add dataActions
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          detailsData.push([
-            role.roleName,
-            role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-            'Data Action',
-            dataAction
-          ]);
-        }
-      }
-
-      // Add notDataActions
-      if (permission.notDataActions) {
-        for (const notDataAction of permission.notDataActions) {
-          detailsData.push([
-            role.roleName,
-            role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
-            'Not Data Action',
-            notDataAction
-          ]);
-        }
-      }
+    for (const { type, permission } of flattenRolePermissions(role)) {
+      detailsData.push([
+        role.roleName,
+        roleType,
+        type,
+        permission
+      ]);
     }
   }
 
