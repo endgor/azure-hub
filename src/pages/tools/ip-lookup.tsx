@@ -265,6 +265,9 @@ export default function IpLookupPage() {
             Networking
           </p>
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Azure IP Lookup</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl md:text-base">
+            Search Azure public IP ranges across all service tags and regions. Lookup IP addresses, CIDR blocks, or hostnames to identify Azure services and network boundaries.
+          </p>
         </div>
 
         <LookupForm

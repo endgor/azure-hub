@@ -1,21 +1,28 @@
+/** Represents a node in the binary subnet tree */
 export interface SubnetNode {
   id: string;
-  network: number;
-  prefix: number;
+  network: number; // IPv4 address as 32-bit unsigned integer
+  prefix: number; // CIDR prefix length (0-32)
   parentId?: string;
-  children?: [string, string];
+  children?: [string, string]; // [leftId, rightId] for binary tree
 }
 
+/** Dictionary mapping node IDs to subnet nodes */
 export type SubnetTree = Record<string, SubnetNode>;
 
+/** Leaf subnet with depth information for rendering */
 export interface LeafSubnet extends SubnetNode {
-  depth: number;
+  depth: number; // Tree depth level, 0 = root
 }
 
 export const MAX_PREFIX = 32;
 export const DEFAULT_NETWORK = '192.168.0.0';
 export const DEFAULT_PREFIX = 16;
 
+/**
+ * Converts IPv4 address string to 32-bit unsigned integer.
+ * Example: "192.168.1.1" -> 3232235777
+ */
 export function inetAtov(address: string): number | null {
   const parts = address.trim().split('.');
   if (parts.length !== 4) {
@@ -33,31 +40,47 @@ export function inetAtov(address: string): number | null {
     return null;
   }
 
+  // Combine octets using bitwise shifts: (octet1 << 24) | (octet2 << 16) | (octet3 << 8) | octet4
+  // Use >>> 0 to ensure unsigned 32-bit integer
   return ((octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]) >>> 0;
 }
 
+/**
+ * Converts 32-bit unsigned integer to IPv4 address string.
+ * Example: 3232235777 -> "192.168.1.1"
+ */
 export function inetNtoa(address: number): string {
   const value = address >>> 0;
   return [
-    (value >>> 24) & 0xff,
-    (value >>> 16) & 0xff,
-    (value >>> 8) & 0xff,
-    value & 0xff
+    (value >>> 24) & 0xff, // Extract first octet
+    (value >>> 16) & 0xff, // Extract second octet
+    (value >>> 8) & 0xff,  // Extract third octet
+    value & 0xff           // Extract fourth octet
   ].join('.');
 }
 
+/**
+ * Normalizes IP address to network address by applying subnet mask.
+ * Example: normaliseNetwork("192.168.1.100", 24) -> "192.168.1.0"
+ */
 export function normaliseNetwork(address: number, prefix: number): number {
   const mask = prefixToMask(prefix);
   return address & mask;
 }
 
+/**
+ * Converts CIDR prefix to subnet mask as 32-bit integer.
+ * Example: prefix 24 -> 0xffffff00 (255.255.255.0)
+ */
 export function prefixToMask(prefix: number): number {
   if (prefix <= 0) {
     return 0;
   }
+  // Create mask by inverting a number with (32 - prefix) trailing 1s
   return prefix === 32 ? 0xffffffff : (~((1 << (32 - prefix)) - 1)) >>> 0;
 }
 
+/** Returns total number of addresses in subnet (2^(32-prefix)) */
 export function subnetAddressCount(prefix: number): number {
   if (prefix < 0 || prefix > 32) {
     throw new Error('Invalid prefix length');
@@ -65,14 +88,21 @@ export function subnetAddressCount(prefix: number): number {
   return 2 ** (32 - prefix);
 }
 
+/** Returns the last (broadcast) address in the subnet */
 export function subnetLastAddress(network: number, prefix: number): number {
   return (network + subnetAddressCount(prefix) - 1) >>> 0;
 }
 
+/** Alias for prefixToMask - converts prefix to netmask */
 export function subnetNetmask(prefix: number): number {
   return prefix === 0 ? 0 : prefix === 32 ? 0xffffffff : (~((1 << (32 - prefix)) - 1)) >>> 0;
 }
 
+/**
+ * Returns usable IP range (RFC standard).
+ * For /31 and /32, all IPs are usable (RFC 3021).
+ * Otherwise, excludes network address and broadcast address.
+ */
 export function usableRange(network: number, prefix: number): {
   first: number;
   last: number;
@@ -82,11 +112,15 @@ export function usableRange(network: number, prefix: number): {
     return { first: network, last };
   }
 
-  const first = network + 1;
-  const last = subnetLastAddress(network, prefix) - 1;
+  const first = network + 1; // Skip network address
+  const last = subnetLastAddress(network, prefix) - 1; // Skip broadcast
   return { first, last };
 }
 
+/**
+ * Returns usable host count (RFC standard).
+ * /32 = 1 host, /31 = 2 hosts, others = total - 2 (network + broadcast)
+ */
 export function hostCapacity(prefix: number): number {
   if (prefix === 32) {
     return 1;
@@ -99,22 +133,31 @@ export function hostCapacity(prefix: number): number {
   return Math.max(subnetAddressCount(prefix) - 2, 0);
 }
 
+/**
+ * Returns usable IP range for Azure VNets.
+ * Azure reserves first 3 IPs (.0, .1, .2, .3) and last IP (broadcast).
+ * Minimum usable subnet is /29 (8 IPs total, 3 usable after reservations).
+ */
 export function usableRangeAzure(network: number, prefix: number): {
   first: number;
   last: number;
 } | null {
   const total = subnetAddressCount(prefix);
   if (total <= 5) {
-    return null;
+    return null; // Too small for Azure (need at least 6 IPs)
   }
-  const first = network + 4;
-  const last = subnetLastAddress(network, prefix) - 1;
+  const first = network + 4; // Skip Azure reserved IPs (.0-.3)
+  const last = subnetLastAddress(network, prefix) - 1; // Skip broadcast
   if (first > last) {
     return null;
   }
   return { first, last };
 }
 
+/**
+ * Returns usable host count for Azure VNets.
+ * Azure reserves 5 IPs total (first 4 + broadcast).
+ */
 export function hostCapacityAzure(prefix: number): number {
   const total = subnetAddressCount(prefix);
   if (total <= 5) {
@@ -123,6 +166,10 @@ export function hostCapacityAzure(prefix: number): number {
   return total - 5;
 }
 
+/**
+ * Creates initial subnet tree with a single root node.
+ * This is the starting point for subnet splitting operations.
+ */
 export function createInitialTree(network: number, prefix: number): {
   rootId: string;
   tree: SubnetTree;
@@ -140,10 +187,17 @@ export function createInitialTree(network: number, prefix: number): {
   };
 }
 
+/**
+ * Splits a subnet node into two equal-sized child subnets (binary tree split).
+ * Example: Splitting 192.168.0.0/24 creates:
+ *   - Left child: 192.168.0.0/25 (IPs .0-.127)
+ *   - Right child: 192.168.0.128/25 (IPs .128-.255)
+ * Returns unchanged tree if node already has children or is at maximum prefix.
+ */
 export function splitSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
   const node = tree[nodeId];
   if (!node || node.children || node.prefix >= MAX_PREFIX) {
-    return tree;
+    return tree; // Cannot split: missing, already split, or at /32
   }
 
   const nextPrefix = node.prefix + 1;
@@ -153,14 +207,14 @@ export function splitSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
   const addressesPerChild = subnetAddressCount(nextPrefix);
   const leftNode: SubnetNode = {
     id: leftId,
-    network: node.network,
+    network: node.network, // Left child starts at same address
     prefix: nextPrefix,
     parentId: node.id
   };
 
   const rightNode: SubnetNode = {
     id: rightId,
-    network: (node.network + addressesPerChild) >>> 0,
+    network: (node.network + addressesPerChild) >>> 0, // Right child starts halfway
     prefix: nextPrefix,
     parentId: node.id
   };
@@ -176,6 +230,11 @@ export function splitSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
   };
 }
 
+/**
+ * Collects all leaf nodes from the subnet tree using depth-first search.
+ * Uses stack-based iterative DFS (avoids recursion stack overflow).
+ * Returns leaves sorted by network address in ascending order.
+ */
 export function collectLeaves(tree: SubnetTree, rootId: string): LeafSubnet[] {
   const root = tree[rootId];
   if (!root) {
@@ -196,6 +255,7 @@ export function collectLeaves(tree: SubnetTree, rootId: string): LeafSubnet[] {
     const rightNode = tree[rightId];
     const leftNode = tree[leftId];
 
+    // Push right first so left is processed first (stack LIFO)
     if (rightNode) {
       stack.push({ node: rightNode, depth: depth + 1 });
     }
@@ -208,6 +268,10 @@ export function collectLeaves(tree: SubnetTree, rootId: string): LeafSubnet[] {
   return leaves.sort((a, b) => a.network - b.network);
 }
 
+/**
+ * Returns path from root to specified node.
+ * Useful for displaying breadcrumb navigation or subnet hierarchy.
+ */
 export function getNodePath(tree: SubnetTree, nodeId: string): SubnetNode[] {
   const path: SubnetNode[] = [];
   let current: SubnetNode | undefined = tree[nodeId];
@@ -220,13 +284,18 @@ export function getNodePath(tree: SubnetTree, nodeId: string): SubnetNode[] {
     current = tree[current.parentId];
   }
 
-  return path.reverse();
+  return path.reverse(); // Root first, target node last
 }
 
+/**
+ * Joins (merges) two child subnets back into their parent.
+ * Only works if both children exist and are leaf nodes (no grandchildren).
+ * This is the inverse operation of splitSubnet.
+ */
 export function joinSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
   const node = tree[nodeId];
   if (!node?.children) {
-    return tree;
+    return tree; // Node has no children to join
   }
 
   const [leftId, rightId] = node.children;
@@ -234,9 +303,10 @@ export function joinSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
   const right = tree[rightId];
 
   if (!left || !right || left.children || right.children) {
-    return tree;
+    return tree; // Cannot join: children missing or have their own children
   }
 
+  // Remove children from tree
   const { [leftId]: _removeLeft, [rightId]: _removeRight, ...rest } = tree;
   return {
     ...rest,
@@ -247,6 +317,11 @@ export function joinSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
   };
 }
 
+/**
+ * Recursively counts leaf nodes under each node in the tree.
+ * Returns a map of nodeId -> leaf count.
+ * Useful for UI to show subnet count (e.g., "192.168.0.0/24 (4 subnets)").
+ */
 export function computeLeafCounts(tree: SubnetTree, rootId: string): Record<string, number> {
   const counts: Record<string, number> = {};
 
@@ -261,7 +336,7 @@ export function computeLeafCounts(tree: SubnetTree, rootId: string): Record<stri
     }
 
     if (!node.children) {
-      counts[nodeId] = 1;
+      counts[nodeId] = 1; // Leaf node counts as 1
       return 1;
     }
 
@@ -277,6 +352,10 @@ export function computeLeafCounts(tree: SubnetTree, rootId: string): Record<stri
   return counts;
 }
 
+/**
+ * Checks if a node can be joined (both children are leaves).
+ * Used to enable/disable the join button in UI.
+ */
 export function isJoinableNode(tree: SubnetTree, node: SubnetNode | undefined): boolean {
   if (!node?.children) {
     return false;
@@ -289,11 +368,17 @@ export function isJoinableNode(tree: SubnetTree, node: SubnetNode | undefined): 
   return Boolean(left && right && !left.children && !right.children);
 }
 
+/** Defines a target subnet to create in the tree */
 export interface LeafDefinition {
   network: number;
   prefix: number;
 }
 
+/**
+ * Creates a subnet tree from a list of desired leaf subnets.
+ * Automatically splits parent nodes as needed to create the specified leaves.
+ * Used for importing subnet plans or reconstructing trees from saved state.
+ */
 export function createTreeFromLeafDefinitions(
   baseNetwork: number,
   basePrefix: number,
@@ -316,6 +401,22 @@ export function createTreeFromLeafDefinitions(
   };
 }
 
+/**
+ * Ensures a specific subnet exists as a leaf in the tree by navigating
+ * and splitting nodes as needed. This is the core algorithm for tree construction.
+ *
+ * Algorithm:
+ * 1. Start at root and navigate toward target using binary search
+ * 2. If current node is a leaf and needs further splitting, split it
+ * 3. Choose left or right child based on target network address
+ * 4. Repeat until target subnet is reached or cannot proceed
+ *
+ * Stops when:
+ * - Target subnet found (exact match)
+ * - Target is outside current node's range
+ * - Current node has same or larger prefix than target
+ * - Cannot split further (already at /32)
+ */
 function ensureLeafInTree(tree: SubnetTree, rootId: string, targetNetwork: number, targetPrefix: number): SubnetTree {
   let currentTree = tree;
   let currentNodeId = rootId;
@@ -323,42 +424,44 @@ function ensureLeafInTree(tree: SubnetTree, rootId: string, targetNetwork: numbe
   while (true) {
     const node = currentTree[currentNodeId];
     if (!node) {
-      break;
+      break; // Node not found
     }
 
     const nodeLastAddress = subnetLastAddress(node.network, node.prefix);
     if (targetNetwork < node.network || targetNetwork > nodeLastAddress) {
-      break;
+      break; // Target is outside current node's range
     }
 
     if (node.prefix === targetPrefix && node.network === targetNetwork) {
-      break;
+      break; // Exact match found
     }
 
     if (node.prefix >= targetPrefix) {
-      break;
+      break; // Cannot split further (would exceed target prefix)
     }
 
+    // If this is a leaf node, split it to continue navigating
     if (!node.children) {
       const updatedTree = splitSubnet(currentTree, currentNodeId);
       if (updatedTree === currentTree) {
-        break;
+        break; // Split failed (at /32)
       }
       currentTree = updatedTree;
     }
 
     const currentNode = currentTree[currentNodeId];
     if (!currentNode.children) {
-      break;
+      break; // Still no children after split attempt
     }
 
+    // Navigate to appropriate child using binary search
     const [leftId, rightId] = currentNode.children;
     const rightNode = currentTree[rightId];
 
     if (targetNetwork >= rightNode.network) {
-      currentNodeId = rightId;
+      currentNodeId = rightId; // Target is in right subtree
     } else {
-      currentNodeId = leftId;
+      currentNodeId = leftId; // Target is in left subtree
     }
   }
 

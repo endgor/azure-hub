@@ -7,7 +7,6 @@ const nextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   reactStrictMode: true,
-  swcMinify: true,
   // Performance optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',

@@ -1,4 +1,4 @@
-name: Update Azure IP Data
+name: Update Azure Data
 
 on:
   schedule:
@@ -7,34 +7,47 @@ on:
   workflow_dispatch:
     # Allow manual triggering
 
+# This workflow updates both Azure IP ranges and RBAC role definitions
+# Required GitHub Secret: AZURE_CREDENTIALS (JSON format for Azure CLI login)
+# Format: {"clientId":"...","clientSecret":"...","subscriptionId":"...","tenantId":"..."}
+# The service principal needs read permissions on role definitions
+
 jobs:
-  update-ip-data:
+  update-azure-data:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # This is crucial for allowing the workflow to push changes
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Fetch all history so pushing works
-      
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
-      - name: Run update script
-        run: npx ts-node scripts/update-ip-data.ts
-        
+
+      - name: Update Azure IP data
+        run: npx ts-node scripts/updateIpData.ts
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Update Azure RBAC data
+        run: npx ts-node scripts/updateRbacData.ts
+
       - name: Commit and push if changed
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           git status
-          git diff --staged --quiet || (git commit -m "Update IP data" && git push)
+          git diff --staged --quiet || (git commit -m "chore: update Azure IP and RBAC data" && git push)

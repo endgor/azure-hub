@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { ReactNode } from 'react';
+import type { ReactNode, ReactElement } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -48,7 +48,7 @@ const DEFAULT_KEYWORDS = [
   'Azure networking utilities'
 ];
 
-const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
+const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
   dashboard: (active: boolean) => (
     <svg
       viewBox="0 0 24 24"
@@ -117,11 +117,7 @@ const ICONS: Record<IconKey, (active: boolean) => JSX.Element> = {
     >
       <path
         fill="currentColor"
-        d="M12 2.25a.75.75 0 01.26.048l7.5 2.7a.75.75 0 01.49.702V11c0 5.038-3.36 9.693-8.24 11.145a.75.75 0 01-.52 0C6.61 20.693 3.25 16.038 3.25 11V5.7a.75.75 0 01.49-.702l7.5-2.7a.75.75 0 01.26-.048zM12 3.9L5.75 6.08V11c0 4.142 2.775 7.984 6.25 9.276 3.475-1.292 6.25-5.134 6.25-9.276V6.08L12 3.9z"
-      />
-      <path
-        fill="currentColor"
-        d="M16.53 10.47a.75.75 0 010 1.06l-3.75 3.75a.75.75 0 01-1.06 0l-2-2a.75.75 0 011.06-1.06l1.47 1.47 3.22-3.22a.75.75 0 011.06 0z"
+        d="M12 2a5 5 0 015 5v1a5 5 0 01-10 0V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v1a3 3 0 106 0V7a3 3 0 00-3-3zm-7 11a1 1 0 011-1h12a1 1 0 011 1c0 2.5-1.5 5.5-7 5.5S5 17.5 5 15z"
       />
     </svg>
   ),
@@ -218,6 +214,11 @@ const NAV_SECTIONS: NavSection[] = [
         label: 'Tenant Lookup',
         href: '/tools/tenant-lookup',
         icon: 'tenant'
+      },
+      {
+        label: 'RBAC Calculator',
+        href: '/tools/rbac-calculator',
+        icon: 'rbac'
       }
     ]
   }
@@ -279,7 +280,9 @@ export default function Layout({
 
   const meta = useMemo(() => {
     const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
-    const canonicalUrl = `https://azurehub.org${router.asPath}`;
+    // Use pathname instead of asPath to exclude query parameters and hash fragments
+    const cleanPath = router.pathname === '/' ? '/' : `${router.pathname}/`;
+    const canonicalUrl = `https://azurehub.org${cleanPath}`;
 
     return {
       title: pageTitle,
@@ -287,7 +290,7 @@ export default function Layout({
       url: canonicalUrl,
       keywords
     };
-  }, [description, keywords, router.asPath, title]);
+  }, [description, keywords, router.pathname, title]);
 
   const themeColor = isDarkMode ? '#0f172a' : '#f1f5f9';
 
@@ -330,12 +333,14 @@ export default function Layout({
         <meta property="og:type" content="website" />
         <meta property="og:url" content={meta.url} />
         <meta property="og:site_name" content="Azure Hub" />
-        <meta property="og:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-        <meta property="og:image:alt" content="Azure Hub logo" />
+        <meta property="og:image" content="https://azurehub.org/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Azure Hub - Azure networking and identity tools" />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content={meta.title} />
         <meta property="twitter:description" content={meta.description} />
-        <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
+        <meta property="twitter:image" content="https://azurehub.org/og-image.png" />
         <meta name="theme-color" content={themeColor} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>

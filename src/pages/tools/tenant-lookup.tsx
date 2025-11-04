@@ -158,8 +158,11 @@ export default function TenantLookupPage() {
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 md:tracking-[0.3em]">Identity</p>
-          <h1 className="text-2xl font-semibold text-slate-900 md:text-3xl lg:text-4xl">Tenant Lookup</h1>
+          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Identity</p>
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Tenant Lookup</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl md:text-base">
+            Discover Azure AD tenant information from domain names. Retrieve tenant names, GUIDs, Azure AD instances, and tenant scope details.
+          </p>
         </div>
 
         <form onSubmit={onSubmit} role="search" aria-label="Tenant lookup" className="w-full max-w-md">
@@ -177,16 +180,16 @@ export default function TenantLookupPage() {
               placeholder="Enter tenant domain (contoso.com)"
               value={domain}
               onChange={(event) => setDomain(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+              className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
             />
             <button
               type="submit"
-              className="absolute inset-y-0 right-0 flex items-center justify-center px-4 text-sky-500 transition hover:text-sky-700 disabled:cursor-not-allowed"
+              className="absolute inset-y-0 right-0 flex items-center justify-center px-4 text-sky-500 transition hover:text-sky-700 disabled:cursor-not-allowed dark:text-sky-400 dark:hover:text-sky-300"
               disabled={isLoading}
               aria-label="Run tenant lookup"
             >
               {isLoading ? (
-                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-sky-500/60 border-t-transparent" />
+                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-sky-500/60 border-t-transparent dark:border-sky-400/60" />
               ) : (
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
@@ -203,17 +206,17 @@ export default function TenantLookupPage() {
         </form>
 
         {error && (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700 shadow-sm">
-            <h2 className="font-semibold text-rose-800">Lookup failed</h2>
-            <p className="mt-1 text-rose-700">{error}</p>
+          <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 text-sm text-rose-700 shadow-sm dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
+            <h2 className="font-semibold text-rose-800 dark:text-rose-200">Lookup failed</h2>
+            <p className="mt-1 text-rose-700 dark:text-rose-300">{error}</p>
           </div>
         )}
 
         {result && !error && summaryFields.length > 0 && (
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-lg font-semibold text-slate-900">Lookup Results</h2>
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Lookup Results</h2>
+              <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
                 {new Date(result.fetchedAt).toLocaleTimeString()}
               </span>
             </div>
@@ -222,12 +225,12 @@ export default function TenantLookupPage() {
               {summaryFields.map((field) => (
                 <div
                   key={field.label}
-                  className="rounded-xl border border-slate-100 bg-slate-50 p-4"
+                  className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800"
                 >
-                  <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
                     {field.label}
                   </dt>
-                  <dd className="mt-2 text-sm font-semibold text-slate-900 break-all">
+                  <dd className="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 break-all">
                     {field.value}
                   </dd>
                 </div>
@@ -238,17 +241,17 @@ export default function TenantLookupPage() {
 
         {history.length > 0 && (
           <div className="space-y-3">
-            <div className="flex items-center gap-3 text-sm text-slate-600">
-              <h3 className="text-base font-semibold text-slate-900">Recent lookups</h3>
+            <div className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">Recent lookups</h3>
               <button
                 type="button"
                 onClick={clearHistory}
-                className="text-xs font-semibold text-slate-500 underline decoration-dotted hover:text-slate-700"
+                className="text-xs font-semibold text-slate-500 underline decoration-dotted hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
               >
                 Clear
               </button>
             </div>
-            <ul className="divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200 bg-white text-sm text-slate-600">
+            <ul className="divide-y divide-slate-200 dark:divide-slate-700 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-600 dark:text-slate-400">
               {history.map((entry) => (
                 <li
                   key={entry.domain}
@@ -261,18 +264,18 @@ export default function TenantLookupPage() {
                         setDomain(entry.domain);
                         void handleLookup(entry.domain);
                       }}
-                      className="text-sm font-semibold text-slate-900 underline decoration-dotted underline-offset-4 hover:text-sky-600"
+                      className="text-sm font-semibold text-slate-900 dark:text-slate-100 underline decoration-dotted underline-offset-4 hover:text-sky-600 dark:hover:text-sky-400"
                     >
                       {entry.domain}
                     </button>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                       Tenant ID:{' '}
                       <span className="font-mono text-[11px] tracking-tight">
                         {entry.tenantId || 'unknown'}
                       </span>
                     </span>
                   </div>
-                  <time className="text-xs text-slate-500" dateTime={entry.timestamp}>
+                  <time className="text-xs text-slate-500 dark:text-slate-400" dateTime={entry.timestamp}>
                     {new Date(entry.timestamp).toLocaleString()}
                   </time>
                 </li>

@@ -1,0 +1,134 @@
+import type { AzureRole } from '@/types/rbac';
+import { useRoleCreator } from '@/hooks/useRoleCreator';
+import TemplateSelector from '@/components/TemplateSelector';
+import RoleInformationSection from './RoleInformationSection';
+import ImportRoleSection from './ImportRoleSection';
+import PermissionsSection from './PermissionsSection';
+import AboutCustomRoles from './AboutCustomRoles';
+
+interface RoleCreatorProps {
+  availableRoles: AzureRole[];
+  onSearchActions: (query: string) => Promise<Array<{ name: string; description?: string }>>;
+}
+
+/**
+ * RoleCreator - Create custom Azure RBAC roles
+ *
+ * Main orchestrator component that combines all role creation functionality:
+ * - Load from templates
+ * - Role information (name, description, scopes)
+ * - Import permissions from built-in roles
+ * - Manage permissions (actions, notActions, dataActions, notDataActions)
+ * - Export to JSON for Azure deployment
+ */
+export default function RoleCreator({ availableRoles, onSearchActions }: RoleCreatorProps) {
+  const {
+    // State
+    customRole,
+    importedRoles,
+    manuallyAddedActions,
+    roleSearchQuery,
+    roleDropdownItems,
+    showRoleDropdown,
+    actionSearchQuery,
+    actionDropdownItems,
+    showActionDropdown,
+    activePermissionType,
+
+    // Computed values
+    totalPermissions,
+    hasDuplicates,
+
+    // Actions
+    setCustomRole,
+    setShowRoleDropdown,
+    setShowActionDropdown,
+    setActivePermissionType,
+    handleLoadTemplate,
+    handleRemoveImportedRole,
+    handleRoleSearchChange,
+    handleRoleSelect,
+    handleRemoveAction,
+    handleMoveAction,
+    handleActionSearchChange,
+    handleActionSelect,
+    handleAddScope,
+    handleRemoveScope,
+    handleExport,
+    handleDeduplicate,
+    handleClear,
+    validateActionCategory,
+    hasWildcard,
+  } = useRoleCreator({ availableRoles, onSearchActions });
+
+  return (
+    <div className="space-y-6">
+      {/* Template Selector */}
+      <TemplateSelector onLoadTemplate={handleLoadTemplate} />
+
+      {/* Role Information */}
+      <RoleInformationSection
+        customRole={customRole}
+        onRoleNameChange={(name) => setCustomRole({ ...customRole, roleName: name })}
+        onDescriptionChange={(description) => setCustomRole({ ...customRole, description })}
+        onAddScope={handleAddScope}
+        onRemoveScope={handleRemoveScope}
+      />
+
+      {/* Import from Built-in Role */}
+      <ImportRoleSection
+        roleSearchQuery={roleSearchQuery}
+        roleDropdownItems={roleDropdownItems}
+        showRoleDropdown={showRoleDropdown}
+        importedRoles={importedRoles}
+        onSearchChange={handleRoleSearchChange}
+        onSelect={handleRoleSelect}
+        onDropdownVisibilityChange={setShowRoleDropdown}
+        onRemoveImportedRole={handleRemoveImportedRole}
+      />
+
+      {/* Permissions */}
+      <PermissionsSection
+        customRole={customRole}
+        totalPermissions={totalPermissions}
+        hasDuplicates={hasDuplicates}
+        activePermissionType={activePermissionType}
+        actionSearchQuery={actionSearchQuery}
+        actionDropdownItems={actionDropdownItems}
+        showActionDropdown={showActionDropdown}
+        manuallyAddedActions={manuallyAddedActions}
+        onPermissionTypeChange={setActivePermissionType}
+        onActionSearchChange={handleActionSearchChange}
+        onActionSelect={handleActionSelect}
+        onActionDropdownVisibilityChange={setShowActionDropdown}
+        onRemoveAction={handleRemoveAction}
+        onMoveAction={handleMoveAction}
+        onDeduplicate={handleDeduplicate}
+        hasWildcard={hasWildcard}
+        validateActionCategory={validateActionCategory}
+      />
+
+      {/* Action Buttons */}
+      <div className="flex gap-3">
+        <button
+          type="button"
+          onClick={handleExport}
+          disabled={!customRole.roleName.trim() || totalPermissions === 0}
+          className="rounded-lg bg-sky-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Export as JSON
+        </button>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+        >
+          Clear All
+        </button>
+      </div>
+
+      {/* About Custom Roles Info */}
+      <AboutCustomRoles />
+    </div>
+  );
+}

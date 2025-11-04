@@ -1,6 +1,6 @@
 import { useEffect, useState, RefObject } from 'react';
 
-export function useTooltipPosition(triggerRef: RefObject<HTMLElement>) {
+export function useTooltipPosition(triggerRef: RefObject<HTMLElement | null>) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {

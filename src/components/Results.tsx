@@ -3,7 +3,7 @@ import { useState, useMemo, memo, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Tooltip from './Tooltip';
-import ExportDropdown from './ExportDropdown';
+import ExportMenu, { ExportOption } from './shared/ExportMenu';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 
 // Network features descriptions
@@ -99,7 +99,33 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
       return sortDirection === 'asc' ? comparison : -comparison;
     });
   }, [results, sortField, sortDirection]);
-  
+
+  // Export options configuration
+  const exportOptions = useMemo<ExportOption[]>(() => [
+    {
+      label: 'CSV',
+      format: 'csv',
+      extension: '.csv',
+      onClick: async () => {
+        const { exportToCSV, prepareDataForExport, generateFilename } = await import('@/lib/exportUtils');
+        const exportData = prepareDataForExport(sortedResults);
+        const filename = generateFilename(query, 'csv');
+        await exportToCSV(exportData, filename);
+      }
+    },
+    {
+      label: 'Excel',
+      format: 'xlsx',
+      extension: '.xlsx',
+      onClick: async () => {
+        const { exportToExcel, prepareDataForExport, generateFilename } = await import('@/lib/exportUtils');
+        const exportData = prepareDataForExport(sortedResults);
+        const filename = generateFilename(query, 'xlsx');
+        await exportToExcel(exportData, filename);
+      }
+    }
+  ], [sortedResults, query]);
+
   // Early return after hooks
   if (!results || results.length === 0) return null;
   
@@ -128,7 +154,11 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
             </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
-            <ExportDropdown results={sortedResults} query={query} />
+            <ExportMenu
+              options={exportOptions}
+              itemCount={sortedResults.length}
+              itemLabel="record"
+            />
           </div>
         </div>
 
