@@ -168,6 +168,26 @@ body {
   background-color: rgba(0, 113, 227, 0.1) !important;
 }
 
+.bg-sky-500 {
+  background-color: #0077ed !important;
+}
+
+.bg-sky-600 {
+  background-color: #0071e3 !important;
+}
+
+.bg-sky-700 {
+  background-color: #0060c8 !important;
+}
+
+.hover\:bg-sky-600:hover {
+  background-color: #0060c8 !important;
+}
+
+.hover\:bg-sky-700:hover {
+  background-color: #0060c8 !important;
+}
+
 .bg-sky-900\/20,
 .bg-sky-900\/40 {
   background-color: rgba(0, 113, 227, 0.1) !important;
