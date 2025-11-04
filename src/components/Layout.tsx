@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
 
 type IconKey =
   | 'dashboard'
@@ -252,45 +253,14 @@ export default function Layout({
   const router = useRouter();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [themeInitialized, setThemeInitialized] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', false);
 
+  // Toggle dark class on documentElement when theme changes
   useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
+    if (typeof window === 'undefined') return;
 
-    const storedTheme = window.localStorage.getItem('theme');
-    const shouldUseDark = storedTheme === 'dark';
-
-    if (shouldUseDark) {
-      document.documentElement.classList.add('dark');
-      setIsDarkMode(true);
-    } else {
-      document.documentElement.classList.remove('dark');
-      setIsDarkMode(false);
-
-      if (!storedTheme) {
-        window.localStorage.setItem('theme', 'light');
-      }
-    }
-
-    setThemeInitialized(true);
-  }, []);
-
-  useEffect(() => {
-    if (!themeInitialized || typeof window === 'undefined') {
-      return;
-    }
-
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      window.localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      window.localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode, themeInitialized]);
+    document.documentElement.classList.toggle('dark', isDarkMode);
+  }, [isDarkMode]);
 
   // Close mobile menu when route changes
   useEffect(() => {
