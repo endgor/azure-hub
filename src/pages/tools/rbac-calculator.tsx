@@ -367,6 +367,21 @@ export default function RbacCalculatorPage() {
     [selectedRoles]
   );
 
+  // Dynamic description based on active mode
+  const getDescription = () => {
+    switch (inputMode) {
+      case 'simple':
+      case 'advanced':
+        return 'Find the least privileged Azure RBAC roles for your required permissions. Enter Azure resource provider actions and discover which built-in roles grant those permissions without excessive access.';
+      case 'roleExplorer':
+        return 'Search and explore Azure built-in RBAC roles by name. View detailed permissions, compare multiple roles side-by-side, and export role definitions for documentation or analysis.';
+      case 'roleCreator':
+        return 'Build custom Azure RBAC roles tailored to your security requirements. Select specific permissions from built-in roles, define assignable scopes, and export role definitions ready for deployment.';
+      default:
+        return 'Find the least privileged Azure RBAC roles for your required permissions.';
+    }
+  };
+
   return (
     <Layout
       title="RBAC Least Privilege Calculator"
@@ -381,7 +396,7 @@ export default function RbacCalculatorPage() {
             RBAC Least Privilege Calculator
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl md:text-base">
-            Find the least privileged Azure RBAC roles for your required permissions. Enter Azure resource provider actions and discover which built-in roles grant those permissions without excessive access.
+            {getDescription()}
           </p>
         </div>
 
