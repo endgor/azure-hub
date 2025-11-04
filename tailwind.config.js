@@ -8,6 +8,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Override default slate colors for Apple-inspired dark mode
+        slate: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#3c3c3c', // Neutral dark gray for borders
+          700: '#2d313c', // Apple-inspired dark border/divider
+          800: '#1e222d', // Apple-inspired dark surface
+          900: '#191d27', // Apple-inspired dark card background
+          950: '#000000', // Apple-inspired pure black background
+        },
         // Google-inspired color palette
         google: {
           blue: {
