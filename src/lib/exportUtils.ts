@@ -34,10 +34,25 @@ export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
 /**
  * Exports data to CSV format using PapaParse library.
  * Uses dynamic import to reduce initial bundle size.
+ * Sanitizes all string values to prevent formula injection.
  */
 export async function exportToCSV<T extends ExportRow>(data: T[], filename: string = 'azure-ip-ranges.csv'): Promise<void> {
   const Papa = (await import('papaparse')).default;
-  const csv = Papa.unparse(data);
+
+  // Sanitize all string values in the data to prevent formula injection
+  const sanitizedData = data.map(row => {
+    const sanitizedRow: ExportRow = {};
+    for (const [key, value] of Object.entries(row)) {
+      if (typeof value === 'string') {
+        sanitizedRow[key] = sanitizeCellValue(value);
+      } else {
+        sanitizedRow[key] = value;
+      }
+    }
+    return sanitizedRow as T;
+  });
+
+  const csv = Papa.unparse(sanitizedData);
   downloadFile(csv, filename, 'text/csv;charset=utf-8;');
 }
 
@@ -91,14 +106,41 @@ export function generateFilename(query: string, format: 'csv' | 'xlsx'): string 
 }
 
 /**
+ * Sanitizes cell values to prevent CSV/Excel formula injection.
+ *
+ * CSV injection (also known as formula injection) occurs when spreadsheet applications
+ * interpret cell values starting with =, +, -, @, \t, \r, or \n as formulas, which can
+ * execute arbitrary commands when the file is opened.
+ *
+ * This function prefixes potentially dangerous values with a single quote to force
+ * spreadsheet applications to treat them as text literals.
+ *
+ * @see https://owasp.org/www-community/attacks/CSV_Injection
+ */
+function sanitizeCellValue(value: string): string {
+  if (!value || value.length === 0) return value;
+
+  const firstChar = value.charAt(0);
+  const dangerousChars = ['=', '+', '-', '@', '\t', '\r', '\n'];
+
+  // Prefix with single quote if value starts with a dangerous character
+  if (dangerousChars.includes(firstChar)) {
+    return "'" + value;
+  }
+
+  return value;
+}
+
+/**
  * Formats cell values for Excel export.
  * Preserves numbers as numeric type, converts booleans to TRUE/FALSE strings.
+ * Sanitizes strings to prevent formula injection.
  */
 function formatCellValue(value: ExportRow[keyof ExportRow]): string | number {
   if (value == null) return '';
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
-  return String(value);
+  return sanitizeCellValue(String(value));
 }
 
 /**
