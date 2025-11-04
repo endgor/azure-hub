@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
 
 /**
  * useLocalStorageState Hook
@@ -126,6 +126,10 @@ export function useLocalStorageState<T>(
   return [state, setState];
 }
 
+// Boolean serializer/deserializer functions (defined outside to prevent re-creation)
+const booleanSerializer = (value: boolean) => String(value);
+const booleanDeserializer = (value: string) => value === 'true';
+
 /**
  * useLocalStorageBoolean Hook
  *
@@ -156,10 +160,13 @@ export function useLocalStorageBoolean(
   initialValue: boolean
 ): [boolean, Dispatch<SetStateAction<boolean>>] {
   return useLocalStorageState<boolean>(key, initialValue, {
-    serializer: (value) => String(value),
-    deserializer: (value) => value === 'true',
+    serializer: booleanSerializer,
+    deserializer: booleanDeserializer,
   });
 }
+
+// Number serializer function (defined outside to prevent re-creation)
+const numberSerializer = (value: number) => String(value);
 
 /**
  * useLocalStorageNumber Hook
@@ -180,11 +187,17 @@ export function useLocalStorageNumber(
   key: string,
   initialValue: number
 ): [number, Dispatch<SetStateAction<number>>] {
-  return useLocalStorageState<number>(key, initialValue, {
-    serializer: (value) => String(value),
-    deserializer: (value) => {
+  // Memoize deserializer to prevent re-creation on every render
+  const deserializer = useMemo(
+    () => (value: string) => {
       const parsed = Number(value);
       return Number.isNaN(parsed) ? initialValue : parsed;
     },
+    [initialValue]
+  );
+
+  return useLocalStorageState<number>(key, initialValue, {
+    serializer: numberSerializer,
+    deserializer,
   });
 }
