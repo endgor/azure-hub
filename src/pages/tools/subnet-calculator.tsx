@@ -520,13 +520,22 @@ export default function SubnetCalculatorPage(): ReactElement {
 
   return (
     <Layout
-      title="Subnet Calculator"
+      title="Azure Subnet Calculator"
       description="Plan Azure address spaces, model subnet splits, and export allocation charts with the Azure Hub subnet calculator."
+      breadcrumbs={[
+        { name: 'Home', url: 'https://azurehub.org/' },
+        { name: 'Subnet Calculator', url: 'https://azurehub.org/tools/subnet-calculator/' }
+      ]}
+      toolSchema={{
+        name: 'Azure Subnet Calculator',
+        applicationCategory: 'DeveloperApplication',
+        offers: { price: '0' }
+      }}
     >
       <section className="space-y-6">
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Networking</p>
-          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Subnet Calculator</h1>
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure Subnet Calculator</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Plan and visualize Azure virtual network subnets with CIDR notation. Split address spaces, calculate usable IPs, and export subnet configurations for your VNet deployment.
           </p>
