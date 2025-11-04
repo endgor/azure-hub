@@ -99,7 +99,7 @@ const clientFetcher = async (key: string): Promise<ApiResponse> => {
             // DNS lookup failed, fall back to service/region search
             results = await searchServiceAndRegion(ipOrDomain);
           }
-        } catch (dnsError) {
+        } catch {
           // If DNS lookup fails, fall back to service/region search
           results = await searchServiceAndRegion(ipOrDomain);
         }
@@ -214,7 +214,7 @@ export default function IpLookupPage() {
       try {
         const result = await clientFetcher(apiUrl);
         setData(result);
-      } catch (err) {
+      } catch {
         setError('Failed to load data. Please check your input and try again.');
         setData(null);
       } finally {

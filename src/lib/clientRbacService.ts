@@ -1,11 +1,11 @@
 import { AzureRole, Operation, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
 import { calculateLeastPrivilegedRoles, extractServiceNamespaces, matchesWildcard } from './rbacService';
-import { CACHE_TTL_MS, CACHE_TTL_HOURS, SEARCH } from '@/config/constants';
+import { CACHE_TTL_MS, SEARCH } from '@/config/constants';
 
 /**
  * In-memory cache for Azure RBAC data (roles and permissions).
  * Reduces fetch calls and improves UI responsiveness.
- * Cache expires after ${CACHE_TTL_HOURS} hours.
+ * Cache expires after 6 hours.
  */
 let rolesCache: AzureRole[] | null = null;
 let permissionsCache: Operation[] | null = null;

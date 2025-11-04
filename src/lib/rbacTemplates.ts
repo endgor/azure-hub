@@ -117,22 +117,8 @@ export const RBAC_TEMPLATES: RbacTemplate[] = [
 ];
 
 /**
- * Get templates by category
- */
-export function getTemplatesByCategory(category: RbacTemplate['category']): RbacTemplate[] {
-  return RBAC_TEMPLATES.filter(t => t.category === category);
-}
-
-/**
  * Get all unique categories
  */
 export function getTemplateCategories(): RbacTemplate['category'][] {
   return Array.from(new Set(RBAC_TEMPLATES.map(t => t.category)));
-}
-
-/**
- * Get template by ID
- */
-export function getTemplateById(id: string): RbacTemplate | undefined {
-  return RBAC_TEMPLATES.find(t => t.id === id);
 }

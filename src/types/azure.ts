@@ -39,17 +39,6 @@ export enum AzureCloudName {
   AzureUSGovernment = "AzureUSGovernment"
 }
 
-export interface DownloadMapping {
-  id: string;
-  cloud: AzureCloudName;
-}
-
-export interface AzureCloudVersions {
-  AzureCloud?: string;
-  AzureChinaCloud?: string;
-  AzureUSGovernment?: string;
-}
-
 export interface AzureFileMetadata {
   cloud: AzureCloudName;
   changeNumber: number;

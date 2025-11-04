@@ -1,12 +1,12 @@
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress } from '../types/azure';
 import { getCachedNormalization } from './normalization';
-import { CACHE_TTL_MS, CACHE_TTL_HOURS } from '@/config/constants';
+import { CACHE_TTL_MS } from '@/config/constants';
 
 /**
  * In-memory cache for Azure IP data and versions.
  * Reduces API calls and improves performance on repeated lookups.
- * Cache expires after ${CACHE_TTL_HOURS} hours to balance freshness with performance.
+ * Cache expires after 6 hours to balance freshness with performance.
  */
 let azureIpAddressCache: AzureIpAddress[] | null = null;
 let ipCacheExpiry = 0;
@@ -115,7 +115,7 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
       if (cidr.contains(ipAddress)) {
         matches.push(azureIpRange);
       }
-    } catch (error) {
+    } catch {
       // Skip invalid CIDR ranges (malformed data)
       continue;
     }

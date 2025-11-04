@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 /**
  * useLocalStorageState Hook
@@ -48,7 +48,7 @@ import { useState, useEffect, useMemo, Dispatch, SetStateAction } from 'react';
  * const [count, setCount] = useLocalStorageState('counter', 0, { syncAcrossTabs: true });
  * ```
  */
-export function useLocalStorageState<T>(
+function useLocalStorageState<T>(
   key: string,
   initialValue: T,
   options?: {
@@ -162,42 +162,5 @@ export function useLocalStorageBoolean(
   return useLocalStorageState<boolean>(key, initialValue, {
     serializer: booleanSerializer,
     deserializer: booleanDeserializer,
-  });
-}
-
-// Number serializer function (defined outside to prevent re-creation)
-const numberSerializer = (value: number) => String(value);
-
-/**
- * useLocalStorageNumber Hook
- *
- * Convenience hook for numeric localStorage values.
- * Handles string-to-number conversion automatically.
- *
- * @param key - localStorage key
- * @param initialValue - Default numeric value
- * @returns [state, setState] tuple
- *
- * @example
- * ```tsx
- * const [pageSize, setPageSize] = useLocalStorageNumber('results-per-page', 20);
- * ```
- */
-export function useLocalStorageNumber(
-  key: string,
-  initialValue: number
-): [number, Dispatch<SetStateAction<number>>] {
-  // Memoize deserializer to prevent re-creation on every render
-  const deserializer = useMemo(
-    () => (value: string) => {
-      const parsed = Number(value);
-      return Number.isNaN(parsed) ? initialValue : parsed;
-    },
-    [initialValue]
-  );
-
-  return useLocalStorageState<number>(key, initialValue, {
-    serializer: numberSerializer,
-    deserializer,
   });
 }

@@ -58,12 +58,6 @@ export const PRIVILEGED_ROLES = [
 ] as const;
 
 /**
- * Type representing a privileged role name.
- * Use this for type-safe checks against the privileged roles list.
- */
-export type PrivilegedRoleName = typeof PRIVILEGED_ROLES[number];
-
-/**
  * Checks if a given role name is in the privileged roles list.
  *
  * @param roleName - The role name to check (case-sensitive)
@@ -95,22 +89,4 @@ export function isPrivilegedRole(roleName: string): boolean {
  */
 export function getPrivilegedRoles<T extends { roleName: string }>(roles: T[]): T[] {
   return roles.filter(role => isPrivilegedRole(role.roleName));
-}
-
-/**
- * Counts the number of privileged roles in a list.
- *
- * @param roles - Array of roles with roleName property
- * @returns Count of privileged roles
- *
- * @example
- * ```typescript
- * const count = countPrivilegedRoles(selectedRoles);
- * if (count > 0) {
- *   showWarning(`${count} privileged role(s) selected`);
- * }
- * ```
- */
-export function countPrivilegedRoles<T extends { roleName: string }>(roles: T[]): number {
-  return roles.filter(role => isPrivilegedRole(role.roleName)).length;
 }

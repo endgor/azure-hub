@@ -157,7 +157,7 @@ async function fetchTenantMetadata(tenantIdOrDomain: string): Promise<TenantMeta
       return null;
     }
     return (await response.json()) as TenantMetadata;
-  } catch (error) {
+  } catch {
     console.warn('Failed to fetch OpenID metadata');
     return null;
   }

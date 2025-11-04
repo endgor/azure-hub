@@ -126,7 +126,7 @@ export const getStaticProps: GetStaticProps<AboutProps> = async () => {
         rbacLastRetrieved,
       },
     };
-  } catch (error) {
+  } catch {
     return {
       props: {
         fileMetadata: [],
