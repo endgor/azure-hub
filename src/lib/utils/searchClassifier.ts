@@ -27,13 +27,10 @@ const SERVICE_PATTERNS = [
 ];
 
 /**
- * Query parameters for routing
+ * Query parameters for routing.
+ * Uses Record type to ensure compatibility with Next.js router query parameters.
  */
-export interface SearchQuery {
-  ipOrDomain?: string;
-  service?: string;
-  region?: string;
-}
+export type SearchQuery = Record<string, string>;
 
 /**
  * Classifies a search input string into query parameters.
