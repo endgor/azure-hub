@@ -598,7 +598,7 @@ export default function Layout({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <div className="flex items-center gap-2">
+              <Link href="/" className="flex items-center gap-2" aria-label="Azure Hub home">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-[#1B1B1C]">
                   <Image
                     src="/favicons/favicon-32x32.png"
@@ -610,7 +610,7 @@ export default function Layout({
                   />
                 </span>
                 <span className="text-base font-semibold tracking-tight">Azure Hub</span>
-              </div>
+              </Link>
             </div>
 
             <main className="flex-1 overflow-auto px-4 py-6 md:px-6 md:py-10">
