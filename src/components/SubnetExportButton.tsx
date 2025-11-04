@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { LeafSubnet } from '@/lib/subnetCalculator';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface SubnetExportButtonProps {
   leaves: LeafSubnet[];
@@ -28,18 +29,8 @@ export default function SubnetExportButton({
   const [isExporting, setIsExporting] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  // Close dropdown when clicking outside
+  useClickOutside(dropdownRef as React.RefObject<HTMLElement>, () => setIsOpen(false), isOpen);
 
   const handleExport = async (format: 'csv' | 'xlsx') => {
     if (disabled || isExporting || leaves.length === 0) {
