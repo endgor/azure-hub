@@ -10,7 +10,7 @@ interface RateLimitResult {
   reset: number;
 }
 
-class RateLimiter {
+export class RateLimiter {
   private cache: Map<string, RateLimitEntry>;
   private readonly limit: number;
   private readonly windowMs: number;
@@ -93,13 +93,40 @@ const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000
 
 const rateLimiter = new RateLimiter(RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW_MS);
 
-export function getClientIdentifier(req: { headers: Record<string, string | string[] | undefined> }): string {
-  const forwarded = req.headers['x-forwarded-for'];
-  const ip = typeof forwarded === 'string'
-    ? forwarded.split(',')[0].trim()
-    : req.headers['x-real-ip'] || 'unknown';
+/**
+ * Extracts client identifier for rate limiting.
+ *
+ * On Vercel, x-forwarded-for is reliably set by the platform and can be trusted.
+ * In other environments, falls back to socket remote address.
+ *
+ * Security note: Only trusts x-forwarded-for when VERCEL=1 environment variable
+ * is set, otherwise uses socket address to prevent header spoofing.
+ */
+export function getClientIdentifier(req: {
+  headers: Record<string, string | string[] | undefined>;
+  socket?: { remoteAddress?: string };
+}): string {
+  const isVercel = process.env.VERCEL === '1';
 
-  return typeof ip === 'string' ? ip : 'unknown';
+  // On Vercel, trust x-forwarded-for header set by the platform
+  if (isVercel) {
+    const forwarded = req.headers['x-forwarded-for'];
+    if (typeof forwarded === 'string') {
+      const ip = forwarded.split(',')[0].trim();
+      if (ip) return ip;
+    }
+
+    const realIp = req.headers['x-real-ip'];
+    if (typeof realIp === 'string' && realIp) return realIp;
+  }
+
+  // Fallback to socket address (cannot be spoofed)
+  if (req.socket?.remoteAddress) {
+    return req.socket.remoteAddress;
+  }
+
+  // Last resort fallback
+  return 'unknown';
 }
 
 export function checkRateLimit(identifier: string): RateLimitResult {
