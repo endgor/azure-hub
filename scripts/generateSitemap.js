@@ -7,6 +7,96 @@ const OUTPUT_DIR = path.join(process.cwd(), 'public');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
 /**
+ * Most commonly used Azure service tags that should be included in sitemap
+ * Focuses on core services, popular PaaS offerings, and frequently searched tags
+ */
+const POPULAR_SERVICE_TAGS = [
+  // Core Infrastructure
+  'AzureCloud',
+  'Storage',
+  'Sql',
+  'AzureLoadBalancer',
+  'AzureTrafficManager',
+  'AzureFrontDoor',
+
+  // Compute & Containers
+  'AppService',
+  'AzureContainerRegistry',
+  'AzureKubernetesService',
+  'BatchNodeManagement',
+
+  // Identity & Security
+  'AzureActiveDirectory',
+  'AzureKeyVault',
+  'AzureSecurityCenter',
+  'AzureInformationProtection',
+
+  // Data Services
+  'AzureCosmosDB',
+  'AzureDataLake',
+  'DataFactory',
+  'EventHub',
+  'ServiceBus',
+  'AzureEventGrid',
+
+  // Monitoring & Management
+  'AzureMonitor',
+  'AzureBackup',
+  'AzureSiteRecovery',
+  'LogicApps',
+  'AzureAutomation',
+
+  // Analytics & AI
+  'HDInsight',
+  'PowerBI',
+  'AzureMachineLearning',
+  'CognitiveServicesManagement',
+  'AzureDatabricks',
+
+  // Integration
+  'AzureApiManagement',
+  'ServiceFabric',
+  'AzureSignalR',
+  'AzureIoTHub',
+  'AzureDevOps',
+
+  // Business Apps
+  'Dynamics365',
+  'PowerQueryOnline',
+  'MicrosoftDefenderForEndpoint',
+
+  // Regional variants for major regions (US, EU, Asia)
+  'Storage.EastUS',
+  'Storage.WestEurope',
+  'Storage.SoutheastAsia',
+  'Sql.EastUS',
+  'Sql.WestEurope',
+  'AppService.EastUS',
+  'AppService.WestEurope'
+];
+
+/**
+ * Checks if a service tag should be included in the sitemap
+ * @param {string} tag - Service tag name
+ * @returns {boolean} True if tag should be included
+ */
+function shouldIncludeServiceTag(tag) {
+  // Include if it's in the popular list
+  if (POPULAR_SERVICE_TAGS.includes(tag)) {
+    return true;
+  }
+
+  // Include base service tags (without regional suffix)
+  // Example: "Storage" but not "Storage.AustraliaCentral2"
+  const baseTag = tag.split('.')[0];
+  if (POPULAR_SERVICE_TAGS.includes(baseTag) && tag === baseTag) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Escapes XML special characters to prevent XML injection
  * @param {string} unsafe - String that may contain XML special characters
  * @returns {string} XML-safe string
@@ -60,7 +150,13 @@ function generateSitemap() {
     // Convert Set to sorted array
     const serviceTagsArray = Array.from(serviceTags).sort();
 
+    // Filter to only popular service tags
+    const includedTags = serviceTagsArray.filter(tag =>
+      isValidServiceTag(tag) && shouldIncludeServiceTag(tag)
+    );
+
     console.log(`Found ${serviceTagsArray.length} unique service tags`);
+    console.log(`Including ${includedTags.length} popular service tags in sitemap`);
 
     // Generate sitemap XML
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -109,14 +205,15 @@ function generateSitemap() {
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
-  <!-- Dynamic Service Tag Pages -->
+  <!-- Popular Service Tag Pages -->
 ${serviceTagsArray
   .filter(tag => {
     if (!isValidServiceTag(tag)) {
       console.warn(`⚠ Skipping invalid service tag (contains special characters): ${tag}`);
       return false;
     }
-    return true;
+    // Only include popular/commonly-used service tags
+    return shouldIncludeServiceTag(tag);
   })
   .map((tag) => {
     // Apply both URL encoding and XML escaping for defense in depth
@@ -141,7 +238,7 @@ ${serviceTagsArray
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    console.log(`  Total URLs: ${serviceTagsArray.length + 7}`);
+    console.log(`  Total URLs: ${includedTags.length + 7} (7 core pages + ${includedTags.length} service tags)`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);
