@@ -442,8 +442,17 @@ export default function RbacCalculatorPage() {
 
   return (
     <Layout
-      title="RBAC Least Privilege Calculator"
-      description="Find the least privileged Azure role for your required permissions using Azure Hub's RBAC calculator."
+      title="Azure RBAC Calculator & Role Generator"
+      description="Find the least privileged Azure RBAC roles and generate custom role definitions for your required permissions using Azure Hub's RBAC calculator and role generator."
+      breadcrumbs={[
+        { name: 'Home', url: 'https://azurehub.org/' },
+        { name: 'RBAC Calculator', url: 'https://azurehub.org/tools/rbac-calculator/' }
+      ]}
+      toolSchema={{
+        name: 'Azure RBAC Calculator & Role Generator',
+        applicationCategory: 'DeveloperApplication',
+        offers: { price: '0' }
+      }}
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
@@ -451,7 +460,7 @@ export default function RbacCalculatorPage() {
             Identity & Access
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
-            RBAC Least Privilege Calculator
+            Azure RBAC Calculator & Role Generator
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             {getDescription()}

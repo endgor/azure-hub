@@ -260,6 +260,15 @@ export default function IpLookupPage() {
     <Layout
       title="Azure IP Lookup"
       description="Search Microsoft Azure IP ranges, CIDR prefixes, and service tags with the Azure Hub IP lookup tool."
+      breadcrumbs={[
+        { name: 'Home', url: 'https://azurehub.org/' },
+        { name: 'IP Lookup', url: 'https://azurehub.org/tools/ip-lookup/' }
+      ]}
+      toolSchema={{
+        name: 'Azure IP Lookup Tool',
+        applicationCategory: 'DeveloperApplication',
+        offers: { price: '0' }
+      }}
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">

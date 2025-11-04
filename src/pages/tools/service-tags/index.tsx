@@ -59,6 +59,15 @@ export default function ServiceTags() {
     <Layout
       title="Azure Service Tags"
       description="Explore Microsoft Azure service tags, discover associated IP ranges, and research network dependencies by cloud region."
+      breadcrumbs={[
+        { name: 'Home', url: 'https://azurehub.org/' },
+        { name: 'Service Tags', url: 'https://azurehub.org/tools/service-tags/' }
+      ]}
+      toolSchema={{
+        name: 'Azure Service Tags Explorer',
+        applicationCategory: 'DeveloperApplication',
+        offers: { price: '0' }
+      }}
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
