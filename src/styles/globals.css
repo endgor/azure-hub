@@ -13,11 +13,11 @@
 
 .dark {
   color-scheme: dark;
-  --foreground-rgb: 226, 232, 240;
-  --background-rgb: 2, 6, 23;
-  --surface-rgb: 15, 23, 42;
-  --border-rgb: 30, 41, 59;
-  --accent-rgb: 56, 189, 248;
+  --foreground-rgb: 235, 235, 235;
+  --background-rgb: 0, 0, 0;
+  --surface-rgb: 25, 29, 39;
+  --border-rgb: 45, 49, 60;
+  --accent-rgb: 1, 87, 243;
 }
 
 body {
@@ -49,49 +49,61 @@ body {
 .dark .text-slate-900,
 .dark .text-slate-800,
 .dark .text-slate-700 {
-  color: rgb(226 232 240 / 0.96);
+  color: rgb(235 235 235 / 0.96);
 }
 
 .dark .text-slate-600,
 .dark .text-slate-500,
 .dark .text-slate-400,
 .dark .text-slate-300 {
-  color: rgb(148 163 184 / 0.86);
+  color: rgb(160 160 160 / 0.90);
 }
 
 .dark .text-slate-200,
 .dark .text-slate-100 {
-  color: rgb(203 213 225 / 0.78);
+  color: rgb(210 210 210 / 0.88);
 }
 
 .dark .border-slate-300 {
-  border-color: rgb(71 85 105 / 0.75);
+  border-color: rgb(60 60 60 / 0.75);
 }
 
 .dark .border-slate-200 {
-  border-color: rgb(71 85 105 / 0.65);
+  border-color: rgb(50 50 50 / 0.65);
 }
 
 .dark .border-slate-100 {
-  border-color: rgb(51 65 85 / 0.5);
+  border-color: rgb(40 40 40 / 0.5);
 }
 
 .dark .bg-white {
-  background-color: rgb(15 23 42);
+  background-color: rgb(25 29 39);
 }
 
 .dark .bg-white\/95 {
-  background-color: rgb(15 23 42 / 0.95);
+  background-color: rgb(25 29 39 / 0.95);
 }
 
 .dark .bg-slate-50,
 .dark .bg-slate-100,
 .dark .bg-slate-200 {
-  background-color: rgb(30 41 59 / 0.75);
+  background-color: rgb(30 34 45 / 0.75);
+}
+
+.dark .bg-slate-700 {
+  background-color: rgb(30 34 45);
+}
+
+.dark .bg-slate-800 {
+  background-color: rgb(25 29 39);
+}
+
+.dark .bg-slate-900 {
+  background-color: rgb(18 18 18);
 }
 
 .dark .ring-white\/60 {
-  --tw-ring-color: rgb(148 163 184 / 0.35);
+  --tw-ring-color: rgb(160 160 160 / 0.35);
 }
 
 .prose h1 {

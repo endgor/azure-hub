@@ -56,6 +56,22 @@ module.exports = {
             700: '#f29900',
           },
         },
+        // Apple-inspired dark mode palette
+        apple: {
+          dark: {
+            bg: '#000000',
+            surface: '#191D27',
+            'surface-elevated': '#1E222D',
+            border: '#2D313C',
+            text: {
+              primary: '#EBEBEB',
+              secondary: '#A0A0A0',
+              tertiary: '#6E6E73',
+            },
+          },
+          blue: '#0157F3',
+          orange: '#ED864E',
+        },
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'Roboto', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', 'Helvetica Neue', 'sans-serif'],
