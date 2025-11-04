@@ -9,6 +9,7 @@ import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
+import Button from '@/components/shared/Button';
 
 // Import small components directly
 import DisclaimerBanner from '@/components/RbacCalculator/DisclaimerBanner';
@@ -482,20 +483,20 @@ export default function RbacCalculatorPage() {
             {/* Submit Buttons (Simple & Advanced modes only) */}
             {inputMode !== 'roleExplorer' && (
               <div className="flex gap-3">
-                <button
+                <Button
                   type="submit"
                   disabled={isLoading || (inputMode === 'simple' ? selectedActions.length === 0 : !actionsInput.trim())}
-                  className="rounded-lg bg-sky-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 disabled:cursor-not-allowed disabled:opacity-50 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
+                  isLoading={isLoading}
                 >
                   {isLoading ? 'Calculating...' : 'Find Roles'}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="secondary"
                   onClick={handleClear}
-                  className="rounded-lg border border-slate-300 bg-white px-6 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
                 >
                   Clear
-                </button>
+                </Button>
               </div>
             )}
           </form>

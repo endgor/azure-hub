@@ -1,6 +1,7 @@
 import React, { memo, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
+import Button from '@/components/shared/Button';
 
 interface PaginationProps {
   currentPage: number;
@@ -131,12 +132,13 @@ const Pagination: React.FC<PaginationProps> = memo(({
         {/* Previous button */}
         {!isAll && currentPage > 1 && (
           onPageChange ? (
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => onPageChange(currentPage - 1)}
-              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:px-3 md:py-2 md:text-sm"
             >
               Previous
-            </button>
+            </Button>
           ) : (
             <Link
               href={getPageUrl(currentPage - 1)}
@@ -156,17 +158,15 @@ const Pagination: React.FC<PaginationProps> = memo(({
 
           return (
             onPageChange ? (
-              <button
+              <Button
                 key={page}
+                variant={!isAll && currentPage === page ? 'primary' : 'secondary'}
+                size="sm"
                 onClick={() => onPageChange(page)}
-                className={`rounded-lg px-2 py-1.5 text-xs transition md:px-3 md:py-2 md:text-sm ${
-                  !isAll && currentPage === page
-                    ? 'border border-sky-400 bg-sky-50 text-sky-700'
-                    : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
-                }`}
+                className={!isAll && currentPage === page ? 'bg-sky-50 text-sky-700 border-sky-400 hover:bg-sky-50' : ''}
               >
                 {page}
-              </button>
+              </Button>
             ) : (
               <Link
                 key={page}
@@ -185,16 +185,14 @@ const Pagination: React.FC<PaginationProps> = memo(({
 
         {/* All option */}
         {onPageChange ? (
-          <button
+          <Button
+            variant={isAll ? 'primary' : 'secondary'}
+            size="sm"
             onClick={() => onPageChange('all')}
-            className={`rounded-lg px-2 py-1.5 text-xs transition md:px-3 md:py-2 md:text-sm ${
-              isAll
-                ? 'border border-sky-400 bg-sky-50 text-sky-700'
-                : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700'
-            }`}
+            className={isAll ? 'bg-sky-50 text-sky-700 border-sky-400 hover:bg-sky-50' : ''}
           >
             All
-          </button>
+          </Button>
         ) : (
           <Link
             href={getAllUrl}
@@ -211,12 +209,13 @@ const Pagination: React.FC<PaginationProps> = memo(({
         {/* Next button */}
         {!isAll && currentPage < totalPages && (
           onPageChange ? (
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => onPageChange(currentPage + 1)}
-              className="rounded-lg border border-slate-300 px-2 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 md:px-3 md:py-2 md:text-sm"
             >
               Next
-            </button>
+            </Button>
           ) : (
             <Link
               href={getPageUrl(currentPage + 1)}

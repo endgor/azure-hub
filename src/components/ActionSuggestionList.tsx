@@ -1,3 +1,5 @@
+import Button from '@/components/shared/Button';
+
 interface ActionSuggestion {
   id: string;
   name: string;
@@ -13,11 +15,13 @@ export default function ActionSuggestionList({ suggestions, onSelect }: ActionSu
   return (
     <div className="max-h-64 overflow-y-auto">
       {suggestions.map((suggestion) => (
-        <button
+        <Button
           key={suggestion.id}
           type="button"
+          variant="ghost"
+          fullWidth
           onClick={() => onSelect(suggestion.name)}
-          className="w-full border-b border-slate-200 px-3 py-2.5 text-left transition hover:bg-slate-50 last:border-b-0 dark:border-slate-700 dark:hover:bg-slate-800"
+          className="border-b border-slate-200 px-3 py-2.5 text-left justify-start hover:bg-slate-50 last:border-b-0 dark:border-slate-700 dark:hover:bg-slate-800 rounded-none shadow-none"
         >
           <div className="flex flex-col gap-0.5">
             <div className="font-mono text-xs text-slate-900 dark:text-slate-100">
@@ -29,7 +33,7 @@ export default function ActionSuggestionList({ suggestions, onSelect }: ActionSu
               </div>
             )}
           </div>
-        </button>
+        </Button>
       ))}
     </div>
   );

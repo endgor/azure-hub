@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SubnetExportButton from '@/components/SubnetExportButton';
 import ErrorBox from '@/components/shared/ErrorBox';
+import Button from '@/components/shared/Button';
 import {
   DEFAULT_NETWORK,
   DEFAULT_PREFIX,
@@ -560,19 +561,17 @@ export default function SubnetCalculatorPage(): ReactElement {
             </label>
 
             <div className="flex items-center gap-3">
-              <button
-                type="submit"
-                className="inline-flex h-10 items-center justify-center rounded-lg bg-sky-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:border dark:border-[#363638] dark:bg-slate-800 dark:text-[#0A84FF] dark:hover:border-[#0A84FF]/30 dark:hover:bg-[#0A84FF]/10"
-              >
+              <Button type="submit" size="md">
                 Go
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="secondary"
+                size="md"
                 onClick={handleReset}
-                className="inline-flex h-10 items-center justify-center rounded-lg border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-500/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
               >
                 Reset
-              </button>
+              </Button>
             </div>
 
             {formError && (

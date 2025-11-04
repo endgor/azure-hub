@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Button from '@/components/shared/Button';
 
 export interface SelectionChip {
   id: string;
@@ -29,11 +30,13 @@ export default function SelectionChips({ heading, items, onRemove }: SelectionCh
             className="flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-1.5 shadow-sm dark:border-slate-600 dark:bg-slate-800"
           >
             <div className="max-w-md">{item.content}</div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onRemove(item.id)}
               aria-label={item.removeAriaLabel}
-              className="shrink-0 text-slate-400 transition hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:text-slate-500 dark:hover:text-slate-300"
+              className="shrink-0 text-slate-400 transition hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:text-slate-500 dark:hover:text-slate-300 p-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +50,7 @@ export default function SelectionChips({ heading, items, onRemove }: SelectionCh
                   clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </Button>
           </div>
         ))}
       </div>

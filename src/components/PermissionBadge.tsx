@@ -1,3 +1,5 @@
+import Button from '@/components/shared/Button';
+
 interface ValidationResult {
   isValid: boolean;
   suggestion?: string;
@@ -48,25 +50,29 @@ export default function PermissionBadge({
         </div>
         <div className="flex items-center gap-1 ml-2 shrink-0">
           {!validation.isValid && showMoveButton && onMove && (
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={onMove}
               className="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60"
               title={validation.suggestion}
             >
               Move
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={onRemove}
-            className="text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400"
+            className="text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 p-0"
             aria-label={`Remove ${action}`}
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
       {!validation.isValid && validation.suggestion && (
