@@ -159,8 +159,8 @@ export default function TenantLookupPage() {
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Identity</p>
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Tenant Lookup</h1>
-          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl md:text-base">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Tenant Lookup</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Discover Azure AD tenant information from domain names. Retrieve tenant names, GUIDs, Azure AD instances, and tenant scope details.
           </p>
         </div>
