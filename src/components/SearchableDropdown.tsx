@@ -1,5 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import Button from '@/components/shared/Button';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 export interface DropdownItem {
   id: string;
@@ -48,21 +49,8 @@ export default function SearchableDropdown({
 }: SearchableDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Click-outside handler
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        onDropdownVisibilityChange(false);
-      }
-    }
-
-    if (showDropdown) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }
-  }, [showDropdown, onDropdownVisibilityChange]);
+  // Close dropdown when clicking outside
+  useClickOutside(dropdownRef as React.RefObject<HTMLElement>, () => onDropdownVisibilityChange(false), showDropdown);
 
   const defaultIcon = (
     <svg className="h-5 w-5 text-sky-500 dark:text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">

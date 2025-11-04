@@ -30,15 +30,30 @@ export default function Document() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
-        {/* No-flash script: Set dark class before React hydrates to prevent theme flash */}
+        {/* No-flash script: Set dark class and theme-color before React hydrates to prevent theme flash */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  var isDark = localStorage.getItem('theme-dark') === 'true';
+                  var stored = localStorage.getItem('theme-dark');
+                  var isDark = stored === 'true' ||
+                    (stored === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
                   if (isDark) {
                     document.documentElement.classList.add('dark');
+                  }
+
+                  // Set theme-color meta tag immediately to prevent flash
+                  var themeColor = isDark ? '#151515' : '#f1f5f9';
+                  var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+                  if (metaThemeColor) {
+                    metaThemeColor.setAttribute('content', themeColor);
+                  } else {
+                    var meta = document.createElement('meta');
+                    meta.name = 'theme-color';
+                    meta.content = themeColor;
+                    document.head.appendChild(meta);
                   }
                 } catch (e) {}
               })();

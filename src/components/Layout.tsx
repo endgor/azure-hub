@@ -253,13 +253,29 @@ export default function Layout({
   const router = useRouter();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', false);
 
-  // Toggle dark class on documentElement when theme changes
+  // Initialize dark mode with system preference if no stored value exists
+  const getInitialDarkMode = () => {
+    if (typeof window === 'undefined') return false;
+    const stored = localStorage.getItem('theme-dark');
+    if (stored !== null) return stored === 'true';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+
+  const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', getInitialDarkMode());
+
+  // Toggle dark class and theme-color meta tag when theme changes
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
     document.documentElement.classList.toggle('dark', isDarkMode);
+
+    // Update theme-color meta tag
+    const themeColor = isDarkMode ? '#151515' : '#f1f5f9';
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', themeColor);
+    }
   }, [isDarkMode]);
 
   // Close mobile menu when route changes
@@ -280,8 +296,6 @@ export default function Layout({
       keywords
     };
   }, [description, keywords, router.pathname, title]);
-
-  const themeColor = isDarkMode ? '#151515' : '#f1f5f9';
 
   const structuredData = useMemo(
     () => ({
@@ -372,7 +386,7 @@ export default function Layout({
         <meta property="twitter:title" content={meta.title} />
         <meta property="twitter:description" content={meta.description} />
         <meta property="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-        <meta name="theme-color" content={themeColor} />
+        {/* theme-color is set dynamically via inline script in _document.tsx to prevent flash */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
         {breadcrumbSchema && (
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
