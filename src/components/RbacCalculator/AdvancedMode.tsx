@@ -40,7 +40,7 @@ export default function AdvancedMode({
           onChange={(e) => onActionsInputChange(e.target.value)}
           placeholder={'Microsoft.Compute/virtualMachines/read\nMicrosoft.Compute/virtualMachines/start/action\nMicrosoft.Compute/virtualMachines/restart/action'}
           rows={8}
-          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-xs text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-sky-400"
         />
         <p className="text-xs text-slate-500 dark:text-slate-400">
           Supports wildcards (e.g., Microsoft.Storage/ *). Lines starting with # are treated as comments.

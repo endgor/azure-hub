@@ -1,6 +1,8 @@
 import { RefObject } from 'react';
 import type { Operation } from '@/types/rbac';
 import SelectionChips, { type SelectionChip } from '@/components/SelectionChips';
+import SearchInput from '@/components/shared/SearchInput';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 interface SimpleModeProps {
   // Service selection
@@ -55,46 +57,27 @@ export default function SimpleMode({
 }: SimpleModeProps) {
   return (
     <>
-      <div className="space-y-2 relative max-w-2xl" ref={serviceDropdownRef}>
+      <div className="space-y-2 relative" ref={serviceDropdownRef}>
         <label
           htmlFor="service-search"
           className="block text-sm font-medium text-slate-700 dark:text-slate-200"
         >
           Step 1: Select Azure Service
         </label>
-        <div className="relative">
-          <input
-            type="text"
-            id="service-search"
-            value={serviceSearch}
-            onChange={(e) => {
-              onServiceSearchChange(e.target.value);
-              onServiceDropdownVisibilityChange(true);
-            }}
-            onFocus={() => onServiceDropdownVisibilityChange(true)}
-            placeholder={isLoadingServices ? "Loading services..." : "Search for a service (e.g., Compute, Storage, Network)"}
-            disabled={isLoadingServices}
-            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 pr-10 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400 disabled:opacity-60 disabled:cursor-not-allowed"
-          />
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-            {isLoadingServices ? (
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
-            ) : (
-              <svg
-                className="h-5 w-5 text-sky-500 dark:text-sky-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-4.8-4.8m0 0A6 6 0 1010 16a6 6 0 006.2-4.6z"
-                />
-              </svg>
-            )}
-          </div>
+        <SearchInput
+          type="text"
+          id="service-search"
+          value={serviceSearch}
+          onChange={(e) => {
+            onServiceSearchChange(e.target.value);
+            onServiceDropdownVisibilityChange(true);
+          }}
+          onFocus={() => onServiceDropdownVisibilityChange(true)}
+          placeholder={isLoadingServices ? "Loading services..." : "Search for a service (e.g., Compute, Storage, Network)"}
+          disabled={isLoadingServices}
+          maxWidth="xl"
+          isLoading={isLoadingServices}
+        />
 
           {showServiceDropdown && filteredServices.length > 0 && (
             <div className="absolute z-10 mt-1 w-full rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900 max-h-80 overflow-y-auto">
@@ -118,7 +101,6 @@ export default function SimpleMode({
               No services match &ldquo;{serviceSearch}&rdquo;
             </div>
           )}
-        </div>
       </div>
 
       {selectedService && (
@@ -129,18 +111,19 @@ export default function SimpleMode({
           >
             Step 2: Browse and Select Actions
           </label>
-          <input
+          <SearchInput
             type="text"
             id="action-search"
             value={actionSearch}
             onChange={(e) => onActionSearchChange(e.target.value)}
             placeholder="Filter actions (e.g., read, write, delete)"
-            className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
+            maxWidth="full"
+            icon={null}
           />
 
           {isLoadingActions ? (
             <div className="flex items-center justify-center rounded-lg border border-slate-200 bg-white p-8 dark:border-slate-700 dark:bg-slate-900">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+              <LoadingSpinner size="md" />
             </div>
           ) : filteredActions.length > 0 ? (
             <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
@@ -160,7 +143,7 @@ export default function SimpleMode({
                   >
                     <div className="flex items-start gap-3">
                       <div className="flex-1">
-                        <div className="font-mono text-sm text-sky-600 dark:text-sky-400 break-all">
+                        <div className="font-mono text-xs text-sky-600 dark:text-sky-400 break-all">
                           {operation.name}
                         </div>
                         {operation.description && (

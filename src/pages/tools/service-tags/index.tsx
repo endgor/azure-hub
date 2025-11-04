@@ -3,6 +3,9 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import { getAllServiceTags } from '@/lib/clientIpService';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
+import SearchInput from '@/components/shared/SearchInput';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import ErrorBox from '@/components/shared/ErrorBox';
 
 const clientServiceTagsFetcher = async () => {
   try {
@@ -66,41 +69,24 @@ export default function ServiceTags() {
           </p>
         </div>
 
-        <div className="w-full max-w-md">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search service tags..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 pr-12 text-base text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
-            />
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-sky-500 transition dark:text-sky-300">
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M21 21l-5.2-5.2m0 0A6 6 0 1010 16a6 6 0 005.8-4.2z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+        <SearchInput
+          type="text"
+          placeholder="Search service tags..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          maxWidth="sm"
+        />
 
         {isLoading && (
           <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
-            <p className="text-sm text-slate-600 dark:text-slate-300">Loading service tags...</p>
+            <LoadingSpinner size="lg" label="Loading service tags..." />
           </div>
         )}
 
         {error && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
-            <h3 className="font-semibold text-rose-700 dark:text-rose-200">Error loading service tags</h3>
-            <p className="mt-1 text-rose-600 dark:text-rose-200/80">{error.message}</p>
-          </div>
+          <ErrorBox title="Error loading service tags">
+            {error.message}
+          </ErrorBox>
         )}
 
         {data && !isLoading && (

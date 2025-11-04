@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, ReactNode } from 'react';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
 /**
  * Generic result item for the dropdown.
@@ -188,7 +189,7 @@ export default function SearchDropdown<T extends SearchDropdownItem>({
 
   const defaultLoadingSpinner = (
     <div className="flex items-center justify-center p-4">
-      <div className="h-5 w-5 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+      <LoadingSpinner size="sm" />
     </div>
   );
 
@@ -207,7 +208,7 @@ export default function SearchDropdown<T extends SearchDropdownItem>({
         {inputIcon && (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             {isLoading ? (
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
+              <LoadingSpinner size="sm" />
             ) : (
               inputIcon
             )}

@@ -7,6 +7,8 @@ import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
+import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import ErrorBox from '@/components/shared/ErrorBox';
 
 // Import small components directly
 import DisclaimerBanner from '@/components/RbacCalculator/DisclaimerBanner';
@@ -412,10 +414,7 @@ export default function RbacCalculatorPage() {
         {inputMode === 'roleCreator' ? (
           <Suspense fallback={
             <div className="flex items-center justify-center rounded-xl border border-slate-200 bg-white p-12 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <div className="flex flex-col items-center gap-3">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-sky-500/70 border-t-transparent" />
-                <p className="text-sm text-slate-600 dark:text-slate-400">Loading Role Creator...</p>
-              </div>
+              <LoadingSpinner size="md" label="Loading Role Creator..." />
             </div>
           }>
             <RoleCreator
@@ -505,16 +504,15 @@ export default function RbacCalculatorPage() {
         {/* Loading State */}
         {isLoading && inputMode !== 'roleCreator' && (
           <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-            <div className="h-10 w-10 animate-spin rounded-full border-2 border-sky-500/70 border-t-transparent" />
-            <p className="text-slate-600 dark:text-slate-300">Calculating least privileged roles...</p>
+            <LoadingSpinner size="lg" label="Calculating least privileged roles..." />
           </div>
         )}
 
         {/* Error State */}
         {error && inputMode !== 'roleCreator' && (
-          <div className="rounded-xl border border-rose-200 bg-rose-50 p-5 text-sm text-rose-700 dark:border-rose-400/40 dark:bg-rose-500/10 dark:text-rose-300">
+          <ErrorBox>
             {error}
-          </div>
+          </ErrorBox>
         )}
 
         {/* Results for Simple & Advanced modes */}
