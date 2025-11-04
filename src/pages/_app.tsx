@@ -16,10 +16,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="description"
-          content="Azure Hub unifies Azure IP lookup, service tag exploration, and upcoming diagnostics tools under one interface."
-        />
       </Head>
       <div className={`${inter.variable} font-sans`}>
         <Component {...pageProps} />
