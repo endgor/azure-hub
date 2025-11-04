@@ -112,6 +112,56 @@ RBAC Calculator Refactoring Plan
 - Can refactor 4+ click-outside patterns
 - Foundation laid for test infrastructure
 
+### 2025-11-04 - Phase 3a Complete ✅
+**Completed Items:**
+- [x] Phase 3a.1: Set up testing framework (commit 9a91512)
+  - Installed Vitest with React Testing Library
+  - Created vitest.config.ts with jsdom environment
+  - Created src/test/setup.ts with Next.js mocks (router, Image, Link)
+  - Added test scripts: test, test:ui, test:run, test:coverage
+  - Excluded test files from Next.js TypeScript compilation
+
+- [x] Phase 3a.2: Add integration tests for RBAC calculator modes (commit 9a91512)
+  - Created src/test/__tests__/rbac-calculator.test.tsx
+  - 17 passing tests, 9 skipped (complex interactions)
+  - Tests cover: initial render, disclaimer, mode switching, advanced input, search, role explorer, error handling, accessibility
+  - Mocked clientRbacService for isolated testing
+  - Fixed mock data structure (matchingActions)
+
+- [x] Phase 3a.3: Add regression tests for export functions (commit c21cfa3)
+  - Created src/lib/__tests__/exportUtils.test.ts (7 tests)
+  - Created src/lib/__tests__/rbacExportUtils.test.ts (13 tests)
+  - 20 passing tests covering data transformation, CSV/JSON export, filename generation
+  - Tests verify quote escaping, Azure format conversion, edge cases
+
+- [x] Phase 3a.4: Capture bundle-size baseline
+  - Created BUNDLE-BASELINE.md with current bundle sizes
+  - RBAC Calculator: 223 kB First Load JS (largest page)
+  - Homepage: 114 kB First Load JS
+  - Shared JS: 111 kB (framework + main)
+  - Baseline established before Phase 4-6 refactoring
+
+- [x] Phase 3a.5: Profile performance for extractActionsFromRoles
+  - Created PERFORMANCE-BASELINE.md
+  - Documented function complexity: O(n*m*p)
+  - Current optimization: 6-hour cache + requestIdleCallback
+  - Recommendation: Only optimize if profiling shows >200ms
+  - Phase 6 optimizations deferred until proven necessary
+
+**Phase 3a Summary:**
+- **Test coverage**: 37 passing tests across 3 test files
+- **Test infrastructure**: Vitest + React Testing Library + Next.js mocks
+- **Bundle baseline**: 223 kB (RBAC Calculator), target <200 kB after refactoring
+- **Performance baseline**: Documented, optimization deferred to Phase 6 if needed
+- **Build status**: ✅ All builds passing, tests passing
+- **Commits**: 3 focused commits created
+
+**Ready for Phase 4:**
+- Test safety net in place for high-risk refactors
+- Bundle size baseline captured for comparison
+- Performance baseline documented
+- Can proceed with export consolidation and component splits
+
 ### 2025-11-03 - Phase 2 Complete ✅
 **Completed Items:**
 - [x] Phase 2.1: Created `src/components/shared/DismissibleBanner.tsx` (commit 776387a)
