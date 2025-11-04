@@ -5,6 +5,7 @@ import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { downloadJSON } from '@/lib/downloadUtils';
 import { generateNameFilename } from '@/lib/filenameUtils';
 import type { DropdownItem } from '@/components/SearchableDropdown';
+import { mergePermissionBuckets, dedupePermissionBuckets, filterPermissionBuckets } from '@/lib/utils/permissionMerger';
 
 export interface CustomRoleDefinition {
   roleName: string;
@@ -196,19 +197,25 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
 
     setImportedRoles([...importedRoles, importedRole]);
 
-    // Merge with existing permissions
-    const newActions = new Set([...customRole.actions, ...roleActions]);
-    const newNotActions = new Set([...customRole.notActions, ...roleNotActions]);
-    const newDataActions = new Set([...customRole.dataActions, ...roleDataActions]);
-    const newNotDataActions = new Set([...customRole.notDataActions, ...roleNotDataActions]);
+    // Merge with existing permissions using utility function
+    const mergedPermissions = mergePermissionBuckets(
+      {
+        actions: customRole.actions,
+        notActions: customRole.notActions,
+        dataActions: customRole.dataActions,
+        notDataActions: customRole.notDataActions
+      },
+      {
+        actions: roleActions,
+        notActions: roleNotActions,
+        dataActions: roleDataActions,
+        notDataActions: roleNotDataActions
+      }
+    );
 
-    // Convert sets to sorted arrays (removes duplicates automatically)
     setCustomRole({
       ...customRole,
-      actions: Array.from(newActions).sort(),
-      notActions: Array.from(newNotActions).sort(),
-      dataActions: Array.from(newDataActions).sort(),
-      notDataActions: Array.from(newNotDataActions).sort()
+      ...mergedPermissions
     });
 
     setRoleSearchQuery('');
@@ -224,13 +231,25 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     // Remove the role from imported list
     setImportedRoles(importedRoles.filter(imported => imported.role.id !== roleId));
 
-    // Remove the role's actions from custom role
+    // Remove the role's actions from custom role using utility function
+    const filteredPermissions = filterPermissionBuckets(
+      {
+        actions: customRole.actions,
+        notActions: customRole.notActions,
+        dataActions: customRole.dataActions,
+        notDataActions: customRole.notDataActions
+      },
+      {
+        actions: roleToRemove.actions,
+        notActions: roleToRemove.notActions,
+        dataActions: roleToRemove.dataActions,
+        notDataActions: roleToRemove.notDataActions
+      }
+    );
+
     setCustomRole({
       ...customRole,
-      actions: customRole.actions.filter(action => !roleToRemove.actions.includes(action)),
-      notActions: customRole.notActions.filter(action => !roleToRemove.notActions.includes(action)),
-      dataActions: customRole.dataActions.filter(action => !roleToRemove.dataActions.includes(action)),
-      notDataActions: customRole.notDataActions.filter(action => !roleToRemove.notDataActions.includes(action))
+      ...filteredPermissions
     });
   }, [customRole, importedRoles]);
 
@@ -437,14 +456,18 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     downloadJSON(jsonContent, filename);
   }, [customRole, manuallyAddedActions, validateActionCategory]);
 
-  // Deduplicate all actions
+  // Deduplicate all actions using utility function
   const handleDeduplicate = useCallback(() => {
+    const dedupedPermissions = dedupePermissionBuckets({
+      actions: customRole.actions,
+      notActions: customRole.notActions,
+      dataActions: customRole.dataActions,
+      notDataActions: customRole.notDataActions
+    });
+
     setCustomRole({
       ...customRole,
-      actions: Array.from(new Set(customRole.actions)).sort(),
-      notActions: Array.from(new Set(customRole.notActions)).sort(),
-      dataActions: Array.from(new Set(customRole.dataActions)).sort(),
-      notDataActions: Array.from(new Set(customRole.notDataActions)).sort()
+      ...dedupedPermissions
     });
   }, [customRole]);
 
