@@ -30,6 +30,21 @@ export default function Document() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
+        {/* No-flash script: Set dark class before React hydrates to prevent theme flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var isDark = localStorage.getItem('theme-dark') === 'true';
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </Head>
       <body className="bg-slate-100">
         <Main />
