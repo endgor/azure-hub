@@ -132,7 +132,3 @@ export function getClientIdentifier(req: {
 export function checkRateLimit(identifier: string): RateLimitResult {
   return rateLimiter.check(identifier);
 }
-
-export function resetRateLimit(identifier: string): void {
-  rateLimiter.reset(identifier);
-}

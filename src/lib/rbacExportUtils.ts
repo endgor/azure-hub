@@ -1,6 +1,6 @@
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import * as XLSX from 'xlsx';
-import { downloadFile, downloadJSON, downloadExcel } from './downloadUtils';
+import { downloadFile, downloadExcel } from './downloadUtils';
 import { generateCountFilename } from './filenameUtils';
 
 /**

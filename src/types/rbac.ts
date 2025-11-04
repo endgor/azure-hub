@@ -45,33 +45,6 @@ export interface Operation {
 }
 
 /**
- * Represents an Azure resource provider with its operations
- */
-export interface ResourceProvider {
-  id: string;
-  namespace: string;
-  resourceTypes: ResourceType[];
-  operations: Operation[];
-}
-
-/**
- * Represents a resource type within a provider
- */
-export interface ResourceType {
-  resourceType: string;
-  operations: Operation[];
-}
-
-/**
- * Service namespace extracted from permission (e.g., "Microsoft.Compute" from "Microsoft.Compute/virtualMachines/read")
- */
-export interface ServiceNamespace {
-  namespace: string;
-  displayName: string;
-  count: number;
-}
-
-/**
  * Input for calculating least privileged roles
  */
 export interface LeastPrivilegeInput {
