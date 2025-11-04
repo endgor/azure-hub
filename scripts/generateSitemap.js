@@ -78,6 +78,7 @@ function generateSitemap() {
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Tool Pages -->
   <url>
     <loc>${BASE_URL}/tools/ip-lookup/</loc>
     <lastmod>${currentDate}</lastmod>
@@ -89,6 +90,24 @@ function generateSitemap() {
     <lastmod>${currentDate}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/tools/tenant-lookup/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/tools/subnet-calculator/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/tools/rbac-calculator/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
   </url>
   <!-- Dynamic Service Tag Pages -->
 ${serviceTagsArray
@@ -122,7 +141,7 @@ ${serviceTagsArray
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    console.log(`  Total URLs: ${serviceTagsArray.length + 4}`);
+    console.log(`  Total URLs: ${serviceTagsArray.length + 7}`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);

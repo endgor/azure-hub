@@ -4,18 +4,17 @@ Allow: /
 # Block crawling of API endpoints (they don't provide SEO value)
 Disallow: /api/
 
-# Block crawling of data files (they're for the application, not search engines)  
+# Block crawling of data files (they're for the application, not search engines)
 Disallow: /data/
 
 # Allow all main content pages
-Allow: /
 Allow: /about
 Allow: /tools/ip-lookup
 Allow: /tools/service-tags
 Allow: /tools/service-tags/*
-
-# Crawl delay for respectful crawling
-Crawl-delay: 1
+Allow: /tools/tenant-lookup
+Allow: /tools/subnet-calculator
+Allow: /tools/rbac-calculator
 
 # Sitemaps
 Sitemap: https://azurehub.org/sitemap.xml
