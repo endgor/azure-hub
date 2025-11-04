@@ -392,10 +392,10 @@ export default function RbacCalculatorPage() {
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
             Identity & Access
           </p>
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
             RBAC Least Privilege Calculator
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl md:text-base">
+          <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             {getDescription()}
           </p>
         </div>

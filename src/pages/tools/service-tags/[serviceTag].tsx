@@ -177,8 +177,8 @@ export default function ServiceTagDetail() {
           </nav>
 
           <div className="space-y-2 md:space-y-3">
-            <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">Service Tag: {serviceTag}</h1>
-            <p className="text-sm text-slate-600 dark:text-slate-300 md:text-base">
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Service Tag: {serviceTag}</h1>
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               IP ranges, Azure services, and network features associated with this service tag.
             </p>
           </div>

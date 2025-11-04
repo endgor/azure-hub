@@ -107,15 +107,15 @@ body {
 }
 
 .prose h1 {
-  @apply mb-6 text-3xl font-semibold text-slate-900 dark:text-slate-100;
+  @apply mb-6 text-2xl font-semibold text-slate-900 dark:text-slate-100;
 }
 
 .prose h2 {
-  @apply mt-10 mb-4 text-2xl font-semibold text-slate-900 dark:text-slate-100;
+  @apply mt-10 mb-4 text-xl font-semibold text-slate-900 dark:text-slate-100;
 }
 
 .prose h3 {
-  @apply mt-6 mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100;
+  @apply mt-6 mb-3 text-lg font-semibold text-slate-900 dark:text-slate-100;
 }
 
 .prose p {

@@ -34,21 +34,21 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
     >
       <section className="space-y-8">
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h1 className="text-3xl font-semibold text-slate-900">About Azure Hub</h1>
-          <p className="text-base text-slate-600">
+          <h1 className="text-2xl font-semibold text-slate-900">About Azure Hub</h1>
+          <p className="text-sm text-slate-600">
             Azure Hub started as a simple IP lookup tool and is steadily growing into a multi-feature workspace for Azure
             administrators who need fast access to the right utilities. It remains a hobby project maintained by me (Ender),
             with a focus on making common networking tasks quicker to execute and easier to repeat.
           </p>
-          <p className="text-base text-slate-600">
+          <p className="text-sm text-slate-600">
             Data on this site refreshes daily from the official Microsoft feeds across Azure Public, China, and US
             Government clouds.
           </p>
         </div>
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-semibold text-slate-900">Service tag feeds &amp; definitions</h2>
-          <p className="text-base text-slate-600">
+          <h2 className="text-xl font-semibold text-slate-900">Service tag feeds &amp; definitions</h2>
+          <p className="text-sm text-slate-600">
             Review the latest change numbers, download locations, and retrieval timestamps for each supported cloud. The
             table updates automatically whenever Microsoft publishes new payloads.
           </p>
@@ -56,21 +56,21 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
         </div>
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-semibold text-slate-900">RBAC Role Definitions</h2>
-          <p className="text-base text-slate-600">
+          <h2 className="text-xl font-semibold text-slate-900">RBAC Role Definitions</h2>
+          <p className="text-sm text-slate-600">
             Built-in Azure role definitions are retrieved from the Azure Resource Manager API and updated periodically to
             ensure the RBAC Calculator has the latest role permissions.
           </p>
           {rbacLastRetrieved && (
-            <p className="text-sm text-slate-500">
+            <p className="text-xs text-slate-500">
               <strong>Last retrieved:</strong> {formatDate(rbacLastRetrieved)}
             </p>
           )}
         </div>
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-semibold text-slate-900">Open source &amp; feedback</h2>
-          <p className="text-base text-slate-600">
+          <h2 className="text-xl font-semibold text-slate-900">Open source &amp; feedback</h2>
+          <p className="text-sm text-slate-600">
             Azure Hub is an independent community project. Visit the{' '}
             <Link
               href="https://github.com/endgor/azure-hub"
@@ -85,8 +85,8 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
         </div>
 
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-2xl font-semibold text-slate-900">Credits</h2>
-          <ul className="space-y-2 text-base text-slate-600">
+          <h2 className="text-xl font-semibold text-slate-900">Credits</h2>
+          <ul className="space-y-2 text-sm text-slate-600">
             <li>
               <Link
                 href="https://github.com/davidc/subnets"

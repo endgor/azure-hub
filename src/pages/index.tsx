@@ -78,7 +78,7 @@ export default function Home() {
     >
       <section className="space-y-12">
         <div className="space-y-2 md:space-y-3">
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100 md:text-3xl lg:text-4xl">
+          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
             Pick a tool and get to work.
           </h1>
         </div>
@@ -96,7 +96,7 @@ export default function Home() {
                     {tool.icon}
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{tool.title}</h3>
+                    <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{tool.title}</h3>
                   </div>
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-300">{tool.description}</p>
