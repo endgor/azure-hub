@@ -7,6 +7,7 @@ import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import Button from '@/components/shared/Button';
@@ -57,30 +58,10 @@ export default function RbacCalculatorPage() {
   const roleSearchDropdownRef = useRef<HTMLDivElement>(null);
   const advancedSearchDropdownRef = useRef<HTMLDivElement>(null);
 
-  // Click-outside handler for dropdowns
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      // Hide service dropdown if clicked outside
-      if (serviceDropdownRef.current && !serviceDropdownRef.current.contains(event.target as Node)) {
-        setShowServiceDropdown(false);
-      }
-
-      // Hide role search dropdown if clicked outside
-      if (roleSearchDropdownRef.current && !roleSearchDropdownRef.current.contains(event.target as Node)) {
-        setRoleSearchResults([]);
-      }
-
-      // Hide advanced search dropdown if clicked outside
-      if (advancedSearchDropdownRef.current && !advancedSearchDropdownRef.current.contains(event.target as Node)) {
-        setSearchResults([]);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  // Close dropdowns when clicking outside
+  useClickOutside(serviceDropdownRef as React.RefObject<HTMLElement>, () => setShowServiceDropdown(false), showServiceDropdown);
+  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => setRoleSearchResults([]), roleSearchResults.length > 0);
+  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => setSearchResults([]), searchResults.length > 0);
 
   const handleDismissDisclaimer = () => {
     setDisclaimerDismissed(true);

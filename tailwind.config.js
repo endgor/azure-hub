@@ -8,19 +8,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Override default slate colors for Apple-inspired dark mode
+        // Slate colors using CSS variables for automatic dark mode support
         slate: {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#3c3c3c', // Neutral dark gray for borders
-          700: '#2d313c', // Apple-inspired dark border/divider
-          800: '#1e222d', // Apple-inspired dark surface
-          900: '#191d27', // Apple-inspired dark card background
-          950: '#000000', // Apple-inspired pure black background
+          50: 'rgb(var(--slate-50) / <alpha-value>)',
+          100: 'rgb(var(--slate-100) / <alpha-value>)',
+          200: 'rgb(var(--slate-200) / <alpha-value>)',
+          300: 'rgb(var(--slate-300) / <alpha-value>)',
+          400: 'rgb(var(--slate-400) / <alpha-value>)',
+          500: 'rgb(var(--slate-500) / <alpha-value>)',
+          600: 'rgb(var(--slate-600) / <alpha-value>)',
+          700: 'rgb(var(--slate-700) / <alpha-value>)',
+          800: 'rgb(var(--slate-800) / <alpha-value>)',
+          900: 'rgb(var(--slate-900) / <alpha-value>)',
         },
         // Google-inspired color palette
         google: {
