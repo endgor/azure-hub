@@ -11755,6 +11755,21 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.dashboard/dashboards/dashboarddefinitions/read",
+    "name": "Microsoft.Dashboard/dashboards/dashboardDefinitions/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.dashboard/dashboards/dashboarddefinitions/write",
+    "name": "Microsoft.Dashboard/dashboards/dashboardDefinitions/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dashboard/dashboards/dashboarddefinitions/delete",
+    "name": "Microsoft.Dashboard/dashboards/dashboardDefinitions/delete",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.dashboard/locations/read",
     "name": "Microsoft.Dashboard/locations/read",
     "roleCount": 19
