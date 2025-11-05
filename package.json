@@ -10,7 +10,8 @@
     "lint": "next lint",
     "update-ip-data": "ts-node scripts/updateIpData.ts",
     "update-rbac-data": "ts-node scripts/updateRbacData.ts",
-    "generate-actions-cache": "ts-node scripts/generateActionsCache.ts"
+    "generate-actions-cache": "ts-node scripts/generateActionsCache.ts",
+    "generate-ip-indexes": "ts-node scripts/generateIpIndexes.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",
@@ -22,6 +23,7 @@
     "papaparse": "^5.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "redis": "^5.9.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
