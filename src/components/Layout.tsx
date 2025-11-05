@@ -51,6 +51,7 @@ interface LayoutProps {
   keywords?: string[];
   breadcrumbs?: BreadcrumbItem[];
   toolSchema?: ToolSchema;
+  canonicalUrl?: string; // Allow pages to override canonical URL for dynamic routes
   children: ReactNode;
 }
 
@@ -248,6 +249,7 @@ export default function Layout({
   keywords = DEFAULT_KEYWORDS,
   breadcrumbs,
   toolSchema,
+  canonicalUrl,
   children
 }: LayoutProps) {
   const router = useRouter();
@@ -285,19 +287,28 @@ export default function Layout({
 
   const meta = useMemo(() => {
     const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
-    // Use asPath for actual URL (not template), but strip query params and hash
-    // This ensures canonical URLs work correctly for dynamic routes like /tools/service-tags/[serviceTag]
-    const pathWithoutQuery = router.asPath.split('?')[0].split('#')[0];
-    const cleanPath = pathWithoutQuery === '/' ? '/' : `${pathWithoutQuery}/`;
-    const canonicalUrl = `https://azurehub.org${cleanPath}`;
+
+    // Use provided canonicalUrl if available (for dynamic routes), otherwise auto-generate
+    let finalCanonicalUrl: string;
+
+    if (canonicalUrl) {
+      // Page provided explicit canonical URL
+      finalCanonicalUrl = canonicalUrl;
+    } else {
+      // Auto-generate from router.asPath, stripping query params and hash
+      // Note: This works for static routes, but dynamic routes should pass explicit canonicalUrl
+      const pathWithoutQuery = router.asPath.split('?')[0].split('#')[0];
+      const cleanPath = pathWithoutQuery === '/' ? '/' : `${pathWithoutQuery}/`;
+      finalCanonicalUrl = `https://azurehub.org${cleanPath}`;
+    }
 
     return {
       title: pageTitle,
       description,
-      url: canonicalUrl,
+      url: finalCanonicalUrl,
       keywords
     };
-  }, [description, keywords, router.asPath, title]);
+  }, [description, keywords, router.asPath, title, canonicalUrl]);
 
   const structuredData = useMemo(
     () => ({
