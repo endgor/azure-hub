@@ -3,6 +3,7 @@ import type { AzureRole } from '@/types/rbac';
 import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON } from '@/lib/rbacExportUtils';
 import { getPrivilegedRoles, isPrivilegedRole } from '@/config/privilegedRoles';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
+import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 
 interface RolePermissionsTableProps {
   roles: AzureRole[];
@@ -84,6 +85,18 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
 
   const hasPrivilegedRoles = privilegedRolesInSelection.length > 0;
 
+  // Memoize roles with flattened permissions to avoid rebuilding on every render
+  const rolesWithFlattenedPermissions = useMemo(() => {
+    return roles.map(role => {
+      const flattened = getFlattenedPermissions(role);
+      return {
+        role,
+        allActions: flattened.actions,
+        allDataActions: flattened.dataActions
+      };
+    });
+  }, [roles]);
+
   return (
     <div className="space-y-4">
       {/* Privileged Role Warning */}
@@ -154,20 +167,9 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
               </tr>
             </thead>
             <tbody>
-              {roles.map((role, index) => {
+              {rolesWithFlattenedPermissions.map(({ role, allActions, allDataActions }, index) => {
                 const isEven = index % 2 === 0;
                 const isPrivileged = isPrivilegedRole(role.roleName);
-
-                // Aggregate all actions and data actions
-                const allActions: string[] = [];
-                const allDataActions: string[] = [];
-
-                for (const permission of role.permissions) {
-                  allActions.push(...permission.actions);
-                  if (permission.dataActions) {
-                    allDataActions.push(...permission.dataActions);
-                  }
-                }
 
                 return (
                   <tr
