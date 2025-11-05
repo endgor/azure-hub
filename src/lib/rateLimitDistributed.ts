@@ -1,15 +1,13 @@
 /**
- * Distributed Rate Limiter using Vercel KV (Redis)
+ * Distributed Rate Limiter using Redis
  *
  * This provides ACTUAL distributed rate limiting across all serverless instances.
  * Unlike the in-memory limiter, this cannot be bypassed by hitting different instances.
  *
  * Setup:
- * 1. Install: npm install @vercel/kv
- * 2. Add Vercel KV database in Vercel dashboard
- * 3. Set environment variables:
- *    - KV_REST_API_URL=<your-kv-url>
- *    - KV_REST_API_TOKEN=<your-kv-token>
+ * 1. Add Redis integration from Vercel Marketplace
+ * 2. Install: npm install redis
+ * 3. Environment variable REDIS_URL is automatically set by integration
  * 4. Set USE_DISTRIBUTED_RATE_LIMIT=true
  *
  * Local Development:
@@ -24,32 +22,40 @@ interface RateLimitResult {
   reset: number;
 }
 
-// Check if Vercel KV is available
-const hasVercelKV = typeof process !== 'undefined' &&
-                    process.env.KV_REST_API_URL &&
-                    process.env.KV_REST_API_TOKEN;
-
+// Check if Redis is available
+const hasRedis = typeof process !== 'undefined' && Boolean(process.env.REDIS_URL);
 const useDistributed = process.env.USE_DISTRIBUTED_RATE_LIMIT === 'true';
 
-let kv: any = null;
-let kvInitialized = false;
+let redisClient: any = null;
+let redisInitialized = false;
 
-// Async initialization function for KV
-async function initializeKV() {
-  if (kvInitialized) return;
-  kvInitialized = true;
+// Async initialization function for Redis
+async function initializeRedis() {
+  if (redisInitialized) return;
+  redisInitialized = true;
 
-  if (!hasVercelKV || !useDistributed) return;
+  if (!hasRedis || !useDistributed) return;
 
   try {
     // Use Function constructor to completely hide the import from webpack's static analysis
-    // This prevents "Module not found" errors when @vercel/kv is not installed
-    const importKV = new Function('return import("@vercel/kv")');
-    const kvModule = await importKV();
-    kv = kvModule.kv;
-    console.log('[RateLimit] Using distributed Vercel KV rate limiter');
-  } catch {
-    console.warn('[RateLimit] @vercel/kv not installed or failed to load, falling back to in-memory');
+    // This prevents "Module not found" errors when redis is not installed
+    const importRedis = new Function('return import("redis")');
+    const redisModule = await importRedis();
+
+    // Create and connect Redis client
+    redisClient = redisModule.createClient({
+      url: process.env.REDIS_URL
+    });
+
+    redisClient.on('error', (err: Error) => {
+      console.error('[RateLimit] Redis client error:', err);
+    });
+
+    await redisClient.connect();
+    console.log('[RateLimit] Using distributed Redis rate limiter');
+  } catch (error) {
+    console.warn('[RateLimit] Redis not installed or failed to connect, falling back to in-memory');
+    redisClient = null;
   }
 }
 
@@ -58,15 +64,15 @@ const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000
 const RATE_LIMIT_WINDOW_SEC = Math.ceil(RATE_LIMIT_WINDOW_MS / 1000);
 
 /**
- * Distributed rate limiter using Redis (Vercel KV).
+ * Distributed rate limiter using Redis.
  * Uses atomic INCR and EXPIRE operations for accurate counting across instances.
  */
 export async function checkRateLimitDistributed(identifier: string): Promise<RateLimitResult> {
-  // Initialize KV on first use
-  await initializeKV();
+  // Initialize Redis on first use
+  await initializeRedis();
 
-  if (!kv) {
-    // Fall back to error response if KV is not available
+  if (!redisClient) {
+    // Fall back to error response if Redis is not available
     throw new Error('Distributed rate limiter not configured');
   }
 
@@ -74,12 +80,16 @@ export async function checkRateLimitDistributed(identifier: string): Promise<Rat
     const key = `ratelimit:${identifier}`;
 
     // Use Redis pipeline for atomic operations
-    const multi = kv.multi();
-    multi.incr(key);
-    multi.expire(key, RATE_LIMIT_WINDOW_SEC);
-    multi.ttl(key);
+    const pipeline = redisClient.multi();
+    pipeline.incr(key);
+    pipeline.expire(key, RATE_LIMIT_WINDOW_SEC);
+    pipeline.ttl(key);
 
-    const [count, , ttl]: [number, any, number] = await multi.exec();
+    const results = await pipeline.exec();
+
+    // Results format: [[null, count], [null, expireResult], [null, ttl]]
+    const count = results[0][1] as number;
+    const ttl = results[2][1] as number;
 
     const remaining = Math.max(0, RATE_LIMIT_REQUESTS - count);
     const resetTime = Date.now() + (ttl * 1000);
@@ -104,10 +114,10 @@ export async function checkRateLimitDistributed(identifier: string): Promise<Rat
 
 /**
  * Check if distributed rate limiting is enabled via environment variables.
- * This checks config only, not whether KV is actually initialized yet.
+ * This checks config only, not whether Redis is actually initialized yet.
  */
 export function isDistributedRateLimitEnabled(): boolean {
-  return Boolean(hasVercelKV && useDistributed);
+  return Boolean(hasRedis && useDistributed);
 }
 
 /**
@@ -118,6 +128,6 @@ export function getRateLimitConfig() {
     limit: RATE_LIMIT_REQUESTS,
     windowMs: RATE_LIMIT_WINDOW_MS,
     distributed: isDistributedRateLimitEnabled(),
-    backend: isDistributedRateLimitEnabled() ? 'Vercel KV (Redis)' : 'In-Memory (per-instance)'
+    backend: isDistributedRateLimitEnabled() ? 'Redis' : 'In-Memory (per-instance)'
   };
 }
