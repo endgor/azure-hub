@@ -101,10 +101,11 @@ export async function checkRateLimitDistributed(identifier: string): Promise<Rat
 }
 
 /**
- * Check if distributed rate limiting is available and enabled.
+ * Check if distributed rate limiting is enabled via environment variables.
+ * This checks config only, not whether KV is actually initialized yet.
  */
 export function isDistributedRateLimitEnabled(): boolean {
-  return Boolean(kv) && useDistributed;
+  return hasVercelKV && useDistributed;
 }
 
 /**
