@@ -305,25 +305,8 @@ export function collectDisplayNodes(
 
     const isVnet = vnetFlags[nodeId] === true;
 
-    // If this node is a vnet, show it and reset hierarchy level
-    if (isVnet) {
-      displayNodes.push({
-        ...node,
-        depth,
-        isVnet: true,
-        hierarchyLevel: 0
-      });
-
-      // If it has children, show them as subnets
-      if (node.children) {
-        const [leftId, rightId] = node.children;
-        collectNodes(leftId, depth + 1, true, 1);
-        collectNodes(rightId, depth + 1, true, 1);
-      }
-      return;
-    }
-
-    // If parent is a vnet, show this node as a subnet under the vnet
+    // IMPORTANT: If parent is a vnet, ALWAYS show this node as a subnet under the vnet
+    // (even if this node is also marked as vnet - parent takes precedence)
     if (parentIsVnet) {
       displayNodes.push({
         ...node,
@@ -337,6 +320,24 @@ export function collectDisplayNodes(
         const [leftId, rightId] = node.children;
         collectNodes(leftId, depth + 1, true, hierarchyLevel + 1);
         collectNodes(rightId, depth + 1, true, hierarchyLevel + 1);
+      }
+      return;
+    }
+
+    // If this node is a vnet (and parent is not a vnet), show it and reset hierarchy level
+    if (isVnet) {
+      displayNodes.push({
+        ...node,
+        depth,
+        isVnet: true,
+        hierarchyLevel: 0
+      });
+
+      // If it has children, show them as subnets
+      if (node.children) {
+        const [leftId, rightId] = node.children;
+        collectNodes(leftId, depth + 1, true, 1);
+        collectNodes(rightId, depth + 1, true, 1);
       }
       return;
     }
