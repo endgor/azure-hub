@@ -182,29 +182,33 @@ export async function calculateLeastPrivilege(params: {
     // If role grants all required permissions, add it to results
     if (allActionsGranted && allDataActionsGranted) {
       // Count total permissions in role
-      let totalActions = 0;
-      let totalDataActions = 0;
+      let totalPermissions = 0;
 
       for (const permission of role.permissions) {
-        totalActions += permission.actions.length;
+        totalPermissions += permission.actions.length;
         if (permission.dataActions) {
-          totalDataActions += permission.dataActions.length;
+          totalPermissions += permission.dataActions.length;
         }
       }
 
+      // Check if this is an exact match (no extra permissions)
+      const isExactMatch =
+        grantedActions.size === requiredActions.length &&
+        grantedDataActions.size === requiredDataActions.length &&
+        totalPermissions === (requiredActions.length + requiredDataActions.length);
+
       matchingRoles.push({
         role,
-        matchedActions: Array.from(grantedActions),
-        matchedDataActions: Array.from(grantedDataActions),
-        totalActions,
-        totalDataActions,
-        privilegeScore: totalActions + totalDataActions
+        matchingActions: Array.from(grantedActions),
+        matchingDataActions: Array.from(grantedDataActions),
+        permissionCount: totalPermissions,
+        isExactMatch
       });
     }
   }
 
-  // Sort by privilege score (lower is better - least privilege)
-  return matchingRoles.sort((a, b) => a.privilegeScore - b.privilegeScore);
+  // Sort by permission count (lower is better - least privilege)
+  return matchingRoles.sort((a, b) => a.permissionCount - b.permissionCount);
 }
 
 /**
@@ -215,11 +219,14 @@ export async function searchOperations(query: string, limit: number = 50): Promi
   const queryLower = query.toLowerCase();
   const results: Operation[] = [];
 
-  for (const [key, value] of actionsMap.entries()) {
+  for (const [_key, value] of actionsMap.entries()) {
     if (value.name.toLowerCase().includes(queryLower)) {
       results.push({
         name: value.name,
         displayName: value.name,
+        description: '',
+        origin: '',
+        provider: value.name.split('/')[0] || '',
         roleCount: value.roleCount
       });
 
@@ -259,6 +266,9 @@ export async function getActionsByService(service: string): Promise<Operation[]>
       results.push({
         name: value.name,
         displayName: value.name,
+        description: '',
+        origin: '',
+        provider: service,
         roleCount: value.roleCount
       });
     }
