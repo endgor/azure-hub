@@ -10,7 +10,8 @@
     "lint": "next lint",
     "update-ip-data": "ts-node scripts/updateIpData.ts",
     "update-rbac-data": "ts-node scripts/updateRbacData.ts",
-    "generate-actions-cache": "ts-node scripts/generateActionsCache.ts"
+    "generate-actions-cache": "ts-node scripts/generateActionsCache.ts",
+    "generate-ip-indexes": "ts-node scripts/generateIpIndexes.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",

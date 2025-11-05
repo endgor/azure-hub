@@ -285,8 +285,10 @@ export default function Layout({
 
   const meta = useMemo(() => {
     const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
-    // Use pathname instead of asPath to exclude query parameters and hash fragments
-    const cleanPath = router.pathname === '/' ? '/' : `${router.pathname}/`;
+    // Use asPath for actual URL (not template), but strip query params and hash
+    // This ensures canonical URLs work correctly for dynamic routes like /tools/service-tags/[serviceTag]
+    const pathWithoutQuery = router.asPath.split('?')[0].split('#')[0];
+    const cleanPath = pathWithoutQuery === '/' ? '/' : `${pathWithoutQuery}/`;
     const canonicalUrl = `https://azurehub.org${cleanPath}`;
 
     return {
@@ -295,7 +297,7 @@ export default function Layout({
       url: canonicalUrl,
       keywords
     };
-  }, [description, keywords, router.pathname, title]);
+  }, [description, keywords, router.asPath, title]);
 
   const structuredData = useMemo(
     () => ({

@@ -10,6 +10,38 @@ interface RateLimitResult {
   reset: number;
 }
 
+/**
+ * In-memory rate limiter implementation.
+ *
+ * ⚠️ IMPORTANT LIMITATION - Per-Instance Only:
+ * This rate limiter stores state in memory, which means each serverless function
+ * instance maintains its own separate counter. On platforms like Vercel, AWS Lambda,
+ * or any multi-instance deployment:
+ *
+ * - Each request may hit a different instance
+ * - Attackers can bypass limits by retrying until they hit a different instance
+ * - Rate limits are enforced per-instance, not globally
+ *
+ * For production use with distributed deployments, consider migrating to:
+ *
+ * 1. **Vercel KV** (Redis):
+ *    - Install: npm install @vercel/kv
+ *    - Set up: https://vercel.com/docs/storage/vercel-kv
+ *
+ * 2. **Upstash Redis**:
+ *    - Install: npm install @upstash/redis
+ *    - Set up: https://upstash.com/
+ *
+ * 3. **Vercel Edge Config** (for simple read-heavy rate limits):
+ *    - Install: npm install @vercel/edge-config
+ *
+ * 4. **Cloudflare Workers KV** (if using Cloudflare)
+ *
+ * The current implementation is suitable for:
+ * - Development environments
+ * - Single-instance deployments
+ * - Basic abuse prevention (not security-critical)
+ */
 export class RateLimiter {
   private cache: Map<string, RateLimitEntry>;
   private readonly limit: number;
@@ -22,6 +54,14 @@ export class RateLimiter {
     this.windowMs = windowMs;
     this.cleanupInterval = null;
     this.startCleanup();
+
+    // Log warning in production environments with serverless deployment
+    if (process.env.NODE_ENV === 'production' && (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME)) {
+      console.warn(
+        '[RateLimit] Using in-memory rate limiter in distributed environment. ' +
+        'Rate limits are per-instance only. Consider using Redis (Vercel KV/Upstash) for global limits.'
+      );
+    }
   }
 
   private startCleanup(): void {
