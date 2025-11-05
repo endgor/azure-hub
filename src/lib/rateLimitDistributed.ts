@@ -27,36 +27,51 @@ const hasRedis = typeof process !== 'undefined' && Boolean(process.env.REDIS_URL
 const useDistributed = process.env.USE_DISTRIBUTED_RATE_LIMIT === 'true';
 
 let redisClient: any = null;
-let redisInitialized = false;
+let redisInitPromise: Promise<void> | null = null;
 
 // Async initialization function for Redis
+// Uses a shared promise to ensure all concurrent requests wait for the same connection
 async function initializeRedis() {
-  if (redisInitialized) return;
-  redisInitialized = true;
+  // If already initialized, return immediately
+  if (redisClient) return;
 
-  if (!hasRedis || !useDistributed) return;
-
-  try {
-    // Use Function constructor to completely hide the import from webpack's static analysis
-    // This prevents "Module not found" errors when redis is not installed
-    const importRedis = new Function('return import("redis")');
-    const redisModule = await importRedis();
-
-    // Create and connect Redis client
-    redisClient = redisModule.createClient({
-      url: process.env.REDIS_URL
-    });
-
-    redisClient.on('error', (err: Error) => {
-      console.error('[RateLimit] Redis client error:', err);
-    });
-
-    await redisClient.connect();
-    console.log('[RateLimit] Using distributed Redis rate limiter');
-  } catch (error) {
-    console.warn('[RateLimit] Redis not installed or failed to connect, falling back to in-memory');
-    redisClient = null;
+  // If initialization is in progress, wait for it
+  if (redisInitPromise) {
+    await redisInitPromise;
+    return;
   }
+
+  // Start initialization and store the promise
+  redisInitPromise = (async () => {
+    if (!hasRedis || !useDistributed) return;
+
+    try {
+      // Use Function constructor to completely hide the import from webpack's static analysis
+      // This prevents "Module not found" errors when redis is not installed
+      const importRedis = new Function('return import("redis")');
+      const redisModule = await importRedis();
+
+      // Create and connect Redis client
+      const client = redisModule.createClient({
+        url: process.env.REDIS_URL
+      });
+
+      client.on('error', (err: Error) => {
+        console.error('[RateLimit] Redis client error:', err);
+      });
+
+      await client.connect();
+
+      // Only set redisClient after successful connection
+      redisClient = client;
+      console.log('[RateLimit] Using distributed Redis rate limiter');
+    } catch (error) {
+      console.warn('[RateLimit] Redis not installed or failed to connect, falling back to in-memory');
+      redisClient = null;
+    }
+  })();
+
+  await redisInitPromise;
 }
 
 const RATE_LIMIT_REQUESTS = parseInt(process.env.RATE_LIMIT_REQUESTS || '10', 10);
