@@ -1,0 +1,357 @@
+[
+  {
+    "region": "australiacentral",
+    "serviceCount": 41,
+    "prefixCount": 291
+  },
+  {
+    "region": "australiacentral2",
+    "serviceCount": 41,
+    "prefixCount": 262
+  },
+  {
+    "region": "australiaeast",
+    "serviceCount": 46,
+    "prefixCount": 757
+  },
+  {
+    "region": "australiasoutheast",
+    "serviceCount": 48,
+    "prefixCount": 653
+  },
+  {
+    "region": "austriaeast",
+    "serviceCount": 37,
+    "prefixCount": 245
+  },
+  {
+    "region": "belgiumcentral",
+    "serviceCount": 36,
+    "prefixCount": 193
+  },
+  {
+    "region": "brazilne",
+    "serviceCount": 1,
+    "prefixCount": 4
+  },
+  {
+    "region": "brazilse",
+    "serviceCount": 42,
+    "prefixCount": 323
+  },
+  {
+    "region": "brazilsouth",
+    "serviceCount": 46,
+    "prefixCount": 658
+  },
+  {
+    "region": "canadacentral",
+    "serviceCount": 47,
+    "prefixCount": 718
+  },
+  {
+    "region": "canadaeast",
+    "serviceCount": 45,
+    "prefixCount": 491
+  },
+  {
+    "region": "centralfrance",
+    "serviceCount": 45,
+    "prefixCount": 675
+  },
+  {
+    "region": "centralindia",
+    "serviceCount": 46,
+    "prefixCount": 687
+  },
+  {
+    "region": "centralus",
+    "serviceCount": 48,
+    "prefixCount": 1511
+  },
+  {
+    "region": "centraluseuap",
+    "serviceCount": 43,
+    "prefixCount": 536
+  },
+  {
+    "region": "chilec",
+    "serviceCount": 36,
+    "prefixCount": 238
+  },
+  {
+    "region": "eastasia",
+    "serviceCount": 48,
+    "prefixCount": 753
+  },
+  {
+    "region": "eastus",
+    "serviceCount": 48,
+    "prefixCount": 1708
+  },
+  {
+    "region": "eastus2",
+    "serviceCount": 50,
+    "prefixCount": 2005
+  },
+  {
+    "region": "eastus2euap",
+    "serviceCount": 44,
+    "prefixCount": 969
+  },
+  {
+    "region": "germanyn",
+    "serviceCount": 43,
+    "prefixCount": 360
+  },
+  {
+    "region": "germanywc",
+    "serviceCount": 43,
+    "prefixCount": 552
+  },
+  {
+    "region": "indonesiacentral",
+    "serviceCount": 40,
+    "prefixCount": 266
+  },
+  {
+    "region": "israelcentral",
+    "serviceCount": 40,
+    "prefixCount": 356
+  },
+  {
+    "region": "israelnorthwest",
+    "serviceCount": 36,
+    "prefixCount": 160
+  },
+  {
+    "region": "italynorth",
+    "serviceCount": 40,
+    "prefixCount": 353
+  },
+  {
+    "region": "japaneast",
+    "serviceCount": 45,
+    "prefixCount": 708
+  },
+  {
+    "region": "japanwest",
+    "serviceCount": 43,
+    "prefixCount": 590
+  },
+  {
+    "region": "jioindiacentral",
+    "serviceCount": 41,
+    "prefixCount": 238
+  },
+  {
+    "region": "jioindiawest",
+    "serviceCount": 40,
+    "prefixCount": 335
+  },
+  {
+    "region": "koreacentral",
+    "serviceCount": 43,
+    "prefixCount": 577
+  },
+  {
+    "region": "koreasouth",
+    "serviceCount": 43,
+    "prefixCount": 387
+  },
+  {
+    "region": "malaysiasouth",
+    "serviceCount": 37,
+    "prefixCount": 240
+  },
+  {
+    "region": "malaysiawest",
+    "serviceCount": 38,
+    "prefixCount": 259
+  },
+  {
+    "region": "mexicocentral",
+    "serviceCount": 38,
+    "prefixCount": 299
+  },
+  {
+    "region": "newzealandnorth",
+    "serviceCount": 40,
+    "prefixCount": 293
+  },
+  {
+    "region": "northcentralus",
+    "serviceCount": 44,
+    "prefixCount": 822
+  },
+  {
+    "region": "northeurope",
+    "serviceCount": 49,
+    "prefixCount": 1356
+  },
+  {
+    "region": "northeurope2",
+    "serviceCount": 1,
+    "prefixCount": 10
+  },
+  {
+    "region": "norwaye",
+    "serviceCount": 43,
+    "prefixCount": 487
+  },
+  {
+    "region": "norwayw",
+    "serviceCount": 43,
+    "prefixCount": 339
+  },
+  {
+    "region": "polandcentral",
+    "serviceCount": 40,
+    "prefixCount": 346
+  },
+  {
+    "region": "qatarcentral",
+    "serviceCount": 40,
+    "prefixCount": 355
+  },
+  {
+    "region": "southafricanorth",
+    "serviceCount": 44,
+    "prefixCount": 535
+  },
+  {
+    "region": "southafricawest",
+    "serviceCount": 43,
+    "prefixCount": 338
+  },
+  {
+    "region": "southcentralus",
+    "serviceCount": 47,
+    "prefixCount": 1357
+  },
+  {
+    "region": "southcentralus2",
+    "serviceCount": 35,
+    "prefixCount": 151
+  },
+  {
+    "region": "southeastasia",
+    "serviceCount": 47,
+    "prefixCount": 930
+  },
+  {
+    "region": "southeastus",
+    "serviceCount": 36,
+    "prefixCount": 159
+  },
+  {
+    "region": "southeastus3",
+    "serviceCount": 35,
+    "prefixCount": 143
+  },
+  {
+    "region": "southfrance",
+    "serviceCount": 44,
+    "prefixCount": 385
+  },
+  {
+    "region": "southindia",
+    "serviceCount": 44,
+    "prefixCount": 458
+  },
+  {
+    "region": "spaincentral",
+    "serviceCount": 40,
+    "prefixCount": 321
+  },
+  {
+    "region": "swedencentral",
+    "serviceCount": 44,
+    "prefixCount": 540
+  },
+  {
+    "region": "swedensouth",
+    "serviceCount": 41,
+    "prefixCount": 279
+  },
+  {
+    "region": "switzerlandn",
+    "serviceCount": 44,
+    "prefixCount": 515
+  },
+  {
+    "region": "switzerlandw",
+    "serviceCount": 43,
+    "prefixCount": 376
+  },
+  {
+    "region": "taiwannorth",
+    "serviceCount": 38,
+    "prefixCount": 295
+  },
+  {
+    "region": "taiwannorthwest",
+    "serviceCount": 37,
+    "prefixCount": 252
+  },
+  {
+    "region": "uaecentral",
+    "serviceCount": 43,
+    "prefixCount": 383
+  },
+  {
+    "region": "uaenorth",
+    "serviceCount": 45,
+    "prefixCount": 536
+  },
+  {
+    "region": "uksouth",
+    "serviceCount": 47,
+    "prefixCount": 816
+  },
+  {
+    "region": "ukwest",
+    "serviceCount": 44,
+    "prefixCount": 534
+  },
+  {
+    "region": "usstagec",
+    "serviceCount": 38,
+    "prefixCount": 177
+  },
+  {
+    "region": "usstagee",
+    "serviceCount": 41,
+    "prefixCount": 305
+  },
+  {
+    "region": "westcentralus",
+    "serviceCount": 46,
+    "prefixCount": 625
+  },
+  {
+    "region": "westeurope",
+    "serviceCount": 48,
+    "prefixCount": 1629
+  },
+  {
+    "region": "westindia",
+    "serviceCount": 41,
+    "prefixCount": 348
+  },
+  {
+    "region": "westus",
+    "serviceCount": 46,
+    "prefixCount": 1341
+  },
+  {
+    "region": "westus2",
+    "serviceCount": 47,
+    "prefixCount": 1077
+  },
+  {
+    "region": "westus3",
+    "serviceCount": 43,
+    "prefixCount": 697
+  }
+]
