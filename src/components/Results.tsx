@@ -123,6 +123,17 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
         const filename = generateFilename(query, 'xlsx');
         await exportToExcel(exportData, filename);
       }
+    },
+    {
+      label: 'Markdown',
+      format: 'md',
+      extension: '.md',
+      onClick: async () => {
+        const { exportToMarkdown, prepareDataForExport, generateFilename } = await import('@/lib/exportUtils');
+        const exportData = prepareDataForExport(sortedResults);
+        const filename = generateFilename(query, 'md');
+        exportToMarkdown(exportData, filename);
+      }
     }
   ], [sortedResults, query]);
 

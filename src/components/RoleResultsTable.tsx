@@ -1,7 +1,8 @@
-import React, { useState, useMemo, memo, useEffect } from 'react';
+import React, { useState, useMemo, memo, useEffect, useCallback } from 'react';
 import type { LeastPrivilegeResult } from '@/types/rbac';
 import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
-import Button from '@/components/shared/Button';
+import { exportRolesToCSV, exportRolesToExcel, exportRolesToMarkdown } from '@/lib/rbacExportUtils';
+import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 
 interface RoleResultsTableProps {
   results: LeastPrivilegeResult[];
@@ -89,14 +90,80 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
     }
   };
 
-  const handleExport = () => {
-    const selectedResults = sortedResults.filter(r => selectedRoles.has(r.role.id));
-    if (selectedResults.length === 0) {
-      return;
+  const [isExporting, setIsExporting] = useState(false);
+
+  // Get selected roles for export
+  const selectedResults = useMemo(() => {
+    return sortedResults.filter(r => selectedRoles.has(r.role.id));
+  }, [sortedResults, selectedRoles]);
+
+  // Export handlers
+  const handleJsonExport = useCallback(async () => {
+    if (selectedResults.length === 0) return;
+    setIsExporting(true);
+    try {
+      const filename = generateRoleExportFilename(selectedResults.length);
+      exportRolesToAzureJSON(selectedResults, filename);
+    } catch (error) {
+      console.error('JSON export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
     }
-    const filename = generateRoleExportFilename(selectedResults.length);
-    exportRolesToAzureJSON(selectedResults, filename);
-  };
+  }, [selectedResults]);
+
+  const handleCsvExport = useCallback(async () => {
+    if (selectedResults.length === 0) return;
+    setIsExporting(true);
+    try {
+      const roles = selectedResults.map(r => r.role);
+      const filename = `azure-rbac_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.csv`;
+      await exportRolesToCSV(roles, filename);
+    } catch (error) {
+      console.error('CSV export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [selectedResults]);
+
+  const handleExcelExport = useCallback(async () => {
+    if (selectedResults.length === 0) return;
+    setIsExporting(true);
+    try {
+      const roles = selectedResults.map(r => r.role);
+      const filename = `azure-rbac_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.xlsx`;
+      await exportRolesToExcel(roles, filename);
+    } catch (error) {
+      console.error('Excel export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [selectedResults]);
+
+  const handleMarkdownExport = useCallback(async () => {
+    if (selectedResults.length === 0) return;
+    setIsExporting(true);
+    try {
+      const roles = selectedResults.map(r => r.role);
+      const filename = `azure-rbac_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.md`;
+      exportRolesToMarkdown(roles, filename);
+    } catch (error) {
+      console.error('Markdown export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [selectedResults]);
+
+  // Export options for ExportMenu
+  const exportOptions: ExportOption[] = useMemo(() => [
+    { label: 'JSON', format: 'json', extension: '.json', onClick: handleJsonExport },
+    { label: 'CSV', format: 'csv', extension: '.csv', onClick: handleCsvExport },
+    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
+    { label: 'Markdown', format: 'md', extension: '.md', onClick: handleMarkdownExport }
+  ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
 
   const allSelected = sortedResults.length > 0 && selectedRoles.size === sortedResults.length;
   const someSelected = selectedRoles.size > 0 && selectedRoles.size < sortedResults.length;
@@ -137,18 +204,13 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
             )}
           </p>
         </div>
-        <Button
-          onClick={handleExport}
+        <ExportMenu
+          options={exportOptions}
+          itemCount={selectedRoles.size}
+          itemLabel="role"
           disabled={selectedRoles.size === 0}
-          title={selectedRoles.size === 0 ? 'Select at least one role to export' : 'Export selected roles to Azure-compatible JSON'}
-          icon={
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-          }
-        >
-          Export {selectedRoles.size > 0 ? `(${selectedRoles.size})` : ''}
-        </Button>
+          isExporting={isExporting}
+        />
       </div>
 
       {/* Results Table */}
