@@ -169,6 +169,29 @@ export function getClientIdentifier(req: {
   return 'unknown';
 }
 
-export function checkRateLimit(identifier: string): RateLimitResult {
+/**
+ * Check rate limit for an identifier.
+ * Automatically uses distributed (Vercel KV) limiter if configured,
+ * otherwise falls back to in-memory limiter.
+ *
+ * To enable distributed rate limiting:
+ * 1. Install: npm install @vercel/kv
+ * 2. Set up Vercel KV in dashboard
+ * 3. Set environment variable: USE_DISTRIBUTED_RATE_LIMIT=true
+ */
+export async function checkRateLimit(identifier: string): Promise<RateLimitResult> {
+  // Try distributed rate limiter first (if configured)
+  if (process.env.USE_DISTRIBUTED_RATE_LIMIT === 'true') {
+    try {
+      const { checkRateLimitDistributed, isDistributedRateLimitEnabled } = await import('./rateLimitDistributed');
+      if (isDistributedRateLimitEnabled()) {
+        return await checkRateLimitDistributed(identifier);
+      }
+    } catch (error) {
+      console.warn('[RateLimit] Distributed limiter failed, falling back to in-memory:', error);
+    }
+  }
+
+  // Fall back to in-memory limiter
   return rateLimiter.check(identifier);
 }

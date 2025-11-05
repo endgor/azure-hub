@@ -1,15 +1,19 @@
 import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
-import { getAllServiceTags } from '@/lib/clientIpService';
+import { getAllServiceTagIds } from '@/lib/clientIpIndexService';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import SearchInput from '@/components/shared/SearchInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
+/**
+ * Fetcher function for service tags list.
+ * Uses lightweight index (~400 KB) instead of full data (~3.9 MB) for 10x faster load.
+ */
 const clientServiceTagsFetcher = async () => {
   try {
-    const serviceTags = await getAllServiceTags();
+    const serviceTags = await getAllServiceTagIds();
     return { serviceTags };
   } catch (error) {
     throw error;

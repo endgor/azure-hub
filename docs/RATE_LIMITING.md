@@ -1,40 +1,103 @@
 # Rate Limiting Architecture
 
-## Current Implementation
+## Implementation Status: ✅ BOTH Available
 
-The application uses an **in-memory rate limiter** (`src/lib/rateLimit.ts`) that stores request counts in a `Map` data structure within each serverless function instance.
+The application now supports **TWO rate limiting implementations**:
 
-## ⚠️ Known Limitation
+### 1. In-Memory Rate Limiter (Default)
+- **Location**: `src/lib/rateLimit.ts`
+- **Storage**: Local `Map` in each instance
+- **Best for**: Development, single-instance deployments, basic abuse prevention
+- **Limitation**: Per-instance only (can be bypassed in multi-instance environments)
 
-### Per-Instance Rate Limiting
+### 2. Distributed Rate Limiter (Production-Ready)
+- **Location**: `src/lib/rateLimitDistributed.ts`
+- **Storage**: Vercel KV (Redis)
+- **Best for**: Production, multi-instance deployments, security-critical limits
+- **Benefit**: **Global limits across ALL instances** - cannot be bypassed
 
-The current implementation has an **architectural limitation** in distributed/serverless environments:
+---
 
-**Problem**: Each serverless function instance maintains its own separate rate limit counter.
+## Quick Start: Enable Distributed Rate Limiting
 
-**Impact on Vercel/AWS Lambda/Multi-instance deployments**:
+**For Vercel production deployments** (recommended):
+
+### Step 1: Install Vercel KV
+```bash
+npm install @vercel/kv
+```
+
+### Step 2: Set Up Vercel KV
+1. Go to Vercel Dashboard → Your Project → Storage
+2. Create a new KV database
+3. Environment variables are automatically set:
+   - `KV_REST_API_URL`
+   - `KV_REST_API_TOKEN`
+
+### Step 3: Enable Distributed Limiting
+Add to your environment variables (in Vercel dashboard or `.env.local`):
+```bash
+USE_DISTRIBUTED_RATE_LIMIT=true
+```
+
+### Step 4: Deploy
+```bash
+git push
+```
+
+**That's it!** The application automatically uses distributed rate limiting when enabled. No code changes needed.
+
+---
+
+##⚠️ In-Memory Limiter Limitation (Default)
+
+When using the **default in-memory limiter** (without distributed setup):
+
+**Problem**: Each serverless instance has its own counter.
+
+**Impact on Vercel/AWS Lambda/Multi-instance**:
 - Request A → Instance 1 (counter: 1)
-- Request B → Instance 2 (counter: 1)
+- Request B → Instance 2 (counter: 1)  ← Different instance, fresh counter!
 - Request C → Instance 1 (counter: 2)
-- Request D → Instance 3 (counter: 1)
+- Request D → Instance 3 (counter: 1)  ← Another instance, fresh counter!
 
-An attacker can bypass rate limits by simply retrying requests until they land on a different instance. This makes the rate limiter effective only for:
-- ✅ Preventing accidental hammering from legitimate clients
-- ✅ Basic abuse protection
-- ✅ Single-instance deployments
+Attackers can bypass by retrying until hitting a different instance.
+
+**In-memory limiter is effective for**:
 - ✅ Development environments
+- ✅ Single-instance deployments
+- ✅ Preventing accidental hammering
+- ✅ Basic abuse protection
 
-It is **NOT effective** for:
+**In-memory limiter is NOT effective for**:
 - ❌ Security-critical rate limiting
 - ❌ Protecting against determined attackers
 - ❌ Enforcing strict global quotas
 - ❌ DDoS mitigation
 
-## Migration Path to Distributed Rate Limiting
+---
 
-When you need global rate limiting across all instances, migrate to a shared data store:
+## How It Works
 
-### Option 1: Vercel KV (Recommended for Vercel deployments)
+The rate limiting automatically switches between implementations:
+
+```typescript
+// In src/lib/rateLimit.ts
+export async function checkRateLimit(identifier: string): Promise<RateLimitResult> {
+  // If distributed is enabled and configured:
+  if (process.env.USE_DISTRIBUTED_RATE_LIMIT === 'true') {
+    // Use Vercel KV (Redis) - global across all instances ✅
+    return await checkRateLimitDistributed(identifier);
+  }
+
+  // Otherwise: Use in-memory - per-instance only ⚠️
+  return rateLimiter.check(identifier);
+}
+```
+
+---
+
+## Alternative: Upstash Redis (Platform-Agnostic)
 
 ```bash
 npm install @vercel/kv
