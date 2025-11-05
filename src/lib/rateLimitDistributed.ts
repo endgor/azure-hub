@@ -107,7 +107,7 @@ export async function checkRateLimitDistributed(identifier: string): Promise<Rat
  * This checks config only, not whether KV is actually initialized yet.
  */
 export function isDistributedRateLimitEnabled(): boolean {
-  return hasVercelKV && useDistributed;
+  return Boolean(hasVercelKV && useDistributed);
 }
 
 /**
