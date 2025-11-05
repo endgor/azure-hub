@@ -208,7 +208,7 @@ export default async function handler(
   }
 
   const clientId = getClientIdentifier(req);
-  const rateLimit = checkRateLimit(clientId);
+  const rateLimit = await checkRateLimit(clientId);
 
   if (!rateLimit.success) {
     const retryAfter = Math.ceil((rateLimit.reset - Date.now()) / 1000);

@@ -161,6 +161,7 @@ export default function ServiceTagDetail() {
     <Layout
       title={`Azure Service Tag: ${serviceTag}`}
       description={`Explore the Azure IP ranges associated with the ${serviceTag as string} service tag.`}
+      canonicalUrl={`https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag as string)}/`}
     >
       <Head>
         <script
