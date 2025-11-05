@@ -1,36 +1,10 @@
 import { AzureRole, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
 import { calculatePermissionCount } from './rbacUtils';
 import { RBAC_SCORING } from '@/config/constants';
+import { matchesWildcard } from './utils/wildcardMatcher';
 
 // Re-export for external consumers
-export { calculatePermissionCount };
-
-/**
- * Check if a permission action matches a wildcard pattern
- * Case-insensitive matching with support for Azure RBAC wildcards
- */
-export function matchesWildcard(pattern: string, action: string): boolean {
-  if (!pattern || !action) return false;
-
-  // Normalize to lowercase for case-insensitive matching
-  const normalizedPattern = pattern.toLowerCase();
-  const normalizedAction = action.toLowerCase();
-
-  // Exact match
-  if (normalizedPattern === normalizedAction) return true;
-
-  // Full wildcard
-  if (normalizedPattern === '*') return true;
-
-  // Convert wildcard pattern to regex
-  // Escape special regex characters except *
-  const regexPattern = normalizedPattern
-    .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // Escape special chars
-    .replace(/\*/g, '.*'); // Replace * with .*
-
-  const regex = new RegExp(`^${regexPattern}$`);
-  return regex.test(normalizedAction);
-}
+export { calculatePermissionCount, matchesWildcard };
 
 /**
  * Checks if a role has a specific permission using Azure RBAC allow/deny logic.

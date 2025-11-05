@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import { calculatePermissionCount } from '../src/lib/rbacUtils';
+import { matchesWildcard } from '../src/lib/utils/wildcardMatcher';
 
 // Type definitions (inline to avoid import issues with ts-node)
 interface RolePermission {
@@ -237,27 +238,6 @@ function transformOperations(operations: Operation[]): Operation[] {
   return Array.from(uniqueOperations.values()).sort((a, b) =>
     a.name.localeCompare(b.name)
   );
-}
-
-/**
- * Check if a permission action matches a wildcard pattern
- * (Replicated from rbacService.ts for build-time generation)
- */
-function matchesWildcard(pattern: string, action: string): boolean {
-  if (!pattern || !action) return false;
-
-  const normalizedPattern = pattern.toLowerCase();
-  const normalizedAction = action.toLowerCase();
-
-  if (normalizedPattern === normalizedAction) return true;
-  if (normalizedPattern === '*') return true;
-
-  const regexPattern = normalizedPattern
-    .replace(/[.+?^${}()|[\]\\]/g, '\\$&')
-    .replace(/\*/g, '.*');
-
-  const regex = new RegExp(`^${regexPattern}$`);
-  return regex.test(normalizedAction);
 }
 
 /**
