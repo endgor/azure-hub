@@ -1,17 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dns from 'dns';
 import { promisify } from 'util';
-import { getClientIdentifier, RateLimiter } from '@/lib/rateLimit';
+import { getClientIdentifier, checkRateLimit } from '@/lib/rateLimit';
 
 const resolve4 = promisify(dns.resolve4);
 const resolve6 = promisify(dns.resolve6);
-
-// Aggressive rate limiting for DNS lookups: 5 requests per minute
-const DNS_RATE_LIMIT = 5;
-const DNS_RATE_WINDOW_MS = 60000;
-
-// Separate rate limiter instance for DNS endpoint
-const dnsRateLimiter = new RateLimiter(DNS_RATE_LIMIT, DNS_RATE_WINDOW_MS);
 
 interface DnsLookupResponse {
   hostname: string;
@@ -24,9 +17,10 @@ interface DnsLookupResponse {
  * Returns resolved IP addresses that can be used for Azure IP lookup.
  *
  * Security notes:
- * - Aggressive rate limiting (5 req/min) to prevent abuse
+ * - Uses distributed rate limiting (Redis) to prevent bypass via cold starts
  * - Generic error messages to avoid leaking DNS resolver details
  * - On Vercel, only resolves public DNS (no internal network access)
+ * - Falls back to in-memory rate limiting if Redis unavailable
  */
 export default async function handler(
   req: NextApiRequest,
@@ -40,9 +34,9 @@ export default async function handler(
     });
   }
 
-  // Apply aggressive rate limiting
+  // Apply distributed rate limiting (uses Redis if configured)
   const clientId = getClientIdentifier(req);
-  const rateLimitResult = dnsRateLimiter.check(clientId);
+  const rateLimitResult = await checkRateLimit(clientId);
 
   if (!rateLimitResult.success) {
     res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
