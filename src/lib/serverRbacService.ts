@@ -219,7 +219,9 @@ export async function searchOperations(query: string, limit: number = 50): Promi
   const queryLower = query.toLowerCase();
   const results: Operation[] = [];
 
-  for (const [_key, value] of actionsMap.entries()) {
+  // Convert Map entries to array for iteration (ES5 compatibility)
+  const entries = Array.from(actionsMap.entries());
+  for (const [_key, value] of entries) {
     if (value.name.toLowerCase().includes(queryLower)) {
       results.push({
         name: value.name,
@@ -244,7 +246,9 @@ export async function getServiceNamespaces(): Promise<string[]> {
   const actionsMap = await loadActionsCache();
   const namespaces = new Set<string>();
 
-  for (const [, value] of actionsMap.entries()) {
+  // Convert Map entries to array for iteration (ES5 compatibility)
+  const entries = Array.from(actionsMap.entries());
+  for (const [, value] of entries) {
     const parts = value.name.split('/');
     if (parts.length >= 2) {
       namespaces.add(parts[0]);
@@ -261,7 +265,9 @@ export async function getActionsByService(service: string): Promise<Operation[]>
   const actionsMap = await loadActionsCache();
   const results: Operation[] = [];
 
-  for (const [, value] of actionsMap.entries()) {
+  // Convert Map entries to array for iteration (ES5 compatibility)
+  const entries = Array.from(actionsMap.entries());
+  for (const [, value] of entries) {
     if (value.name.startsWith(service + '/')) {
       results.push({
         name: value.name,
