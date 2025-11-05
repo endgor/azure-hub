@@ -15,6 +15,13 @@ export interface LeafSubnet extends SubnetNode {
   depth: number; // Tree depth level, 0 = root
 }
 
+/** Display node for hierarchical vnet/subnet view */
+export interface DisplayNode extends SubnetNode {
+  depth: number; // Tree depth level, 0 = root
+  isVnet: boolean; // Whether this node is marked as a virtual network
+  hierarchyLevel: number; // Indentation level (0 = vnet, 1 = direct child, etc.)
+}
+
 export const MAX_PREFIX = 32;
 export const DEFAULT_NETWORK = '192.168.0.0';
 export const DEFAULT_PREFIX = 16;
@@ -266,6 +273,94 @@ export function collectLeaves(tree: SubnetTree, rootId: string): LeafSubnet[] {
   }
 
   return leaves.sort((a, b) => a.network - b.network);
+}
+
+/**
+ * Collects display nodes for hierarchical vnet/subnet view.
+ * Shows vnets and their immediate children (including non-leaf nodes if marked as vnet).
+ *
+ * @param tree - The subnet tree
+ * @param rootId - Root node ID
+ * @param vnetFlags - Record of nodeId -> isVnet flag
+ * @returns Array of display nodes with hierarchy information
+ */
+export function collectDisplayNodes(
+  tree: SubnetTree,
+  rootId: string,
+  vnetFlags: Record<string, boolean>
+): DisplayNode[] {
+  const root = tree[rootId];
+  if (!root) {
+    return [];
+  }
+
+  const displayNodes: DisplayNode[] = [];
+
+  // Helper to collect nodes recursively with hierarchy tracking
+  const collectNodes = (nodeId: string, depth: number, parentIsVnet: boolean, hierarchyLevel: number) => {
+    const node = tree[nodeId];
+    if (!node) {
+      return;
+    }
+
+    const isVnet = vnetFlags[nodeId] === true;
+
+    // If this node is a vnet, show it and reset hierarchy level
+    if (isVnet) {
+      displayNodes.push({
+        ...node,
+        depth,
+        isVnet: true,
+        hierarchyLevel: 0
+      });
+
+      // If it has children, show them as subnets
+      if (node.children) {
+        const [leftId, rightId] = node.children;
+        collectNodes(leftId, depth + 1, true, 1);
+        collectNodes(rightId, depth + 1, true, 1);
+      }
+      return;
+    }
+
+    // If parent is a vnet, show this node as a subnet under the vnet
+    if (parentIsVnet) {
+      displayNodes.push({
+        ...node,
+        depth,
+        isVnet: false,
+        hierarchyLevel
+      });
+
+      // Continue showing children if this node has them
+      if (node.children) {
+        const [leftId, rightId] = node.children;
+        collectNodes(leftId, depth + 1, true, hierarchyLevel + 1);
+        collectNodes(rightId, depth + 1, true, hierarchyLevel + 1);
+      }
+      return;
+    }
+
+    // If this is not a vnet and parent is not a vnet, check children
+    if (node.children) {
+      const [leftId, rightId] = node.children;
+      collectNodes(leftId, depth + 1, false, 0);
+      collectNodes(rightId, depth + 1, false, 0);
+    } else {
+      // Leaf node with no vnet parent - show as standalone
+      displayNodes.push({
+        ...node,
+        depth,
+        isVnet: false,
+        hierarchyLevel: 0
+      });
+    }
+  };
+
+  // Start collection from root
+  collectNodes(rootId, 0, false, 0);
+
+  return displayNodes.sort((a, b) => a.network - b.network);
 }
 
 /**

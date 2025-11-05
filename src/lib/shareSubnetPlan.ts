@@ -15,13 +15,14 @@ interface ShareableLeaf {
 /**
  * Shareable subnet plan format for encoding in URLs.
  * Uses abbreviated field names to minimize encoded size.
- * v = version, net = network, pre = prefix, az = Azure mode
+ * v = version, net = network, pre = prefix, az = Azure mode, vn = vnet flags
  */
 export interface ShareableSubnetPlan {
   v: number; // Format version (currently 1)
   net: number; // Base network address
   pre: number; // Base prefix
   az?: 1; // Azure reservation mode flag (1 = enabled)
+  vn?: Array<[number, number]>; // VNet flags as [network, prefix] tuples
   leaves: ShareableLeaf[]; // List of subnets in plan
 }
 
@@ -32,6 +33,8 @@ interface BuildSharePlanOptions {
   leaves: LeafSubnet[];
   rowColors: Record<string, string>; // Keyed by leaf ID
   rowComments: Record<string, string>; // Keyed by leaf ID
+  vnetFlags: Record<string, boolean>; // Keyed by node ID
+  allNodes: Record<string, { network: number; prefix: number }>; // All nodes in tree for vnet lookup
 }
 
 /**
@@ -45,7 +48,9 @@ export function buildShareableSubnetPlan({
   useAzureReservations,
   leaves,
   rowColors,
-  rowComments
+  rowComments,
+  vnetFlags,
+  allNodes
 }: BuildSharePlanOptions): ShareableSubnetPlan {
   const shareLeaves: ShareableLeaf[] = [...leaves]
     .sort((a, b) => a.network - b.network)
@@ -66,11 +71,21 @@ export function buildShareableSubnetPlan({
       return entry;
     });
 
+  // Collect vnet flags as [network, prefix] tuples
+  const vnetTuples: Array<[number, number]> = [];
+  Object.entries(vnetFlags).forEach(([nodeId, isVnet]) => {
+    if (isVnet && allNodes[nodeId]) {
+      const node = allNodes[nodeId];
+      vnetTuples.push([node.network, node.prefix]);
+    }
+  });
+
   return {
     v: 1,
     net: baseNetwork >>> 0,
     pre: basePrefix,
     az: useAzureReservations ? 1 : undefined,
+    vn: vnetTuples.length > 0 ? vnetTuples : undefined,
     leaves: shareLeaves
   };
 }
@@ -103,7 +118,7 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
       return null;
     }
 
-    const { v, net, pre, az, leaves } = parsed as ShareableSubnetPlan;
+    const { v, net, pre, az, vn, leaves } = parsed as ShareableSubnetPlan;
     if (v !== 1 || typeof net !== 'number' || typeof pre !== 'number' || !Array.isArray(leaves)) {
       return null; // Invalid structure or version
     }
@@ -136,11 +151,27 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
       return null; // Plan must have at least one subnet
     }
 
+    // Validate and clean vnet flags
+    const cleanedVnets: Array<[number, number]> = [];
+    if (Array.isArray(vn)) {
+      vn.forEach((tuple) => {
+        if (
+          Array.isArray(tuple) &&
+          tuple.length === 2 &&
+          typeof tuple[0] === 'number' &&
+          typeof tuple[1] === 'number'
+        ) {
+          cleanedVnets.push([tuple[0] >>> 0, tuple[1]]);
+        }
+      });
+    }
+
     return {
       v: 1,
       net: net >>> 0,
       pre,
       az: az === 1 ? 1 : undefined,
+      vn: cleanedVnets.length > 0 ? cleanedVnets : undefined,
       leaves: cleanedLeaves
     };
   } catch {

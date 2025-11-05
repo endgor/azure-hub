@@ -9,8 +9,10 @@ import {
   DEFAULT_NETWORK,
   DEFAULT_PREFIX,
   LeafSubnet,
+  DisplayNode,
   SubnetTree,
   collectLeaves,
+  collectDisplayNodes,
   computeLeafCounts,
   createInitialTree,
   createTreeFromLeafDefinitions,
@@ -148,6 +150,7 @@ export default function SubnetCalculatorPage(): ReactElement {
   const [useAzureReservations, setUseAzureReservations] = useState(false);
   const [rowColors, setRowColors] = useState<Record<string, string>>({});
   const [isColorModeActive, setIsColorModeActive] = useState(false);
+  const [vnetFlags, setVnetFlags] = useState<Record<string, boolean>>({});
   const [selectedColorId, setSelectedColorId] = useState<string>(DEFAULT_COLOR_ID);
   const [rowComments, setRowComments] = useState<Record<string, string>>({});
   const [activeCommentRow, setActiveCommentRow] = useState<string | null>(null);
@@ -163,7 +166,8 @@ export default function SubnetCalculatorPage(): ReactElement {
   const colorMenuRef = useRef<HTMLDivElement | null>(null);
 
   const leaves = useMemo(() => collectLeaves(state.tree, state.rootId), [state.tree, state.rootId]);
-  const maxDepth = useMemo(() => leaves.reduce((maximum, leaf) => Math.max(maximum, leaf.depth), 0), [leaves]);
+  const displayNodes = useMemo(() => collectDisplayNodes(state.tree, state.rootId, vnetFlags), [state.tree, state.rootId, vnetFlags]);
+  const maxDepth = useMemo(() => displayNodes.reduce((maximum, node) => Math.max(maximum, node.depth), 0), [displayNodes]);
   const leafCounts = useMemo(() => computeLeafCounts(state.tree, state.rootId), [state.tree, state.rootId]);
   const joinColumnCount = Math.max(maxDepth + 1, 1);
   const renderedJoinCells = new Set<string>();
@@ -249,6 +253,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     const rebuiltLeaves = collectLeaves(rebuiltTree, rootId);
     const nextColors: Record<string, string> = {};
     const nextComments: Record<string, string> = {};
+    const nextVnetFlags: Record<string, boolean> = {};
 
     rebuiltLeaves.forEach((leaf) => {
       const mapKey = `${leaf.network}/${leaf.prefix}`;
@@ -261,6 +266,18 @@ export default function SubnetCalculatorPage(): ReactElement {
         nextComments[leaf.id] = mappedComment;
       }
     });
+
+    // Restore vnet flags by matching network/prefix tuples to rebuilt tree nodes
+    if (decodedState.vn && Array.isArray(decodedState.vn)) {
+      decodedState.vn.forEach(([network, prefix]) => {
+        // Find node with matching network and prefix
+        Object.entries(rebuiltTree).forEach(([nodeId, node]) => {
+          if (node.network === network && node.prefix === prefix) {
+            nextVnetFlags[nodeId] = true;
+          }
+        });
+      });
+    }
 
     setState({
       rootId,
@@ -276,6 +293,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     setUseAzureReservations(Boolean(decodedState.az));
     setRowColors(nextColors);
     setRowComments(nextComments);
+    setVnetFlags(nextVnetFlags);
     setIsColorModeActive(false);
     setSelectedColorId(DEFAULT_COLOR_ID);
     closeCommentEditor();
@@ -284,15 +302,17 @@ export default function SubnetCalculatorPage(): ReactElement {
 
   useEffect(() => {
     const leafIds = new Set(leaves.map((leaf) => leaf.id));
+    const allNodeIds = new Set(Object.keys(state.tree));
 
     setRowColors((current) => cleanupRemovedLeaves(current, leafIds));
     setRowComments((current) => cleanupRemovedLeaves(current, leafIds));
+    setVnetFlags((current) => cleanupRemovedLeaves(current, allNodeIds));
 
     if (activeCommentRow && !leafIds.has(activeCommentRow)) {
       setActiveCommentRow(null);
       setCommentDraft('');
     }
-  }, [leaves, activeCommentRow]);
+  }, [leaves, activeCommentRow, state.tree]);
 
   const handleFieldChange = (field: 'network' | 'prefix') => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -364,13 +384,21 @@ export default function SubnetCalculatorPage(): ReactElement {
 
     setIsGeneratingShare(true);
     try {
+      // Convert tree to simple format for sharing
+      const allNodes: Record<string, { network: number; prefix: number }> = {};
+      Object.entries(state.tree).forEach(([nodeId, node]) => {
+        allNodes[nodeId] = { network: node.network, prefix: node.prefix };
+      });
+
       const sharePlan = buildShareableSubnetPlan({
         baseNetwork: state.baseNetwork,
         basePrefix: state.basePrefix,
         useAzureReservations,
         leaves,
         rowColors,
-        rowComments
+        rowComments,
+        vnetFlags,
+        allNodes
       });
       const encodedState = serialiseShareableSubnetPlan(sharePlan);
       const shareUrl = new URL(window.location.href);
@@ -422,6 +450,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     setRowColors({});
     setIsColorModeActive(false);
     setRowComments({});
+    setVnetFlags({});
     closeCommentEditor();
     setFormFields({
       network: inetNtoa(normalisedNetwork),
@@ -438,6 +467,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     setRowColors({});
     setIsColorModeActive(false);
     setRowComments({});
+    setVnetFlags({});
     closeCommentEditor();
     setState(createSubnetState(DEFAULT_NETWORK, DEFAULT_PREFIX));
   };
@@ -516,6 +546,25 @@ export default function SubnetCalculatorPage(): ReactElement {
         closeCommentEditor();
       }
     }
+  };
+
+  const toggleVnetFlag = (nodeId: string) => {
+    setVnetFlags((current) => {
+      const isCurrentlyVnet = current[nodeId] === true;
+
+      if (isCurrentlyVnet) {
+        // Remove vnet flag
+        const next = { ...current };
+        delete next[nodeId];
+        return next;
+      }
+
+      // Add vnet flag
+      return {
+        ...current,
+        [nodeId]: true
+      };
+    });
   };
 
   return (
@@ -781,6 +830,7 @@ export default function SubnetCalculatorPage(): ReactElement {
             >
               <thead>
                 <tr className="bg-slate-50 dark:bg-slate-800 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
+                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Type</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Subnet Address</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Netmask</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Range of Addresses</th>
@@ -797,32 +847,35 @@ export default function SubnetCalculatorPage(): ReactElement {
                 </tr>
               </thead>
               <tbody>
-                {leaves.map((leaf, rowIndex) => {
-                  const lastAddress = subnetLastAddress(leaf.network, leaf.prefix);
+                {displayNodes.map((node, rowIndex) => {
+                  const lastAddress = subnetLastAddress(node.network, node.prefix);
                   const usable = useAzureReservations
-                    ? usableRangeAzure(leaf.network, leaf.prefix)
-                    : usableRange(leaf.network, leaf.prefix);
+                    ? usableRangeAzure(node.network, node.prefix)
+                    : usableRange(node.network, node.prefix);
                   const hostCount = useAzureReservations
-                    ? hostCapacityAzure(leaf.prefix)
-                    : hostCapacity(leaf.prefix);
-                  const path = getNodePath(state.tree, leaf.id);
-                  const canSplit = leaf.prefix < 32;
+                    ? hostCapacityAzure(node.prefix)
+                    : hostCapacity(node.prefix);
+                  const path = getNodePath(state.tree, node.id);
+                  const canSplit = !node.children && node.prefix < 32;
                   const segments = [...path].reverse();
                   const joinCells: ReactElement[] = [];
-              const rowColor = rowColors[leaf.id];
+              const rowColor = rowColors[node.id];
               const rowBackground = rowColor
                 ? ''
+                : node.isVnet
+                ? 'bg-sky-50/60 dark:bg-sky-950/30'
                 : rowIndex % 2 === 0
                 ? 'bg-white dark:bg-slate-900'
                 : 'bg-slate-50/40 dark:bg-slate-800/40';
                   const highlightStyle = rowColor ? { backgroundColor: rowColor } : undefined;
-                  const comment = rowComments[leaf.id] ?? '';
-                  const isEditingComment = activeCommentRow === leaf.id;
+                  const comment = rowComments[node.id] ?? '';
+                  const isEditingComment = activeCommentRow === node.id;
+                  const indentPx = node.hierarchyLevel * 24;
 
                   segments.forEach((segment, index) => {
                     const isLeafSegment = index === 0;
                     const isRootSegment = segment.id === state.rootId;
-                    const segmentKey = `${leaf.id}-${segment.id}`;
+                    const segmentKey = `${node.id}-${segment.id}`;
                     const rowSpan = leafCounts[segment.id] ?? 1;
                     const colSpan = isLeafSegment ? Math.max(joinColumnCount - (path.length - 1), 1) : 1;
                   const alternateBg =
@@ -834,9 +887,9 @@ export default function SubnetCalculatorPage(): ReactElement {
                       const splitContent = canSplit ? (
                         <button
                           type="button"
-                          onClick={() => handleSplit(leaf.id)}
+                          onClick={() => handleSplit(node.id)}
                           className="flex h-full w-full items-center justify-center bg-emerald-500 px-1 py-2 text-white transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-1 focus:ring-offset-white"
-                          title={`Split ${subnetLabel(leaf)} into /${leaf.prefix + 1}`}
+                          title={`Split ${subnetLabel(node)} into /${node.prefix + 1}`}
                         >
                           <span
                             className="font-mono text-[11px] font-semibold"
@@ -934,7 +987,7 @@ export default function SubnetCalculatorPage(): ReactElement {
 
                   return (
                     <tr
-                      key={leaf.id}
+                      key={node.id}
                       className={`transition ${rowBackground} ${
                         isColorModeActive ? 'cursor-pointer select-none' : ''
                       }`}
@@ -953,38 +1006,62 @@ export default function SubnetCalculatorPage(): ReactElement {
                         }
                         setRowColors((current) => {
                           if (!activeColorHex) {
-                            if (!(leaf.id in current)) {
+                            if (!(node.id in current)) {
                               return current;
                             }
                             const next = { ...current };
-                            delete next[leaf.id];
+                            delete next[node.id];
                             return next;
                           }
-                          if (current[leaf.id] === activeColorHex) {
+                          if (current[node.id] === activeColorHex) {
                             return current;
                           }
                           return {
                             ...current,
-                            [leaf.id]: activeColorHex
+                            [node.id]: activeColorHex
                           };
                         });
                       }}
                       title={isColorModeActive ? 'Click to apply selected color' : undefined}
                     >
                       <td className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top" style={highlightStyle}>
-                        <span className="font-medium text-slate-900 dark:text-slate-100">{subnetLabel(leaf)}</span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleVnetFlag(node.id);
+                          }}
+                          className={`inline-flex items-center justify-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider transition ${
+                            node.isVnet
+                              ? 'bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600'
+                              : 'bg-slate-200 text-slate-600 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                          }`}
+                          title={node.isVnet ? 'Click to unmark as VNet' : 'Click to mark as VNet'}
+                        >
+                          {node.isVnet ? 'VNet' : 'Subnet'}
+                        </button>
+                      </td>
+                      <td className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top" style={highlightStyle}>
+                        <div style={{ paddingLeft: `${indentPx}px` }} className="flex items-center gap-1.5">
+                          {node.hierarchyLevel > 0 && (
+                            <span className="text-slate-400 dark:text-slate-600">└</span>
+                          )}
+                          <span className={node.isVnet ? 'font-bold text-slate-900 dark:text-slate-100' : 'font-medium text-slate-900 dark:text-slate-100'}>
+                            {subnetLabel(node)}
+                          </span>
+                        </div>
                       </td>
                       <td
                         className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
                         style={highlightStyle}
                       >
-                        {inetNtoa(subnetNetmask(leaf.prefix))}
+                        {inetNtoa(subnetNetmask(node.prefix))}
                       </td>
                       <td
                         className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
                         style={highlightStyle}
                       >
-                        {formatRange(leaf.network, lastAddress)}
+                        {formatRange(node.network, lastAddress)}
                       </td>
                       <td
                         className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
@@ -1009,7 +1086,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                             className="space-y-2"
                             onSubmit={(event) => {
                               event.preventDefault();
-                              saveComment(leaf.id, commentDraft);
+                              saveComment(node.id, commentDraft);
                               closeCommentEditor();
                             }}
                           >
@@ -1055,7 +1132,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                             </span>
                             <button
                               type="button"
-                              onClick={() => openCommentEditor(leaf.id)}
+                              onClick={() => openCommentEditor(node.id)}
                               className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-sky-300 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:text-slate-400 dark:hover:border-sky-600 dark:hover:text-sky-400"
                               aria-label={comment ? 'Edit comment' : 'Add comment'}
                             >
