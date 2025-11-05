@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { AzureRole } from '@/types/rbac';
-import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON } from '@/lib/rbacExportUtils';
+import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON, exportRolesToMarkdown } from '@/lib/rbacExportUtils';
 import { getPrivilegedRoles, isPrivilegedRole } from '@/config/privilegedRoles';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
@@ -70,12 +70,25 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     }
   }, [roles, generateFilename]);
 
+  const handleMarkdownExport = useCallback(async () => {
+    setIsExporting(true);
+    try {
+      exportRolesToMarkdown(roles, generateFilename('md'));
+    } catch (error) {
+      console.error('Markdown export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [roles, generateFilename]);
+
   // Export options for ExportMenu
   const exportOptions: ExportOption[] = useMemo(() => [
     { label: 'JSON', format: 'json', extension: '.json', onClick: handleJsonExport },
     { label: 'CSV', format: 'csv', extension: '.csv', onClick: handleCsvExport },
-    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport }
-  ], [handleJsonExport, handleCsvExport, handleExcelExport]);
+    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
+    { label: 'Markdown', format: 'md', extension: '.md', onClick: handleMarkdownExport }
+  ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
 
   // Check if any of the selected roles are privileged
   const privilegedRolesInSelection = useMemo(

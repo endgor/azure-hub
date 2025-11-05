@@ -32,14 +32,14 @@ export default function SubnetExportButton({
   // Close dropdown when clicking outside
   useClickOutside(dropdownRef as React.RefObject<HTMLElement>, () => setIsOpen(false), isOpen);
 
-  const handleExport = async (format: 'csv' | 'xlsx') => {
+  const handleExport = async (format: 'csv' | 'xlsx' | 'md') => {
     if (disabled || isExporting || leaves.length === 0) {
       return;
     }
 
     setIsExporting(true);
     try {
-      const [{ prepareSubnetExportData, generateSubnetExportFilename }, { exportToCSV, exportToExcel }] = await Promise.all([
+      const [{ prepareSubnetExportData, generateSubnetExportFilename }, { exportToCSV, exportToExcel, exportToMarkdown }] = await Promise.all([
         import('@/lib/subnetExportUtils'),
         import('@/lib/exportUtils')
       ]);
@@ -54,8 +54,11 @@ export default function SubnetExportButton({
 
       if (format === 'csv') {
         await exportToCSV(exportData, filename);
-      } else {
+      } else if (format === 'xlsx') {
         await exportToExcel(exportData, filename, 'Subnet Plan', { rowFills });
+      } else {
+        // Markdown - colors are ignored as markdown doesn't support styling
+        exportToMarkdown(exportData, filename);
       }
     } catch (error) {
       console.error('Failed to export subnet plan', error);
@@ -136,6 +139,17 @@ export default function SubnetExportButton({
               </svg>
               Export as Excel
               <span className="ml-auto text-xs text-slate-400 dark:text-slate-500">.xlsx</span>
+            </button>
+            <button
+              onClick={() => handleExport('md')}
+              className="flex w-full items-center gap-3 px-4 py-2 text-sm text-slate-700 transition hover:bg-sky-50 hover:text-sky-700 dark:text-slate-200 dark:hover:bg-sky-900/20 dark:hover:text-sky-400"
+              role="menuitem"
+            >
+              <svg className="h-4 w-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Export as Markdown
+              <span className="ml-auto text-xs text-slate-400 dark:text-slate-500">.md</span>
             </button>
           </div>
         </div>
