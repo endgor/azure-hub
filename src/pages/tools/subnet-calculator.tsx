@@ -146,7 +146,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     prefix: DEFAULT_PREFIX.toString()
   });
   const [formError, setFormError] = useState<string | null>(null);
-  const [useAzureReservations, setUseAzureReservations] = useState(false);
+  const [useAzureReservations, setUseAzureReservations] = useState(true);
   const [rowColors, setRowColors] = useState<Record<string, string>>({});
   const [isColorModeActive, setIsColorModeActive] = useState(false);
   const [vnetFlags, setVnetFlags] = useState<Record<string, boolean>>({});
