@@ -9,7 +9,6 @@ import {
   DEFAULT_NETWORK,
   DEFAULT_PREFIX,
   LeafSubnet,
-  DisplayNode,
   SubnetTree,
   collectLeaves,
   collectDisplayNodes,
@@ -30,6 +29,7 @@ import {
   usableRange,
   usableRangeAzure
 } from '@/lib/subnetCalculator';
+import type { DisplayNode } from '@/lib/subnetCalculator';
 import {
   buildShareableSubnetPlan,
   parseShareableSubnetPlan,
