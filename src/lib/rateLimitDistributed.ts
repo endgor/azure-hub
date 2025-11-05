@@ -42,8 +42,10 @@ async function initializeKV() {
   if (!hasVercelKV || !useDistributed) return;
 
   try {
-    // Dynamic import to avoid build errors if @vercel/kv is not installed
-    const kvModule = await import('@vercel/kv' as any);
+    // Use Function constructor to completely hide the import from webpack's static analysis
+    // This prevents "Module not found" errors when @vercel/kv is not installed
+    const importKV = new Function('return import("@vercel/kv")');
+    const kvModule = await importKV();
     kv = kvModule.kv;
     console.log('[RateLimit] Using distributed Vercel KV rate limiter');
   } catch {
