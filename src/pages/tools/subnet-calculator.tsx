@@ -29,7 +29,6 @@ import {
   usableRange,
   usableRangeAzure
 } from '@/lib/subnetCalculator';
-import type { DisplayNode } from '@/lib/subnetCalculator';
 import {
   buildShareableSubnetPlan,
   parseShareableSubnetPlan,
