@@ -104,6 +104,9 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
  * Returns all matching service tags (an IP may belong to multiple tags).
  *
  * Example: "13.107.42.14" might match both "AzureFrontDoor.Frontend" and "AzureFrontDoor.FirstParty"
+ *
+ * IMPORTANT: Returns cloned objects to prevent cache pollution when callers
+ * mutate results (e.g., adding DNS resolution metadata).
  */
 export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[]> {
   const azureIpRanges = await loadAzureIpData();
@@ -113,7 +116,8 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
     try {
       const cidr = new IPCIDR(azureIpRange.ipAddressPrefix);
       if (cidr.contains(ipAddress)) {
-        matches.push(azureIpRange);
+        // Clone the object to prevent mutations from affecting the cache
+        matches.push({ ...azureIpRange });
       }
     } catch {
       // Skip invalid CIDR ranges (malformed data)
@@ -134,6 +138,8 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
  * - Uses fuzzy matching (handles camelCase variations, substring matches)
  *
  * Returns empty array if no filters specified.
+ *
+ * IMPORTANT: Returns cloned objects to prevent cache pollution.
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
   const { region, service } = options;
@@ -147,7 +153,7 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
     return [];
   }
 
-  let results = [...azureIpAddressList];
+  let results = azureIpAddressList;
 
   // Filter by region (if specified)
   if (region) {
@@ -166,7 +172,8 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
     });
   }
 
-  return results;
+  // Clone all results to prevent cache pollution
+  return results.map(ip => ({ ...ip }));
 }
 
 /**
