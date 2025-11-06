@@ -74,3 +74,14 @@ export function downloadExcel(data: Blob | ArrayBuffer | Uint8Array, filename: s
     : new Blob([data as BlobPart], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
   downloadFile(excelBlob, filename, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 }
+
+/**
+ * Convenience function for downloading Markdown files.
+ * Automatically sets the correct MIME type with UTF-8 encoding.
+ *
+ * @param content - Markdown string content
+ * @param filename - Name for the downloaded file
+ */
+export function downloadMarkdown(content: string, filename: string): void {
+  downloadFile(content, filename, 'text/markdown;charset=utf-8;');
+}

@@ -52,7 +52,7 @@ export function generateSubnetExportFilename(
   baseNetwork: number,
   basePrefix: number,
   useAzureReservations: boolean,
-  format: 'csv' | 'xlsx'
+  format: 'csv' | 'xlsx' | 'md'
 ): string {
   const networkLabel = inetNtoa(baseNetwork).replace(/[^a-z0-9]/gi, '_').toLowerCase();
   const modeLabel = useAzureReservations ? 'azure' : 'standard';
