@@ -1,6 +1,6 @@
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import * as XLSX from 'xlsx';
-import { downloadFile, downloadExcel, downloadCSV } from './downloadUtils';
+import { downloadFile, downloadExcel, downloadCSV, downloadMarkdown } from './downloadUtils';
 import { generateCountFilename } from './filenameUtils';
 import { getFlattenedPermissions, countTotalPermissions, type PermissionType } from './utils/permissionFlattener';
 
@@ -237,4 +237,84 @@ export function exportRolesToJSON(
   // Convert roles to Azure-compatible format and export
   const azureRoles = roles.map(convertRoleToAzureFormat);
   exportAzureRoleDefinitionsToJSON(azureRoles, filename);
+}
+
+/**
+ * Exports Azure roles to Markdown table format.
+ * Creates separate tables for each role showing Actions and Data Actions.
+ * Note: Markdown doesn't support colors, so styling is ignored.
+ */
+export function exportRolesToMarkdown(
+  roles: AzureRole[],
+  filename: string = 'azure-roles.md'
+): void {
+  if (roles.length === 0) {
+    console.warn('No roles to export');
+    return;
+  }
+
+  const sections: string[] = [];
+
+  // Add title
+  sections.push(`# Azure RBAC Roles\n`);
+  sections.push(`Exported ${roles.length} role${roles.length === 1 ? '' : 's'} on ${new Date().toISOString().slice(0, 10)}\n`);
+
+  // Create a section for each role
+  for (const role of roles) {
+    const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
+    const flattened = getFlattenedPermissions(role);
+    const totalPermissions = countTotalPermissions(role);
+
+    sections.push(`## ${role.roleName}`);
+    sections.push(`**Type:** ${roleType}`);
+    if (role.description) {
+      sections.push(`**Description:** ${role.description}`);
+    }
+    sections.push(`**Total Permissions:** ${totalPermissions}\n`);
+
+    // Actions table
+    if (flattened.actions.length > 0 || flattened.notActions.length > 0) {
+      sections.push(`### Actions`);
+      sections.push(`| Type | Permission |`);
+      sections.push(`|------|------------|`);
+
+      for (const action of flattened.actions) {
+        sections.push(`| Action | ${action.replace(/\|/g, '\\|')} |`);
+      }
+      for (const notAction of flattened.notActions) {
+        sections.push(`| Not Action | ${notAction.replace(/\|/g, '\\|')} |`);
+      }
+      sections.push('');
+    }
+
+    // Data Actions table
+    if (flattened.dataActions.length > 0 || flattened.notDataActions.length > 0) {
+      sections.push(`### Data Actions`);
+      sections.push(`| Type | Permission |`);
+      sections.push(`|------|------------|`);
+
+      for (const dataAction of flattened.dataActions) {
+        sections.push(`| Data Action | ${dataAction.replace(/\|/g, '\\|')} |`);
+      }
+      for (const notDataAction of flattened.notDataActions) {
+        sections.push(`| Not Data Action | ${notDataAction.replace(/\|/g, '\\|')} |`);
+      }
+      sections.push('');
+    }
+
+    sections.push('---\n');
+  }
+
+  // Create summary table at the end
+  sections.push(`## Summary\n`);
+  sections.push(`| Role Name | Type | Total Permissions |`);
+  sections.push(`|-----------|------|-------------------|`);
+  for (const role of roles) {
+    const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
+    const totalPermissions = countTotalPermissions(role);
+    sections.push(`| ${role.roleName.replace(/\|/g, '\\|')} | ${roleType} | ${totalPermissions} |`);
+  }
+
+  const markdown = sections.join('\n');
+  downloadMarkdown(markdown, filename);
 }

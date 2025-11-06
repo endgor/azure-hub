@@ -1,6 +1,6 @@
 import { AzureIpAddress } from '@/types/azure';
 import * as XLSX from 'xlsx';
-import { downloadFile, downloadExcel } from './downloadUtils';
+import { downloadFile, downloadExcel, downloadMarkdown } from './downloadUtils';
 import { generateQueryFilename } from './filenameUtils';
 
 /** Generic row type for CSV/Excel export */
@@ -98,10 +98,59 @@ export async function exportToExcel<T extends ExportRow>(
 }
 
 /**
+ * Exports data to Markdown table format.
+ * Creates a properly formatted markdown table with headers and aligned columns.
+ * Note: Markdown tables don't support styling like colors, so those are ignored.
+ */
+export function exportToMarkdown<T extends ExportRow>(
+  data: T[],
+  filename: string = 'azure-ip-ranges.md'
+): void {
+  if (data.length === 0) {
+    downloadMarkdown('No data to export', filename);
+    return;
+  }
+
+  // Get headers from first row
+  const headers = Object.keys(data[0] ?? {});
+
+  // Calculate column widths for alignment
+  const columnWidths = headers.map(header => {
+    const headerLength = header.length;
+    const maxDataLength = Math.max(
+      ...data.map(row => String(formatMarkdownValue(row[header])).length)
+    );
+    return Math.max(headerLength, maxDataLength);
+  });
+
+  // Create header row
+  const headerRow = '| ' + headers.map((header, i) =>
+    header.padEnd(columnWidths[i])
+  ).join(' | ') + ' |';
+
+  // Create separator row
+  const separatorRow = '|' + columnWidths.map(width =>
+    '-'.repeat(width + 2)
+  ).join('|') + '|';
+
+  // Create data rows
+  const dataRows = data.map(row =>
+    '| ' + headers.map((header, i) =>
+      String(formatMarkdownValue(row[header])).padEnd(columnWidths[i])
+    ).join(' | ') + ' |'
+  );
+
+  // Combine all rows
+  const markdown = [headerRow, separatorRow, ...dataRows].join('\n');
+
+  downloadMarkdown(markdown, filename);
+}
+
+/**
  * Generates a descriptive filename with sanitized query and ISO date.
  * Example: "azure-ip-ranges_192_168_0_0_2024-01-15.xlsx"
  */
-export function generateFilename(query: string, format: 'csv' | 'xlsx'): string {
+export function generateFilename(query: string, format: 'csv' | 'xlsx' | 'md'): string {
   return generateQueryFilename(query, format, 'azure-ip-ranges');
 }
 
@@ -141,6 +190,17 @@ function formatCellValue(value: ExportRow[keyof ExportRow]): string | number {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
   return sanitizeCellValue(String(value));
+}
+
+/**
+ * Formats cell values for Markdown table export.
+ * Escapes pipe characters and handles null/undefined values.
+ */
+function formatMarkdownValue(value: ExportRow[keyof ExportRow]): string {
+  if (value == null) return '';
+  if (typeof value === 'boolean') return value ? 'true' : 'false';
+  // Escape pipe characters to prevent breaking table structure
+  return String(value).replace(/\|/g, '\\|');
 }
 
 /**
