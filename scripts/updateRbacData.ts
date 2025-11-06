@@ -34,6 +34,24 @@ interface Operation {
   provider: string;
 }
 
+interface EntraIDRolePermission {
+  allowedResourceActions: string[];
+  excludedResourceActions?: string[];
+  condition?: string;
+}
+
+interface EntraIDRole {
+  id: string;
+  displayName: string;
+  description: string;
+  isBuiltIn: boolean;
+  isEnabled: boolean;
+  templateId: string;
+  version?: string;
+  rolePermissions: EntraIDRolePermission[];
+  permissionCount?: number;
+}
+
 // Directory to save the data files
 const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
@@ -41,6 +59,7 @@ const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
 const PERMISSIONS_FILE = path.join(DATA_DIR, 'permissions.json');
 const ACTIONS_CACHE_FILE = path.join(DATA_DIR, 'actions-cache.json');
+const ENTRAID_ROLES_FILE = path.join(DATA_DIR, 'entraid-roles.json');
 
 const debugEnv = process.env.DEBUG_UPDATE_RBAC_DATA ?? '';
 const DEBUG_LOGS = debugEnv === '1' || debugEnv.toLowerCase() === 'true';
@@ -361,6 +380,79 @@ function generateActionsCache(roles: AzureRole[]): Array<{ key: string; name: st
 }
 
 /**
+ * Fetch Entra ID role definitions using Microsoft Graph API via Azure CLI
+ */
+function fetchEntraIDRoles(): EntraIDRole[] {
+  console.info('Fetching Entra ID role definitions...');
+
+  try {
+    const output = execSync(
+      'az rest --method GET --url "https://graph.microsoft.com/v1.0/roleManagement/directory/roleDefinitions"',
+      {
+        encoding: 'utf8',
+        maxBuffer: 50 * 1024 * 1024 // 50MB buffer
+      }
+    );
+
+    const response = JSON.parse(output);
+    const roles = response.value as EntraIDRole[];
+    console.info(`Fetched ${roles.length} Entra ID role definitions`);
+    return roles;
+  } catch (error: any) {
+    console.error('Failed to fetch Entra ID roles:', error.message);
+    console.error('Note: Make sure you have permissions to read directory roles.');
+    throw error;
+  }
+}
+
+/**
+ * Calculate permission count for Entra ID roles
+ */
+function calculateEntraIDPermissionCount(role: EntraIDRole): number {
+  let count = 0;
+
+  for (const permission of role.rolePermissions) {
+    for (const action of permission.allowedResourceActions) {
+      if (action === '*') {
+        count += 10000;
+      } else if (action.includes('*')) {
+        const segments = action.split('/').filter(s => s === '*').length;
+        count += 100 * segments;
+      } else {
+        count += 1;
+      }
+    }
+
+    // Subtract for excluded actions
+    if (permission.excludedResourceActions) {
+      for (const excluded of permission.excludedResourceActions) {
+        if (excluded === '*') {
+          count -= 1000;
+        } else if (excluded.includes('*')) {
+          count -= 10;
+        } else {
+          count -= 1;
+        }
+      }
+    }
+  }
+
+  return Math.max(count, 1);
+}
+
+/**
+ * Extend Entra ID role data with computed fields
+ */
+function extendEntraIDRoleData(roles: EntraIDRole[]): EntraIDRole[] {
+  console.info('Processing Entra ID role data...');
+
+  return roles.map(role => ({
+    ...role,
+    permissionCount: calculateEntraIDPermissionCount(role)
+  }));
+}
+
+/**
  * Main function to update RBAC data
  */
 async function updateRbacData(): Promise<void> {
@@ -408,12 +500,32 @@ async function updateRbacData(): Promise<void> {
       console.warn(`  echo '[]' > ${PERMISSIONS_FILE}`);
     }
 
+    // Fetch and save Entra ID roles
+    let entraIdRolesSuccess = false;
+    try {
+      const entraIdRoles = fetchEntraIDRoles();
+      const extendedEntraIdRoles = extendEntraIDRoleData(entraIdRoles);
+
+      console.info(`Writing ${extendedEntraIdRoles.length} Entra ID roles to ${ENTRAID_ROLES_FILE}...`);
+      fs.writeFileSync(ENTRAID_ROLES_FILE, JSON.stringify(extendedEntraIdRoles, null, 2), 'utf8');
+      console.info(`✓ Entra ID roles data saved\n`);
+      entraIdRolesSuccess = true;
+    } catch (error: any) {
+      console.warn('Warning: Could not fetch Entra ID roles. The calculator will work with Azure RBAC only.');
+      console.warn('Error:', error.message);
+      console.warn('You can manually create an empty file:');
+      console.warn(`  echo '[]' > ${ENTRAID_ROLES_FILE}`);
+    }
+
     console.info('RBAC data update completed successfully!');
     console.info('\nGenerated files:');
     console.info(`  - ${ROLES_FILE}`);
     console.info(`  - ${ACTIONS_CACHE_FILE}`);
     if (operations.length > 0) {
       console.info(`  - ${PERMISSIONS_FILE}`);
+    }
+    if (entraIdRolesSuccess) {
+      console.info(`  - ${ENTRAID_ROLES_FILE}`);
     }
 
   } catch (error: any) {
