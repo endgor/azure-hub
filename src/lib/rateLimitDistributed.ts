@@ -65,7 +65,7 @@ async function initializeRedis() {
       // Only set redisClient after successful connection
       redisClient = client;
       console.log('[RateLimit] Using distributed Redis rate limiter');
-    } catch (error) {
+    } catch {
       console.warn('[RateLimit] Redis not installed or failed to connect, falling back to in-memory');
       redisClient = null;
     }
