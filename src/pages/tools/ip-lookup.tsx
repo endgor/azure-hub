@@ -3,55 +3,16 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
-import { checkIpAddress, searchAzureIpAddresses } from '@/lib/clientIpService';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
 /**
- * Check if a string is a hostname (not an IP or CIDR)
+ * Fetches IP lookup data from the server-side API.
+ * This eliminates the 4MB+ download of AzureCloud.json to the browser.
+ * All CIDR matching and DNS resolution now happens server-side.
  */
-function isHostname(input: string): boolean {
-  // Has dots and doesn't start with a digit (likely hostname)
-  // Also check it's not a CIDR notation
-  if (!input.includes('.') || input.includes('/')) {
-    return false;
-  }
-
-  // Check if it looks like an IP address (starts with digit)
-  if (/^\d+\.\d+/.test(input)) {
-    return false;
-  }
-
-  // Likely a hostname
-  return true;
-}
-
-/**
- * Deduplicate Azure IP address results based on IP prefix and service tag
- */
-function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
-  return results.filter(
-    (item, index, array) =>
-      index ===
-      array.findIndex(
-        (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-      )
-  );
-}
-
-/**
- * Search for Azure IP addresses by both service and region in parallel
- */
-async function searchServiceAndRegion(query: string): Promise<AzureIpAddress[]> {
-  const [serviceResults, regionResults] = await Promise.all([
-    searchAzureIpAddresses({ service: query }),
-    searchAzureIpAddresses({ region: query })
-  ]);
-  return deduplicateResults([...serviceResults, ...regionResults]);
-}
-
 const clientFetcher = async (key: string): Promise<ApiResponse> => {
   if (!key) {
     return {
@@ -63,71 +24,35 @@ const clientFetcher = async (key: string): Promise<ApiResponse> => {
   }
 
   try {
+    // Build API URL from the key (which contains query parameters)
     const url = new URL(`http://localhost${key}`);
-    const ipOrDomain = url.searchParams.get('ipOrDomain') || undefined;
-    const region = url.searchParams.get('region') || undefined;
-    const service = url.searchParams.get('service') || undefined;
+    const params = new URLSearchParams();
 
-    let results: AzureIpAddress[] = [];
+    const ipOrDomain = url.searchParams.get('ipOrDomain');
+    const region = url.searchParams.get('region');
+    const service = url.searchParams.get('service');
 
-    if (ipOrDomain) {
-      // Check if it's an IP address or CIDR
-      if (/^\d+\.\d+/.test(ipOrDomain) || ipOrDomain.includes('/')) {
-        results = await checkIpAddress(ipOrDomain);
+    if (ipOrDomain) params.set('ipOrDomain', ipOrDomain);
+    if (region) params.set('region', region);
+    if (service) params.set('service', service);
+
+    // Call server-side API
+    const response = await fetch(`/api/ipLookup?${params.toString()}`);
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.');
       }
-      // Check if it's a hostname that needs DNS resolution
-      else if (isHostname(ipOrDomain)) {
-        try {
-          // Call DNS lookup API
-          const dnsResponse = await fetch(`/api/dnsLookup?hostname=${encodeURIComponent(ipOrDomain)}`);
-          const dnsData = await dnsResponse.json();
-
-          if (dnsData.ipAddresses && dnsData.ipAddresses.length > 0) {
-            // For each resolved IP, check Azure service tags in parallel
-            const matchPromises = dnsData.ipAddresses.map(async (resolvedIp: string) => {
-              const matches = await checkIpAddress(resolvedIp);
-              // Tag each result with DNS info
-              matches.forEach(match => {
-                match.resolvedFrom = ipOrDomain;
-                match.resolvedIp = resolvedIp;
-              });
-              return matches;
-            });
-
-            results = (await Promise.all(matchPromises)).flat();
-          } else if (dnsData.error) {
-            // DNS lookup failed, fall back to service/region search
-            results = await searchServiceAndRegion(ipOrDomain);
-          }
-        } catch {
-          // If DNS lookup fails, fall back to service/region search
-          results = await searchServiceAndRegion(ipOrDomain);
-        }
-      }
-      // Otherwise treat as service/region search
-      else {
-        results = await searchServiceAndRegion(ipOrDomain);
-      }
-    } else {
-      results = await searchAzureIpAddresses({ region, service });
+      throw new Error('Failed to fetch IP data');
     }
 
-    if (results.length === 0) {
-      return {
-        notFound: true,
-        message: 'No Azure IP ranges found matching your search criteria',
-        results: [],
-        total: 0
-      };
-    }
-
-    return {
-      results,
-      total: results.length,
-      query: { ipOrDomain, region, service }
-    };
+    const data = await response.json() as ApiResponse;
+    return data;
   } catch (error) {
-    throw error;
+    if (error instanceof Error && error.message === 'Rate limit exceeded. Please try again later.') {
+      throw error;
+    }
+    throw new Error('Failed to load data. Please check your input and try again.');
   }
 };
 
