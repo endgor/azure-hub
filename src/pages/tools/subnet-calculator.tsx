@@ -76,12 +76,12 @@ const TOUR_STEPS: Step[] = [
     placement: 'bottom',
   },
   {
-    target: 'button:has-text("Subnet")',
+    target: '[data-tour="type-toggle"]',
     content: 'Click this button to toggle between Subnet and VNet types. VNet rows will be highlighted in blue to distinguish them from regular subnets.',
     placement: 'right',
   },
   {
-    target: 'th:contains("Split / Join")',
+    target: '[data-tour="split-join-header"]',
     content: 'This column contains action buttons for splitting subnets into smaller ones or joining them back together.',
     placement: 'left',
   },
@@ -1004,7 +1004,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                     Hosts{useAzureReservations ? ' (Azure)' : ''}
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Comment</th>
-                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center">
+                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center" data-tour="split-join-header">
                     Split / Join
                   </th>
                 </tr>
@@ -1092,6 +1092,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                               : 'bg-slate-200 text-slate-600 hover:bg-slate-300 focus:ring-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 dark:focus:ring-slate-400'
                           }`}
                           title={node.isVnet ? 'Click to unmark as VNet' : 'Click to mark as VNet'}
+                          data-tour="type-toggle"
                         >
                           {node.isVnet ? 'VNet' : 'Subnet'}
                         </button>
