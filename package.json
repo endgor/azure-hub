@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/validateData.js && next build && node scripts/generateSitemap.js",
+    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && next build && node scripts/generateSitemap.js",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
     "update-ip-data": "ts-node scripts/updateIpData.ts",
     "update-rbac-data": "ts-node scripts/updateRbacData.ts",
+    "fetch-entraid-roles": "ts-node --project tsconfig.node.json scripts/fetchEntraIdRoles.ts",
     "generate-actions-cache": "ts-node scripts/generateActionsCache.ts",
     "generate-ip-indexes": "ts-node scripts/generateIpIndexes.ts"
   },

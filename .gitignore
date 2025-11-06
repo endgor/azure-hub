@@ -62,6 +62,9 @@ Desktop.ini
 # generated assets
 public/sitemap.xml
 
+# Generated data files (fetch with npm scripts)
+public/data/entraid-roles.json
+
 # AI
 CLAUDE.md
 PR_DESCRIPTION.md
