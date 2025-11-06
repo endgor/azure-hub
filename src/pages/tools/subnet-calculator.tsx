@@ -1100,8 +1100,8 @@ export default function SubnetCalculatorPage(): ReactElement {
                             </button>
                           ))}
 
-                          {/* Root node reset button */}
-                          {isRoot && (
+                          {/* Root node reset button - only show if there have been splits */}
+                          {isRoot && node.children && (
                             <button
                               type="button"
                               onClick={() => {
