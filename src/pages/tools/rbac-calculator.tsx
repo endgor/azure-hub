@@ -239,11 +239,16 @@ export default function RbacCalculatorPage() {
         setResults([]);
 
         if (leastPrivilegedRoles.length === 0) {
-          setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
+          setError('No Entra ID roles data found. Please run "npm run fetch-entraid-roles" to download role definitions from Microsoft Graph API. See docs/ENTRAID_ROLES_SETUP.md for setup instructions.');
         }
       }
     } catch (err) {
-      setError('Failed to calculate least privileged roles. Please try again.');
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      if (roleSystemType === 'entraid' && errorMessage.includes('Entra ID roles')) {
+        setError('Entra ID roles data not available. Run "npm run fetch-entraid-roles" to fetch role definitions. See docs/ENTRAID_ROLES_SETUP.md for setup.');
+      } else {
+        setError('Failed to calculate least privileged roles. Please try again.');
+      }
       console.error('Error calculating roles:', err);
     } finally {
       setIsLoading(false);
