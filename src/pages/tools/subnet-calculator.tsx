@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import { useRouter } from 'next/router';
+import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
 import Layout from '@/components/Layout';
 import SubnetExportButton from '@/components/SubnetExportButton';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -51,6 +52,93 @@ const COLOR_SWATCHES = [
 
 const CLEAR_COLOR_ID = 'clear';
 const DEFAULT_COLOR_ID = COLOR_SWATCHES[0].id;
+
+const TOUR_STEPS: Step[] = [
+  {
+    target: 'body',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Welcome to the Azure Subnet Calculator!</h3>
+        <p className="text-sm">This interactive guide will show you how to plan and visualize Azure virtual network subnets. Let&apos;s get started!</p>
+      </div>
+    ),
+    placement: 'center',
+    disableBeacon: true,
+  },
+  {
+    target: 'input[placeholder="10.0.0.0"]',
+    content: 'Enter your network address here (e.g., 10.0.0.0). This is the base IP address for your virtual network.',
+    placement: 'bottom',
+  },
+  {
+    target: 'input[placeholder="16"]',
+    content: 'Set your network size using CIDR notation. /16 gives you 65,536 addresses, /24 gives you 256 addresses, etc.',
+    placement: 'bottom',
+  },
+  {
+    target: 'button:has-text("Subnet")',
+    content: 'Click this button to toggle between Subnet and VNet types. VNet rows will be highlighted in blue to distinguish them from regular subnets.',
+    placement: 'right',
+  },
+  {
+    target: 'th:contains("Split / Join")',
+    content: 'This column contains action buttons for splitting subnets into smaller ones or joining them back together.',
+    placement: 'left',
+  },
+  {
+    target: 'body',
+    content: (
+      <div>
+        <p className="text-sm mb-2">In the Split / Join column, you&apos;ll see icon buttons:</p>
+        <ul className="text-sm list-disc pl-5 space-y-1">
+          <li><strong>Green ⊕ button:</strong> Split a subnet into two smaller subnets</li>
+          <li><strong>Blue ⊖ button:</strong> Join child subnets back together</li>
+          <li><strong>Reset button:</strong> Revert all changes back to the base network</li>
+        </ul>
+        <p className="text-sm mt-2">Try clicking the ⊕ button on any subnet row to split it!</p>
+      </div>
+    ),
+    placement: 'center',
+  },
+  {
+    target: '[aria-label="Color mode"]',
+    content: 'Activate color mode to highlight and organize your subnets. Click a color swatch, then click on subnet rows to paint them.',
+    placement: 'bottom',
+  },
+  {
+    target: '[title="Azure Reserved IPs"]',
+    content: 'Enable this to account for Azure&apos;s reserved IP addresses. Azure reserves 5 IPs per subnet for internal use.',
+    placement: 'bottom',
+  },
+  {
+    target: 'button[aria-label*="Export"]',
+    content: 'Export your subnet plan as an Excel file or CSV for documentation and sharing with your team.',
+    placement: 'bottom',
+  },
+  {
+    target: 'button[title*="shareable"]',
+    content: 'Generate a shareable link to your subnet plan. The URL includes all your splits, colors, and comments!',
+    placement: 'bottom',
+  },
+  {
+    target: 'body',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">You&apos;re all set!</h3>
+        <p className="text-sm mb-2">Now you can:</p>
+        <ul className="text-sm list-disc pl-5 space-y-1">
+          <li>Split subnets by clicking the ⊕ button</li>
+          <li>Join them back with the ⊖ button</li>
+          <li>Add comments to document each subnet</li>
+          <li>Use colors to organize related subnets</li>
+          <li>Export or share your subnet plan</li>
+        </ul>
+        <p className="text-sm mt-3">💡 <strong>Tip:</strong> Click the help icon (?) anytime to replay this tour!</p>
+      </div>
+    ),
+    placement: 'center',
+  },
+];
 
 function formatRange(first: number, last: number): string {
   if (first === last) {
@@ -162,6 +250,7 @@ export default function SubnetCalculatorPage(): ReactElement {
   const [isAzureMenuOpen, setIsAzureMenuOpen] = useState(false);
   const azureMenuRef = useRef<HTMLDivElement | null>(null);
   const colorMenuRef = useRef<HTMLDivElement | null>(null);
+  const [runTour, setRunTour] = useState(false);
 
   const leaves = useMemo(() => collectLeaves(state.tree, state.rootId), [state.tree, state.rootId]);
   const displayNodes = useMemo(() => collectDisplayNodes(state.tree, state.rootId, vnetFlags), [state.tree, state.rootId, vnetFlags]);
@@ -307,6 +396,31 @@ export default function SubnetCalculatorPage(): ReactElement {
       setCommentDraft('');
     }
   }, [leaves, activeCommentRow, state.tree]);
+
+  useEffect(() => {
+    // Check if user has completed the tour before
+    if (typeof window !== 'undefined') {
+      const hasCompletedTour = localStorage.getItem('subnet-calc-tour-completed');
+      if (!hasCompletedTour && router.isReady && !router.query.state) {
+        // Only auto-start tour if not loading a shared state
+        // Small delay to ensure page is fully rendered
+        const timer = setTimeout(() => setRunTour(true), 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [router.isReady, router.query.state]);
+
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status } = data;
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+
+    if (finishedStatuses.includes(status)) {
+      setRunTour(false);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('subnet-calc-tour-completed', 'true');
+      }
+    }
+  };
 
   const handleFieldChange = (field: 'network' | 'prefix') => (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -575,6 +689,47 @@ export default function SubnetCalculatorPage(): ReactElement {
         offers: { price: '0' }
       }}
     >
+      <Joyride
+        steps={TOUR_STEPS}
+        run={runTour}
+        continuous
+        showProgress
+        showSkipButton
+        scrollToFirstStep
+        disableOverlayClose
+        callback={handleJoyrideCallback}
+        styles={{
+          options: {
+            primaryColor: '#0ea5e9',
+            zIndex: 10000,
+          },
+          tooltip: {
+            fontSize: '14px',
+            borderRadius: '8px',
+          },
+          buttonNext: {
+            backgroundColor: '#0ea5e9',
+            fontSize: '13px',
+            borderRadius: '6px',
+            padding: '8px 16px',
+          },
+          buttonBack: {
+            color: '#64748b',
+            fontSize: '13px',
+          },
+          buttonSkip: {
+            color: '#94a3b8',
+            fontSize: '13px',
+          },
+        }}
+        locale={{
+          back: 'Back',
+          close: 'Close',
+          last: 'Finish',
+          next: 'Next',
+          skip: 'Skip tour',
+        }}
+      />
       <section className="space-y-6">
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Networking</p>
@@ -658,6 +813,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                           isColorModeActive ? 'border-sky-300 text-sky-600 dark:border-sky-700 dark:text-sky-400' : 'border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600'
                         }`}
                         aria-pressed={isColorModeActive}
+                        aria-label="Color mode"
                         title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
                       >
                         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
@@ -812,6 +968,19 @@ export default function SubnetCalculatorPage(): ReactElement {
                     {shareStatus === 'error' && (
                       <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-500 dark:text-rose-400">Copy failed</span>
                     )}
+                    <button
+                      type="button"
+                      onClick={() => setRunTour(true)}
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-sky-300 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-sky-600 dark:hover:text-sky-400"
+                      title="Show interactive guide"
+                      aria-label="Show tour"
+                    >
+                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" strokeWidth={2.5} strokeLinecap="round" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
