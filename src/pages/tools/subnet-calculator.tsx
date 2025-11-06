@@ -836,7 +836,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Comment</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center">
-                    Actions
+                    Split / Join
                   </th>
                 </tr>
               </thead>
