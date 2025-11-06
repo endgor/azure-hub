@@ -15,6 +15,12 @@ let entraIdRolesCache: EntraIDRole[] | null = null;
 let entraIdRolesCacheExpiry = 0;
 let entraIdActionsMapCache: Map<string, { name: string; roleCount: number }> | null = null;
 let entraIdActionsMapCacheExpiry = 0;
+type EntraIdRolesDataStatus = 'unknown' | 'missing' | 'available';
+let entraIdRolesDataStatus: EntraIdRolesDataStatus = 'unknown';
+
+export function getEntraIDRolesDataStatus(): EntraIdRolesDataStatus {
+  return entraIdRolesDataStatus;
+}
 
 /**
  * Loads Entra ID role definitions with extended metadata.
@@ -34,6 +40,7 @@ export async function loadEntraIDRoles(): Promise<EntraIDRole[]> {
       if (response.status === 404) {
         // File doesn't exist yet - user needs to run npm run fetch-entraid-roles
         console.warn('Entra ID roles data not found. Run: npm run fetch-entraid-roles');
+        entraIdRolesDataStatus = 'missing';
         return [];
       }
       throw new Error(`Failed to load Entra ID roles: ${response.statusText}`);
@@ -42,10 +49,12 @@ export async function loadEntraIDRoles(): Promise<EntraIDRole[]> {
     const roles = await response.json() as EntraIDRole[];
     entraIdRolesCache = roles;
     entraIdRolesCacheExpiry = now + CACHE_TTL_MS;
+    entraIdRolesDataStatus = 'available';
 
     return roles;
   } catch (error) {
     if (error instanceof Error && error.message.includes('404')) {
+      entraIdRolesDataStatus = 'missing';
       return [];
     }
     throw new Error(`Failed to load Entra ID roles: ${error instanceof Error ? error.message : 'Unknown error'}`);
