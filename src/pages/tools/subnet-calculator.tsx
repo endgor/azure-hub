@@ -14,6 +14,7 @@ import {
   collectDisplayNodes,
   createInitialTree,
   createTreeFromLeafDefinitions,
+  getNodePath,
   hostCapacity,
   hostCapacityAzure,
   inetAtov,
@@ -851,6 +852,12 @@ export default function SubnetCalculatorPage(): ReactElement {
                   const canSplit = !node.children && node.prefix < 32;
                   const canJoin = node.children && isJoinableNode(state.tree, node);
                   const isRoot = node.id === state.rootId;
+
+                  // Get path to show ancestor join buttons
+                  const path = getNodePath(state.tree, node.id);
+                  const joinableAncestors = path.filter(
+                    (ancestor) => ancestor.id !== node.id && ancestor.id !== state.rootId && isJoinableNode(state.tree, ancestor)
+                  );
               const rowColor = rowColors[node.id];
               const rowBackground = rowColor
                 ? ''
@@ -1033,7 +1040,8 @@ export default function SubnetCalculatorPage(): ReactElement {
                         onClick={(event) => event.stopPropagation()}
                         data-skip-color
                       >
-                        <div className="flex items-center justify-center gap-1.5">
+                        <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                          {/* Current node: split button for leaf nodes */}
                           {!node.children && (
                             <button
                               type="button"
@@ -1053,6 +1061,8 @@ export default function SubnetCalculatorPage(): ReactElement {
                               </svg>
                             </button>
                           )}
+
+                          {/* Current node: join button if it has children */}
                           {node.children && (
                             <button
                               type="button"
@@ -1072,6 +1082,25 @@ export default function SubnetCalculatorPage(): ReactElement {
                               </svg>
                             </button>
                           )}
+
+                          {/* Ancestor join buttons - always joinable if in the list */}
+                          {joinableAncestors.map((ancestor) => (
+                            <button
+                              key={ancestor.id}
+                              type="button"
+                              onClick={() => handleJoin(ancestor.id)}
+                              className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 transition focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 dark:border-sky-700/50 dark:bg-sky-950/40 dark:text-sky-400 dark:hover:bg-sky-950/60"
+                              title={`Join parent subnets into ${inetNtoa(ancestor.network)}/${ancestor.prefix}`}
+                              aria-label={`Join parent /${ancestor.prefix}`}
+                            >
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                                <circle cx="12" cy="12" r="9" strokeWidth={2} />
+                                <path strokeLinecap="round" d="M8 12h8" />
+                              </svg>
+                            </button>
+                          ))}
+
+                          {/* Root node reset button */}
                           {isRoot && (
                             <button
                               type="button"
