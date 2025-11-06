@@ -917,10 +917,10 @@ export default function SubnetCalculatorPage(): ReactElement {
                             e.stopPropagation();
                             toggleVnetFlag(node.id);
                           }}
-                          className={`inline-flex items-center justify-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider transition ${
+                          className={`inline-flex items-center justify-center rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider transition cursor-pointer shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-1 ${
                             node.isVnet
-                              ? 'bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-600'
-                              : 'bg-slate-200 text-slate-600 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                              ? 'bg-sky-600 text-white hover:bg-sky-700 focus:ring-sky-300 dark:bg-sky-500 dark:hover:bg-sky-600 dark:focus:ring-sky-400'
+                              : 'bg-slate-200 text-slate-600 hover:bg-slate-300 focus:ring-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600 dark:focus:ring-slate-400'
                           }`}
                           title={node.isVnet ? 'Click to unmark as VNet' : 'Click to mark as VNet'}
                         >
