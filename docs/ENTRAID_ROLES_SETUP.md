@@ -2,6 +2,12 @@
 
 This guide explains how to fetch all Entra ID (Azure AD) role definitions using your existing app registration.
 
+## Automatic Fetching (Vercel Deployments)
+
+**Good news!** If you have Azure credentials configured in Vercel's environment variables (for tenant lookup), Entra ID roles will be **automatically fetched during build time** in both production and preview deployments.
+
+The build process checks for credentials and fetches roles if available. No manual action needed for Vercel deployments!
+
 ## Prerequisites
 
 You already have an Azure app registration configured for tenant lookup with these environment variables:
@@ -153,7 +159,19 @@ Consider fetching roles:
 
 ## Local Development vs Production
 
+### Production & Preview (Vercel)
+**Automatic!** If environment variables are configured in Vercel (for tenant lookup), Entra ID roles are automatically fetched during each build.
+
+The build process:
+1. Checks for Azure credentials
+2. Fetches roles from Microsoft Graph if credentials exist
+3. Generates `public/data/entraid-roles.json`
+4. Includes it in the deployment
+
+No manual action needed - it just works!
+
 ### Local Development
+**Option 1: With Credentials**
 Set environment variables in `.env.local`:
 ```
 AZURE_CLIENT_ID=...
@@ -161,8 +179,13 @@ AZURE_CLIENT_SECRET=...
 AZURE_TENANT_ID=...
 ```
 
-### Production (Vercel)
-Environment variables are already configured for tenant lookup. The same credentials work for fetching roles.
+Then run:
+```bash
+npm run fetch-entraid-roles
+```
+
+**Option 2: Without Credentials**
+The build will skip Entra ID fetching (shows a warning but continues). You can develop and test Azure RBAC features without Entra ID roles.
 
 ## Security Notes
 
