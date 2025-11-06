@@ -856,7 +856,7 @@ export default function SubnetCalculatorPage(): ReactElement {
                   // Get path to show ancestor join buttons
                   const path = getNodePath(state.tree, node.id);
                   const joinableAncestors = path.filter(
-                    (ancestor) => ancestor.id !== node.id && ancestor.id !== state.rootId && isJoinableNode(state.tree, ancestor)
+                    (ancestor) => ancestor.id !== node.id && isJoinableNode(state.tree, ancestor)
                   );
               const rowColor = rowColors[node.id];
               const rowBackground = rowColor
