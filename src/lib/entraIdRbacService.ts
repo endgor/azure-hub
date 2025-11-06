@@ -31,6 +31,11 @@ export async function loadEntraIDRoles(): Promise<EntraIDRole[]> {
   try {
     const response = await fetch('/data/entraid-roles.json');
     if (!response.ok) {
+      if (response.status === 404) {
+        // File doesn't exist yet - user needs to run npm run fetch-entraid-roles
+        console.warn('Entra ID roles data not found. Run: npm run fetch-entraid-roles');
+        return [];
+      }
       throw new Error(`Failed to load Entra ID roles: ${response.statusText}`);
     }
 
@@ -40,6 +45,9 @@ export async function loadEntraIDRoles(): Promise<EntraIDRole[]> {
 
     return roles;
   } catch (error) {
+    if (error instanceof Error && error.message.includes('404')) {
+      return [];
+    }
     throw new Error(`Failed to load Entra ID roles: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
