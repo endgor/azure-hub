@@ -29,6 +29,7 @@ interface EntraIDRole {
 
 interface GraphResponse {
   value: EntraIDRole[];
+  '@odata.nextLink'?: string;
 }
 
 const DATA_DIR = path.join(process.cwd(), 'public', 'data');
@@ -103,26 +104,33 @@ async function fetchEntraIDRoles(): Promise<EntraIDRole[]> {
       throw new Error('Failed to acquire Microsoft Graph access token.');
     }
 
-    const graphUrl = `${GRAPH_BASE_URL}/v1.0/roleManagement/directory/roleDefinitions`;
-    console.info(`Request: GET ${graphUrl}`);
+    const roles: EntraIDRole[] = [];
+    let nextUrl: string | null = `${GRAPH_BASE_URL}/v1.0/roleManagement/directory/roleDefinitions`;
+    let pageCount = 0;
 
-    const response = await fetch(graphUrl, {
-      headers: {
-        Authorization: `Bearer ${token.token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+    while (nextUrl) {
+      pageCount += 1;
+      console.info(`Request: GET ${nextUrl}`);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Graph API error (${response.status}): ${errorText}`);
-      throw new Error(`Microsoft Graph API request failed with status ${response.status}`);
+      const response = await fetch(nextUrl, {
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Graph API error (${response.status}): ${errorText}`);
+        throw new Error(`Microsoft Graph API request failed with status ${response.status}`);
+      }
+
+      const data = await response.json() as GraphResponse;
+      roles.push(...data.value);
+      nextUrl = data['@odata.nextLink'] ?? null;
     }
 
-    const data = await response.json() as GraphResponse;
-    const roles = data.value;
-
-    console.info(`✓ Fetched ${roles.length} Entra ID role definitions`);
+    console.info(`✓ Fetched ${roles.length} Entra ID role definitions across ${pageCount} page${pageCount !== 1 ? 's' : ''}`);
     return roles;
   } catch (error) {
     if (error instanceof Error) {
