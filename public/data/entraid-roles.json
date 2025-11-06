@@ -1,0 +1,177 @@
+[
+  {
+    "id": "62e90394-69f5-4237-9190-012177145e10",
+    "displayName": "Global Administrator",
+    "description": "Can manage all aspects of Azure AD and Microsoft services that use Azure AD identities.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "62e90394-69f5-4237-9190-012177145e10",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/applications/allProperties/allTasks",
+          "microsoft.directory/users/allProperties/allTasks",
+          "microsoft.directory/groups/allProperties/allTasks",
+          "microsoft.azure.serviceHealth/allEntities/allTasks",
+          "microsoft.azure.supportTickets/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 5
+  },
+  {
+    "id": "729827e3-9c14-49f7-bb1b-9608f156bbb8",
+    "displayName": "Helpdesk Administrator",
+    "description": "Can reset passwords for non-administrators and Helpdesk Administrators.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "729827e3-9c14-49f7-bb1b-9608f156bbb8",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/users/password/update",
+          "microsoft.directory/users/invalidateAllRefreshTokens",
+          "microsoft.directory/bitlockerKeys/read",
+          "microsoft.azure.serviceHealth/allEntities/allTasks",
+          "microsoft.azure.supportTickets/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 5
+  },
+  {
+    "id": "fe930be7-5e62-47db-91af-98c3a49a38b1",
+    "displayName": "User Administrator",
+    "description": "Can manage all aspects of users and groups, including resetting passwords for limited admins.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "fe930be7-5e62-47db-91af-98c3a49a38b1",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/users/allProperties/allTasks",
+          "microsoft.directory/users/create",
+          "microsoft.directory/users/delete",
+          "microsoft.directory/users/password/update",
+          "microsoft.directory/groups/create",
+          "microsoft.directory/groups/allProperties/allTasks",
+          "microsoft.azure.serviceHealth/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 7
+  },
+  {
+    "id": "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3",
+    "displayName": "Application Administrator",
+    "description": "Can create and manage all aspects of app registrations and enterprise apps.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "9b895d92-2cd3-44c7-9d02-a6ac2d5ea5c3",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/applications/allProperties/allTasks",
+          "microsoft.directory/applications/create",
+          "microsoft.directory/applications/delete",
+          "microsoft.directory/servicePrincipals/allProperties/allTasks",
+          "microsoft.directory/servicePrincipals/create",
+          "microsoft.azure.serviceHealth/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 6
+  },
+  {
+    "id": "29232cdf-9323-42fd-ade2-1d097af3e4de",
+    "displayName": "Groups Administrator",
+    "description": "Can manage groups and group settings like naming and expiration policies.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "29232cdf-9323-42fd-ade2-1d097af3e4de",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/groups/create",
+          "microsoft.directory/groups/delete",
+          "microsoft.directory/groups/allProperties/update",
+          "microsoft.directory/groups/members/update",
+          "microsoft.azure.serviceHealth/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 5
+  },
+  {
+    "id": "194ae4cb-b126-40b2-bd5b-6091b380977d",
+    "displayName": "Security Administrator",
+    "description": "Can read security information and reports, and manage configuration in Azure AD and Office 365.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "194ae4cb-b126-40b2-bd5b-6091b380977d",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/policies/allProperties/allTasks",
+          "microsoft.directory/conditionalAccessPolicies/allProperties/allTasks",
+          "microsoft.directory/identityProtection/allProperties/allTasks",
+          "microsoft.azure.serviceHealth/allEntities/allTasks",
+          "microsoft.azure.supportTickets/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 5
+  },
+  {
+    "id": "b79fbf4d-3ef9-4689-8143-76b194e85509",
+    "displayName": "Security Reader",
+    "description": "Can read security information and reports in Azure AD and Office 365.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "b79fbf4d-3ef9-4689-8143-76b194e85509",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/policies/allProperties/read",
+          "microsoft.directory/conditionalAccessPolicies/allProperties/read",
+          "microsoft.directory/identityProtection/allProperties/read",
+          "microsoft.azure.serviceHealth/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 4
+  },
+  {
+    "id": "95e79109-95c0-4d8e-aee3-d01accf2d47b",
+    "displayName": "Password Administrator",
+    "description": "Can reset passwords for non-administrators.",
+    "isBuiltIn": true,
+    "isEnabled": true,
+    "templateId": "95e79109-95c0-4d8e-aee3-d01accf2d47b",
+    "version": "1",
+    "rolePermissions": [
+      {
+        "allowedResourceActions": [
+          "microsoft.directory/users/password/update",
+          "microsoft.azure.serviceHealth/allEntities/allTasks"
+        ],
+        "excludedResourceActions": []
+      }
+    ],
+    "permissionCount": 2
+  }
+]

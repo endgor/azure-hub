@@ -4,6 +4,11 @@
  */
 
 /**
+ * Role type discriminator for Azure RBAC vs Entra ID roles
+ */
+export type RoleSystemType = 'azure' | 'entraid';
+
+/**
  * Represents an Azure built-in or custom role definition
  */
 export interface AzureRole {
@@ -59,6 +64,54 @@ export interface LeastPrivilegeResult {
   role: AzureRole;
   matchingActions: string[];
   matchingDataActions: string[];
+  permissionCount: number;
+  isExactMatch: boolean;
+}
+
+/**
+ * Entra ID (formerly Azure AD) Role Definitions
+ * Based on Microsoft Graph API unifiedRoleDefinition structure
+ */
+
+/**
+ * Represents a permission set for an Entra ID role
+ */
+export interface EntraIDRolePermission {
+  allowedResourceActions: string[];
+  excludedResourceActions?: string[];
+  condition?: string;
+}
+
+/**
+ * Represents an Entra ID built-in or custom role definition
+ */
+export interface EntraIDRole {
+  id: string;
+  displayName: string;
+  description: string;
+  isBuiltIn: boolean;
+  isEnabled: boolean;
+  templateId: string;
+  version?: string;
+  rolePermissions: EntraIDRolePermission[];
+  // Extended data (computed during data generation)
+  permissionCount?: number;
+  inheritedRoleId?: string;
+}
+
+/**
+ * Input for calculating least privileged Entra ID roles
+ */
+export interface EntraIDLeastPrivilegeInput {
+  requiredActions: string[];
+}
+
+/**
+ * Result from Entra ID least privilege calculation
+ */
+export interface EntraIDLeastPrivilegeResult {
+  role: EntraIDRole;
+  matchingActions: string[];
   permissionCount: number;
   isExactMatch: boolean;
 }

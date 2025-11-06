@@ -3,7 +3,15 @@ import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
 import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
-import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
+import {
+  calculateLeastPrivilegeEntraID,
+  searchEntraIDActions,
+  getEntraIDNamespaces,
+  getEntraIDActionsByNamespace,
+  preloadEntraIDActionsCache,
+  loadEntraIDRoles
+} from '@/lib/entraIdRbacService';
+import type { LeastPrivilegeResult, Operation, AzureRole, RoleSystemType, EntraIDLeastPrivilegeResult, EntraIDRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
@@ -26,6 +34,7 @@ const RoleExplorerMode = lazy(() => import('@/components/RbacCalculator/RoleExpl
 type InputMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
 
 export default function RbacCalculatorPage() {
+  const [roleSystemType, setRoleSystemType] = useState<RoleSystemType>('azure');
   const [inputMode, setInputMode] = useState<InputMode>('simple');
   const [actionsInput, setActionsInput] = useState('');
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
@@ -36,6 +45,7 @@ export default function RbacCalculatorPage() {
   const [actionSearch, setActionSearch] = useState('');
   const [availableActions, setAvailableActions] = useState<Operation[]>([]);
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
+  const [entraIdResults, setEntraIdResults] = useState<EntraIDLeastPrivilegeResult[]>([]);
   const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingActions, setIsLoadingActions] = useState(false);
@@ -70,16 +80,24 @@ export default function RbacCalculatorPage() {
   // Defer actions cache preload to idle time (non-blocking)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
+      const preloadFn = roleSystemType === 'azure' ? preloadActionsCache : preloadEntraIDActionsCache;
       if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => preloadActionsCache(), { timeout: PERFORMANCE.IDLE_CALLBACK_TIMEOUT_MS });
+        requestIdleCallback(() => preloadFn(), { timeout: PERFORMANCE.IDLE_CALLBACK_TIMEOUT_MS });
       } else {
         // Fallback for browsers without requestIdleCallback
-        setTimeout(() => preloadActionsCache(), PERFORMANCE.IDLE_CALLBACK_FALLBACK_MS);
+        setTimeout(() => preloadFn(), PERFORMANCE.IDLE_CALLBACK_FALLBACK_MS);
       }
     }, PERFORMANCE.IDLE_CALLBACK_FALLBACK_MS);
 
     return () => clearTimeout(timeoutId);
-  }, []);
+  }, [roleSystemType]);
+
+  // Switch to simple mode when switching to Entra ID (Role Explorer/Creator not supported yet)
+  useEffect(() => {
+    if (roleSystemType === 'entraid' && (inputMode === 'roleExplorer' || inputMode === 'roleCreator')) {
+      setInputMode('simple');
+    }
+  }, [roleSystemType, inputMode]);
 
   // Load roles for Role Explorer and Role Creator modes
   useEffect(() => {
@@ -104,14 +122,16 @@ export default function RbacCalculatorPage() {
 
   // Lazy load services only when Simple mode is active
   useEffect(() => {
-    if (inputMode !== 'simple' || availableServices.length > 0) {
+    if (inputMode !== 'simple') {
       return;
     }
 
     const loadServices = async () => {
       try {
         setIsLoadingServices(true);
-        const services = await getServiceNamespaces();
+        const services = roleSystemType === 'azure'
+          ? await getServiceNamespaces()
+          : await getEntraIDNamespaces();
         setAvailableServices(services);
       } catch (err) {
         console.error('Failed to load services:', err);
@@ -120,8 +140,13 @@ export default function RbacCalculatorPage() {
       }
     };
 
+    // Clear services when switching role system type
+    setAvailableServices([]);
+    setSelectedService('');
+    setAvailableActions([]);
+
     loadServices();
-  }, [inputMode, availableServices.length]);
+  }, [inputMode, roleSystemType]);
 
   useEffect(() => {
     const loadActions = async () => {
@@ -132,8 +157,20 @@ export default function RbacCalculatorPage() {
 
       setIsLoadingActions(true);
       try {
-        const actions = await getActionsByService(selectedService);
-        setAvailableActions(actions);
+        if (roleSystemType === 'azure') {
+          const actions = await getActionsByService(selectedService);
+          setAvailableActions(actions);
+        } else {
+          // Entra ID returns string[], convert to Operation[] for consistency
+          const actionNames = await getEntraIDActionsByNamespace(selectedService);
+          const operations: Operation[] = actionNames.map(name => ({
+            name,
+            displayName: name.split('/').pop() || name,
+            description: '',
+            provider: name.split('/')[0] || '',
+          }));
+          setAvailableActions(operations);
+        }
       } catch (err) {
         console.error('Failed to load actions:', err);
         setAvailableActions([]);
@@ -142,12 +179,13 @@ export default function RbacCalculatorPage() {
       }
     };
     loadActions();
-  }, [selectedService]);
+  }, [selectedService, roleSystemType]);
 
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
     setResults([]);
+    setEntraIdResults([]);
 
     // Role Explorer mode doesn't use form submission
     if (inputMode === 'roleExplorer') {
@@ -181,15 +219,29 @@ export default function RbacCalculatorPage() {
     setIsLoading(true);
 
     try {
-      const leastPrivilegedRoles = await calculateLeastPrivilege({
-        requiredActions: actions,
-        requiredDataActions: []
-      });
+      if (roleSystemType === 'azure') {
+        const leastPrivilegedRoles = await calculateLeastPrivilege({
+          requiredActions: actions,
+          requiredDataActions: []
+        });
 
-      setResults(leastPrivilegedRoles);
+        setResults(leastPrivilegedRoles);
+        setEntraIdResults([]);
 
-      if (leastPrivilegedRoles.length === 0) {
-        setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
+        if (leastPrivilegedRoles.length === 0) {
+          setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
+        }
+      } else {
+        const leastPrivilegedRoles = await calculateLeastPrivilegeEntraID({
+          requiredActions: actions
+        });
+
+        setEntraIdResults(leastPrivilegedRoles);
+        setResults([]);
+
+        if (leastPrivilegedRoles.length === 0) {
+          setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
+        }
       }
     } catch (err) {
       setError('Failed to calculate least privileged roles. Please try again.');
@@ -197,7 +249,7 @@ export default function RbacCalculatorPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [inputMode, selectedActions, actionsInput]);
+  }, [inputMode, selectedActions, actionsInput, roleSystemType]);
 
   const handleAdvancedSearch = useCallback(async (query: string) => {
     setActionsInput(query);
@@ -231,13 +283,25 @@ export default function RbacCalculatorPage() {
     }
 
     try {
-      const operations = await searchOperations(trimmedLine);
-      setSearchResults(operations.slice(0, 10));
+      if (roleSystemType === 'azure') {
+        const operations = await searchOperations(trimmedLine);
+        setSearchResults(operations.slice(0, 10));
+      } else {
+        // Entra ID search
+        const actionNames = await searchEntraIDActions(trimmedLine);
+        const operations: Operation[] = actionNames.slice(0, 10).map(name => ({
+          name,
+          displayName: name.split('/').pop() || name,
+          description: '',
+          provider: name.split('/')[0] || '',
+        }));
+        setSearchResults(operations);
+      }
     } catch (err) {
       console.warn('Search failed:', err);
       setSearchResults([]);
     }
-  }, []);
+  }, [roleSystemType]);
 
   const handleAddActionSimple = useCallback((action: string) => {
     if (!selectedActions.includes(action)) {
@@ -304,6 +368,7 @@ export default function RbacCalculatorPage() {
     setActionSearch('');
     setAvailableActions([]);
     setResults([]);
+    setEntraIdResults([]);
     setError(null);
     setSearchResults([]);
     setRoleSearchQuery('');
@@ -453,6 +518,42 @@ export default function RbacCalculatorPage() {
           <DisclaimerBanner onDismiss={handleDismissDisclaimer} />
         )}
 
+        {/* Role System Type Toggle */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            Role System:
+          </label>
+          <div className="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-1">
+            <button
+              type="button"
+              onClick={() => setRoleSystemType('azure')}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                roleSystemType === 'azure'
+                  ? 'bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+              }`}
+            >
+              Azure RBAC
+            </button>
+            <button
+              type="button"
+              onClick={() => setRoleSystemType('entraid')}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                roleSystemType === 'entraid'
+                  ? 'bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+              }`}
+            >
+              Entra ID Roles
+            </button>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xl">
+            {roleSystemType === 'azure'
+              ? 'Azure RBAC roles control access to Azure resources (VMs, storage, etc.)'
+              : 'Entra ID roles control access to directory objects (users, groups, applications)'}
+          </p>
+        </div>
+
         {/* Mode Tabs */}
         <ModeTabs activeMode={inputMode} onModeChange={setInputMode} />
 
@@ -562,9 +663,59 @@ export default function RbacCalculatorPage() {
           </ErrorBox>
         )}
 
-        {/* Results for Simple & Advanced modes */}
-        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+        {/* Results for Simple & Advanced modes - Azure RBAC */}
+        {!isLoading && !error && roleSystemType === 'azure' && results.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
           <RoleResultsTable results={results} />
+        )}
+
+        {/* Results for Simple & Advanced modes - Entra ID */}
+        {!isLoading && !error && roleSystemType === 'entraid' && entraIdResults.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                Entra ID Role Results
+              </h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                Found {entraIdResults.length} role{entraIdResults.length !== 1 ? 's' : ''} that grant the specified permissions.
+              </p>
+              <div className="space-y-3">
+                {entraIdResults.map((result, index) => (
+                  <div key={result.role.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                          {index + 1}. {result.role.displayName}
+                          {result.isExactMatch && (
+                            <span className="ml-2 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">
+                              Exact Match
+                            </span>
+                          )}
+                        </h3>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                          {result.role.description}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm text-slate-500 dark:text-slate-400">
+                          {result.permissionCount} permission{result.permissionCount !== 1 ? 's' : ''}
+                        </div>
+                      </div>
+                    </div>
+                    <details className="mt-3">
+                      <summary className="text-sm text-sky-600 dark:text-sky-400 cursor-pointer hover:underline">
+                        View matching actions ({result.matchingActions.length})
+                      </summary>
+                      <ul className="mt-2 space-y-1 text-xs font-mono text-slate-600 dark:text-slate-400 pl-4">
+                        {result.matchingActions.map(action => (
+                          <li key={action} className="list-disc">{action}</li>
+                        ))}
+                      </ul>
+                    </details>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Results for Role Explorer mode */}
@@ -573,7 +724,7 @@ export default function RbacCalculatorPage() {
         )}
 
         {/* Example Scenarios (Simple & Advanced modes only, when no results) */}
-        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+        {results.length === 0 && entraIdResults.length === 0 && !isLoading && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
           <ExampleScenarios onLoadExample={handleLoadExample} />
         )}
       </section>
