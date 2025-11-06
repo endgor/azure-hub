@@ -8,10 +8,9 @@ import {
   searchEntraIDActions,
   getEntraIDNamespaces,
   getEntraIDActionsByNamespace,
-  preloadEntraIDActionsCache,
-  loadEntraIDRoles
+  preloadEntraIDActionsCache
 } from '@/lib/entraIdRbacService';
-import type { LeastPrivilegeResult, Operation, AzureRole, RoleSystemType, EntraIDLeastPrivilegeResult, EntraIDRole } from '@/types/rbac';
+import type { LeastPrivilegeResult, Operation, AzureRole, RoleSystemType, EntraIDLeastPrivilegeResult } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
