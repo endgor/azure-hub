@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/validateData.js && next build && node scripts/generateSitemap.js",
+    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && next build && node scripts/generateSitemap.js",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
