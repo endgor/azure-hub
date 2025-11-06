@@ -401,23 +401,40 @@ export default function SubnetCalculatorPage(): ReactElement {
     // Check if user has completed the tour before
     if (typeof window !== 'undefined') {
       const hasCompletedTour = localStorage.getItem('subnet-calc-tour-completed');
+      console.log('[Tour Debug] hasCompletedTour:', hasCompletedTour);
+      console.log('[Tour Debug] router.isReady:', router.isReady);
+      console.log('[Tour Debug] router.query.state:', router.query.state);
+
       if (!hasCompletedTour && router.isReady && !router.query.state) {
         // Only auto-start tour if not loading a shared state
         // Small delay to ensure page is fully rendered
-        const timer = setTimeout(() => setRunTour(true), 1000);
+        console.log('[Tour Debug] Starting tour in 1 second...');
+        const timer = setTimeout(() => {
+          console.log('[Tour Debug] Setting runTour to true');
+          setRunTour(true);
+        }, 1000);
         return () => clearTimeout(timer);
+      } else {
+        console.log('[Tour Debug] Tour not starting because:', {
+          hasCompletedTour: !!hasCompletedTour,
+          routerReady: router.isReady,
+          hasSharedState: !!router.query.state
+        });
       }
     }
   }, [router.isReady, router.query.state]);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status } = data;
+    console.log('[Tour Debug] Joyride callback:', status);
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
     if (finishedStatuses.includes(status)) {
+      console.log('[Tour Debug] Tour finished/skipped, setting runTour to false');
       setRunTour(false);
       if (typeof window !== 'undefined') {
         localStorage.setItem('subnet-calc-tour-completed', 'true');
+        console.log('[Tour Debug] Saved completion to localStorage');
       }
     }
   };
@@ -674,6 +691,10 @@ export default function SubnetCalculatorPage(): ReactElement {
       };
     });
   };
+
+  // Debug: Log runTour state on every render
+  console.log('[Tour Debug] Rendering with runTour:', runTour);
+  console.log('[Tour Debug] TOUR_STEPS length:', TOUR_STEPS.length);
 
   return (
     <Layout
@@ -970,7 +991,10 @@ export default function SubnetCalculatorPage(): ReactElement {
                     )}
                     <button
                       type="button"
-                      onClick={() => setRunTour(true)}
+                      onClick={() => {
+                        console.log('[Tour Debug] Help button clicked, setting runTour to true');
+                        setRunTour(true);
+                      }}
                       className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-sky-300 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400 dark:hover:border-sky-600 dark:hover:text-sky-400"
                       title="Show interactive guide"
                       aria-label="Show tour"
