@@ -12,10 +12,8 @@ import {
   SubnetTree,
   collectLeaves,
   collectDisplayNodes,
-  computeLeafCounts,
   createInitialTree,
   createTreeFromLeafDefinitions,
-  getNodePath,
   hostCapacity,
   hostCapacityAzure,
   inetAtov,
@@ -166,10 +164,6 @@ export default function SubnetCalculatorPage(): ReactElement {
 
   const leaves = useMemo(() => collectLeaves(state.tree, state.rootId), [state.tree, state.rootId]);
   const displayNodes = useMemo(() => collectDisplayNodes(state.tree, state.rootId, vnetFlags), [state.tree, state.rootId, vnetFlags]);
-  const maxDepth = useMemo(() => displayNodes.reduce((maximum, node) => Math.max(maximum, node.depth), 0), [displayNodes]);
-  const leafCounts = useMemo(() => computeLeafCounts(state.tree, state.rootId), [state.tree, state.rootId]);
-  const joinColumnCount = Math.max(maxDepth + 1, 1);
-  const renderedJoinCells = new Set<string>();
   const activeColorHex = useMemo(() => {
     if (selectedColorId === CLEAR_COLOR_ID) {
       return null;
@@ -840,8 +834,8 @@ export default function SubnetCalculatorPage(): ReactElement {
                     Hosts{useAzureReservations ? ' (Azure)' : ''}
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Comment</th>
-                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center" colSpan={joinColumnCount}>
-                    Split / Join
+                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center">
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -854,10 +848,9 @@ export default function SubnetCalculatorPage(): ReactElement {
                   const hostCount = useAzureReservations
                     ? hostCapacityAzure(node.prefix)
                     : hostCapacity(node.prefix);
-                  const path = getNodePath(state.tree, node.id);
                   const canSplit = !node.children && node.prefix < 32;
-                  const segments = [...path].reverse();
-                  const joinCells: ReactElement[] = [];
+                  const canJoin = node.children && isJoinableNode(state.tree, node);
+                  const isRoot = node.id === state.rootId;
               const rowColor = rowColors[node.id];
               const rowBackground = rowColor
                 ? ''
@@ -870,119 +863,6 @@ export default function SubnetCalculatorPage(): ReactElement {
                   const comment = rowComments[node.id] ?? '';
                   const isEditingComment = activeCommentRow === node.id;
                   const indentPx = node.hierarchyLevel * 24;
-
-                  segments.forEach((segment, index) => {
-                    const isLeafSegment = index === 0;
-                    const isRootSegment = segment.id === state.rootId;
-                    const segmentKey = `${node.id}-${segment.id}`;
-                    const rowSpan = leafCounts[segment.id] ?? 1;
-                    const colSpan = isLeafSegment ? Math.max(joinColumnCount - (path.length - 1), 1) : 1;
-                  const alternateBg =
-                    index % 2 === 0
-                      ? 'bg-slate-100/80 dark:bg-slate-800/70'
-                      : 'bg-slate-200/60 dark:bg-slate-800/60';
-
-                    if (isLeafSegment) {
-                      const splitContent = canSplit ? (
-                        <button
-                          type="button"
-                          onClick={() => handleSplit(node.id)}
-                          className="flex h-full w-full items-center justify-center bg-emerald-500 px-1 py-2 text-white transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-1 focus:ring-offset-white"
-                          title={`Split ${subnetLabel(node)} into /${node.prefix + 1}`}
-                        >
-                          <span
-                            className="font-mono text-[11px] font-semibold"
-                            style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-                          >
-                            /{segment.prefix}
-                          </span>
-                        </button>
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-rose-100 px-1 py-2 text-rose-400">
-                          <span
-                            className="font-mono text-[11px] font-semibold"
-                            style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-                          >
-                            /{segment.prefix}
-                          </span>
-                        </div>
-                      );
-
-                      joinCells.push(
-                        <td
-                          key={segmentKey}
-                          rowSpan={1}
-                          colSpan={colSpan}
-                          className="border border-slate-200 dark:border-slate-700 p-0 align-middle"
-                        >
-                          {splitContent}
-                        </td>
-                      );
-                      return;
-                    }
-
-                    if (renderedJoinCells.has(segment.id)) {
-                      return;
-                    }
-
-                    const joinable = !isRootSegment && isJoinableNode(state.tree, segment);
-                    const isResetCell = isRootSegment;
-                    const content = joinable ? (
-                      <button
-                        type="button"
-                        onClick={() => handleJoin(segment.id)}
-                        className="flex h-full w-full items-center justify-center bg-sky-200 px-1 py-2 text-sky-900 transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-sky-900/40 dark:text-sky-100 dark:hover:bg-sky-900/60 dark:focus:ring-sky-600 dark:focus:ring-offset-slate-900"
-                        title={`Join child subnets into ${inetNtoa(segment.network)}/${segment.prefix}`}
-                      >
-                        <span
-                          className="font-mono text-[11px] font-semibold"
-                          style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-                        >
-                          /{segment.prefix}
-                        </span>
-                      </button>
-                    ) : isResetCell ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (resetTimerRef.current) {
-                            clearTimeout(resetTimerRef.current);
-                          }
-                          setResetPulse(true);
-                          resetTimerRef.current = setTimeout(() => setResetPulse(false), 500);
-                          setState(createSubnetState(state.baseNetwork, state.basePrefix));
-                        }}
-                        className="flex h-full w-full items-center justify-center bg-slate-200 px-1 py-2 text-slate-700 transition hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus:ring-slate-500 dark:focus:ring-offset-slate-900"
-                        title="Reset subnet plan to the base network"
-                      >
-                        <span
-                          className="font-mono text-[11px] font-semibold"
-                          style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-                        >
-                          /{segment.prefix}
-                        </span>
-                      </button>
-                    ) : (
-                      <div
-                        className={`flex h-full w-full items-center justify-center px-1 py-2 text-slate-500 dark:text-slate-300 ${alternateBg}`}
-                        title="Join unavailable until child subnets are merged"
-                      >
-                        <span
-                          className="font-mono text-[11px] font-semibold"
-                          style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-                        >
-                          /{segment.prefix}
-                        </span>
-                      </div>
-                    );
-
-                    joinCells.push(
-                      <td key={segmentKey} rowSpan={rowSpan} className="border border-slate-200 dark:border-slate-700 p-0 align-middle">
-                        {content}
-                      </td>
-                    );
-                    renderedJoinCells.add(segment.id);
-                  });
 
                   return (
                     <tr
@@ -1147,7 +1027,73 @@ export default function SubnetCalculatorPage(): ReactElement {
                           </div>
                         )}
                       </td>
-                      {joinCells}
+                      <td
+                        className="border border-slate-200 dark:border-slate-700 px-2 py-1.5 align-middle text-center"
+                        style={highlightStyle}
+                        onClick={(event) => event.stopPropagation()}
+                        data-skip-color
+                      >
+                        <div className="flex items-center justify-center gap-1.5">
+                          {!node.children && (
+                            <button
+                              type="button"
+                              onClick={() => handleSplit(node.id)}
+                              disabled={!canSplit}
+                              className={`inline-flex h-7 w-7 items-center justify-center rounded-md border transition focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                                canSplit
+                                  ? 'border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 focus:ring-emerald-300 dark:border-emerald-700/50 dark:bg-emerald-950/40 dark:text-emerald-400 dark:hover:bg-emerald-950/60'
+                                  : 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed dark:border-slate-700 dark:bg-slate-800 dark:text-slate-600'
+                              }`}
+                              title={canSplit ? `Split ${subnetLabel(node)} into /${node.prefix + 1}` : 'Cannot split /32 subnet'}
+                              aria-label={canSplit ? `Split subnet into /${node.prefix + 1}` : 'Split disabled'}
+                            >
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                                <circle cx="12" cy="12" r="9" strokeWidth={2} />
+                                <path strokeLinecap="round" d="M12 8v8M8 12h8" />
+                              </svg>
+                            </button>
+                          )}
+                          {node.children && (
+                            <button
+                              type="button"
+                              onClick={() => handleJoin(node.id)}
+                              disabled={!canJoin}
+                              className={`inline-flex h-7 w-7 items-center justify-center rounded-md border transition focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+                                canJoin
+                                  ? 'border-sky-300 bg-sky-50 text-sky-700 hover:bg-sky-100 focus:ring-sky-300 dark:border-sky-700/50 dark:bg-sky-950/40 dark:text-sky-400 dark:hover:bg-sky-950/60'
+                                  : 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed dark:border-slate-700 dark:bg-slate-800 dark:text-slate-600'
+                              }`}
+                              title={canJoin ? `Join child subnets back into ${subnetLabel(node)}` : 'Cannot join - children are subdivided'}
+                              aria-label={canJoin ? 'Join child subnets' : 'Join disabled'}
+                            >
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                                <circle cx="12" cy="12" r="9" strokeWidth={2} />
+                                <path strokeLinecap="round" d="M8 12h8" />
+                              </svg>
+                            </button>
+                          )}
+                          {isRoot && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (resetTimerRef.current) {
+                                  clearTimeout(resetTimerRef.current);
+                                }
+                                setResetPulse(true);
+                                resetTimerRef.current = setTimeout(() => setResetPulse(false), 500);
+                                setState(createSubnetState(state.baseNetwork, state.basePrefix));
+                              }}
+                              className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-300 bg-slate-100 text-slate-600 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600"
+                              title="Reset subnet plan to base network"
+                              aria-label="Reset plan"
+                            >
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                            </button>
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   );
                 })}
