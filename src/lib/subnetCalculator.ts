@@ -1,3 +1,10 @@
+/** Network classification type */
+export enum NetworkType {
+  VNET = 'vnet',
+  SUBNET = 'subnet',
+  UNASSIGNED = 'unassigned' // Default state before user classifies
+}
+
 /** Represents a node in the binary subnet tree */
 export interface SubnetNode {
   id: string;
@@ -5,6 +12,7 @@ export interface SubnetNode {
   prefix: number; // CIDR prefix length (0-32)
   parentId?: string;
   children?: [string, string]; // [leftId, rightId] for binary tree
+  networkType?: NetworkType; // VNet vs Subnet classification
 }
 
 /** Dictionary mapping node IDs to subnet nodes */
@@ -170,6 +178,49 @@ export function hostCapacityAzure(prefix: number): number {
     return 0;
   }
   return total - 5;
+}
+
+/**
+ * Returns usable IP range based on network type.
+ * - VNET: Uses standard RFC rules (no Azure reservations at VNet level)
+ * - SUBNET: Uses Azure subnet rules (reserves first 4 + broadcast)
+ * - UNASSIGNED: Defaults to Azure subnet rules for safety
+ */
+export function usableRangeByType(
+  network: number,
+  prefix: number,
+  networkType: NetworkType = NetworkType.UNASSIGNED
+): {
+  first: number;
+  last: number;
+} | null {
+  if (networkType === NetworkType.VNET) {
+    // VNets don't have Azure IP reservations - they're just address spaces
+    const range = usableRange(network, prefix);
+    return range;
+  }
+
+  // Subnets and unassigned use Azure reservation rules
+  return usableRangeAzure(network, prefix);
+}
+
+/**
+ * Returns usable host count based on network type.
+ * - VNET: Uses standard RFC rules
+ * - SUBNET: Uses Azure subnet rules (reserves 5 IPs)
+ * - UNASSIGNED: Defaults to Azure subnet rules for safety
+ */
+export function hostCapacityByType(
+  prefix: number,
+  networkType: NetworkType = NetworkType.UNASSIGNED
+): number {
+  if (networkType === NetworkType.VNET) {
+    // VNets use standard host capacity (no Azure reservations)
+    return hostCapacity(prefix);
+  }
+
+  // Subnets and unassigned use Azure reservation rules
+  return hostCapacityAzure(prefix);
 }
 
 /**
@@ -372,6 +423,34 @@ export function isJoinableNode(tree: SubnetTree, node: SubnetNode | undefined): 
   const right = tree[rightId];
 
   return Boolean(left && right && !left.children && !right.children);
+}
+
+/**
+ * Finds the nearest parent VNet for a given node.
+ * Returns the VNet node if found, or null if none exists in the ancestry.
+ */
+export function findParentVNet(tree: SubnetTree, nodeId: string): SubnetNode | null {
+  let current: SubnetNode | undefined = tree[nodeId];
+
+  while (current) {
+    if (current.networkType === NetworkType.VNET) {
+      return current;
+    }
+    if (!current.parentId) {
+      break;
+    }
+    current = tree[current.parentId];
+  }
+
+  return null;
+}
+
+/**
+ * Checks if a node is a descendant of a VNet.
+ * Used to automatically mark children as subnets when parent is a VNet.
+ */
+export function isUnderVNet(tree: SubnetTree, nodeId: string): boolean {
+  return findParentVNet(tree, nodeId) !== null;
 }
 
 /** Defines a target subnet to create in the tree */

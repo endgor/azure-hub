@@ -9,24 +9,29 @@ import {
   DEFAULT_NETWORK,
   DEFAULT_PREFIX,
   LeafSubnet,
+  NetworkType,
   SubnetTree,
   collectLeaves,
   computeLeafCounts,
   createInitialTree,
   createTreeFromLeafDefinitions,
+  findParentVNet,
   getNodePath,
   hostCapacity,
   hostCapacityAzure,
+  hostCapacityByType,
   inetAtov,
   inetNtoa,
   isJoinableNode,
+  isUnderVNet,
   joinSubnet,
   normaliseNetwork,
   splitSubnet,
   subnetLastAddress,
   subnetNetmask,
   usableRange,
-  usableRangeAzure
+  usableRangeAzure,
+  usableRangeByType
 } from '@/lib/subnetCalculator';
 import {
   buildShareableSubnetPlan,
@@ -145,7 +150,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     prefix: DEFAULT_PREFIX.toString()
   });
   const [formError, setFormError] = useState<string | null>(null);
-  const [useAzureReservations, setUseAzureReservations] = useState(false);
+  const [useAzureReservations, setUseAzureReservations] = useState(true); // Default to Azure reservations
   const [rowColors, setRowColors] = useState<Record<string, string>>({});
   const [isColorModeActive, setIsColorModeActive] = useState(false);
   const [selectedColorId, setSelectedColorId] = useState<string>(DEFAULT_COLOR_ID);
@@ -440,6 +445,73 @@ export default function SubnetCalculatorPage(): ReactElement {
     setRowComments({});
     closeCommentEditor();
     setState(createSubnetState(DEFAULT_NETWORK, DEFAULT_PREFIX));
+  };
+
+  const handleToggleNetworkType = (nodeId: string) => {
+    setState((current) => {
+      const node = current.tree[nodeId];
+      if (!node) {
+        return current;
+      }
+
+      const currentType = node.networkType || NetworkType.UNASSIGNED;
+      let newType: NetworkType;
+
+      // Cycle through: UNASSIGNED -> VNET -> SUBNET -> UNASSIGNED
+      if (currentType === NetworkType.UNASSIGNED || currentType === NetworkType.SUBNET) {
+        newType = NetworkType.VNET;
+      } else {
+        newType = NetworkType.SUBNET;
+      }
+
+      // Update the node's network type
+      const updatedTree = {
+        ...current.tree,
+        [nodeId]: {
+          ...node,
+          networkType: newType
+        }
+      };
+
+      // If marking as VNET, automatically mark all descendants as SUBNET
+      if (newType === NetworkType.VNET && node.children) {
+        const markDescendantsAsSubnet = (tree: SubnetTree, childId: string): SubnetTree => {
+          const child = tree[childId];
+          if (!child) {
+            return tree;
+          }
+
+          let result = {
+            ...tree,
+            [childId]: {
+              ...child,
+              networkType: NetworkType.SUBNET
+            }
+          };
+
+          if (child.children) {
+            result = markDescendantsAsSubnet(result, child.children[0]);
+            result = markDescendantsAsSubnet(result, child.children[1]);
+          }
+
+          return result;
+        };
+
+        const [leftId, rightId] = node.children;
+        let finalTree = markDescendantsAsSubnet(updatedTree, leftId);
+        finalTree = markDescendantsAsSubnet(finalTree, rightId);
+
+        return {
+          ...current,
+          tree: finalTree
+        };
+      }
+
+      return {
+        ...current,
+        tree: updatedTree
+      };
+    });
   };
 
   const handleSplit = (nodeId: string) => {
@@ -781,14 +853,15 @@ export default function SubnetCalculatorPage(): ReactElement {
             >
               <thead>
                 <tr className="bg-slate-50 dark:bg-slate-800 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
-                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Subnet Address</th>
+                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Type</th>
+                  <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Network Address</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Netmask</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Range of Addresses</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">
-                    Usable IPs{useAzureReservations ? ' (Azure)' : ''}
+                    Usable IPs
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">
-                    Hosts{useAzureReservations ? ' (Azure)' : ''}
+                    Hosts
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Comment</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center" colSpan={joinColumnCount}>
@@ -798,26 +871,38 @@ export default function SubnetCalculatorPage(): ReactElement {
               </thead>
               <tbody>
                 {leaves.map((leaf, rowIndex) => {
+                  const node = state.tree[leaf.id];
+                  const networkType = node?.networkType || NetworkType.UNASSIGNED;
+                  const parentVNet = findParentVNet(state.tree, leaf.id);
+                  const isUnderVnet = isUnderVNet(state.tree, leaf.id);
                   const lastAddress = subnetLastAddress(leaf.network, leaf.prefix);
+
+                  // Use network type to calculate usable IPs
                   const usable = useAzureReservations
-                    ? usableRangeAzure(leaf.network, leaf.prefix)
+                    ? usableRangeByType(leaf.network, leaf.prefix, networkType)
                     : usableRange(leaf.network, leaf.prefix);
                   const hostCount = useAzureReservations
-                    ? hostCapacityAzure(leaf.prefix)
+                    ? hostCapacityByType(leaf.prefix, networkType)
                     : hostCapacity(leaf.prefix);
+
                   const path = getNodePath(state.tree, leaf.id);
                   const canSplit = leaf.prefix < 32;
                   const segments = [...path].reverse();
                   const joinCells: ReactElement[] = [];
-              const rowColor = rowColors[leaf.id];
-              const rowBackground = rowColor
-                ? ''
-                : rowIndex % 2 === 0
-                ? 'bg-white dark:bg-slate-900'
-                : 'bg-slate-50/40 dark:bg-slate-800/40';
+                  const rowColor = rowColors[leaf.id];
+                  const rowBackground = rowColor
+                    ? ''
+                    : rowIndex % 2 === 0
+                    ? 'bg-white dark:bg-slate-900'
+                    : 'bg-slate-50/40 dark:bg-slate-800/40';
                   const highlightStyle = rowColor ? { backgroundColor: rowColor } : undefined;
                   const comment = rowComments[leaf.id] ?? '';
                   const isEditingComment = activeCommentRow === leaf.id;
+
+                  // Visual styling for VNets (bold) and subnets under VNets (indented)
+                  const isVNet = networkType === NetworkType.VNET;
+                  const isSubnet = networkType === NetworkType.SUBNET;
+                  const treeIndent = isUnderVnet ? 'pl-6' : '';
 
                   segments.forEach((segment, index) => {
                     const isLeafSegment = index === 0;
@@ -971,8 +1056,34 @@ export default function SubnetCalculatorPage(): ReactElement {
                       }}
                       title={isColorModeActive ? 'Click to apply selected color' : undefined}
                     >
-                      <td className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top" style={highlightStyle}>
-                        <span className="font-medium text-slate-900 dark:text-slate-100">{subnetLabel(leaf)}</span>
+                      <td className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top text-center" style={highlightStyle} data-skip-color>
+                        <button
+                          type="button"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleToggleNetworkType(leaf.id);
+                          }}
+                          className={`inline-flex items-center justify-center rounded px-2 py-1 text-[10px] font-semibold uppercase tracking-wide transition focus:outline-none focus:ring-2 focus:ring-sky-300 ${
+                            isVNet
+                              ? 'bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-sky-900/40 dark:text-sky-300 dark:hover:bg-sky-900/60'
+                              : isSubnet
+                                ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300 dark:hover:bg-emerald-900/60'
+                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+                          }`}
+                          title={`Toggle network type (current: ${networkType})`}
+                        >
+                          {isVNet ? 'VNet' : isSubnet ? 'Subnet' : 'Click'}
+                        </button>
+                      </td>
+                      <td className={`border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top ${treeIndent}`} style={highlightStyle}>
+                        <div className="flex items-center gap-2">
+                          {isUnderVnet && (
+                            <span className="text-slate-400 dark:text-slate-600">└</span>
+                          )}
+                          <span className={`${isVNet ? 'font-bold text-sky-700 dark:text-sky-400' : 'font-medium'} text-slate-900 dark:text-slate-100`}>
+                            {subnetLabel(leaf)}
+                          </span>
+                        </div>
                       </td>
                       <td
                         className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
