@@ -703,6 +703,18 @@ export default function SubnetCalculatorPage(): ReactElement {
     <Layout
       title="Azure Subnet Calculator"
       description="Plan Azure address spaces, model subnet splits, and export allocation charts with the Azure Hub subnet calculator."
+      keywords={[
+        'azure subnet calculator',
+        'subnet calculator',
+        'Azure VNet planning',
+        'CIDR calculator',
+        'IP subnet calculator',
+        'Azure networking',
+        'subnet planning',
+        'address space calculator',
+        'Azure virtual network',
+        'subnet split calculator'
+      ]}
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },
         { name: 'Subnet Calculator', url: 'https://azurehub.org/tools/subnet-calculator/' }
