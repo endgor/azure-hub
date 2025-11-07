@@ -1,17 +1,21 @@
 import React, { useState, useMemo, memo, useEffect, useCallback } from 'react';
-import type { LeastPrivilegeResult } from '@/types/rbac';
+import type { LeastPrivilegeResult, EntraIDLeastPrivilegeResult } from '@/types/rbac';
 import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
 import { exportRolesToCSV, exportRolesToExcel, exportRolesToMarkdown } from '@/lib/rbacExportUtils';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 
+type RoleSystemType = 'azure' | 'entraid';
+type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
+
 interface RoleResultsTableProps {
-  results: LeastPrivilegeResult[];
+  results: AnyRoleResult[];
+  roleSystem: RoleSystemType;
 }
 
 type SortField = 'roleName' | 'permissionCount' | 'roleType' | 'default';
 type SortDirection = 'asc' | 'desc';
 
-const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResultsTableProps) {
+const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }: RoleResultsTableProps) {
   const [sortField, setSortField] = useState<SortField>('default');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
@@ -22,6 +26,30 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
     setSelectedRoles(new Set());
     setExpandedRows(new Set());
   }, [results]);
+
+  // Helper to get role name (works for both Azure and Entra ID)
+  const getRoleName = (result: AnyRoleResult): string => {
+    if ('roleName' in result.role) {
+      return result.role.roleName || '';
+    }
+    return result.role.displayName || '';
+  };
+
+  // Helper to get role type display (works for both Azure and Entra ID)
+  const getRoleTypeDisplay = (result: AnyRoleResult): string => {
+    if ('roleType' in result.role) {
+      return result.role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
+    }
+    return result.role.isBuiltIn ? 'Built-in' : 'Custom';
+  };
+
+  // Helper to get role type for sorting
+  const getRoleTypeForSort = (result: AnyRoleResult): string => {
+    if ('roleType' in result.role) {
+      return result.role.roleType || '';
+    }
+    return result.role.isBuiltIn ? 'BuiltIn' : 'Custom';
+  };
 
   // Sort the results (or maintain backend order if default)
   const sortedResults = useMemo(() => {
@@ -37,13 +65,13 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
 
       switch (sortField) {
         case 'roleName':
-          comparison = (a.role.roleName || '').localeCompare(b.role.roleName || '');
+          comparison = getRoleName(a).localeCompare(getRoleName(b));
           break;
         case 'permissionCount':
           comparison = a.permissionCount - b.permissionCount;
           break;
         case 'roleType':
-          comparison = (a.role.roleType || '').localeCompare(b.role.roleType || '');
+          comparison = getRoleTypeForSort(a).localeCompare(getRoleTypeForSort(b));
           break;
       }
 
@@ -103,7 +131,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
     setIsExporting(true);
     try {
       const filename = generateRoleExportFilename(selectedResults.length);
-      exportRolesToAzureJSON(selectedResults, filename);
+      exportRolesToAzureJSON(selectedResults as LeastPrivilegeResult[], filename);
     } catch (error) {
       console.error('JSON export failed:', error);
       alert('Export failed. Please try again.');
@@ -117,45 +145,48 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
     setIsExporting(true);
     try {
       const roles = selectedResults.map(r => r.role);
-      const filename = `azure-rbac_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.csv`;
-      await exportRolesToCSV(roles, filename);
+      const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
+      const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.csv`;
+      await exportRolesToCSV(roles as any[], filename);
     } catch (error) {
       console.error('CSV export failed:', error);
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
     }
-  }, [selectedResults]);
+  }, [selectedResults, roleSystem]);
 
   const handleExcelExport = useCallback(async () => {
     if (selectedResults.length === 0) return;
     setIsExporting(true);
     try {
       const roles = selectedResults.map(r => r.role);
-      const filename = `azure-rbac_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.xlsx`;
-      await exportRolesToExcel(roles, filename);
+      const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
+      const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.xlsx`;
+      await exportRolesToExcel(roles as any[], filename);
     } catch (error) {
       console.error('Excel export failed:', error);
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
     }
-  }, [selectedResults]);
+  }, [selectedResults, roleSystem]);
 
   const handleMarkdownExport = useCallback(async () => {
     if (selectedResults.length === 0) return;
     setIsExporting(true);
     try {
       const roles = selectedResults.map(r => r.role);
-      const filename = `azure-rbac_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.md`;
-      exportRolesToMarkdown(roles, filename);
+      const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
+      const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.md`;
+      exportRolesToMarkdown(roles as any[], filename);
     } catch (error) {
       console.error('Markdown export failed:', error);
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
     }
-  }, [selectedResults]);
+  }, [selectedResults, roleSystem]);
 
   // Export options for ExportMenu
   const exportOptions: ExportOption[] = useMemo(() => [
@@ -261,6 +292,8 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
               {sortedResults.map((result, index) => {
                 const isExpanded = expandedRows.has(result.role.id);
                 const isEven = index % 2 === 0;
+                const roleName = getRoleName(result);
+                const roleTypeDisplay = getRoleTypeDisplay(result);
 
                 return (
                   <React.Fragment key={result.role.id}>
@@ -276,12 +309,12 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                           checked={selectedRoles.has(result.role.id)}
                           onChange={() => toggleRoleSelection(result.role.id)}
                           className="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-2 focus:ring-sky-500/50 dark:border-slate-600 dark:bg-slate-800"
-                          aria-label={`Select ${result.role.roleName}`}
+                          aria-label={`Select ${roleName}`}
                         />
                       </td>
                       <td className="px-4 py-3">
                         <div className="font-medium text-slate-900 dark:text-slate-100">
-                          {result.role.roleName}
+                          {roleName}
                         </div>
                         {result.isExactMatch && (
                           <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
@@ -290,12 +323,8 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
-                          result.role.roleType === 'BuiltInRole'
-                            ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                            : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
-                        }`}>
-                          {result.role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom'}
+                        <span className="inline-block rounded-full px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
+                          {roleTypeDisplay}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
@@ -354,44 +383,54 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
                               </div>
                             </div>
 
-                            {/* All Granted Actions */}
+                            {/* All Granted Permissions - Different for Azure vs Entra ID */}
                             <div>
                               <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
                                 All Granted Permissions
                               </h4>
                               <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800 max-h-60 overflow-y-auto">
-                                {result.role.permissions.map((permission, permIdx) => (
-                                  <div key={permIdx} className="space-y-2">
-                                    {permission.actions.length > 0 && (
-                                      <div>
-                                        <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
-                                          Actions:
+                                {roleSystem === 'azure' && 'permissions' in result.role ? (
+                                  // Azure RBAC permissions
+                                  result.role.permissions.map((permission, permIdx) => (
+                                    <div key={permIdx} className="space-y-2">
+                                      {permission.actions.length > 0 && (
+                                        <div>
+                                          <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                                            Actions:
+                                          </div>
+                                          <div className="grid gap-1">
+                                            {permission.actions.map((action, idx) => (
+                                              <div key={idx} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
+                                                + {action}
+                                              </div>
+                                            ))}
+                                          </div>
                                         </div>
-                                        <div className="grid gap-1">
-                                          {permission.actions.map((action, idx) => (
-                                            <div key={idx} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
-                                              + {action}
-                                            </div>
-                                          ))}
+                                      )}
+                                      {permission.notActions.length > 0 && (
+                                        <div>
+                                          <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                                            Not Actions:
+                                          </div>
+                                          <div className="grid gap-1">
+                                            {permission.notActions.map((action, idx) => (
+                                              <div key={idx} className="font-mono text-xs text-rose-700 dark:text-rose-400">
+                                                - {action}
+                                              </div>
+                                            ))}
+                                          </div>
                                         </div>
-                                      </div>
-                                    )}
-                                    {permission.notActions.length > 0 && (
-                                      <div>
-                                        <div className="text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
-                                          Not Actions:
-                                        </div>
-                                        <div className="grid gap-1">
-                                          {permission.notActions.map((action, idx) => (
-                                            <div key={idx} className="font-mono text-xs text-rose-700 dark:text-rose-400">
-                                              - {action}
-                                            </div>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-                                ))}
+                                      )}
+                                    </div>
+                                  ))
+                                ) : roleSystem === 'entraid' && 'rolePermissions' in result.role ? (
+                                  // Entra ID permissions
+                                  result.role.rolePermissions.flatMap(rp => rp.allowedResourceActions || []).map((action, idx) => (
+                                    <div key={idx} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
+                                      + {action}
+                                    </div>
+                                  ))
+                                ) : null}
                               </div>
                             </div>
 
@@ -423,7 +462,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results }: RoleResults
         </h3>
         <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
           <p>
-            <strong className="text-slate-900 dark:text-slate-100">Recommended Order:</strong> Roles are ranked by relevance to your requested permissions. Domain-specific roles (e.g., &ldquo;Billing Reader&rdquo;) rank higher than generic broad roles (e.g., &ldquo;Reader&rdquo;) for namespace-specific permissions.
+            <strong className="text-slate-900 dark:text-slate-100">Recommended Order:</strong> Roles are ranked by relevance to your requested permissions. Domain-specific roles rank higher than generic broad roles for namespace-specific permissions.
           </p>
           <p>
             <strong className="text-slate-900 dark:text-slate-100">Exact Match:</strong> Roles that grant exactly the permissions you requested without additional access.

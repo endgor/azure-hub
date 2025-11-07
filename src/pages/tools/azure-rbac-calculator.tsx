@@ -3,15 +3,7 @@ import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
 import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
-import {
-  calculateLeastPrivilegeEntraID,
-  searchEntraIDActions,
-  getEntraIDNamespaces,
-  getEntraIDActionsByNamespace,
-  preloadEntraIDActionsCache,
-  getEntraIDRolesDataStatus
-} from '@/lib/entraIdRbacService';
-import type { LeastPrivilegeResult, Operation, AzureRole, RoleSystemType, EntraIDLeastPrivilegeResult } from '@/types/rbac';
+import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
@@ -19,22 +11,28 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import Button from '@/components/shared/Button';
+import Link from 'next/link';
 
-// Import small components directly
-import DisclaimerBanner from '@/components/RbacCalculator/DisclaimerBanner';
+// Import config
+import { azureRbacConfig } from '@/lib/rbacConfig';
+
+// Import shared config-driven components
+import DisclaimerBanner from '@/components/shared/RbacCalculator/DisclaimerBanner';
+import ExampleScenarios from '@/components/shared/RbacCalculator/ExampleScenarios';
+import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
+
+// Import Azure-specific components
 import ModeTabs from '@/components/RbacCalculator/ModeTabs';
-import ExampleScenarios from '@/components/RbacCalculator/ExampleScenarios';
-import AdvancedMode from '@/components/RbacCalculator/AdvancedMode';
 
 // Lazy load larger components for bundle optimization
 const RoleCreator = lazy(() => import('@/components/RoleCreator'));
-const SimpleMode = lazy(() => import('@/components/RbacCalculator/SimpleMode'));
-const RoleExplorerMode = lazy(() => import('@/components/RbacCalculator/RoleExplorerMode'));
+const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
+const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
+import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
 
 type InputMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
 
-export default function RbacCalculatorPage() {
-  const [roleSystemType, setRoleSystemType] = useState<RoleSystemType>('azure');
+export default function AzureRbacCalculatorPage() {
   const [inputMode, setInputMode] = useState<InputMode>('simple');
   const [actionsInput, setActionsInput] = useState('');
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
@@ -45,12 +43,11 @@ export default function RbacCalculatorPage() {
   const [actionSearch, setActionSearch] = useState('');
   const [availableActions, setAvailableActions] = useState<Operation[]>([]);
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
-  const [entraIdResults, setEntraIdResults] = useState<EntraIDLeastPrivilegeResult[]>([]);
   const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingActions, setIsLoadingActions] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('rbac-disclaimer-dismissed', false);
+  const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('azure-rbac-disclaimer-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<AzureRole[]>([]);
@@ -80,24 +77,16 @@ export default function RbacCalculatorPage() {
   // Defer actions cache preload to idle time (non-blocking)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const preloadFn = roleSystemType === 'azure' ? preloadActionsCache : preloadEntraIDActionsCache;
       if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => preloadFn(), { timeout: PERFORMANCE.IDLE_CALLBACK_TIMEOUT_MS });
+        requestIdleCallback(() => preloadActionsCache(), { timeout: PERFORMANCE.IDLE_CALLBACK_TIMEOUT_MS });
       } else {
         // Fallback for browsers without requestIdleCallback
-        setTimeout(() => preloadFn(), PERFORMANCE.IDLE_CALLBACK_FALLBACK_MS);
+        setTimeout(() => preloadActionsCache(), PERFORMANCE.IDLE_CALLBACK_FALLBACK_MS);
       }
     }, PERFORMANCE.IDLE_CALLBACK_FALLBACK_MS);
 
     return () => clearTimeout(timeoutId);
-  }, [roleSystemType]);
-
-  // Switch to simple mode when switching to Entra ID (Role Explorer/Creator not supported yet)
-  useEffect(() => {
-    if (roleSystemType === 'entraid' && (inputMode === 'roleExplorer' || inputMode === 'roleCreator')) {
-      setInputMode('simple');
-    }
-  }, [roleSystemType, inputMode]);
+  }, []);
 
   // Load roles for Role Explorer and Role Creator modes
   useEffect(() => {
@@ -129,9 +118,7 @@ export default function RbacCalculatorPage() {
     const loadServices = async () => {
       try {
         setIsLoadingServices(true);
-        const services = roleSystemType === 'azure'
-          ? await getServiceNamespaces()
-          : await getEntraIDNamespaces();
+        const services = await getServiceNamespaces();
         setAvailableServices(services);
       } catch (err) {
         console.error('Failed to load services:', err);
@@ -140,13 +127,13 @@ export default function RbacCalculatorPage() {
       }
     };
 
-    // Clear services when switching role system type
+    // Clear services when changing mode
     setAvailableServices([]);
     setSelectedService('');
     setAvailableActions([]);
 
     loadServices();
-  }, [inputMode, roleSystemType]);
+  }, [inputMode]);
 
   useEffect(() => {
     const loadActions = async () => {
@@ -157,20 +144,8 @@ export default function RbacCalculatorPage() {
 
       setIsLoadingActions(true);
       try {
-        if (roleSystemType === 'azure') {
-          const actions = await getActionsByService(selectedService);
-          setAvailableActions(actions);
-        } else {
-          // Entra ID returns string[], convert to Operation[] for consistency
-          const actionNames = await getEntraIDActionsByNamespace(selectedService);
-          const operations: Operation[] = actionNames.map(name => ({
-            name,
-            displayName: name.split('/').pop() || name,
-            description: '',
-            provider: name.split('/')[0] || '',
-          }));
-          setAvailableActions(operations);
-        }
+        const actions = await getActionsByService(selectedService);
+        setAvailableActions(actions);
       } catch (err) {
         console.error('Failed to load actions:', err);
         setAvailableActions([]);
@@ -179,13 +154,12 @@ export default function RbacCalculatorPage() {
       }
     };
     loadActions();
-  }, [selectedService, roleSystemType]);
+  }, [selectedService]);
 
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
     setResults([]);
-    setEntraIdResults([]);
 
     // Role Explorer mode doesn't use form submission
     if (inputMode === 'roleExplorer') {
@@ -219,47 +193,23 @@ export default function RbacCalculatorPage() {
     setIsLoading(true);
 
     try {
-      if (roleSystemType === 'azure') {
-        const leastPrivilegedRoles = await calculateLeastPrivilege({
-          requiredActions: actions,
-          requiredDataActions: []
-        });
+      const leastPrivilegedRoles = await calculateLeastPrivilege({
+        requiredActions: actions,
+        requiredDataActions: []
+      });
 
-        setResults(leastPrivilegedRoles);
-        setEntraIdResults([]);
+      setResults(leastPrivilegedRoles);
 
-        if (leastPrivilegedRoles.length === 0) {
-          setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
-        }
-      } else {
-        const leastPrivilegedRoles = await calculateLeastPrivilegeEntraID({
-          requiredActions: actions
-        });
-
-        setEntraIdResults(leastPrivilegedRoles);
-        setResults([]);
-
-        if (leastPrivilegedRoles.length === 0) {
-          const dataStatus = getEntraIDRolesDataStatus();
-          if (dataStatus === 'missing') {
-            setError('No Entra ID roles data found. Please run "npm run fetch-entraid-roles" to download role definitions from Microsoft Graph API. See docs/ENTRAID_ROLES_SETUP.md for setup instructions.');
-          } else {
-            setError('No Entra ID roles found that grant all the specified permissions. Try fewer or more general actions.');
-          }
-        }
+      if (leastPrivilegedRoles.length === 0) {
+        setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      if (roleSystemType === 'entraid' && errorMessage.includes('Entra ID roles')) {
-        setError('Entra ID roles data not available. Run "npm run fetch-entraid-roles" to fetch role definitions. See docs/ENTRAID_ROLES_SETUP.md for setup.');
-      } else {
-        setError('Failed to calculate least privileged roles. Please try again.');
-      }
+      setError('Failed to calculate least privileged roles. Please try again.');
       console.error('Error calculating roles:', err);
     } finally {
       setIsLoading(false);
     }
-  }, [inputMode, selectedActions, actionsInput, roleSystemType]);
+  }, [inputMode, selectedActions, actionsInput]);
 
   const handleAdvancedSearch = useCallback(async (query: string) => {
     setActionsInput(query);
@@ -293,25 +243,13 @@ export default function RbacCalculatorPage() {
     }
 
     try {
-      if (roleSystemType === 'azure') {
-        const operations = await searchOperations(trimmedLine);
-        setSearchResults(operations.slice(0, 10));
-      } else {
-        // Entra ID search
-        const actionNames = await searchEntraIDActions(trimmedLine);
-        const operations: Operation[] = actionNames.slice(0, 10).map(name => ({
-          name,
-          displayName: name.split('/').pop() || name,
-          description: '',
-          provider: name.split('/')[0] || '',
-        }));
-        setSearchResults(operations);
-      }
+      const operations = await searchOperations(trimmedLine);
+      setSearchResults(operations.slice(0, 10));
     } catch (err) {
       console.warn('Search failed:', err);
       setSearchResults([]);
     }
-  }, [roleSystemType]);
+  }, []);
 
   const handleAddActionSimple = useCallback((action: string) => {
     if (!selectedActions.includes(action)) {
@@ -378,7 +316,6 @@ export default function RbacCalculatorPage() {
     setActionSearch('');
     setAvailableActions([]);
     setResults([]);
-    setEntraIdResults([]);
     setError(null);
     setSearchResults([]);
     setRoleSearchQuery('');
@@ -481,31 +418,29 @@ export default function RbacCalculatorPage() {
     [selectedRoles]
   );
 
-  // Dynamic description based on active mode
+  // Get mode-specific description from config
   const getDescription = () => {
     switch (inputMode) {
       case 'simple':
+        return azureRbacConfig.descriptions.simple;
       case 'advanced':
-        return 'Find the least privileged Azure RBAC roles for your required permissions. Enter Azure resource provider actions and discover which built-in roles grant those permissions without excessive access.';
+        return azureRbacConfig.descriptions.advanced;
       case 'roleExplorer':
-        return 'Search and explore Azure built-in RBAC roles by name. View detailed permissions, compare multiple roles side-by-side, and export role definitions for documentation or analysis.';
+        return azureRbacConfig.descriptions.roleExplorer;
       case 'roleCreator':
-        return 'Build custom Azure RBAC roles tailored to your security requirements. Select specific permissions from built-in roles, define assignable scopes, and export role definitions ready for deployment.';
+        return azureRbacConfig.descriptions.roleCreator || azureRbacConfig.descriptions.simple;
       default:
-        return 'Find the least privileged Azure RBAC roles for your required permissions.';
+        return azureRbacConfig.descriptions.simple;
     }
   };
 
   return (
     <Layout
-      title="Azure RBAC Calculator & Role Generator"
-      description="Find the least privileged Azure RBAC roles and generate custom role definitions for your required permissions using Azure Hub's RBAC calculator and role generator."
-      breadcrumbs={[
-        { name: 'Home', url: 'https://azurehub.org/' },
-        { name: 'RBAC Calculator', url: 'https://azurehub.org/tools/rbac-calculator/' }
-      ]}
+      title={azureRbacConfig.metadata.title}
+      description={azureRbacConfig.metadata.description}
+      breadcrumbs={azureRbacConfig.metadata.breadcrumbs}
       toolSchema={{
-        name: 'Azure RBAC Calculator & Role Generator',
+        name: azureRbacConfig.metadata.toolSchemaName,
         applicationCategory: 'DeveloperApplication',
         offers: { price: '0' }
       }}
@@ -513,10 +448,10 @@ export default function RbacCalculatorPage() {
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
-            Identity & Access
+            {azureRbacConfig.labels.categoryLabel}
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
-            Azure RBAC Calculator & Role Generator
+            {azureRbacConfig.labels.heroTitle}
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             {getDescription()}
@@ -525,44 +460,20 @@ export default function RbacCalculatorPage() {
 
         {/* Disclaimer Banner */}
         {!disclaimerDismissed && (
-          <DisclaimerBanner onDismiss={handleDismissDisclaimer} />
+          <DisclaimerBanner config={azureRbacConfig} onDismiss={handleDismissDisclaimer} />
         )}
 
-        {/* Role System Type Toggle */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            Role System:
-          </label>
-          <div className="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-1">
-            <button
-              type="button"
-              onClick={() => setRoleSystemType('azure')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                roleSystemType === 'azure'
-                  ? 'bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-              }`}
-            >
-              Azure RBAC
-            </button>
-            <button
-              type="button"
-              onClick={() => setRoleSystemType('entraid')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
-                roleSystemType === 'entraid'
-                  ? 'bg-white dark:bg-slate-900 text-sky-600 dark:text-sky-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-              }`}
-            >
-              Entra ID Roles
-            </button>
+        {/* Cross-link to Entra ID */}
+        {azureRbacConfig.crossLink && (
+          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              <strong>Looking for directory roles?</strong>{' '}
+              <Link href={azureRbacConfig.crossLink.url} className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline">
+                {azureRbacConfig.crossLink.text}
+              </Link>
+            </p>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xl">
-            {roleSystemType === 'azure'
-              ? 'Azure RBAC roles control access to Azure resources (VMs, storage, etc.)'
-              : 'Entra ID roles control access to directory objects (users, groups, applications)'}
-          </p>
-        </div>
+        )}
 
         {/* Mode Tabs */}
         <ModeTabs activeMode={inputMode} onModeChange={setInputMode} />
@@ -585,6 +496,7 @@ export default function RbacCalculatorPage() {
             {inputMode === 'simple' && (
               <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
                 <SimpleMode
+                  config={azureRbacConfig}
                   serviceSearch={serviceSearch}
                   onServiceSearchChange={handleServiceSearchChange}
                   selectedService={selectedService}
@@ -610,6 +522,7 @@ export default function RbacCalculatorPage() {
             {/* Advanced Mode */}
             {inputMode === 'advanced' && (
               <AdvancedMode
+                config={azureRbacConfig}
                 actionsInput={actionsInput}
                 onActionsInputChange={handleAdvancedSearch}
                 searchResults={searchResults}
@@ -623,11 +536,12 @@ export default function RbacCalculatorPage() {
             {inputMode === 'roleExplorer' && (
               <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
                 <RoleExplorerMode
+                  config={azureRbacConfig}
                   roleSearchQuery={roleSearchQuery}
                   onRoleSearchChange={handleRoleSearch}
                   roleSearchResults={roleSearchResults}
                   roleSearchDropdownRef={roleSearchDropdownRef}
-                  onAddRole={handleAddRole}
+                  onAddRole={handleAddRole as (role: GenericRole) => void}
                   selectedRoleChips={selectedRoleChips}
                   onRemoveRole={handleRemoveRole}
                   isLoading={isLoading}
@@ -673,14 +587,9 @@ export default function RbacCalculatorPage() {
           </ErrorBox>
         )}
 
-        {/* Results for Simple & Advanced modes - Azure RBAC */}
-        {!isLoading && !error && roleSystemType === 'azure' && results.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+        {/* Results for Simple & Advanced modes */}
+        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
           <RoleResultsTable results={results} roleSystem="azure" />
-        )}
-
-        {/* Results for Simple & Advanced modes - Entra ID */}
-        {!isLoading && !error && roleSystemType === 'entraid' && entraIdResults.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
-          <RoleResultsTable results={entraIdResults} roleSystem="entraid" />
         )}
 
         {/* Results for Role Explorer mode */}
@@ -689,8 +598,8 @@ export default function RbacCalculatorPage() {
         )}
 
         {/* Example Scenarios (Simple & Advanced modes only, when no results) */}
-        {results.length === 0 && entraIdResults.length === 0 && !isLoading && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
-          <ExampleScenarios onLoadExample={handleLoadExample} />
+        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+          <ExampleScenarios config={azureRbacConfig} onLoadExample={handleLoadExample} />
         )}
       </section>
     </Layout>
