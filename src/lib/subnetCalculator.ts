@@ -430,16 +430,28 @@ export function isJoinableNode(tree: SubnetTree, node: SubnetNode | undefined): 
  * Returns the VNet node if found, or null if none exists in the ancestry.
  */
 export function findParentVNet(tree: SubnetTree, nodeId: string): SubnetNode | null {
-  let current: SubnetNode | undefined = tree[nodeId];
+  const start = tree[nodeId];
+  if (!start?.parentId) {
+    return null;
+  }
 
-  while (current) {
+  let currentId: string | undefined = start.parentId;
+
+  while (currentId) {
+    const current: SubnetNode | undefined = tree[currentId];
+    if (!current) {
+      break;
+    }
+
     if (current.networkType === NetworkType.VNET) {
       return current;
     }
+
     if (!current.parentId) {
       break;
     }
-    current = tree[current.parentId];
+
+    currentId = current.parentId;
   }
 
   return null;

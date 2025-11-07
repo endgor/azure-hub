@@ -3,7 +3,7 @@ import type { LeafSubnet } from '@/lib/subnetCalculator';
 import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface SubnetExportButtonProps {
-  leaves: LeafSubnet[];
+  rows: LeafSubnet[];
   useAzureReservations: boolean;
   baseNetwork: number;
   basePrefix: number;
@@ -15,7 +15,7 @@ interface SubnetExportButtonProps {
 }
 
 export default function SubnetExportButton({
-  leaves,
+  rows,
   useAzureReservations,
   baseNetwork,
   basePrefix,
@@ -33,7 +33,7 @@ export default function SubnetExportButton({
   useClickOutside(dropdownRef as React.RefObject<HTMLElement>, () => setIsOpen(false), isOpen);
 
   const handleExport = async (format: 'csv' | 'xlsx' | 'md') => {
-    if (disabled || isExporting || leaves.length === 0) {
+    if (disabled || isExporting || rows.length === 0) {
       return;
     }
 
@@ -44,13 +44,13 @@ export default function SubnetExportButton({
         import('@/lib/exportUtils')
       ]);
 
-      const exportData = prepareSubnetExportData(leaves, useAzureReservations, rowComments);
+      const exportData = prepareSubnetExportData(rows, useAzureReservations, rowComments);
       if (exportData.length === 0) {
         return;
       }
 
       const filename = generateSubnetExportFilename(baseNetwork, basePrefix, useAzureReservations, format);
-      const rowFills = leaves.map((leaf) => rowColors[leaf.id] ?? null);
+      const rowFills = rows.map((row) => rowColors[row.id] ?? null);
 
       if (format === 'csv') {
         await exportToCSV(exportData, filename);
@@ -68,7 +68,7 @@ export default function SubnetExportButton({
     }
   };
 
-  if (disabled || leaves.length === 0) {
+  if (disabled || rows.length === 0) {
    return null;
   }
 
@@ -116,7 +116,7 @@ export default function SubnetExportButton({
         <div className="absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
           <div className="py-1" role="menu" aria-orientation="vertical">
             <div className="border-b border-slate-200 px-4 py-2 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:text-slate-400">
-              Export {leaves.length} subnet{leaves.length !== 1 ? 's' : ''}
+              Export {rows.length} subnet{rows.length !== 1 ? 's' : ''}
             </div>
             <button
               onClick={() => handleExport('csv')}
