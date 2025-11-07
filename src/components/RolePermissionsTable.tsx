@@ -4,6 +4,7 @@ import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON, exportRolesToM
 import { getPrivilegedRoles, isPrivilegedRole } from '@/config/privilegedRoles';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
+import { pluralize } from '@/lib/filenameUtils';
 
 interface RolePermissionsTableProps {
   roles: AzureRole[];
@@ -29,7 +30,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
   const generateFilename = useCallback((extension: string) => {
     const timestamp = new Date().toISOString().slice(0, 10);
     const roleCount = roles.length;
-    const roleLabel = roleCount === 1 ? 'role' : 'roles';
+    const roleLabel = pluralize(roleCount, 'role');
     return `azure-rbac-${roleCount}-${roleLabel}_${timestamp}.${extension}`;
   }, [roles.length]);
 
@@ -148,7 +149,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
             Role Permissions
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Viewing {roles.length} {roles.length === 1 ? 'role' : 'roles'}
+            Viewing {roles.length} {pluralize(roles.length, 'role')}
           </p>
         </div>
         <ExportMenu

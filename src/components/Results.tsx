@@ -5,6 +5,70 @@ import Link from 'next/link';
 import Tooltip from './Tooltip';
 import ExportMenu, { ExportOption } from './shared/ExportMenu';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
+import { pluralize } from '@/lib/filenameUtils';
+
+interface PaginationButtonsProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange?: (page: number) => void;
+  getPageUrl: (page: number) => string;
+}
+
+const PaginationButtons = memo(function PaginationButtons({
+  currentPage,
+  totalPages,
+  onPageChange,
+  getPageUrl
+}: PaginationButtonsProps) {
+  if (totalPages <= 1) return null;
+
+  const pages: number[] = [];
+  const maxVisible = 3;
+
+  if (totalPages <= maxVisible) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  } else {
+    pages.push(1);
+    if (currentPage > 2) pages.push(-1);
+    if (currentPage > 1 && currentPage < totalPages) {
+      pages.push(currentPage);
+    }
+    if (currentPage < totalPages - 1) pages.push(-2);
+    pages.push(totalPages);
+  }
+
+  return (
+    <>
+      {pages.map((page, index) => {
+        if (page < 0) {
+          return (
+            <span key={`ellipsis-${index}`} className="px-2 py-1.5 text-xs text-slate-600 dark:text-slate-400">
+              ...
+            </span>
+          );
+        }
+
+        const buttonClass = `rounded-lg px-3 py-1.5 text-xs transition ${
+          currentPage === page
+            ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
+            : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
+        }`;
+
+        return onPageChange ? (
+          <button key={page} onClick={() => onPageChange(page)} className={buttonClass}>
+            {page}
+          </button>
+        ) : (
+          <Link key={page} href={getPageUrl(page)} className={buttonClass}>
+            {page}
+          </Link>
+        );
+      })}
+    </>
+  );
+});
 
 // Network features descriptions
 const networkFeaturesInfo = (
@@ -161,7 +225,7 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 md:text-xl">Results for {query}</h2>
             <p className="text-xs text-slate-600 dark:text-slate-300 md:text-sm">
-              Found {totalDisplay} matching Azure IP {totalDisplay === 1 ? 'range' : 'ranges'}
+              Found {totalDisplay} matching Azure IP {pluralize(totalDisplay, 'range')}
             </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -272,54 +336,14 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
                 )
               )}
 
-              {!pagination.isAll && (() => {
-                const pages = [];
-                const maxVisible = 3;
-
-                if (pagination.totalPages <= maxVisible) {
-                  for (let i = 1; i <= pagination.totalPages; i++) {
-                    pages.push(i);
-                  }
-                } else {
-                  pages.push(1);
-                  if (pagination.currentPage > 2) pages.push(-1);
-                  if (pagination.currentPage > 1 && pagination.currentPage < pagination.totalPages) {
-                    pages.push(pagination.currentPage);
-                  }
-                  if (pagination.currentPage < pagination.totalPages - 1) pages.push(-2);
-                  pages.push(pagination.totalPages);
-                }
-
-                return pages.map((page, index) => {
-                  if (page < 0) {
-                    return <span key={`ellipsis-${index}`} className="px-2 py-1.5 text-xs text-slate-600 dark:text-slate-400">...</span>;
-                  }
-
-                  const buttonClass = `rounded-lg px-3 py-1.5 text-xs transition ${
-                    pagination.currentPage === page
-                      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
-                      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
-                  }`;
-
-                  return pagination.onPageChange ? (
-                    <button
-                      key={page}
-                      onClick={() => pagination.onPageChange?.(page)}
-                      className={buttonClass}
-                    >
-                      {page}
-                    </button>
-                  ) : (
-                    <Link
-                      key={page}
-                      href={getPageUrl(page)}
-                      className={buttonClass}
-                    >
-                      {page}
-                    </Link>
-                  );
-                });
-              })()}
+              {!pagination.isAll && (
+                <PaginationButtons
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                  onPageChange={pagination.onPageChange}
+                  getPageUrl={getPageUrl}
+                />
+              )}
 
               {pagination.onPageChange ? (
                 <button

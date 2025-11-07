@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { ClientSecretCredential } from '@azure/identity';
+import { calculateEntraIDPermissionCount } from '../src/lib/entraIdScoringUtils';
 
 /**
  * Fetches Entra ID role definitions from Microsoft Graph API
@@ -58,40 +59,6 @@ function getCredential() {
   });
 }
 
-/**
- * Calculate permission count for Entra ID roles
- */
-function calculatePermissionCount(role: EntraIDRole): number {
-  let count = 0;
-
-  for (const permission of role.rolePermissions) {
-    for (const action of permission.allowedResourceActions) {
-      if (action === '*') {
-        count += 10000;
-      } else if (action.includes('*')) {
-        const segments = action.split('/').filter(s => s === '*').length;
-        count += 100 * segments;
-      } else {
-        count += 1;
-      }
-    }
-
-    // Subtract for excluded actions
-    if (permission.excludedResourceActions) {
-      for (const excluded of permission.excludedResourceActions) {
-        if (excluded === '*') {
-          count -= 1000;
-        } else if (excluded.includes('*')) {
-          count -= 10;
-        } else {
-          count -= 1;
-        }
-      }
-    }
-  }
-
-  return Math.max(count, 1);
-}
 
 async function fetchEntraIDRoles(): Promise<EntraIDRole[]> {
   console.info('Fetching Entra ID role definitions from Microsoft Graph...');
@@ -161,7 +128,7 @@ function extendEntraIDRoleData(roles: EntraIDRole[]): EntraIDRole[] {
 
   return roles.map(role => ({
     ...role,
-    permissionCount: calculatePermissionCount(role)
+    permissionCount: calculateEntraIDPermissionCount(role)
   }));
 }
 

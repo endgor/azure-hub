@@ -47,7 +47,7 @@ export function sanitizeForFilename(input: string): string {
  * pluralize(2, 'query', 'queries') // "queries"
  */
 export function pluralize(count: number, singular: string, plural?: string): string {
-  return count === 1 ? singular : (plural ?? `${singular}s`);
+  return count === 1 ? singular : plural ?? `${singular}s`;
 }
 
 /**

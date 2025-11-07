@@ -20,6 +20,13 @@ export const DEFAULT_NETWORK = '192.168.0.0';
 export const DEFAULT_PREFIX = 16;
 
 /**
+ * Ensures a number is treated as an unsigned 32-bit integer.
+ * The >>> 0 operation converts signed 32-bit integers to unsigned.
+ * This is necessary because JavaScript bitwise operations work on signed 32-bit integers.
+ */
+const toUint32 = (value: number): number => value >>> 0;
+
+/**
  * Converts IPv4 address string to 32-bit unsigned integer.
  * Example: "192.168.1.1" -> 3232235777
  */
@@ -41,8 +48,7 @@ export function inetAtov(address: string): number | null {
   }
 
   // Combine octets using bitwise shifts: (octet1 << 24) | (octet2 << 16) | (octet3 << 8) | octet4
-  // Use >>> 0 to ensure unsigned 32-bit integer
-  return ((octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]) >>> 0;
+  return toUint32((octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]);
 }
 
 /**
@@ -50,7 +56,7 @@ export function inetAtov(address: string): number | null {
  * Example: 3232235777 -> "192.168.1.1"
  */
 export function inetNtoa(address: number): string {
-  const value = address >>> 0;
+  const value = toUint32(address);
   return [
     (value >>> 24) & 0xff, // Extract first octet
     (value >>> 16) & 0xff, // Extract second octet
@@ -77,7 +83,7 @@ export function prefixToMask(prefix: number): number {
     return 0;
   }
   // Create mask by inverting a number with (32 - prefix) trailing 1s
-  return prefix === 32 ? 0xffffffff : (~((1 << (32 - prefix)) - 1)) >>> 0;
+  return prefix === 32 ? 0xffffffff : toUint32(~((1 << (32 - prefix)) - 1));
 }
 
 /** Returns total number of addresses in subnet (2^(32-prefix)) */
@@ -90,12 +96,12 @@ export function subnetAddressCount(prefix: number): number {
 
 /** Returns the last (broadcast) address in the subnet */
 export function subnetLastAddress(network: number, prefix: number): number {
-  return (network + subnetAddressCount(prefix) - 1) >>> 0;
+  return toUint32(network + subnetAddressCount(prefix) - 1);
 }
 
 /** Alias for prefixToMask - converts prefix to netmask */
 export function subnetNetmask(prefix: number): number {
-  return prefix === 0 ? 0 : prefix === 32 ? 0xffffffff : (~((1 << (32 - prefix)) - 1)) >>> 0;
+  return prefix === 0 ? 0 : prefix === 32 ? 0xffffffff : toUint32(~((1 << (32 - prefix)) - 1));
 }
 
 /**
@@ -214,7 +220,7 @@ export function splitSubnet(tree: SubnetTree, nodeId: string): SubnetTree {
 
   const rightNode: SubnetNode = {
     id: rightId,
-    network: (node.network + addressesPerChild) >>> 0, // Right child starts halfway
+    network: toUint32(node.network + addressesPerChild), // Right child starts halfway
     prefix: nextPrefix,
     parentId: node.id
   };
