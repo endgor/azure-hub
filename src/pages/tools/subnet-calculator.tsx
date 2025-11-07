@@ -967,10 +967,10 @@ export default function SubnetCalculatorPage(): ReactElement {
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Netmask</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Range of Addresses</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">
-                    Usable IPs
+                    Usable IPs{useAzureReservations ? ' (Azure)' : ''}
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">
-                    Hosts
+                    Hosts{useAzureReservations ? ' (Azure)' : ''}
                   </th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Comment</th>
                   <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center" colSpan={joinColumnCount}>
