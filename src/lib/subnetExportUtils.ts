@@ -1,5 +1,6 @@
 import {
   LeafSubnet,
+  NetworkType,
   hostCapacity,
   hostCapacityAzure,
   inetNtoa,
@@ -16,6 +17,17 @@ function formatRange(first: number, last: number): string {
     return inetNtoa(first);
   }
   return `${inetNtoa(first)} - ${inetNtoa(last)}`;
+}
+
+function formatNetworkTypeLabel(type: NetworkType | undefined): string {
+  switch (type) {
+    case NetworkType.VNET:
+      return 'VNet';
+    case NetworkType.SUBNET:
+      return 'Subnet';
+    default:
+      return 'Click'; // Matches the UI label for unassigned rows
+  }
 }
 
 export function prepareSubnetExportData(
@@ -36,8 +48,10 @@ export function prepareSubnetExportData(
       ? usableRangeAzure(leaf.network, leaf.prefix)
       : usableRange(leaf.network, leaf.prefix);
     const hostCount = useAzureReservations ? hostCapacityAzure(leaf.prefix) : hostCapacity(leaf.prefix);
+    const typeLabel = formatNetworkTypeLabel(leaf.networkType);
 
     return {
+      Type: typeLabel,
       Subnet: `${inetNtoa(leaf.network)}/${leaf.prefix}`,
       Netmask: inetNtoa(subnetNetmask(leaf.prefix)),
       'Range of Addresses': formatRange(leaf.network, lastAddress),

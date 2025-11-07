@@ -1,15 +1,16 @@
-import type { LeafSubnet } from '@/lib/subnetCalculator';
+import type { LeafSubnet, SubnetTree, NetworkType } from '@/lib/subnetCalculator';
 
 /**
  * Compressed leaf subnet representation for sharing.
  * Uses abbreviated field names to reduce URL length.
- * n = network address, p = prefix, c = color, m = memo/comment
+ * n = network address, p = prefix, c = color, m = memo/comment, t = type
  */
 interface ShareableLeaf {
   n: number; // Network address (32-bit unsigned int)
   p: number; // CIDR prefix (0-32)
   c?: string; // Row background color (hex)
   m?: string; // User comment/memo
+  t?: 'v' | 's'; // Network type: 'v' = VNet, 's' = Subnet (omit for unassigned)
 }
 
 /**
@@ -32,6 +33,7 @@ interface BuildSharePlanOptions {
   leaves: LeafSubnet[];
   rowColors: Record<string, string>; // Keyed by leaf ID
   rowComments: Record<string, string>; // Keyed by leaf ID
+  tree: SubnetTree; // Tree structure to extract network types
 }
 
 /**
@@ -45,7 +47,8 @@ export function buildShareableSubnetPlan({
   useAzureReservations,
   leaves,
   rowColors,
-  rowComments
+  rowComments,
+  tree
 }: BuildSharePlanOptions): ShareableSubnetPlan {
   const shareLeaves: ShareableLeaf[] = [...leaves]
     .sort((a, b) => a.network - b.network)
@@ -56,12 +59,21 @@ export function buildShareableSubnetPlan({
       };
       const color = rowColors[leaf.id];
       const comment = rowComments[leaf.id]?.trim();
+      const node = tree[leaf.id];
+      const networkType = node?.networkType;
+
       // Only include optional fields if set (reduce payload size)
       if (color) {
         entry.c = color;
       }
       if (comment) {
         entry.m = comment;
+      }
+      // Serialize network type (omit UNASSIGNED to save space)
+      if (networkType === 'vnet') {
+        entry.t = 'v';
+      } else if (networkType === 'subnet') {
+        entry.t = 's';
       }
       return entry;
     });
@@ -113,7 +125,7 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
       if (!leaf || typeof leaf !== 'object') {
         return; // Skip invalid leaf
       }
-      const { n, p, c, m } = leaf as ShareableLeaf;
+      const { n, p, c, m, t } = leaf as ShareableLeaf;
       if (typeof n !== 'number' || typeof p !== 'number') {
         return; // Skip if network or prefix missing
       }
@@ -128,6 +140,10 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
       // Sanitize and limit comment length
       if (typeof m === 'string' && m.trim().length > 0) {
         entry.m = m.trim().slice(0, 2000);
+      }
+      // Validate network type
+      if (t === 'v' || t === 's') {
+        entry.t = t;
       }
       cleanedLeaves.push(entry);
     });
@@ -185,7 +201,8 @@ function decodeBase64Url(encoded: string): string {
   }
 
   // Browser: add padding and decode
-  const padded = base64 + '==='.slice((4 - (base64.length % 4)) % 4);
+  const paddingNeeded = (4 - (base64.length % 4)) % 4;
+  const padded = base64 + '==='.slice(0, paddingNeeded);
   const binary = atob(padded);
   const bytes = new Uint8Array(binary.length);
   for (let index = 0; index < binary.length; index += 1) {
