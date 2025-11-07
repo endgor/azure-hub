@@ -1,4 +1,4 @@
-import type { LeafSubnet, SubnetTree, NetworkType } from '@/lib/subnetCalculator';
+import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
 
 /**
  * Compressed leaf subnet representation for sharing.
