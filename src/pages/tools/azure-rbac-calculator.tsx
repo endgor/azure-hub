@@ -438,6 +438,7 @@ export default function AzureRbacCalculatorPage() {
     <Layout
       title={azureRbacConfig.metadata.title}
       description={azureRbacConfig.metadata.description}
+      keywords={azureRbacConfig.metadata.keywords}
       breadcrumbs={azureRbacConfig.metadata.breadcrumbs}
       toolSchema={{
         name: azureRbacConfig.metadata.toolSchemaName,

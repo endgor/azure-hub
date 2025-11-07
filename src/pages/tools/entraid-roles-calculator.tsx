@@ -463,6 +463,7 @@ export default function EntraIdRolesCalculatorPage() {
     <Layout
       title={entraIdConfig.metadata.title}
       description={entraIdConfig.metadata.description}
+      keywords={entraIdConfig.metadata.keywords}
       breadcrumbs={entraIdConfig.metadata.breadcrumbs}
       toolSchema={{
         name: entraIdConfig.metadata.toolSchemaName,

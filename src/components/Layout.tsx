@@ -64,6 +64,8 @@ const DEFAULT_KEYWORDS = [
   'Azure tenant lookup',
   'Azure subnet calculator',
   'Azure service tags',
+  'Azure RBAC calculator',
+  'Entra ID roles calculator',
   'Microsoft Entra tools',
   'Azure networking utilities'
 ];

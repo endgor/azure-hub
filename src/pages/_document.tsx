@@ -24,7 +24,7 @@ export default function Document() {
       <Head>
         <meta
           name="keywords"
-          content="Azure Hub, Azure networking tools, Azure IP lookup, Azure service tags, tenant insights, subnet calculator, Microsoft Azure diagnostics, Azure RBAC calculator, Azure RBAC generator, Azure role generator, tenant lookup, Microsoft Entra"
+          content="Azure Hub, Azure networking tools, Azure IP lookup, Azure service tags, tenant insights, subnet calculator, Microsoft Azure diagnostics, Azure RBAC calculator, Azure RBAC generator, Azure role generator, Entra ID roles calculator, directory roles, Azure AD roles, tenant lookup, Microsoft Entra"
         />
         <script
           type="application/ld+json"

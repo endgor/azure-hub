@@ -84,6 +84,9 @@ export interface RoleSystemConfig {
     /** Meta description */
     description: string;
 
+    /** SEO keywords */
+    keywords: string[];
+
     /** Breadcrumb navigation */
     breadcrumbs: Breadcrumb[];
 
