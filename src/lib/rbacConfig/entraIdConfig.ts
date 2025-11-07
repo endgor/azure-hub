@@ -108,6 +108,18 @@ export const entraIdConfig: RoleSystemConfig = {
     title: 'Entra ID Roles Calculator - Find Least Privilege Directory Roles',
     description:
       'Find the least privileged Microsoft Entra ID role for managing directory objects like users, groups, and applications. Search by permissions to discover built-in roles that grant access without excessive privileges.',
+    keywords: [
+      'Entra ID roles calculator',
+      'directory roles',
+      'Azure AD roles',
+      'least privilege directory access',
+      'Entra ID permissions',
+      'identity roles',
+      'Microsoft Entra ID',
+      'Azure AD RBAC',
+      'directory role assignment',
+      'Entra ID access control'
+    ],
     breadcrumbs: [
       { name: 'Home', url: 'https://azurehub.org/' },
       {

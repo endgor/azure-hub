@@ -59,7 +59,9 @@ export async function exportEntraIdRolesToCSV(roles: EntraIDRole[], filename: st
     ]);
   }
 
-  await downloadCSV(rows, filename);
+  const Papa = (await import('papaparse')).default;
+  const csv = Papa.unparse(rows);
+  downloadCSV(csv, filename);
 }
 
 /**
@@ -131,7 +133,8 @@ export async function exportEntraIdRolesToExcel(roles: EntraIDRole[], filename: 
     XLSX.utils.book_append_sheet(workbook, noteSheet, 'Note');
   }
 
-  await downloadExcel(workbook, filename);
+  const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  downloadExcel(wbout, filename);
 }
 
 /**
