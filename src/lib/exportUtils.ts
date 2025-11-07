@@ -1,5 +1,5 @@
 import { AzureIpAddress } from '@/types/azure';
-import * as XLSX from 'xlsx';
+import type { WorkSheet } from 'xlsx';
 import { downloadFile, downloadExcel, downloadMarkdown } from './downloadUtils';
 import { generateQueryFilename } from './filenameUtils';
 
@@ -85,7 +85,7 @@ export async function exportToExcel<T extends ExportRow>(
 
   // Apply row fill colors if provided
   if (options?.rowFills && options.rowFills.length > 0) {
-    applyRowFills(worksheet, options.rowFills, rows.length);
+    applyRowFills(xlsx, worksheet, options.rowFills, rows.length);
   }
 
   // Create workbook and append worksheet
@@ -207,7 +207,12 @@ function formatMarkdownValue(value: ExportRow[keyof ExportRow]): string {
  * Applies background colors to worksheet rows.
  * Row 0 is headers, data rows start at index 1.
  */
-function applyRowFills(worksheet: XLSX.WorkSheet, rowFills: (string | null | undefined)[], dataRowCount: number): void {
+function applyRowFills(
+  xlsx: typeof import('xlsx'),
+  worksheet: WorkSheet,
+  rowFills: (string | null | undefined)[],
+  dataRowCount: number
+): void {
   if (!worksheet['!rows']) {
     worksheet['!rows'] = [];
   }
@@ -222,9 +227,9 @@ function applyRowFills(worksheet: XLSX.WorkSheet, rowFills: (string | null | und
         const rowIndex = i + 1;
 
         // Get all column keys for this row
-        const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
+        const range = xlsx.utils.decode_range(worksheet['!ref'] || 'A1');
         for (let col = range.s.c; col <= range.e.c; col++) {
-          const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: col });
+          const cellAddress = xlsx.utils.encode_cell({ r: rowIndex, c: col });
           const cell = worksheet[cellAddress];
 
           if (cell) {

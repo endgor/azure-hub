@@ -19,6 +19,7 @@ import ErrorBox from '@/components/shared/ErrorBox';
 import Button from '@/components/shared/Button';
 import Link from 'next/link';
 import RoleResultsTable from '@/components/RoleResultsTable';
+import EntraIdRolePermissionsTable from '@/components/EntraIdRolePermissionsTable';
 
 // Import config
 import { entraIdConfig } from '@/lib/rbacConfig';
@@ -623,39 +624,7 @@ export default function EntraIdRolesCalculatorPage() {
 
         {/* Results for Role Explorer mode */}
         {inputMode === 'roleExplorer' && showRoleResults && selectedRoles.length > 0 && !isLoading && (
-          <div className="space-y-4">
-            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-                Selected Entra ID Roles
-              </h2>
-              <div className="space-y-4">
-                {selectedRoles.map(role => {
-                  // Flatten all permission blocks to show complete permissions
-                  const allPermissions = role.rolePermissions.flatMap(rp => rp.allowedResourceActions || []);
-                  return (
-                    <div key={role.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-                      <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-2">
-                        {role.displayName}
-                      </h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-                        {role.description}
-                      </p>
-                      <details>
-                        <summary className="text-sm text-sky-600 dark:text-sky-400 cursor-pointer hover:underline">
-                          View permissions ({allPermissions.length})
-                        </summary>
-                        <ul className="mt-2 space-y-1 text-xs font-mono text-slate-600 dark:text-slate-400 pl-4">
-                          {allPermissions.map((action, idx) => (
-                            <li key={`${action}-${idx}`} className="list-disc">{action}</li>
-                          ))}
-                        </ul>
-                      </details>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+          <EntraIdRolePermissionsTable roles={selectedRoles} />
         )}
 
         {/* Example Scenarios (Simple & Advanced modes only, when no results) */}

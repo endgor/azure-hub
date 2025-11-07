@@ -5,6 +5,7 @@ import {
 } from '@/types/rbac';
 import { matchesWildcard } from './rbacService';
 import { CACHE_TTL_MS } from '@/config/constants';
+import { calculateEntraIDPermissionCount } from './entraIdScoringUtils';
 
 /**
  * In-memory cache for Entra ID role data.
@@ -90,47 +91,6 @@ function hasEntraIDPermission(role: EntraIDRole, requiredAction: string): boolea
   return false;
 }
 
-/**
- * Calculates total permission count for an Entra ID role.
- * Used for privilege scoring (lower is more restrictive).
- *
- * Scoring weights:
- * - Full wildcard (*): 10,000 points (extremely broad)
- * - Wildcard patterns: weighted based on specificity
- * - Specific actions: 1 point each
- */
-export function calculateEntraIDPermissionCount(role: EntraIDRole): number {
-  let count = 0;
-
-  for (const permission of role.rolePermissions) {
-    for (const action of permission.allowedResourceActions) {
-      if (action === '*') {
-        count += 10000;
-      } else if (action.includes('*')) {
-        // Count wildcard segments
-        const segments = action.split('/').filter(s => s === '*').length;
-        count += 100 * segments;
-      } else {
-        count += 1;
-      }
-    }
-
-    // Subtract points for excluded actions (they restrict the role)
-    if (permission.excludedResourceActions) {
-      for (const excluded of permission.excludedResourceActions) {
-        if (excluded === '*') {
-          count -= 1000;
-        } else if (excluded.includes('*')) {
-          count -= 10;
-        } else {
-          count -= 1;
-        }
-      }
-    }
-  }
-
-  return Math.max(count, 1); // Minimum of 1
-}
 
 /**
  * Calculates namespace relevance for an Entra ID role.
@@ -309,9 +269,8 @@ export async function extractActionsFromEntraIDRoles(): Promise<Map<string, { na
 
     for (const permission of role.rolePermissions) {
       for (const action of permission.allowedResourceActions) {
-        // Skip wildcards for action enumeration
-        if (action.includes('*')) continue;
-
+        // Include all actions, including wildcards (e.g., allEntities/allTasks)
+        // Many Entra ID services only have wildcard-style permissions
         const key = action.toLowerCase();
         const existing = actionsMap.get(key);
 

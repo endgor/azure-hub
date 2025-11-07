@@ -3,6 +3,7 @@ import type { LeastPrivilegeResult, EntraIDLeastPrivilegeResult } from '@/types/
 import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
 import { exportRolesToCSV, exportRolesToExcel, exportRolesToMarkdown } from '@/lib/rbacExportUtils';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
+import { pluralize } from '@/lib/filenameUtils';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -227,7 +228,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
             Recommended Roles
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Found {results.length} {results.length === 1 ? 'role' : 'roles'} matching your requirements
+            Found {results.length} {pluralize(results.length, 'role')} matching your requirements
             {selectedRoles.size > 0 && (
               <span className="ml-2 text-sky-600 dark:text-sky-400">
                 ({selectedRoles.size} selected)
@@ -328,7 +329,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                         </span>
                       </td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
-                        {result.matchingActions.length} {result.matchingActions.length === 1 ? 'action' : 'actions'}
+                        {result.matchingActions.length} {pluralize(result.matchingActions.length, 'action')}
                       </td>
                       <td className="px-4 py-3 w-16">
                         <button

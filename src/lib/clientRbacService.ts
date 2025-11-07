@@ -139,6 +139,185 @@ async function loadActionsCache(): Promise<Map<string, { name: string; roleCount
  * - First tries to load pre-computed cache from actions-cache.json (fast path)
  * - Falls back to expensive computation only if cache unavailable (slow path)
  */
+/**
+ * Type definitions for action extraction
+ */
+type ActionCasingMap = Map<string, Map<string, number>>;
+type ExplicitActionRolesMap = Map<string, Set<number>>;
+type WildcardPattern = {
+  pattern: string;
+  roleIndex: number;
+  notActions: string[];
+  notDataActions: string[];
+};
+
+/**
+ * Collect explicit (non-wildcard) actions from all roles.
+ * Tracks casing variants and which roles have each action.
+ */
+function collectExplicitActionMetadata(roles: AzureRole[]): {
+  actionCasingMap: ActionCasingMap;
+  explicitActionRoles: ExplicitActionRolesMap;
+} {
+  const explicitActionRoles: ExplicitActionRolesMap = new Map();
+  const actionCasingMap: ActionCasingMap = new Map();
+
+  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
+    const role = roles[roleIndex];
+    for (const permission of role.permissions) {
+      // Process regular actions
+      for (const action of permission.actions) {
+        if (action.includes('*')) continue;
+
+        const lowerAction = action.toLowerCase();
+
+        // Track casing variants
+        if (!actionCasingMap.has(lowerAction)) {
+          actionCasingMap.set(lowerAction, new Map());
+        }
+        const casingVariants = actionCasingMap.get(lowerAction)!;
+        casingVariants.set(action, (casingVariants.get(action) || 0) + 1);
+
+        // Track which roles have this action explicitly
+        if (!explicitActionRoles.has(lowerAction)) {
+          explicitActionRoles.set(lowerAction, new Set());
+        }
+        explicitActionRoles.get(lowerAction)!.add(roleIndex);
+      }
+
+      // Process data actions
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (dataAction.includes('*')) continue;
+
+          const lowerAction = dataAction.toLowerCase();
+
+          if (!actionCasingMap.has(lowerAction)) {
+            actionCasingMap.set(lowerAction, new Map());
+          }
+          const casingVariants = actionCasingMap.get(lowerAction)!;
+          casingVariants.set(dataAction, (casingVariants.get(dataAction) || 0) + 1);
+
+          if (!explicitActionRoles.has(lowerAction)) {
+            explicitActionRoles.set(lowerAction, new Set());
+          }
+          explicitActionRoles.get(lowerAction)!.add(roleIndex);
+        }
+      }
+    }
+  }
+
+  return { actionCasingMap, explicitActionRoles };
+}
+
+/**
+ * Collect all wildcard patterns from roles.
+ * Includes wildcards from both actions and dataActions with their respective deny lists.
+ * This is typically < 100 patterns vs thousands of explicit actions.
+ */
+function collectWildcardPatterns(roles: AzureRole[]): WildcardPattern[] {
+  const wildcardPatterns: WildcardPattern[] = [];
+
+  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
+    const role = roles[roleIndex];
+    for (const permission of role.permissions) {
+      // Collect wildcard actions
+      for (const action of permission.actions) {
+        if (action.includes('*')) {
+          wildcardPatterns.push({
+            pattern: action,
+            roleIndex,
+            notActions: permission.notActions,
+            notDataActions: permission.notDataActions || []
+          });
+        }
+      }
+
+      // Collect wildcard dataActions
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (dataAction.includes('*')) {
+            wildcardPatterns.push({
+              pattern: dataAction,
+              roleIndex,
+              notActions: permission.notActions,
+              notDataActions: permission.notDataActions || []
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return wildcardPatterns;
+}
+
+/**
+ * Build the final actions map by combining explicit actions with wildcard matches.
+ * For each action, determines the canonical name and counts total roles that grant it.
+ */
+function buildActionsMap(
+  actionCasingMap: ActionCasingMap,
+  explicitActionRoles: ExplicitActionRolesMap,
+  wildcardPatterns: WildcardPattern[]
+): Map<string, { name: string; roleCount: number }> {
+  const actionsMap = new Map<string, { name: string; roleCount: number }>();
+
+  for (const [lowerAction, casingVariants] of Array.from(actionCasingMap.entries())) {
+    // Choose canonical casing (most commonly used variant)
+    let canonicalName = '';
+    let maxCount = 0;
+
+    for (const [casing, count] of Array.from(casingVariants.entries())) {
+      if (count > maxCount) {
+        maxCount = count;
+        canonicalName = casing;
+      }
+    }
+
+    // Start with explicit role indices
+    const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
+
+    // Add roles that grant via wildcards
+    for (const { pattern, roleIndex, notActions, notDataActions } of wildcardPatterns) {
+      if (matchesWildcard(pattern, canonicalName)) {
+        // Check if it's not denied (check both notActions and notDataActions)
+        let isDenied = false;
+
+        // Check notActions deny list
+        for (const deniedAction of notActions) {
+          if (matchesWildcard(deniedAction, canonicalName)) {
+            isDenied = true;
+            break;
+          }
+        }
+
+        // Check notDataActions deny list
+        if (!isDenied) {
+          for (const deniedDataAction of notDataActions) {
+            if (matchesWildcard(deniedDataAction, canonicalName)) {
+              isDenied = true;
+              break;
+            }
+          }
+        }
+
+        if (!isDenied) {
+          roleSet.add(roleIndex);
+        }
+      }
+    }
+
+    actionsMap.set(lowerAction, { name: canonicalName, roleCount: roleSet.size });
+  }
+
+  return actionsMap;
+}
+
+/**
+ * Extract all actions from Azure roles and compute role counts for each action.
+ * Uses caching and fallback to pre-computed cache for performance.
+ */
 async function extractActionsFromRoles(): Promise<Map<string, { name: string; roleCount: number }>> {
   const now = Date.now();
 
@@ -159,113 +338,9 @@ async function extractActionsFromRoles(): Promise<Map<string, { name: string; ro
   console.warn('Pre-computed actions cache not available, computing at runtime (this may take a few seconds)...');
 
   const roles = await loadRoleDefinitions();
-
-  // First pass: Collect explicit actions, track casing variants and which roles have them
-  const explicitActionRoles = new Map<string, Set<number>>(); // lowercase action -> role indices
-  const actionCasingMap = new Map<string, Map<string, number>>(); // lowercase action -> casing variants
-
-  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
-    const role = roles[roleIndex];
-    for (const permission of role.permissions) {
-      // Process regular actions
-      for (const action of permission.actions) {
-        if (!action.includes('*')) {
-          const lowerAction = action.toLowerCase();
-
-          // Track casing variants
-          if (!actionCasingMap.has(lowerAction)) {
-            actionCasingMap.set(lowerAction, new Map());
-          }
-          const casingVariants = actionCasingMap.get(lowerAction)!;
-          casingVariants.set(action, (casingVariants.get(action) || 0) + 1);
-
-          // Track which roles have this action explicitly
-          if (!explicitActionRoles.has(lowerAction)) {
-            explicitActionRoles.set(lowerAction, new Set());
-          }
-          explicitActionRoles.get(lowerAction)!.add(roleIndex);
-        }
-      }
-
-      // Process data actions
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          if (!dataAction.includes('*')) {
-            const lowerAction = dataAction.toLowerCase();
-
-            if (!actionCasingMap.has(lowerAction)) {
-              actionCasingMap.set(lowerAction, new Map());
-            }
-            const casingVariants = actionCasingMap.get(lowerAction)!;
-            casingVariants.set(dataAction, (casingVariants.get(dataAction) || 0) + 1);
-
-            if (!explicitActionRoles.has(lowerAction)) {
-              explicitActionRoles.set(lowerAction, new Set());
-            }
-            explicitActionRoles.get(lowerAction)!.add(roleIndex);
-          }
-        }
-      }
-    }
-  }
-
-  // Second pass: Collect all wildcard patterns from roles
-  // This is a much smaller list than all actions (typically < 100 vs thousands of actions)
-  const wildcardPatterns: Array<{ pattern: string; roleIndex: number; notActions: string[] }> = [];
-
-  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
-    const role = roles[roleIndex];
-    for (const permission of role.permissions) {
-      for (const action of permission.actions) {
-        if (action.includes('*')) {
-          wildcardPatterns.push({
-            pattern: action,
-            roleIndex,
-            notActions: permission.notActions
-          });
-        }
-      }
-    }
-  }
-
-  // Third pass: For each action, count roles (explicit + wildcard matches)
-  const actionsMap = new Map<string, { name: string; roleCount: number }>();
-
-  for (const [lowerAction, casingVariants] of Array.from(actionCasingMap.entries())) {
-    // Choose canonical casing (most commonly used variant)
-    let canonicalName = '';
-    let maxCount = 0;
-
-    for (const [casing, count] of Array.from(casingVariants.entries())) {
-      if (count > maxCount) {
-        maxCount = count;
-        canonicalName = casing;
-      }
-    }
-
-    // Start with explicit role indices
-    const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
-
-    // Add roles that grant via wildcards
-    for (const { pattern, roleIndex, notActions } of wildcardPatterns) {
-      if (matchesWildcard(pattern, canonicalName)) {
-        // Check if it's not denied
-        let isDenied = false;
-        for (const deniedAction of notActions) {
-          if (matchesWildcard(deniedAction, canonicalName)) {
-            isDenied = true;
-            break;
-          }
-        }
-
-        if (!isDenied) {
-          roleSet.add(roleIndex);
-        }
-      }
-    }
-
-    actionsMap.set(lowerAction, { name: canonicalName, roleCount: roleSet.size });
-  }
+  const { actionCasingMap, explicitActionRoles } = collectExplicitActionMetadata(roles);
+  const wildcardPatterns = collectWildcardPatterns(roles);
+  const actionsMap = buildActionsMap(actionCasingMap, explicitActionRoles, wildcardPatterns);
 
   // Cache the result
   actionsMapCache = actionsMap;

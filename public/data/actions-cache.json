@@ -277,22 +277,22 @@
   {
     "key": "microsoft.containerservice/managedclusters/listclusteradmincredential/action",
     "name": "Microsoft.ContainerService/managedClusters/listClusterAdminCredential/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/accessprofiles/listcredential/action",
     "name": "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/read",
     "name": "Microsoft.ContainerService/managedClusters/read",
-    "roleCount": 24
+    "roleCount": 26
   },
   {
     "key": "microsoft.containerservice/managedclusters/runcommand/action",
     "name": "Microsoft.ContainerService/managedClusters/runcommand/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/listclusterusercredential/action",
@@ -847,7 +847,7 @@
   {
     "key": "microsoft.cognitiveservices/accounts/listkeys/action",
     "name": "Microsoft.CognitiveServices/accounts/listkeys/action",
-    "roleCount": 10
+    "roleCount": 12
   },
   {
     "key": "microsoft.insights/alertrules/read",
@@ -2092,7 +2092,7 @@
   {
     "key": "microsoft.signalrservice/signalr/listkeys/action",
     "name": "Microsoft.SignalRService/SignalR/listkeys/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.hybridcompute/settings/read",
@@ -2162,12 +2162,12 @@
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
     "name": "Microsoft.Kubernetes/connectedClusters/Write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/read",
     "name": "Microsoft.Kubernetes/connectedClusters/Read",
-    "roleCount": 28
+    "roleCount": 29
   },
   {
     "key": "microsoft.kubernetesconfiguration/extensions/write",
@@ -2242,197 +2242,197 @@
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/knowledgebases/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/download/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/knowledgebases/download/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/generateanswer/action",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/knowledgebases/generateanswer/action",
-    "roleCount": 7
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/alterations/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/alterations/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/endpointkeys/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/endpointkeys/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/endpointsettings/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/endpointsettings/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/knowledgebases/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/knowledgebases/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/knowledgebases/download/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/knowledgebases/download/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/knowledgebases/generateanswer/action",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/knowledgebases/generateanswer/action",
-    "roleCount": 7
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/alterations/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/alterations/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/endpointkeys/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/endpointkeys/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/endpointsettings/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/endpointsettings/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/knowledgebases/read",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/knowledgebases/read",
-    "roleCount": 44
+    "roleCount": 43
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/knowledgebases/download/read",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/knowledgebases/download/read",
-    "roleCount": 44
+    "roleCount": 43
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/knowledgebases/generateanswer/action",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/knowledgebases/generateanswer/action",
-    "roleCount": 7
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/alterations/read",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/alterations/read",
-    "roleCount": 44
+    "roleCount": 43
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/endpointkeys/read",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/endpointkeys/read",
-    "roleCount": 44
+    "roleCount": 43
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/endpointsettings/read",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/endpointsettings/read",
-    "roleCount": 44
+    "roleCount": 43
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/create/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/knowledgebases/create/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/knowledgebases/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/train/action",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/knowledgebases/train/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/alterations/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/alterations/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/endpointkeys/refreshkeys/action",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/endpointkeys/refreshkeys/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/endpointsettings/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/endpointsettings/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/operations/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker/operations/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/knowledgebases/create/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/knowledgebases/create/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/knowledgebases/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/knowledgebases/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/knowledgebases/train/action",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/knowledgebases/train/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/alterations/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/alterations/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/endpointkeys/refreshkeys/action",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/endpointkeys/refreshkeys/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/endpointsettings/write",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/endpointsettings/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker.v2/operations/read",
     "name": "Microsoft.CognitiveServices/accounts/QnAMaker.v2/operations/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/knowledgebases/create/write",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/knowledgebases/create/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/knowledgebases/write",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/knowledgebases/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/knowledgebases/train/action",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/knowledgebases/train/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/alterations/write",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/alterations/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/endpointkeys/refreshkeys/action",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/endpointkeys/refreshkeys/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/endpointsettings/write",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/endpointsettings/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/textanalytics/qnamaker/operations/read",
     "name": "Microsoft.CognitiveServices/accounts/TextAnalytics/QnAMaker/operations/read",
-    "roleCount": 44
+    "roleCount": 43
   },
   {
     "key": "microsoft.experimentation/experimentworkspaces/experimentationgroups/admin/action",
@@ -2522,42 +2522,42 @@
   {
     "key": "microsoft.digitaltwins/digitaltwins/read",
     "name": "Microsoft.DigitalTwins/digitaltwins/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/digitaltwins/relationships/read",
     "name": "Microsoft.DigitalTwins/digitaltwins/relationships/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/eventroutes/read",
     "name": "Microsoft.DigitalTwins/eventroutes/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/jobs/import/read",
     "name": "Microsoft.DigitalTwins/jobs/import/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/jobs/imports/read",
     "name": "Microsoft.DigitalTwins/jobs/imports/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/jobs/deletions/read",
     "name": "Microsoft.DigitalTwins/jobs/deletions/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/models/read",
     "name": "Microsoft.DigitalTwins/models/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.digitaltwins/query/action",
     "name": "Microsoft.DigitalTwins/query/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.management/managementgroups/settings/write",
@@ -2572,92 +2572,92 @@
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/read",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/export/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/export/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/read",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/read",
-    "roleCount": 26
+    "roleCount": 27
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/export/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/export/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/write",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/write",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/delete",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/delete",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/resourcevalidate/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/resourceValidate/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/reindex/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/reindex/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/convertdata/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/convertData/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/editprofiledefinitions/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/editProfileDefinitions/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/import/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/import/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/write",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/write",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/delete",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/delete",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/resourcevalidate/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/resourceValidate/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/reindex/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/reindex/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/convertdata/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/convertData/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/editprofiledefinitions/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/editProfileDefinitions/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/import/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/import/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.mixedreality/objectunderstandingaccounts/ingest/action",
@@ -2672,12 +2672,12 @@
   {
     "key": "microsoft.cognitiveservices/accounts/customvision/projects/predictions/query/action",
     "name": "Microsoft.CognitiveServices/accounts/CustomVision/projects/predictions/query/action",
-    "roleCount": 7
+    "roleCount": 14
   },
   {
     "key": "microsoft.cognitiveservices/accounts/customvision/projects/tagsandregions/suggestions/action",
     "name": "Microsoft.CognitiveServices/accounts/CustomVision/projects/tagsandregions/suggestions/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.keyvault/checknameavailability/read",
@@ -2702,57 +2702,57 @@
   {
     "key": "microsoft.keyvault/vaults/keys/update/action",
     "name": "Microsoft.KeyVault/vaults/keys/update/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/keys/backup/action",
     "name": "Microsoft.KeyVault/vaults/keys/backup/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/keys/encrypt/action",
     "name": "Microsoft.KeyVault/vaults/keys/encrypt/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/keys/decrypt/action",
     "name": "Microsoft.KeyVault/vaults/keys/decrypt/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/keys/wrap/action",
     "name": "Microsoft.KeyVault/vaults/keys/wrap/action",
-    "roleCount": 8
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/unwrap/action",
     "name": "Microsoft.KeyVault/vaults/keys/unwrap/action",
-    "roleCount": 8
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/sign/action",
     "name": "Microsoft.KeyVault/vaults/keys/sign/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/keys/verify/action",
     "name": "Microsoft.KeyVault/vaults/keys/verify/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/secrets/getsecret/action",
     "name": "Microsoft.KeyVault/vaults/secrets/getSecret/action",
-    "roleCount": 8
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/secrets/readmetadata/action",
     "name": "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.keyvault/vaults/certificatecontacts/write",
     "name": "Microsoft.KeyVault/vaults/certificatecontacts/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.eventgrid/eventsubscriptions/delete",
@@ -2762,317 +2762,317 @@
   {
     "key": "microsoft.kubernetes/connectedclusters/apps/controllerrevisions/read",
     "name": "Microsoft.Kubernetes/connectedClusters/apps/controllerrevisions/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/apps/daemonsets/read",
     "name": "Microsoft.Kubernetes/connectedClusters/apps/daemonsets/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/apps/deployments/read",
     "name": "Microsoft.Kubernetes/connectedClusters/apps/deployments/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/apps/replicasets/read",
     "name": "Microsoft.Kubernetes/connectedClusters/apps/replicasets/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/apps/statefulsets/read",
     "name": "Microsoft.Kubernetes/connectedClusters/apps/statefulsets/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/autoscaling/horizontalpodautoscalers/read",
     "name": "Microsoft.Kubernetes/connectedClusters/autoscaling/horizontalpodautoscalers/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/batch/cronjobs/read",
     "name": "Microsoft.Kubernetes/connectedClusters/batch/cronjobs/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/batch/jobs/read",
     "name": "Microsoft.Kubernetes/connectedClusters/batch/jobs/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/configmaps/read",
     "name": "Microsoft.Kubernetes/connectedClusters/configmaps/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/endpoints/read",
     "name": "Microsoft.Kubernetes/connectedClusters/endpoints/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/events.k8s.io/events/read",
     "name": "Microsoft.Kubernetes/connectedClusters/events.k8s.io/events/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/events/read",
     "name": "Microsoft.Kubernetes/connectedClusters/events/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/extensions/daemonsets/read",
     "name": "Microsoft.Kubernetes/connectedClusters/extensions/daemonsets/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/extensions/deployments/read",
     "name": "Microsoft.Kubernetes/connectedClusters/extensions/deployments/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/extensions/ingresses/read",
     "name": "Microsoft.Kubernetes/connectedClusters/extensions/ingresses/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/extensions/networkpolicies/read",
     "name": "Microsoft.Kubernetes/connectedClusters/extensions/networkpolicies/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/extensions/replicasets/read",
     "name": "Microsoft.Kubernetes/connectedClusters/extensions/replicasets/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/limitranges/read",
     "name": "Microsoft.Kubernetes/connectedClusters/limitranges/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/namespaces/read",
     "name": "Microsoft.Kubernetes/connectedClusters/namespaces/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/networking.k8s.io/ingresses/read",
     "name": "Microsoft.Kubernetes/connectedClusters/networking.k8s.io/ingresses/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/networking.k8s.io/networkpolicies/read",
     "name": "Microsoft.Kubernetes/connectedClusters/networking.k8s.io/networkpolicies/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/persistentvolumeclaims/read",
     "name": "Microsoft.Kubernetes/connectedClusters/persistentvolumeclaims/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/pods/read",
     "name": "Microsoft.Kubernetes/connectedClusters/pods/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/policy/poddisruptionbudgets/read",
     "name": "Microsoft.Kubernetes/connectedClusters/policy/poddisruptionbudgets/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/replicationcontrollers/read",
     "name": "Microsoft.Kubernetes/connectedClusters/replicationcontrollers/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/resourcequotas/read",
     "name": "Microsoft.Kubernetes/connectedClusters/resourcequotas/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/serviceaccounts/read",
     "name": "Microsoft.Kubernetes/connectedClusters/serviceaccounts/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/services/read",
     "name": "Microsoft.Kubernetes/connectedClusters/services/read",
-    "roleCount": 19
+    "roleCount": 22
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/authorization.k8s.io/localsubjectaccessreviews/write",
     "name": "Microsoft.Kubernetes/connectedClusters/authorization.k8s.io/localsubjectaccessreviews/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.containerservice/managedclusters/apps/controllerrevisions/read",
     "name": "Microsoft.ContainerService/managedClusters/apps/controllerrevisions/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/apps/daemonsets/read",
     "name": "Microsoft.ContainerService/managedClusters/apps/daemonsets/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/apps/deployments/read",
     "name": "Microsoft.ContainerService/managedClusters/apps/deployments/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/apps/replicasets/read",
     "name": "Microsoft.ContainerService/managedClusters/apps/replicasets/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/apps/statefulsets/read",
     "name": "Microsoft.ContainerService/managedClusters/apps/statefulsets/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/autoscaling/horizontalpodautoscalers/read",
     "name": "Microsoft.ContainerService/managedClusters/autoscaling/horizontalpodautoscalers/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/batch/cronjobs/read",
     "name": "Microsoft.ContainerService/managedClusters/batch/cronjobs/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/batch/jobs/read",
     "name": "Microsoft.ContainerService/managedClusters/batch/jobs/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/configmaps/read",
     "name": "Microsoft.ContainerService/managedClusters/configmaps/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/discovery.k8s.io/endpointslices/read",
     "name": "Microsoft.ContainerService/managedClusters/discovery.k8s.io/endpointslices/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/endpoints/read",
     "name": "Microsoft.ContainerService/managedClusters/endpoints/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/events.k8s.io/events/read",
     "name": "Microsoft.ContainerService/managedClusters/events.k8s.io/events/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/events/read",
     "name": "Microsoft.ContainerService/managedClusters/events/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/extensions/daemonsets/read",
     "name": "Microsoft.ContainerService/managedClusters/extensions/daemonsets/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/extensions/deployments/read",
     "name": "Microsoft.ContainerService/managedClusters/extensions/deployments/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/extensions/ingresses/read",
     "name": "Microsoft.ContainerService/managedClusters/extensions/ingresses/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/extensions/networkpolicies/read",
     "name": "Microsoft.ContainerService/managedClusters/extensions/networkpolicies/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/extensions/replicasets/read",
     "name": "Microsoft.ContainerService/managedClusters/extensions/replicasets/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/limitranges/read",
     "name": "Microsoft.ContainerService/managedClusters/limitranges/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/metrics.k8s.io/pods/read",
     "name": "Microsoft.ContainerService/managedClusters/metrics.k8s.io/pods/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/metrics.k8s.io/nodes/read",
     "name": "Microsoft.ContainerService/managedClusters/metrics.k8s.io/nodes/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/namespaces/read",
     "name": "Microsoft.ContainerService/managedClusters/namespaces/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/networking.k8s.io/ingresses/read",
     "name": "Microsoft.ContainerService/managedClusters/networking.k8s.io/ingresses/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/networking.k8s.io/networkpolicies/read",
     "name": "Microsoft.ContainerService/managedClusters/networking.k8s.io/networkpolicies/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/persistentvolumeclaims/read",
     "name": "Microsoft.ContainerService/managedClusters/persistentvolumeclaims/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/pods/read",
     "name": "Microsoft.ContainerService/managedClusters/pods/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/policy/poddisruptionbudgets/read",
     "name": "Microsoft.ContainerService/managedClusters/policy/poddisruptionbudgets/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/replicationcontrollers/read",
     "name": "Microsoft.ContainerService/managedClusters/replicationcontrollers/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/resourcequotas/read",
     "name": "Microsoft.ContainerService/managedClusters/resourcequotas/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/serviceaccounts/read",
     "name": "Microsoft.ContainerService/managedClusters/serviceaccounts/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/services/read",
     "name": "Microsoft.ContainerService/managedClusters/services/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/coordination.k8s.io/leases/read",
     "name": "Microsoft.ContainerService/managedClusters/coordination.k8s.io/leases/read",
-    "roleCount": 20
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/managedclusters/coordination.k8s.io/leases/write",
     "name": "Microsoft.ContainerService/managedClusters/coordination.k8s.io/leases/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/coordination.k8s.io/leases/delete",
     "name": "Microsoft.ContainerService/managedClusters/coordination.k8s.io/leases/delete",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.serviceshub/connectors/write",
@@ -3107,7 +3107,7 @@
   {
     "key": "microsoft.signalrservice/signalr/auth/clienttoken/action",
     "name": "Microsoft.SignalRService/SignalR/auth/clientToken/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.industrydatalifecycle/custodiancollaboratives/rejectdatapackage/action",
@@ -3157,7 +3157,7 @@
   {
     "key": "microsoft.eventhub/namespaces/schemas/read",
     "name": "Microsoft.EventHub/namespaces/schemas/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.keyvault/deletedmanagedhsms/read",
@@ -3222,17 +3222,17 @@
   {
     "key": "microsoft.signalrservice/signalr/group/read",
     "name": "Microsoft.SignalRService/SignalR/group/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.signalrservice/signalr/clientconnection/read",
     "name": "Microsoft.SignalRService/SignalR/clientConnection/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.signalrservice/signalr/user/read",
     "name": "Microsoft.SignalRService/SignalR/user/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.capacity/catalogs/read",
@@ -3422,7 +3422,7 @@
   {
     "key": "microsoft.kubernetes/connectedclusters/delete",
     "name": "Microsoft.Kubernetes/connectedClusters/Delete",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.kubernetes/registeredsubscriptions/read",
@@ -3572,42 +3572,42 @@
   {
     "key": "microsoft.cognitiveservices/accounts/face/detect/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/detect/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/verify/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/verify/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/identify/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/identify/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/group/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/group/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/findsimilars/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/findsimilars/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/detectliveness/multimodal/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/detectliveness/multimodal/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/detectliveness/singlemodal/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/detectliveness/singlemodal/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.cognitiveservices/accounts/face/detectlivenesswithverify/singlemodal/action",
     "name": "Microsoft.CognitiveServices/accounts/Face/detectlivenesswithverify/singlemodal/action",
-    "roleCount": 6
+    "roleCount": 11
   },
   {
     "key": "microsoft.streamanalytics/locations/testquery/action",
@@ -3642,7 +3642,7 @@
   {
     "key": "microsoft.devices/iothubs/fileupload/notifications/action",
     "name": "Microsoft.Devices/IotHubs/fileUpload/notifications/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.testbase/testbaseaccounts/packages/testresults/getdownloadurl/action",
@@ -3672,7 +3672,7 @@
   {
     "key": "microsoft.search/searchservices/indexes/documents/read",
     "name": "Microsoft.Search/searchServices/indexes/documents/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/read",
@@ -3717,7 +3717,7 @@
   {
     "key": "microsoft.healthcareapis/workspaces/dicomservices/resources/read",
     "name": "Microsoft.HealthcareApis/workspaces/dicomservices/resources/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.eventgrid/topics/read",
@@ -3787,7 +3787,7 @@
   {
     "key": "microsoft.appplatform/spring/eurekaservice/read",
     "name": "Microsoft.AppPlatform/Spring/eurekaService/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.appplatform/spring/eurekaservice/write",
@@ -3802,7 +3802,7 @@
   {
     "key": "microsoft.appplatform/spring/configservice/read",
     "name": "Microsoft.AppPlatform/Spring/configService/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.appplatform/spring/configservice/write",
@@ -3817,12 +3817,12 @@
   {
     "key": "microsoft.maps/accounts/services/render/read",
     "name": "Microsoft.Maps/accounts/services/render/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.maps/accounts/services/search/read",
     "name": "Microsoft.Maps/accounts/services/search/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.insights/alertrules/write",
@@ -4107,67 +4107,67 @@
   {
     "key": "microsoft.cognitiveservices/accounts/conversationallanguageunderstanding/projects/export/action",
     "name": "Microsoft.CognitiveServices/accounts/ConversationalLanguageUnderstanding/projects/export/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/query-text/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/query-text/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/query-dataverse/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/query-dataverse/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/analyze-text/jobs/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/analyze-text/jobs/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/analyze-text/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/analyze-text/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/analyze-text/jobscancel/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/analyze-text/jobscancel/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/analyze-conversations/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/analyze-conversations/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/analyze-conversations/jobscancel/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/analyze-conversations/jobscancel/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/analyze-conversations/jobs/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/analyze-conversations/jobs/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/query-knowledgebases/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/query-knowledgebases/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/language/generate/action",
     "name": "Microsoft.CognitiveServices/accounts/Language/generate/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/luis/apps/testdatasets/write",
     "name": "Microsoft.CognitiveServices/accounts/LUIS/apps/testdatasets/write",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.loadtestservice/loadtests/readtest/action",
     "name": "Microsoft.LoadTestService/loadtests/readTest/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.loadtestservice/testprofiles/read",
@@ -4182,7 +4182,7 @@
   {
     "key": "microsoft.cognitiveservices/accounts/immersivereader/getcontentmodelforreader/action",
     "name": "Microsoft.CognitiveServices/accounts/ImmersiveReader/getcontentmodelforreader/action",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.labservices/labs/users/invite/action",
@@ -4257,17 +4257,17 @@
   {
     "key": "microsoft.signalrservice/signalr/auth/accesskey/action",
     "name": "Microsoft.SignalRService/SignalR/auth/accessKey/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.signalrservice/signalr/serverconnection/write",
     "name": "Microsoft.SignalRService/SignalR/serverConnection/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.signalrservice/signalr/clientconnection/write",
     "name": "Microsoft.SignalRService/SignalR/clientConnection/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.hybridconnectivity/endpoints/listcredentials/action",
@@ -5052,12 +5052,12 @@
   {
     "key": "microsoft.kubernetes/connectedclusters/listclusterusercredentials/action",
     "name": "Microsoft.Kubernetes/connectedClusters/listClusterUserCredentials/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/listclusterusercredential/action",
     "name": "Microsoft.Kubernetes/connectedClusters/listClusterUserCredential/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.compute/disks/download/action",
@@ -5657,7 +5657,7 @@
   {
     "key": "microsoft.keyvault/vaults/deploy/action",
     "name": "Microsoft.KeyVault/vaults/deploy/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.desktopvirtualization/scalingplans/read",
@@ -5787,262 +5787,262 @@
   {
     "key": "microsoft.containerservice/fleets/apps/controllerrevisions/read",
     "name": "Microsoft.ContainerService/fleets/apps/controllerrevisions/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/apps/daemonsets/read",
     "name": "Microsoft.ContainerService/fleets/apps/daemonsets/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/apps/deployments/read",
     "name": "Microsoft.ContainerService/fleets/apps/deployments/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/apps/statefulsets/read",
     "name": "Microsoft.ContainerService/fleets/apps/statefulsets/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/autoscaling/horizontalpodautoscalers/read",
     "name": "Microsoft.ContainerService/fleets/autoscaling/horizontalpodautoscalers/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/batch/cronjobs/read",
     "name": "Microsoft.ContainerService/fleets/batch/cronjobs/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/batch/jobs/read",
     "name": "Microsoft.ContainerService/fleets/batch/jobs/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/configmaps/read",
     "name": "Microsoft.ContainerService/fleets/configmaps/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/endpoints/read",
     "name": "Microsoft.ContainerService/fleets/endpoints/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/events.k8s.io/events/read",
     "name": "Microsoft.ContainerService/fleets/events.k8s.io/events/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/events/read",
     "name": "Microsoft.ContainerService/fleets/events/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/daemonsets/read",
     "name": "Microsoft.ContainerService/fleets/extensions/daemonsets/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/deployments/read",
     "name": "Microsoft.ContainerService/fleets/extensions/deployments/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/ingresses/read",
     "name": "Microsoft.ContainerService/fleets/extensions/ingresses/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/networkpolicies/read",
     "name": "Microsoft.ContainerService/fleets/extensions/networkpolicies/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/limitranges/read",
     "name": "Microsoft.ContainerService/fleets/limitranges/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/namespaces/read",
     "name": "Microsoft.ContainerService/fleets/namespaces/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/networking.k8s.io/ingresses/read",
     "name": "Microsoft.ContainerService/fleets/networking.k8s.io/ingresses/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/networking.k8s.io/networkpolicies/read",
     "name": "Microsoft.ContainerService/fleets/networking.k8s.io/networkpolicies/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/persistentvolumeclaims/read",
     "name": "Microsoft.ContainerService/fleets/persistentvolumeclaims/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/policy/poddisruptionbudgets/read",
     "name": "Microsoft.ContainerService/fleets/policy/poddisruptionbudgets/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/replicationcontrollers/read",
     "name": "Microsoft.ContainerService/fleets/replicationcontrollers/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/resourcequotas/read",
     "name": "Microsoft.ContainerService/fleets/resourcequotas/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/serviceaccounts/read",
     "name": "Microsoft.ContainerService/fleets/serviceaccounts/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/services/read",
     "name": "Microsoft.ContainerService/fleets/services/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.containerservice/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
     "name": "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/works/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
     "name": "Microsoft.ContainerService/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.containerservice/fleets/apps/daemonsets/write",
     "name": "Microsoft.ContainerService/fleets/apps/daemonsets/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/apps/deployments/write",
     "name": "Microsoft.ContainerService/fleets/apps/deployments/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/apps/statefulsets/write",
     "name": "Microsoft.ContainerService/fleets/apps/statefulsets/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/autoscaling/horizontalpodautoscalers/write",
     "name": "Microsoft.ContainerService/fleets/autoscaling/horizontalpodautoscalers/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/batch/cronjobs/write",
     "name": "Microsoft.ContainerService/fleets/batch/cronjobs/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/batch/jobs/write",
     "name": "Microsoft.ContainerService/fleets/batch/jobs/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/configmaps/write",
     "name": "Microsoft.ContainerService/fleets/configmaps/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/endpoints/write",
     "name": "Microsoft.ContainerService/fleets/endpoints/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/daemonsets/write",
     "name": "Microsoft.ContainerService/fleets/extensions/daemonsets/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/deployments/write",
     "name": "Microsoft.ContainerService/fleets/extensions/deployments/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/ingresses/write",
     "name": "Microsoft.ContainerService/fleets/extensions/ingresses/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/extensions/networkpolicies/write",
     "name": "Microsoft.ContainerService/fleets/extensions/networkpolicies/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/networking.k8s.io/ingresses/write",
     "name": "Microsoft.ContainerService/fleets/networking.k8s.io/ingresses/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/networking.k8s.io/networkpolicies/write",
     "name": "Microsoft.ContainerService/fleets/networking.k8s.io/networkpolicies/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/persistentvolumeclaims/write",
     "name": "Microsoft.ContainerService/fleets/persistentvolumeclaims/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/policy/poddisruptionbudgets/write",
     "name": "Microsoft.ContainerService/fleets/policy/poddisruptionbudgets/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/replicationcontrollers/write",
     "name": "Microsoft.ContainerService/fleets/replicationcontrollers/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/secrets/read",
     "name": "Microsoft.ContainerService/fleets/secrets/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/secrets/write",
     "name": "Microsoft.ContainerService/fleets/secrets/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/serviceaccounts/write",
     "name": "Microsoft.ContainerService/fleets/serviceaccounts/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/services/write",
     "name": "Microsoft.ContainerService/fleets/services/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/resourceoverrides/write",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.kubernetesconfiguration/namespaces/read",
@@ -6347,12 +6347,12 @@
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/readbyid/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/readById/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/search/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/search/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/smart/action",
@@ -6362,12 +6362,12 @@
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/readbyid/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/readById/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/search/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/search/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/smart/action",
@@ -6377,97 +6377,97 @@
   {
     "key": "microsoft.cognitiveservices/accounts/deployments/write",
     "name": "Microsoft.CognitiveServices/accounts/deployments/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/deployments/delete",
     "name": "Microsoft.CognitiveServices/accounts/deployments/delete",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/raipolicies/read",
     "name": "Microsoft.CognitiveServices/accounts/raiPolicies/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/raipolicies/write",
     "name": "Microsoft.CognitiveServices/accounts/raiPolicies/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/raipolicies/delete",
     "name": "Microsoft.CognitiveServices/accounts/raiPolicies/delete",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/commitmentplans/read",
     "name": "Microsoft.CognitiveServices/accounts/commitmentplans/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.cognitiveservices/accounts/commitmentplans/write",
     "name": "Microsoft.CognitiveServices/accounts/commitmentplans/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/commitmentplans/delete",
     "name": "Microsoft.CognitiveServices/accounts/commitmentplans/delete",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/engines/completions/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/engines/completions/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/engines/search/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/engines/search/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/engines/generate/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/engines/generate/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/audio/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/audio/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/search/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/search/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/completions/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/completions/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/chat/completions/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/chat/completions/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/realtime/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/realtime/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/extensions/chat/completions/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/extensions/chat/completions/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/deployments/embeddings/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/deployments/embeddings/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.cognitiveservices/accounts/openai/images/generations/action",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/images/generations/action",
-    "roleCount": 6
+    "roleCount": 12
   },
   {
     "key": "microsoft.impact/impactcategories/read",
@@ -6492,7 +6492,7 @@
   {
     "key": "microsoft.containerservice/managedclusters/listclustermonitoringusercredential/action",
     "name": "Microsoft.ContainerService/managedClusters/listClusterMonitoringUserCredential/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.edgemarketplace/locations/operationstatuses/read",
@@ -6647,52 +6647,52 @@
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/read",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/read",
-    "roleCount": 25
+    "roleCount": 28
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/boundaries/read",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/boundaries/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/farms/read",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/farms/read",
-    "roleCount": 22
+    "roleCount": 25
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/fields/read",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/fields/read",
-    "roleCount": 25
+    "roleCount": 28
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/boundaries/write",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/boundaries/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/farms/write",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/farms/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/fields/write",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/fields/write",
-    "roleCount": 8
+    "roleCount": 10
   },
   {
     "key": "microsoft.containerservice/managedclusters/trustedaccessrolebindings/write",
     "name": "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/managedclusters/trustedaccessrolebindings/read",
     "name": "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/trustedaccessrolebindings/delete",
     "name": "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings/delete",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.security/pricings/securityoperators/read",
@@ -7012,7 +7012,7 @@
   {
     "key": "microsoft.maps/accounts/services/batch/action",
     "name": "Microsoft.Maps/accounts/services/batch/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.insights/logs/apimanagementgatewaylogs/read",
@@ -7422,12 +7422,12 @@
   {
     "key": "microsoft.cognitivesearch/indexes/schema/read",
     "name": "Microsoft.CognitiveSearch/indexes/schema/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.cognitivesearch/indexes/documents/read",
     "name": "Microsoft.CognitiveSearch/indexes/documents/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.mission/register/action",
@@ -7597,7 +7597,7 @@
   {
     "key": "microsoft.cognitiveservices/locations/usages/read",
     "name": "Microsoft.CognitiveServices/locations/usages/read",
-    "roleCount": 45
+    "roleCount": 47
   },
   {
     "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupoperations/read",
@@ -7627,7 +7627,7 @@
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/searchparameter/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/searchparameter/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.web/sites/config/list/action",
@@ -7872,22 +7872,22 @@
   {
     "key": "microsoft.healthdataaiservices/deidservices/batch/write",
     "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.healthdataaiservices/deidservices/batch/delete",
     "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.healthdataaiservices/deidservices/batch/read",
     "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthdataaiservices/deidservices/realtime/action",
     "name": "Microsoft.HealthDataAIServices/DeidServices/Realtime/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.carbon/carbonemissionreports/action",
@@ -8282,12 +8282,12 @@
   {
     "key": "microsoft.keyvault/vaults/read",
     "name": "Microsoft.KeyVault/vaults/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.keyvault/vaults/secrets/setsecret/action",
     "name": "Microsoft.KeyVault/vaults/secrets/setSecret/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.storage/storageaccounts/encryptionscopes/read",
@@ -8302,7 +8302,7 @@
   {
     "key": "microsoft.keyvault/vaults/keys/release/action",
     "name": "Microsoft.KeyVault/vaults/keys/release/action",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.kubernetesruntime/storageclasses/read",
@@ -8332,7 +8332,7 @@
   {
     "key": "microsoft.appplatform/spring/gateways/read",
     "name": "Microsoft.AppPlatform/Spring/gateways/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.appplatform/spring/springcloudgateway/logstream/action",
@@ -8347,7 +8347,7 @@
   {
     "key": "microsoft.appplatform/spring/configurationservices/read",
     "name": "Microsoft.AppPlatform/Spring/configurationServices/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.appplatform/spring/applicationconfigurationservice/logstream/action",
@@ -8567,7 +8567,7 @@
   {
     "key": "microsoft.healthbot/healthbots/copilotstudiosolution/restorebuiltintemplate/read",
     "name": "Microsoft.HealthBot/healthBots/CopilotStudioSolution/RestoreBuiltinTemplate/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/feedback/read",
@@ -8602,37 +8602,37 @@
   {
     "key": "microsoft.healthbot/healthbots/configuration/read",
     "name": "Microsoft.HealthBot/healthBots/Configuration/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/localization/read",
     "name": "Microsoft.HealthBot/healthBots/Localization/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/authenticationproviders/read",
     "name": "Microsoft.HealthBot/healthBots/AuthenticationProviders/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/dataconnections/read",
     "name": "Microsoft.HealthBot/healthBots/DataConnections/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/openapiplugins/read",
     "name": "Microsoft.HealthBot/healthBots/OpenAPIPlugins/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/languagemodels/read",
     "name": "Microsoft.HealthBot/healthBots/LanguageModels/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.healthbot/healthbots/resources/files/read",
     "name": "Microsoft.HealthBot/healthBots/Resources/Files/Read",
-    "roleCount": 19
+    "roleCount": 21
   },
   {
     "key": "microsoft.programmableconnectivity/gateways/networkapiaccess",
@@ -8722,22 +8722,22 @@
   {
     "key": "microsoft.cognitiveservices/accounts/read",
     "name": "Microsoft.CognitiveServices/accounts/read",
-    "roleCount": 44
+    "roleCount": 47
   },
   {
     "key": "microsoft.cognitiveservices/accounts/privateendpointconnections/read",
     "name": "Microsoft.CognitiveServices/accounts/privateEndpointConnections/read",
-    "roleCount": 45
+    "roleCount": 47
   },
   {
     "key": "microsoft.cognitiveservices/accounts/privateendpointconnections/write",
     "name": "Microsoft.CognitiveServices/accounts/privateEndpointConnections/write",
-    "roleCount": 6
+    "roleCount": 10
   },
   {
     "key": "microsoft.cognitiveservices/accounts/privatelinkresources/read",
     "name": "Microsoft.CognitiveServices/accounts/privateLinkResources/read",
-    "roleCount": 45
+    "roleCount": 47
   },
   {
     "key": "microsoft.dbforpostgresql/flexibleservers/privateendpointconnectionsapproval/action",
@@ -8837,7 +8837,7 @@
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnectionsapproval/action",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnectionsApproval/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnections/read",
@@ -8847,7 +8847,7 @@
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnections/write",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnections/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.keyvault/vaults/privatelinkresources/read",
@@ -9107,7 +9107,7 @@
   {
     "key": "microsoft.containerservice/managedclusters/write",
     "name": "Microsoft.ContainerService/managedClusters/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.apicenter/services/workspaces/apis/versions/definitions/updateanalysisstate/action",
@@ -9157,7 +9157,7 @@
   {
     "key": "microsoft.appplatform/spring/applicationconfigurationservice/read",
     "name": "Microsoft.AppPlatform/Spring/ApplicationConfigurationService/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.azurearcdata/sqlserverinstances/gettelemetry/action",
@@ -9237,12 +9237,12 @@
   {
     "key": "microsoft.appplatform/spring/jobs/read",
     "name": "Microsoft.AppPlatform/Spring/jobs/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.appplatform/spring/jobs/executions/read",
     "name": "Microsoft.AppPlatform/Spring/jobs/executions/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.appplatform/spring/jobs/executions/logstream/action",
@@ -9277,7 +9277,7 @@
   {
     "key": "microsoft.appplatform/spring/configservers/read",
     "name": "Microsoft.AppPlatform/Spring/configServers/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.appplatform/spring/configservice/logstream/action",
@@ -10607,7 +10607,7 @@
   {
     "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/execute/action",
     "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/execute/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.portal/dashboards/read",
@@ -10712,77 +10712,77 @@
   {
     "key": "microsoft.containerservice/fleets/apiextensions.k8s.io/customresourcedefinitions/read",
     "name": "Microsoft.ContainerService/fleets/apiextensions.k8s.io/customresourcedefinitions/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/nodes/read",
     "name": "Microsoft.ContainerService/fleets/nodes/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/persistentvolumes/read",
     "name": "Microsoft.ContainerService/fleets/persistentvolumes/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/cluster.kubernetes-fleet.io/memberclusters/read",
     "name": "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/memberclusters/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourceplacements/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourceplacements/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourcebindings/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourcebindings/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourcesnapshots/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourcesnapshots/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterschedulingpolicysnapshots/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterschedulingpolicysnapshots/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourceoverrides/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourceoverrides/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourceoverridesnapshots/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourceoverridesnapshots/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/nodes/write",
     "name": "Microsoft.ContainerService/fleets/nodes/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.containerservice/fleets/persistentvolumes/write",
     "name": "Microsoft.ContainerService/fleets/persistentvolumes/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.containerservice/fleets/cluster.kubernetes-fleet.io/memberclusters/write",
     "name": "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/memberclusters/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourceplacements/write",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourceplacements/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/clusterresourceoverrides/write",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/clusterresourceoverrides/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.chaos/experiments/start/action",
@@ -11422,12 +11422,12 @@
   {
     "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/read",
     "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/metadata/read",
     "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/metadata/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.onlineexperimentation/workspaces/read",
@@ -11572,27 +11572,27 @@
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/read",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/read",
-    "roleCount": 20
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/write",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/delete",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/delete",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/upgradenodeimageversion/action",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/upgradeNodeImageVersion/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/abort/action",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/abort/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.compute/hostgroups/read",
@@ -11617,7 +11617,7 @@
   {
     "key": "microsoft.apicenter/services/workspaces/apis/versions/securityrequirements/read",
     "name": "Microsoft.ApiCenter/services/workspaces/apis/versions/securityRequirements/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.apicenter/services/workspaces/apis/versions/securityrequirements/getcredentials/action",
@@ -11882,17 +11882,17 @@
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/deletemachines/action",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/deleteMachines/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/machines/read",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/machines/read",
-    "roleCount": 20
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/managedclusters/agentpools/machines/write",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/machines/write",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.azurestackhci/devicepools/read",
@@ -12017,12 +12017,12 @@
   {
     "key": "microsoft.containerservice/managedclusters/managednamespaces/read",
     "name": "Microsoft.ContainerService/managedClusters/managedNamespaces/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/managedclusters/managednamespaces/listcredential/action",
     "name": "Microsoft.ContainerService/managedClusters/managedNamespaces/listCredential/action",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.devopsinfrastructure/register/action",
@@ -12342,22 +12342,22 @@
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/harddelete/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/hardDelete/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/services/fhir/resources/bulkoperator/action",
     "name": "Microsoft.HealthcareApis/services/fhir/resources/bulkOperator/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/harddelete/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/hardDelete/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.healthcareapis/workspaces/fhirservices/resources/bulkoperator/action",
     "name": "Microsoft.HealthcareApis/workspaces/fhirservices/resources/bulkOperator/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.discovery/locations/operationstatuses/read",
@@ -12367,7 +12367,7 @@
   {
     "key": "microsoft.discovery/checknameavailability/action",
     "name": "Microsoft.Discovery/checkNameAvailability/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.discovery/operations/read",
@@ -13757,602 +13757,602 @@
   {
     "key": "microsoft.documentdb/garnetclusters/acl/append/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/append/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/bzmpop/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/bzmpop/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/bzpopmax/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/bzpopmax/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/bzpopmin/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/bzpopmin/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/clientid/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/clientid/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/clientinfo/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/clientinfo/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/configget/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/configget/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/decr/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/decr/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/decrby/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/decrby/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/del/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/del/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/echo/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/echo/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/exists/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/exists/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/expire/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/expire/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/get/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/get/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/getdel/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/getdel/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/getex/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/getex/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/getrange/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/getrange/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/getset/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/getset/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hdel/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hdel/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hexists/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hexists/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hexpire/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hexpire/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hexpireat/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hexpireat/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hexpiretime/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hexpiretime/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hget/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hget/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hgetall/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hgetall/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hincrby/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hincrby/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hincrbyfloat/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hincrbyfloat/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/histogram/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/histogram/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hkeys/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hkeys/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hlen/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hlen/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hmget/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hmget/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hmset/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hmset/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hpersist/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hpersist/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hpexpire/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hpexpire/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hpexpireat/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hpexpireat/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hpexpiretime/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hpexpiretime/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hpttl/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hpttl/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hrandfield/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hrandfield/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hscan/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hscan/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hset/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hset/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hsetnx/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hsetnx/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hstrlen/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hstrlen/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/httl/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/httl/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hvals/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hvals/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/incr/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/incr/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/incrby/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/incrby/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/incrbyfloat/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/incrbyfloat/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/info/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/info/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/keyslot/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/keyslot/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/lcs/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/lcs/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/mget/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/mget/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/mset/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/mset/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/msetnx/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/msetnx/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/nodes/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/nodes/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/ping/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/ping/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/psetex/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/psetex/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/readonly/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/readonly/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/readwrite/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/readwrite/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sadd/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sadd/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scard/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scard/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sdiff/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sdiff/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sdiffstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sdiffstore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/set/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/set/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/setex/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/setex/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/setnx/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/setnx/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/setrange/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/setrange/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sinter/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sinter/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sintercard/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sintercard/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sinterstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sinterstore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sismember/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sismember/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/slots/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/slots/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/smembers/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/smembers/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/smismember/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/smismember/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/smove/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/smove/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/spop/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/spop/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/srandmember/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/srandmember/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/srem/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/srem/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sscan/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sscan/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/strlen/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/strlen/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/substr/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/substr/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sunion/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sunion/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sunionstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sunionstore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/unlink/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/unlink/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zadd/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zadd/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zcard/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zcard/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zcount/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zcount/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zdiff/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zdiff/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zdiffstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zdiffstore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zincrby/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zincrby/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zinter/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zinter/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zintercard/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zintercard/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zinterstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zinterstore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zlexcount/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zlexcount/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zmpop/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zmpop/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zmscore/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zmscore/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zpopmax/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zpopmax/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zpopmin/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zpopmin/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrandmember/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrandmember/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrange/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrange/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrangebylex/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangebylex/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrangebyscore/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangebyscore/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrangestore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangestore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrank/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrank/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrem/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrem/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zremrangebylex/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zremrangebylex/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zremrangebyrank/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zremrangebyrank/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zremrangebyscore/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zremrangebyscore/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrevrange/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrange/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrevrangebylex/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrangebylex/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrevrangebyscore/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrangebyscore/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrevrank/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrank/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zscan/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zscan/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zscore/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zscore/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zunion/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zunion/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zunionstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zunionstore/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scripteval/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scripteval/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scriptevalsha/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scriptevalsha/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scriptexists/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scriptexists/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scriptflush/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scriptflush/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scriptload/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scriptload/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.operationalinsights/workspaces/tables/data/read",
@@ -15677,22 +15677,22 @@
   {
     "key": "microsoft.app/agents/threads/read",
     "name": "Microsoft.App/agents/threads/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.app/agents/graph/read",
     "name": "Microsoft.App/agents/graph/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.app/agents/memory/read",
     "name": "Microsoft.App/agents/memory/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.app/agents/incidentmanagement/read",
     "name": "Microsoft.App/agents/incidentManagement/read",
-    "roleCount": 21
+    "roleCount": 22
   },
   {
     "key": "microsoft.hybridconnectivity/endpoints/listingressgatewaycredentials/action",
@@ -15772,17 +15772,17 @@
   {
     "key": "microsoft.app/agents/threads/write",
     "name": "Microsoft.App/agents/threads/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.app/agents/graph/write",
     "name": "Microsoft.App/agents/graph/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.app/agents/memory/write",
     "name": "Microsoft.App/agents/memory/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.d365customerinsights/instances/write",
@@ -15917,42 +15917,42 @@
   {
     "key": "microsoft.documentdb/garnetclusters/acl/channels/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/channels/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/numsub/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/numsub/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/numpat/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/numpat/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/psubscribe/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/psubscribe/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/publish/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/publish/action",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/punsubscribe/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/punsubscribe/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/subscribe/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/subscribe/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/unsubscribe/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/unsubscribe/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.azureactivedirectory/directories/write",
@@ -16012,7 +16012,7 @@
   {
     "key": "microsoft.devices/iothubs/read",
     "name": "microsoft.devices/iothubs/read",
-    "roleCount": 20
+    "roleCount": 21
   },
   {
     "key": "microsoft.deviceregistry/namespaces/credentials/policies/issuecertificate/action",
@@ -16102,172 +16102,172 @@
   {
     "key": "microsoft.containerservice/fleets/members/apps/controllerrevisions/read",
     "name": "Microsoft.ContainerService/fleets/members/apps/controllerrevisions/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/apps/daemonsets/read",
     "name": "Microsoft.ContainerService/fleets/members/apps/daemonsets/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/apps/deployments/read",
     "name": "Microsoft.ContainerService/fleets/members/apps/deployments/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/apps/replicasets/read",
     "name": "Microsoft.ContainerService/fleets/members/apps/replicasets/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/apps/statefulsets/read",
     "name": "Microsoft.ContainerService/fleets/members/apps/statefulsets/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/autoscaling/horizontalpodautoscalers/read",
     "name": "Microsoft.ContainerService/fleets/members/autoscaling/horizontalpodautoscalers/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/batch/cronjobs/read",
     "name": "Microsoft.ContainerService/fleets/members/batch/cronjobs/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/batch/jobs/read",
     "name": "Microsoft.ContainerService/fleets/members/batch/jobs/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/configmaps/read",
     "name": "Microsoft.ContainerService/fleets/members/configmaps/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/discovery.k8s.io/endpointslices/read",
     "name": "Microsoft.ContainerService/fleets/members/discovery.k8s.io/endpointslices/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/endpoints/read",
     "name": "Microsoft.ContainerService/fleets/members/endpoints/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/events.k8s.io/events/read",
     "name": "Microsoft.ContainerService/fleets/members/events.k8s.io/events/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/events/read",
     "name": "Microsoft.ContainerService/fleets/members/events/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/extensions/daemonsets/read",
     "name": "Microsoft.ContainerService/fleets/members/extensions/daemonsets/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/extensions/deployments/read",
     "name": "Microsoft.ContainerService/fleets/members/extensions/deployments/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/extensions/ingresses/read",
     "name": "Microsoft.ContainerService/fleets/members/extensions/ingresses/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/extensions/networkpolicies/read",
     "name": "Microsoft.ContainerService/fleets/members/extensions/networkpolicies/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/extensions/replicasets/read",
     "name": "Microsoft.ContainerService/fleets/members/extensions/replicasets/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/limitranges/read",
     "name": "Microsoft.ContainerService/fleets/members/limitranges/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/metrics.k8s.io/pods/read",
     "name": "Microsoft.ContainerService/fleets/members/metrics.k8s.io/pods/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/metrics.k8s.io/nodes/read",
     "name": "Microsoft.ContainerService/fleets/members/metrics.k8s.io/nodes/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/namespaces/read",
     "name": "Microsoft.ContainerService/fleets/members/namespaces/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/networking.k8s.io/ingresses/read",
     "name": "Microsoft.ContainerService/fleets/members/networking.k8s.io/ingresses/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/networking.k8s.io/networkpolicies/read",
     "name": "Microsoft.ContainerService/fleets/members/networking.k8s.io/networkpolicies/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/persistentvolumeclaims/read",
     "name": "Microsoft.ContainerService/fleets/members/persistentvolumeclaims/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/pods/read",
     "name": "Microsoft.ContainerService/fleets/members/pods/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/policy/poddisruptionbudgets/read",
     "name": "Microsoft.ContainerService/fleets/members/policy/poddisruptionbudgets/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/replicationcontrollers/read",
     "name": "Microsoft.ContainerService/fleets/members/replicationcontrollers/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/resourcequotas/read",
     "name": "Microsoft.ContainerService/fleets/members/resourcequotas/read",
-    "roleCount": 21
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/serviceaccounts/read",
     "name": "Microsoft.ContainerService/fleets/members/serviceaccounts/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/services/read",
     "name": "Microsoft.ContainerService/fleets/members/services/read",
-    "roleCount": 20
+    "roleCount": 24
   },
   {
     "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/read",
     "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/read",
-    "roleCount": 20
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/write",
     "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/write",
-    "roleCount": 4
+    "roleCount": 7
   },
   {
     "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/delete",
     "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/delete",
-    "roleCount": 4
+    "roleCount": 7
   },
   {
     "key": "microsoft.relationships/servicegroupmember/delete",
@@ -16277,27 +16277,27 @@
   {
     "key": "microsoft.app/agents/incidentmanagement/write",
     "name": "Microsoft.App/agents/incidentManagement/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.app/agents/incidentmanagement/delete",
     "name": "Microsoft.App/agents/incidentManagement/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.app/agents/extendedagents/read",
     "name": "Microsoft.App/agents/extendedAgents/read",
-    "roleCount": 19
+    "roleCount": 20
   },
   {
     "key": "microsoft.app/agents/extendedagents/write",
     "name": "Microsoft.App/agents/extendedAgents/write",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.app/agents/extendedagents/delete",
     "name": "Microsoft.App/agents/extendedAgents/delete",
-    "roleCount": 3
+    "roleCount": 4
   },
   {
     "key": "microsoft.confluent/agreements/write",

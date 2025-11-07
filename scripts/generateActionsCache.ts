@@ -85,18 +85,39 @@ function generateActionsCache(roles: AzureRole[]): Array<{ key: string; name: st
   console.log(`  Found ${actionCasingMap.size} unique actions across ${roles.length} roles`);
 
   // Second pass: Collect all wildcard patterns from roles
-  const wildcardPatterns: Array<{ pattern: string; roleIndex: number; notActions: string[] }> = [];
+  const wildcardPatterns: Array<{
+    pattern: string;
+    roleIndex: number;
+    notActions: string[];
+    notDataActions: string[];
+  }> = [];
 
   for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
     const role = roles[roleIndex];
     for (const permission of role.permissions) {
+      // Collect wildcard actions
       for (const action of permission.actions) {
         if (action.includes('*')) {
           wildcardPatterns.push({
             pattern: action,
             roleIndex,
-            notActions: permission.notActions
+            notActions: permission.notActions,
+            notDataActions: permission.notDataActions || []
           });
+        }
+      }
+
+      // Collect wildcard dataActions
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (dataAction.includes('*')) {
+            wildcardPatterns.push({
+              pattern: dataAction,
+              roleIndex,
+              notActions: permission.notActions,
+              notDataActions: permission.notDataActions || []
+            });
+          }
         }
       }
     }
@@ -132,14 +153,26 @@ function generateActionsCache(roles: AzureRole[]): Array<{ key: string; name: st
     const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
 
     // Add roles that grant via wildcards
-    for (const { pattern, roleIndex, notActions } of wildcardPatterns) {
+    for (const { pattern, roleIndex, notActions, notDataActions } of wildcardPatterns) {
       if (matchesWildcard(pattern, canonicalName)) {
-        // Check if it's not denied
+        // Check if it's not denied (check both notActions and notDataActions)
         let isDenied = false;
+
+        // Check notActions deny list
         for (const deniedAction of notActions) {
           if (matchesWildcard(deniedAction, canonicalName)) {
             isDenied = true;
             break;
+          }
+        }
+
+        // Check notDataActions deny list
+        if (!isDenied) {
+          for (const deniedDataAction of notDataActions) {
+            if (matchesWildcard(deniedDataAction, canonicalName)) {
+              isDenied = true;
+              break;
+            }
           }
         }
 
