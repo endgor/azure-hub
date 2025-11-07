@@ -200,7 +200,13 @@ function generateSitemap() {
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>${BASE_URL}/tools/rbac-calculator/</loc>
+    <loc>${BASE_URL}/tools/azure-rbac-calculator/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/tools/entraid-roles-calculator/</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
@@ -238,7 +244,7 @@ ${serviceTagsArray
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    console.log(`  Total URLs: ${includedTags.length + 7} (7 core pages + ${includedTags.length} service tags)`);
+    console.log(`  Total URLs: ${includedTags.length + 8} (8 core pages + ${includedTags.length} service tags)`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);

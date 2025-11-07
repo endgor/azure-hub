@@ -67,6 +67,22 @@ const nextConfig = {
         ]
       }
     ];
+  },
+
+  // Redirects for backward compatibility
+  async redirects() {
+    return [
+      {
+        source: '/tools/rbac-calculator',
+        destination: '/tools/azure-rbac-calculator',
+        permanent: true,
+      },
+      {
+        source: '/tools/rbac-calculator/',
+        destination: '/tools/azure-rbac-calculator/',
+        permanent: true,
+      }
+    ];
   }
 }
 
