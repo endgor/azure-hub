@@ -972,7 +972,7 @@
   {
     "key": "microsoft.eventgrid/eventsubscriptions/write",
     "name": "Microsoft.EventGrid/eventSubscriptions/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.insights/components/purge/action",
@@ -1092,22 +1092,22 @@
   {
     "key": "microsoft.eventgrid/topictypes/eventsubscriptions/read",
     "name": "Microsoft.EventGrid/topicTypes/eventSubscriptions/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.eventgrid/locations/eventsubscriptions/read",
     "name": "Microsoft.EventGrid/locations/eventSubscriptions/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.eventgrid/locations/topictypes/eventsubscriptions/read",
     "name": "Microsoft.EventGrid/locations/topicTypes/eventSubscriptions/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.eventgrid/eventsubscriptions/read",
     "name": "Microsoft.EventGrid/eventSubscriptions/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.enterpriseknowledgegraph/services/conflation/read",
@@ -3722,22 +3722,22 @@
   {
     "key": "microsoft.eventgrid/topics/read",
     "name": "Microsoft.EventGrid/topics/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.eventgrid/domains/read",
     "name": "Microsoft.EventGrid/domains/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.eventgrid/partnernamespaces/read",
     "name": "Microsoft.EventGrid/partnerNamespaces/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.eventgrid/namespaces/read",
     "name": "Microsoft.EventGrid/namespaces/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.eventgrid/events/send/action",
