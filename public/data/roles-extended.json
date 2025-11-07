@@ -35186,5 +35186,36 @@
     "permissionCount": 846.3333333333333,
     "dataActions": [],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-11-06T19:16:27.931413+00:00",
+    "description": "Allows ARN to subscribe to partner event grid topics",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/dc0882cc-bc27-4d21-9ea2-f821aaa10fb1",
+    "name": "dc0882cc-bc27-4d21-9ea2-f821aaa10fb1",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.EventGrid/EventSubscriptions/write",
+          "Microsoft.EventGrid/*/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "ARN Service Event Grid Subscriber Role",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-11-06T19:16:27.931413+00:00",
+    "permissionCount": 334.3333333333333,
+    "dataActions": [],
+    "notDataActions": []
   }
 ]

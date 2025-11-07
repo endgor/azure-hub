@@ -1,5 +1,5 @@
 {
-  "changeNumber": 371,
+  "changeNumber": 372,
   "cloud": "China",
   "values": [
     {
@@ -341,7 +341,7 @@
       "name": "AzureArcInfrastructure",
       "id": "AzureArcInfrastructure",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -381,7 +381,8 @@
           "163.228.63.104/29",
           "163.228.195.208/29",
           "163.228.195.216/31",
-          "2404:7940:301:3::260/124"
+          "2404:7940:301:3::260/124",
+          "2406:e500:2402:3::740/124"
         ],
         "networkFeatures": [
           "API",
@@ -3754,7 +3755,7 @@
       "name": "AzureArcInfrastructure.ChinaEast3",
       "id": "AzureArcInfrastructure.ChinaEast3",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "chinaeast3",
         "regionId": 90,
         "platform": "Azure",
@@ -3762,7 +3763,8 @@
         "addressPrefixes": [
           "52.131.158.208/31",
           "163.228.63.26/31",
-          "163.228.63.104/29"
+          "163.228.63.104/29",
+          "2406:e500:2402:3::740/124"
         ],
         "networkFeatures": null
       }
