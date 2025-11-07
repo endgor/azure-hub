@@ -106,6 +106,7 @@ export const azureRbacConfig: RoleSystemConfig = {
       'Azure RBAC calculator',
       'Azure role generator',
       'least privilege roles',
+      'azure rbac least privilege',
       'Azure permissions',
       'custom RBAC roles',
       'Azure role definitions',
