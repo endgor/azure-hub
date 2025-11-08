@@ -113,6 +113,7 @@ export const entraIdConfig: RoleSystemConfig = {
       'directory roles',
       'Azure AD roles',
       'least privilege directory access',
+      'entra id least privilege',
       'Entra ID permissions',
       'identity roles',
       'Microsoft Entra ID',
