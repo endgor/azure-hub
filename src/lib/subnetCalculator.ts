@@ -514,41 +514,60 @@ export function createTreeFromLeafDefinitions(
  * - Current node has same or larger prefix than target
  * - Cannot split further (already at /32)
  */
+/**
+ * Checks if target address is outside the node's address range
+ */
+function isOutOfRange(targetNetwork: number, nodeNetwork: number, nodePrefix: number): boolean {
+  const nodeLastAddress = subnetLastAddress(nodeNetwork, nodePrefix);
+  return targetNetwork < nodeNetwork || targetNetwork > nodeLastAddress;
+}
+
+/**
+ * Checks if node exactly matches the target network/prefix
+ */
+function isExactMatch(nodeNetwork: number, nodePrefix: number, targetNetwork: number, targetPrefix: number): boolean {
+  return nodePrefix === targetPrefix && nodeNetwork === targetNetwork;
+}
+
+/**
+ * Checks if the node cannot be split further to reach the target
+ */
+function cannotSplitFurther(nodePrefix: number, targetPrefix: number): boolean {
+  return nodePrefix >= targetPrefix;
+}
+
 function ensureLeafInTree(tree: SubnetTree, rootId: string, targetNetwork: number, targetPrefix: number): SubnetTree {
   let currentTree = tree;
   let currentNodeId = rootId;
 
   while (true) {
     const node = currentTree[currentNodeId];
-    if (!node) {
-      break; // Node not found
+    if (!node) return currentTree; // Node not found
+
+    if (isOutOfRange(targetNetwork, node.network, node.prefix)) {
+      return currentTree; // Target is outside current node's range
     }
 
-    const nodeLastAddress = subnetLastAddress(node.network, node.prefix);
-    if (targetNetwork < node.network || targetNetwork > nodeLastAddress) {
-      break; // Target is outside current node's range
+    if (isExactMatch(node.network, node.prefix, targetNetwork, targetPrefix)) {
+      return currentTree; // Exact match found
     }
 
-    if (node.prefix === targetPrefix && node.network === targetNetwork) {
-      break; // Exact match found
-    }
-
-    if (node.prefix >= targetPrefix) {
-      break; // Cannot split further (would exceed target prefix)
+    if (cannotSplitFurther(node.prefix, targetPrefix)) {
+      return currentTree; // Cannot split further (would exceed target prefix)
     }
 
     // If this is a leaf node, split it to continue navigating
     if (!node.children) {
       const updatedTree = splitSubnet(currentTree, currentNodeId);
       if (updatedTree === currentTree) {
-        break; // Split failed (at /32)
+        return currentTree; // Split failed (at /32)
       }
       currentTree = updatedTree;
     }
 
     const currentNode = currentTree[currentNodeId];
     if (!currentNode.children) {
-      break; // Still no children after split attempt
+      return currentTree; // Still no children after split attempt
     }
 
     // Navigate to appropriate child using binary search
@@ -561,6 +580,4 @@ function ensureLeafInTree(tree: SubnetTree, rootId: string, targetNetwork: numbe
       currentNodeId = leftId; // Target is in left subtree
     }
   }
-
-  return currentTree;
 }

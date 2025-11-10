@@ -69,13 +69,6 @@ function exportAzureRoleDefinitionsToJSON(
 }
 
 /**
- * Converts a single LeastPrivilegeResult to Azure-compatible role definition format
- */
-function convertToAzureFormat(result: LeastPrivilegeResult): AzureRoleDefinitionExport {
-  return convertRoleToAzureFormat(result.role);
-}
-
-/**
  * Exports selected roles to Azure-compatible JSON format
  * @param results Array of selected LeastPrivilegeResult objects
  * @param filename Optional filename for the download
@@ -90,7 +83,7 @@ export function exportRolesToAzureJSON(
   }
 
   // Convert all selected roles to Azure format and export
-  const azureRoles = results.map(convertToAzureFormat);
+  const azureRoles = results.map(result => convertRoleToAzureFormat(result.role));
   exportAzureRoleDefinitionsToJSON(azureRoles, filename);
 }
 

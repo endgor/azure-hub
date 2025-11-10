@@ -99,8 +99,9 @@ export async function exportToExcel<T extends ExportRow>(
 
 /**
  * Exports data to Markdown table format.
- * Creates a properly formatted markdown table with headers and aligned columns.
- * Note: Markdown tables don't support styling like colors, so those are ignored.
+ * Creates a spec-compliant markdown table with headers and data rows.
+ * Note: Column alignment padding is omitted as it's purely cosmetic - markdown renderers ignore it.
+ * Markdown tables don't support styling like colors, so those are ignored.
  */
 export function exportToMarkdown<T extends ExportRow>(
   data: T[],
@@ -114,30 +115,15 @@ export function exportToMarkdown<T extends ExportRow>(
   // Get headers from first row
   const headers = Object.keys(data[0] ?? {});
 
-  // Calculate column widths for alignment
-  const columnWidths = headers.map(header => {
-    const headerLength = header.length;
-    const maxDataLength = Math.max(
-      ...data.map(row => String(formatMarkdownValue(row[header])).length)
-    );
-    return Math.max(headerLength, maxDataLength);
-  });
-
   // Create header row
-  const headerRow = '| ' + headers.map((header, i) =>
-    header.padEnd(columnWidths[i])
-  ).join(' | ') + ' |';
+  const headerRow = '| ' + headers.join(' | ') + ' |';
 
-  // Create separator row
-  const separatorRow = '|' + columnWidths.map(width =>
-    '-'.repeat(width + 2)
-  ).join('|') + '|';
+  // Create separator row (minimal spec-compliant format)
+  const separatorRow = '| ' + headers.map(() => '---').join(' | ') + ' |';
 
   // Create data rows
   const dataRows = data.map(row =>
-    '| ' + headers.map((header, i) =>
-      String(formatMarkdownValue(row[header])).padEnd(columnWidths[i])
-    ).join(' | ') + ' |'
+    '| ' + headers.map(header => formatMarkdownValue(row[header])).join(' | ') + ' |'
   );
 
   // Combine all rows

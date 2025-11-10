@@ -1,197 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { matchesWildcard } from '../src/lib/utils/wildcardMatcher';
-
-// Type definitions
-interface RolePermission {
-  actions: string[];
-  notActions: string[];
-  dataActions?: string[];
-  notDataActions?: string[];
-}
-
-interface AzureRole {
-  id: string;
-  name: string;
-  type: string;
-  description: string;
-  roleName: string;
-  roleType: 'BuiltInRole' | 'CustomRole';
-  permissions: RolePermission[];
-  assignableScopes: string[];
-  permissionCount?: number;
-  dataActions?: string[];
-  notDataActions?: string[];
-}
+import type { AzureRole } from '../src/types/rbac';
+import { generateActionsCache } from '../src/lib/rbacCacheGenerator';
 
 // File paths
 const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
 const ACTIONS_CACHE_FILE = path.join(DATA_DIR, 'actions-cache.json');
-
-/**
- * Generate pre-computed actions cache from existing roles file
- */
-function generateActionsCache(roles: AzureRole[]): Array<{ key: string; name: string; roleCount: number }> {
-  console.log('Generating pre-computed actions cache...');
-
-  // First pass: Collect explicit actions, track casing variants and which roles have them
-  const explicitActionRoles = new Map<string, Set<number>>();
-  const actionCasingMap = new Map<string, Map<string, number>>();
-
-  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
-    const role = roles[roleIndex];
-    for (const permission of role.permissions) {
-      // Process regular actions
-      for (const action of permission.actions) {
-        if (!action.includes('*')) {
-          const lowerAction = action.toLowerCase();
-
-          if (!actionCasingMap.has(lowerAction)) {
-            actionCasingMap.set(lowerAction, new Map());
-          }
-          const casingVariants = actionCasingMap.get(lowerAction)!;
-          casingVariants.set(action, (casingVariants.get(action) || 0) + 1);
-
-          if (!explicitActionRoles.has(lowerAction)) {
-            explicitActionRoles.set(lowerAction, new Set());
-          }
-          explicitActionRoles.get(lowerAction)!.add(roleIndex);
-        }
-      }
-
-      // Process data actions
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          if (!dataAction.includes('*')) {
-            const lowerAction = dataAction.toLowerCase();
-
-            if (!actionCasingMap.has(lowerAction)) {
-              actionCasingMap.set(lowerAction, new Map());
-            }
-            const casingVariants = actionCasingMap.get(lowerAction)!;
-            casingVariants.set(dataAction, (casingVariants.get(dataAction) || 0) + 1);
-
-            if (!explicitActionRoles.has(lowerAction)) {
-              explicitActionRoles.set(lowerAction, new Set());
-            }
-            explicitActionRoles.get(lowerAction)!.add(roleIndex);
-          }
-        }
-      }
-    }
-  }
-
-  console.log(`  Found ${actionCasingMap.size} unique actions across ${roles.length} roles`);
-
-  // Second pass: Collect all wildcard patterns from roles
-  const wildcardPatterns: Array<{
-    pattern: string;
-    roleIndex: number;
-    notActions: string[];
-    notDataActions: string[];
-  }> = [];
-
-  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
-    const role = roles[roleIndex];
-    for (const permission of role.permissions) {
-      // Collect wildcard actions
-      for (const action of permission.actions) {
-        if (action.includes('*')) {
-          wildcardPatterns.push({
-            pattern: action,
-            roleIndex,
-            notActions: permission.notActions,
-            notDataActions: permission.notDataActions || []
-          });
-        }
-      }
-
-      // Collect wildcard dataActions
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          if (dataAction.includes('*')) {
-            wildcardPatterns.push({
-              pattern: dataAction,
-              roleIndex,
-              notActions: permission.notActions,
-              notDataActions: permission.notDataActions || []
-            });
-          }
-        }
-      }
-    }
-  }
-
-  console.log(`  Found ${wildcardPatterns.length} wildcard patterns`);
-
-  // Third pass: For each action, count roles (explicit + wildcard matches)
-  const actionsCache: Array<{ key: string; name: string; roleCount: number }> = [];
-  let processedActions = 0;
-  const totalActions = actionCasingMap.size;
-
-  for (const [lowerAction, casingVariants] of Array.from(actionCasingMap.entries())) {
-    processedActions++;
-
-    // Show progress every 1000 actions
-    if (processedActions % 1000 === 0) {
-      console.log(`  Processing actions: ${processedActions}/${totalActions}...`);
-    }
-
-    // Choose canonical casing (most commonly used variant)
-    let canonicalName = '';
-    let maxCount = 0;
-
-    for (const [casing, count] of Array.from(casingVariants.entries())) {
-      if (count > maxCount) {
-        maxCount = count;
-        canonicalName = casing;
-      }
-    }
-
-    // Start with explicit role indices
-    const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
-
-    // Add roles that grant via wildcards
-    for (const { pattern, roleIndex, notActions, notDataActions } of wildcardPatterns) {
-      if (matchesWildcard(pattern, canonicalName)) {
-        // Check if it's not denied (check both notActions and notDataActions)
-        let isDenied = false;
-
-        // Check notActions deny list
-        for (const deniedAction of notActions) {
-          if (matchesWildcard(deniedAction, canonicalName)) {
-            isDenied = true;
-            break;
-          }
-        }
-
-        // Check notDataActions deny list
-        if (!isDenied) {
-          for (const deniedDataAction of notDataActions) {
-            if (matchesWildcard(deniedDataAction, canonicalName)) {
-              isDenied = true;
-              break;
-            }
-          }
-        }
-
-        if (!isDenied) {
-          roleSet.add(roleIndex);
-        }
-      }
-    }
-
-    actionsCache.push({
-      key: lowerAction,
-      name: canonicalName,
-      roleCount: roleSet.size
-    });
-  }
-
-  console.log(`✓ Generated cache with ${actionsCache.length} unique actions`);
-  return actionsCache;
-}
 
 /**
  * Main function
@@ -215,7 +30,10 @@ async function main(): Promise<void> {
 
     // Generate actions cache
     const startTime = Date.now();
-    const actionsCache = generateActionsCache(roles);
+    const actionsCache = generateActionsCache(roles, {
+      verboseLogging: true,
+      showProgress: true
+    });
     const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
 
     // Save to file
@@ -241,5 +59,3 @@ if (require.main === module) {
     process.exit(1);
   });
 }
-
-export { generateActionsCache };
