@@ -1,3 +1,4 @@
+import { Base64 } from 'js-base64';
 import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
 
 /**
@@ -170,20 +171,7 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
  * Supports both Node.js (Buffer) and browser (TextEncoder + btoa) environments.
  */
 function encodeBase64Url(value: string): string {
-  if (typeof window === 'undefined') {
-    // Node.js: use native Buffer API with base64url encoding
-    return Buffer.from(value, 'utf-8').toString('base64url');
-  }
-
-  // Browser: manually convert UTF-8 to Base64, then to Base64URL
-  const bytes = new TextEncoder().encode(value);
-  let binary = '';
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte);
-  });
-  const base64 = btoa(binary);
-  // Convert Base64 to Base64URL
-  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  return Base64.encodeURI(value);
 }
 
 /**
@@ -192,21 +180,5 @@ function encodeBase64Url(value: string): string {
  * Automatically adds padding if missing (Base64URL omits it).
  */
 function decodeBase64Url(encoded: string): string {
-  // Convert Base64URL back to standard Base64
-  const base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
-
-  if (typeof window === 'undefined') {
-    // Node.js: use native Buffer API
-    return Buffer.from(base64, 'base64').toString('utf-8');
-  }
-
-  // Browser: add padding and decode
-  const paddingNeeded = (4 - (base64.length % 4)) % 4;
-  const padded = base64 + '==='.slice(0, paddingNeeded);
-  const binary = atob(padded);
-  const bytes = new Uint8Array(binary.length);
-  for (let index = 0; index < binary.length; index += 1) {
-    bytes[index] = binary.charCodeAt(index);
-  }
-  return new TextDecoder().decode(bytes);
+  return Base64.decode(encoded);
 }

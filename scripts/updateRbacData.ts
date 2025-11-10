@@ -2,55 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import { calculatePermissionCount } from '../src/lib/rbacUtils';
-import { matchesWildcard } from '../src/lib/utils/wildcardMatcher';
-
-// Type definitions (inline to avoid import issues with ts-node)
-interface RolePermission {
-  actions: string[];
-  notActions: string[];
-  dataActions?: string[];
-  notDataActions?: string[];
-}
-
-interface AzureRole {
-  id: string;
-  name: string;
-  type: string;
-  description: string;
-  roleName: string;
-  roleType: 'BuiltInRole' | 'CustomRole';
-  permissions: RolePermission[];
-  assignableScopes: string[];
-  permissionCount?: number;
-  dataActions?: string[];
-  notDataActions?: string[];
-}
-
-interface Operation {
-  name: string;
-  displayName: string;
-  description: string;
-  origin?: string;
-  provider: string;
-}
-
-interface EntraIDRolePermission {
-  allowedResourceActions: string[];
-  excludedResourceActions?: string[];
-  condition?: string;
-}
-
-interface EntraIDRole {
-  id: string;
-  displayName: string;
-  description: string;
-  isBuiltIn: boolean;
-  isEnabled: boolean;
-  templateId: string;
-  version?: string;
-  rolePermissions: EntraIDRolePermission[];
-  permissionCount?: number;
-}
+import { generateActionsCache } from '../src/lib/rbacCacheGenerator';
+import type { AzureRole, Operation, EntraIDRole } from '../src/types/rbac';
 
 // Directory to save the data files
 const DATA_DIR = path.join(process.cwd(), 'public', 'data');
@@ -260,126 +213,6 @@ function transformOperations(operations: Operation[]): Operation[] {
 }
 
 /**
- * Generate pre-computed actions cache to avoid expensive runtime computation
- * This replicates the logic from clientRbacService.extractActionsFromRoles
- * but runs at build time to drastically improve page load performance
- */
-function generateActionsCache(roles: AzureRole[]): Array<{ key: string; name: string; roleCount: number }> {
-  console.info('Generating pre-computed actions cache...');
-
-  // First pass: Collect explicit actions, track casing variants and which roles have them
-  const explicitActionRoles = new Map<string, Set<number>>();
-  const actionCasingMap = new Map<string, Map<string, number>>();
-
-  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
-    const role = roles[roleIndex];
-    for (const permission of role.permissions) {
-      // Process regular actions
-      for (const action of permission.actions) {
-        if (!action.includes('*')) {
-          const lowerAction = action.toLowerCase();
-
-          if (!actionCasingMap.has(lowerAction)) {
-            actionCasingMap.set(lowerAction, new Map());
-          }
-          const casingVariants = actionCasingMap.get(lowerAction)!;
-          casingVariants.set(action, (casingVariants.get(action) || 0) + 1);
-
-          if (!explicitActionRoles.has(lowerAction)) {
-            explicitActionRoles.set(lowerAction, new Set());
-          }
-          explicitActionRoles.get(lowerAction)!.add(roleIndex);
-        }
-      }
-
-      // Process data actions
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          if (!dataAction.includes('*')) {
-            const lowerAction = dataAction.toLowerCase();
-
-            if (!actionCasingMap.has(lowerAction)) {
-              actionCasingMap.set(lowerAction, new Map());
-            }
-            const casingVariants = actionCasingMap.get(lowerAction)!;
-            casingVariants.set(dataAction, (casingVariants.get(dataAction) || 0) + 1);
-
-            if (!explicitActionRoles.has(lowerAction)) {
-              explicitActionRoles.set(lowerAction, new Set());
-            }
-            explicitActionRoles.get(lowerAction)!.add(roleIndex);
-          }
-        }
-      }
-    }
-  }
-
-  // Second pass: Collect all wildcard patterns from roles
-  const wildcardPatterns: Array<{ pattern: string; roleIndex: number; notActions: string[] }> = [];
-
-  for (let roleIndex = 0; roleIndex < roles.length; roleIndex++) {
-    const role = roles[roleIndex];
-    for (const permission of role.permissions) {
-      for (const action of permission.actions) {
-        if (action.includes('*')) {
-          wildcardPatterns.push({
-            pattern: action,
-            roleIndex,
-            notActions: permission.notActions
-          });
-        }
-      }
-    }
-  }
-
-  // Third pass: For each action, count roles (explicit + wildcard matches)
-  const actionsCache: Array<{ key: string; name: string; roleCount: number }> = [];
-
-  for (const [lowerAction, casingVariants] of Array.from(actionCasingMap.entries())) {
-    // Choose canonical casing (most commonly used variant)
-    let canonicalName = '';
-    let maxCount = 0;
-
-    for (const [casing, count] of Array.from(casingVariants.entries())) {
-      if (count > maxCount) {
-        maxCount = count;
-        canonicalName = casing;
-      }
-    }
-
-    // Start with explicit role indices
-    const roleSet = new Set(explicitActionRoles.get(lowerAction) || []);
-
-    // Add roles that grant via wildcards
-    for (const { pattern, roleIndex, notActions } of wildcardPatterns) {
-      if (matchesWildcard(pattern, canonicalName)) {
-        // Check if it's not denied
-        let isDenied = false;
-        for (const deniedAction of notActions) {
-          if (matchesWildcard(deniedAction, canonicalName)) {
-            isDenied = true;
-            break;
-          }
-        }
-
-        if (!isDenied) {
-          roleSet.add(roleIndex);
-        }
-      }
-    }
-
-    actionsCache.push({
-      key: lowerAction,
-      name: canonicalName,
-      roleCount: roleSet.size
-    });
-  }
-
-  console.info(`Generated cache with ${actionsCache.length} unique actions`);
-  return actionsCache;
-}
-
-/**
  * Fetch Entra ID role definitions using Microsoft Graph API via Azure CLI
  */
 function fetchEntraIDRoles(): EntraIDRole[] {
@@ -480,7 +313,9 @@ async function updateRbacData(): Promise<void> {
     console.info(`✓ Roles data saved\n`);
 
     // Generate and save pre-computed actions cache
-    const actionsCache = generateActionsCache(extendedRoles);
+    const actionsCache = generateActionsCache(extendedRoles, {
+      verboseLogging: false
+    });
     console.info(`Writing ${actionsCache.length} actions to ${ACTIONS_CACHE_FILE}...`);
     fs.writeFileSync(ACTIONS_CACHE_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
     console.info(`✓ Actions cache saved\n`);

@@ -125,33 +125,114 @@ function saveMetadata(metadata: AzureFileMetadata[]): void {
 }
 
 /**
- * Fetches the HTML content of the Microsoft download details page
- * and extracts the direct download URL for the JSON file.
- * @param downloadId The ID of the download (e.g., '56519').
- * @returns A promise that resolves to the download URL string, or null if not found.
+ * Selects the most specific link based on URL length.
  */
-async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
-  const url = `https://www.microsoft.com/en-us/download/details.aspx?id=${downloadId}`;
-  logDebug(`Fetching download page details from: ${url}`);
+function selectMostSpecificLink(links: string[]): string {
+  return [...links].sort((a, b) => b.length - a.length)[0];
+}
 
-  // Enhanced request headers to mimic a browser
+/**
+ * Finds the link with the latest date encoded in the filename.
+ */
+function findLinkWithLatestDate(links: string[]): string | null {
+  const dateExtractionRegex = /ServiceTags_(?:Public|China|AzureGovernment)_(\d{8})\.json$/i;
+
+  const linksWithDates = links
+    .map(link => {
+      const match = dateExtractionRegex.exec(link);
+      return match?.[1] ? { link, date: match[1] } : null;
+    })
+    .filter((item): item is { link: string; date: string } => item !== null);
+
+  if (linksWithDates.length === 0) {
+    return null;
+  }
+
+  linksWithDates.sort((a, b) => b.date.localeCompare(a.date));
+  return linksWithDates[0].link;
+}
+
+/**
+ * Strategy 1: Extract the download URL from the AcOEt_DownloadUrl JavaScript variable.
+ */
+function extractFromAcOEtVariable(html: string): string | null {
+  const acoetRegex = /var\s+AcOEt_DownloadUrl\s*=\s*"([^"]+\.json)"/i;
+  const match = acoetRegex.exec(html);
+  return match?.[1]?.replace(/&amp;/g, '&') ?? null;
+}
+
+/**
+ * Strategy 2: Extract download URLs from href attributes.
+ */
+function extractFromHrefAttributes(html: string): string | null {
+  const linkRegex = /href="([^"]*download\.microsoft\.com\/download\/[^"]+\.json)"/gi;
+  const downloadLinks: string[] = [];
+  let match: RegExpExecArray | null;
+
+  while ((match = linkRegex.exec(html)) !== null) {
+    downloadLinks.push(match[1].replace(/&amp;/g, '&'));
+  }
+
+  if (downloadLinks.length === 0) {
+    return null;
+  }
+
+  const serviceTagLinks = downloadLinks.filter(link =>
+    link.toLowerCase().includes('servicetags')
+  );
+
+  if (serviceTagLinks.length > 0) {
+    return selectMostSpecificLink(serviceTagLinks);
+  }
+
+  return selectMostSpecificLink(downloadLinks);
+}
+
+/**
+ * Strategy 3: Extract download URLs using a generic matcher with date prioritization.
+ */
+function extractFromGenericMatches(html: string): string | null {
+  const genericJsonLinkRegex = /https:\/\/download\.microsoft\.com\/download\/[^"]+\.json/gi;
+  const genericLinks: string[] = [];
+  let match: RegExpExecArray | null;
+
+  while ((match = genericJsonLinkRegex.exec(html)) !== null) {
+    const decodedLink = match[0].replace(/&amp;/g, '&');
+    if (!genericLinks.includes(decodedLink)) {
+      genericLinks.push(decodedLink);
+    }
+  }
+
+  if (genericLinks.length === 0) {
+    return null;
+  }
+
+  const linkWithLatestDate = findLinkWithLatestDate(genericLinks);
+  if (linkWithLatestDate) {
+    return linkWithLatestDate;
+  }
+
+  return selectMostSpecificLink(genericLinks);
+}
+
+/**
+ * Fetches the HTML content of a URL with browser-like headers.
+ */
+function fetchHtmlContent(url: string, downloadId: string): Promise<string> {
   const requestOptions = {
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-      'Accept-Language': 'en-US,en;q=0.9',
-      // It might be necessary to handle cookies if a consent banner blocks content.
-      // 'Cookie': 'OptanonConsent=isIABGlobal=false&datestamp=Fri+May+17+2024+10%3A00%3A00+GMT%2B0200+(Central+European+Summer+Time)&version=6.17.0&hosts=&consentId=...&interactionCount=1&landingPath=NotLandingPage&groups=C0001%3A1%2CSTACK42%3A1%2CC0003%3A1%2CC0002%3A1%2CC0004%3A1&AwaitingReconsent=false', // Example cookie
+      'Accept-Language': 'en-US,en;q=0.9'
     }
   };
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     https.get(url, requestOptions, (res) => {
       let html = '';
 
       logDebug(`[ID: ${downloadId}] Status Code: ${res.statusCode}`);
 
-      // Handle potential redirects (though https.get usually handles them)
       if (res.statusCode && (res.statusCode === 301 || res.statusCode === 302)) {
         if (res.headers.location) {
           logDebug(`[ID: ${downloadId}] Page redirected to: ${res.headers.location}. Note: https.get should follow this.`);
@@ -164,108 +245,51 @@ async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
 
       res.on('end', () => {
         logDebug(`[ID: ${downloadId}] HTML content length: ${html.length}`);
-        if (html.length < 10000) { // Arbitrary small length to log snippet for debugging
+        if (html.length < 10000) {
           logDebug(`[ID: ${downloadId}] HTML snippet (first 500 chars): ${html.substring(0, 500)}`);
         }
-
-        let extractedUrl: string | null = null;
-
-        // 1. Primary Method: Try to extract from AcOEt_DownloadUrl JavaScript variable
-        const acoetRegex = /var\s+AcOEt_DownloadUrl\s*=\s*"([^"]+\.json)"/i;
-        const acoetMatch = acoetRegex.exec(html);
-        if (acoetMatch && acoetMatch[1]) {
-          extractedUrl = acoetMatch[1].replace(/&amp;/g, '&');
-          logDebug(`[ID: ${downloadId}] Found download URL via AcOEt_DownloadUrl: ${extractedUrl}`);
-          resolve(extractedUrl);
-          return;
-        } else {
-          logDebug(`[ID: ${downloadId}] AcOEt_DownloadUrl not found.`);
-        }
-
-        // 2. Fallback Method: Regex to find download links in href attributes
-        const linkRegex = /href="([^"]*download\.microsoft\.com\/download\/[^"]+\.json)"/gi;
-        const downloadLinks: string[] = [];
-        let match;
-        while ((match = linkRegex.exec(html)) !== null) {
-          const decodedLink = match[1].replace(/&amp;/g, '&');
-          downloadLinks.push(decodedLink);
-        }
-        logDebug(`[ID: ${downloadId}] Found ${downloadLinks.length} potential JSON download links via href attributes.`);
-
-        if (downloadLinks.length > 0) {
-          const serviceTagLinks = downloadLinks.filter(link =>
-            link.toLowerCase().includes('servicetags')
-          );
-
-          if (serviceTagLinks.length > 0) {
-            const mostSpecificLink = serviceTagLinks.sort((a, b) => b.length - a.length)[0];
-            logDebug(`[ID: ${downloadId}] Using ServiceTags link from href: ${mostSpecificLink}`);
-            resolve(mostSpecificLink);
-            return;
-          }
-
-          const sortedJsonLinks = downloadLinks.sort((a, b) => b.length - a.length);
-          logDebug(`[ID: ${downloadId}] No specific 'ServiceTags' link in href. Using first available JSON link: ${sortedJsonLinks[0]}`);
-          resolve(sortedJsonLinks[0]);
-          return;
-        }
-
-        // 3. Generic Fallback (less reliable)
-        if (!extractedUrl) {
-          const genericJsonLinkRegex = /https:\/\/download\.microsoft\.com\/download\/[^"]+\.json/gi;
-          let genericMatch;
-          const genericLinks: string[] = [];
-          while ((genericMatch = genericJsonLinkRegex.exec(html)) !== null) {
-            const decodedLink = genericMatch[0].replace(/&amp;/g, '&');
-            if (!genericLinks.includes(decodedLink)) {
-              genericLinks.push(decodedLink);
-            }
-          }
-
-          if (genericLinks.length > 0) {
-            logDebug(`[ID: ${downloadId}] Found ${genericLinks.length} potential JSON download links using generic regex.`);
-
-            // Attempt to find links with YYYYMMDD dates in the filename
-            // e.g., ServiceTags_Public_20230101.json, ServiceTags_China_20230101.json
-            const dateExtractionRegex = /ServiceTags_(?:Public|China|AzureGovernment)_(\d{8})\.json$/i;
-
-            const linksWithDates = genericLinks
-              .map(link => {
-                const match = dateExtractionRegex.exec(link);
-                if (match && match[1]) {
-                  return { link, date: match[1] }; // date is YYYYMMDD
-                }
-                return null;
-              })
-              .filter(item => item !== null) as { link: string; date: string }[];
-
-            if (linksWithDates.length > 0) {
-              // Sort by date descending (most recent first)
-              linksWithDates.sort((a, b) => b.date.localeCompare(a.date));
-              const latestLinkByDate = linksWithDates[0].link;
-              logDebug(`[ID: ${downloadId}] Prioritizing latest dated ServiceTags link from generic matches: ${latestLinkByDate}`);
-              resolve(latestLinkByDate);
-              return;
-            } else {
-              logDebug(`[ID: ${downloadId}] No ServiceTags with parseable dates (YYYYMMDD) found in generic links.`);
-            }
-
-            // Original fallback: Prefer longer, more specific URLs if multiple are found and no dates were parsed
-            logDebug(`[ID: ${downloadId}] Falling back to sorting generic links by length.`);
-            const sortedGenericLinks = genericLinks.sort((a, b) => b.length - a.length);
-            resolve(sortedGenericLinks[0]);
-            return;
-          }
-        }
-
-        console.error(`[ID: ${downloadId}] Could not extract download URL using any method.`);
-        resolve(null);
+        resolve(html);
       });
-    }).on('error', (err) => {
-      console.error(`[ID: ${downloadId}] Error fetching download page:`, err);
-      resolve(null);
-    });
+
+      res.on('error', reject);
+    }).on('error', reject);
   });
+}
+
+/**
+ * Fetches the HTML content of the Microsoft download details page
+ * and extracts the direct download URL for the JSON file.
+ * @param downloadId The ID of the download (e.g., '56519').
+ * @returns A promise that resolves to the download URL string, or null if not found.
+ */
+async function fetchDownloadUrl(downloadId: string): Promise<string | null> {
+  const url = `https://www.microsoft.com/en-us/download/details.aspx?id=${downloadId}`;
+  logDebug(`Fetching download page details from: ${url}`);
+
+  try {
+    const html = await fetchHtmlContent(url, downloadId);
+
+    const strategies: { name: string; fn: (html: string) => string | null }[] = [
+      { name: 'AcOEt variable', fn: extractFromAcOEtVariable },
+      { name: 'href attributes', fn: extractFromHrefAttributes },
+      { name: 'generic matches', fn: extractFromGenericMatches }
+    ];
+
+    for (const strategy of strategies) {
+      const result = strategy.fn(html);
+      if (result) {
+        logDebug(`[ID: ${downloadId}] Found URL via ${strategy.name}: ${result}`);
+        return result;
+      }
+      logDebug(`[ID: ${downloadId}] Strategy '${strategy.name}' found no match`);
+    }
+
+    console.error(`[ID: ${downloadId}] Could not extract download URL using any method.`);
+    return null;
+  } catch (error) {
+    console.error(`[ID: ${downloadId}] Error fetching download page:`, error);
+    return null;
+  }
 }
 
 /**

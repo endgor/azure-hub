@@ -19,6 +19,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "ip-cidr": "^3.1.0",
+    "js-base64": "^3.7.8",
     "jszip": "^3.10.1",
     "next": "^15.0.0",
     "papaparse": "^5.5.3",

@@ -126,6 +126,36 @@ function calculateNamespaceRelevance(role: AzureRole, requiredActions: string[])
 }
 
 /**
+ * Checks if a role has all required permissions using a permission checker function.
+ * Returns true if all permissions are present, false otherwise.
+ * Populates the matchingList array with permissions that were found.
+ *
+ * @param role The role to check
+ * @param requiredList List of required permissions to check
+ * @param permissionChecker Function to check if role has a specific permission
+ * @param matchingList Array to populate with matched permissions (mutated)
+ * @returns true if all permissions are present, false otherwise
+ */
+function checkPermissions(
+  role: AzureRole,
+  requiredList: string[],
+  permissionChecker: (role: AzureRole, permission: string) => boolean,
+  matchingList: string[]
+): boolean {
+  if (requiredList.length === 0) return true;
+
+  for (const required of requiredList) {
+    if (permissionChecker(role, required)) {
+      matchingList.push(required);
+    } else {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Finds roles that satisfy all required permissions, ranked by privilege level.
  * Returns roles sorted by least privileged first (exact matches prioritized).
  *
@@ -148,28 +178,20 @@ export function calculateLeastPrivilegedRoles(
     const matchingDataActions: string[] = [];
 
     // Check if role has all required actions
-    let hasAllActions = true;
-    for (const requiredAction of input.requiredActions) {
-      if (hasPermission(role, requiredAction)) {
-        matchingActions.push(requiredAction);
-      } else {
-        hasAllActions = false;
-        break;
-      }
-    }
+    const hasAllActions = checkPermissions(
+      role,
+      input.requiredActions,
+      hasPermission,
+      matchingActions
+    );
 
     // Check if role has all required data actions
-    let hasAllDataActions = true;
-    if (input.requiredDataActions && input.requiredDataActions.length > 0) {
-      for (const requiredDataAction of input.requiredDataActions) {
-        if (hasDataPermission(role, requiredDataAction)) {
-          matchingDataActions.push(requiredDataAction);
-        } else {
-          hasAllDataActions = false;
-          break;
-        }
-      }
-    }
+    const hasAllDataActions = checkPermissions(
+      role,
+      input.requiredDataActions || [],
+      hasDataPermission,
+      matchingDataActions
+    );
 
     // Only include roles that satisfy all requirements
     if (hasAllActions && hasAllDataActions) {
