@@ -14,7 +14,8 @@ Allow: /tools/service-tags
 Allow: /tools/service-tags/*
 Allow: /tools/tenant-lookup
 Allow: /tools/subnet-calculator
-Allow: /tools/rbac-calculator
+Allow: /tools/azure-rbac-calculator
+Allow: /tools/entraid-roles-calculator
 
 # Sitemaps
 Sitemap: https://azurehub.org/sitemap.xml
