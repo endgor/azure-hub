@@ -1,29 +1,21 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { AzureRole } from '@/types/rbac';
 import type { RbacTemplate } from '@/lib/rbacTemplates';
-import { filterAndSortByQuery } from '@/lib/searchUtils';
-import { downloadJSON } from '@/lib/downloadUtils';
-import { generateNameFilename } from '@/lib/filenameUtils';
 import type { DropdownItem } from '@/components/SearchableDropdown';
 import { mergePermissionBuckets, dedupePermissionBuckets, filterPermissionBuckets } from '@/lib/utils/permissionMerger';
 
-export interface CustomRoleDefinition {
-  roleName: string;
-  description: string;
-  assignableScopes: string[];
-  actions: string[];
-  notActions: string[];
-  dataActions: string[];
-  notDataActions: string[];
-}
+// Import extracted sub-hooks
+import { useRoleImport } from './roleCreator/useRoleImport';
+import type { ImportedRoleInfo } from './roleCreator/useRoleImport';
+import { useActionSearch } from './roleCreator/useActionSearch';
+import { useScopeManagement } from './roleCreator/useScopeManagement';
 
-export interface ImportedRoleInfo {
-  role: AzureRole;
-  actions: string[];
-  notActions: string[];
-  dataActions: string[];
-  notDataActions: string[];
-}
+// Import extracted pure functions
+import { hasWildcard, validateActionCategory } from '@/lib/roleCreator/validation';
+import { exportRoleDefinition, type CustomRoleDefinition } from '@/lib/roleCreator/export';
+
+// Re-export types for consumers
+export type { ImportedRoleInfo, CustomRoleDefinition };
 
 export interface UseRoleCreatorProps {
   availableRoles: AzureRole[];
@@ -87,6 +79,7 @@ export interface UseRoleCreatorReturn {
  * - Export to JSON
  */
 export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreatorProps): UseRoleCreatorReturn {
+  // Custom role definition state
   const [customRole, setCustomRole] = useState<CustomRoleDefinition>({
     roleName: '',
     description: '',
@@ -97,51 +90,21 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     notDataActions: []
   });
 
-  const [importedRoles, setImportedRoles] = useState<ImportedRoleInfo[]>([]);
+  // Manually added actions tracking
   const [manuallyAddedActions, setManuallyAddedActions] = useState<Set<string>>(new Set());
 
-  const [roleSearchQuery, setRoleSearchQuery] = useState('');
-  const [roleSearchResults, setRoleSearchResults] = useState<AzureRole[]>([]);
+  // UI state
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
-
-  const [actionSearchQuery, setActionSearchQuery] = useState('');
-  const [actionSearchResults, setActionSearchResults] = useState<Array<{ name: string; description?: string }>>([]);
   const [showActionDropdown, setShowActionDropdown] = useState(false);
   const [activePermissionType, setActivePermissionType] = useState<'actions' | 'notActions' | 'dataActions' | 'notDataActions'>('actions');
 
-  // Helper function to check if an action contains a wildcard
-  const hasWildcard = useCallback((action: string): boolean => {
-    return action.includes('*');
-  }, []);
-
-  // Validate if an action is likely misclassified
-  // DataActions typically involve data access operations (e.g., blob read/write, queue messages)
-  // Actions are control plane operations (e.g., resource management)
-  const validateActionCategory = useCallback((action: string, category: 'actions' | 'dataActions'): { isValid: boolean; suggestion?: string } => {
-    const isLikelyDataAction = action.includes('/blobs/') ||
-                               action.includes('/containers/') ||
-                               action.includes('/messages/') ||
-                               action.includes('/files/') ||
-                               action.includes('/fileshares/') ||
-                               action.includes('/queues/') ||
-                               action.includes('/tables/');
-
-    if (category === 'dataActions' && !isLikelyDataAction) {
-      return {
-        isValid: false,
-        suggestion: 'This looks like a control plane action. Consider moving to "actions".'
-      };
-    }
-
-    if (category === 'actions' && isLikelyDataAction) {
-      return {
-        isValid: false,
-        suggestion: 'This looks like a data plane action. Consider moving to "dataActions".'
-      };
-    }
-
-    return { isValid: true };
-  }, []);
+  // Use extracted sub-hooks
+  const roleImport = useRoleImport({ availableRoles });
+  const actionSearch = useActionSearch({ onSearch: onSearchActions });
+  const scopeManagement = useScopeManagement({
+    scopes: customRole.assignableScopes,
+    onScopesChange: (scopes) => setCustomRole({ ...customRole, assignableScopes: scopes })
+  });
 
   // Load a template
   const handleLoadTemplate = useCallback((template: RbacTemplate) => {
@@ -161,41 +124,13 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
       dataActions: template.dataActions || [],
       notDataActions: template.notDataActions || []
     });
-    setImportedRoles([]);
     setManuallyAddedActions(newManuallyAddedActions);
   }, []);
 
   // Import actions from selected built-in role
   const handleImportFromRole = useCallback((role: AzureRole) => {
-    // Check if role is already imported
-    if (importedRoles.some(imported => imported.role.id === role.id)) {
-      alert('This role has already been imported.');
-      return;
-    }
-
-    // Collect all permissions from this role
-    const roleActions: string[] = [];
-    const roleNotActions: string[] = [];
-    const roleDataActions: string[] = [];
-    const roleNotDataActions: string[] = [];
-
-    role.permissions.forEach(permission => {
-      roleActions.push(...permission.actions);
-      roleNotActions.push(...permission.notActions);
-      roleDataActions.push(...(permission.dataActions || []));
-      roleNotDataActions.push(...(permission.notDataActions || []));
-    });
-
-    // Add to imported roles tracking
-    const importedRole: ImportedRoleInfo = {
-      role,
-      actions: roleActions,
-      notActions: roleNotActions,
-      dataActions: roleDataActions,
-      notDataActions: roleNotDataActions
-    };
-
-    setImportedRoles([...importedRoles, importedRole]);
+    const importedRole = roleImport.handleImportRole(role);
+    if (!importedRole) return;
 
     // Merge with existing permissions using utility function
     const mergedPermissions = mergePermissionBuckets(
@@ -206,10 +141,10 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
         notDataActions: customRole.notDataActions
       },
       {
-        actions: roleActions,
-        notActions: roleNotActions,
-        dataActions: roleDataActions,
-        notDataActions: roleNotDataActions
+        actions: importedRole.actions,
+        notActions: importedRole.notActions,
+        dataActions: importedRole.dataActions,
+        notDataActions: importedRole.notDataActions
       }
     );
 
@@ -218,18 +153,13 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
       ...mergedPermissions
     });
 
-    setRoleSearchQuery('');
-    setRoleSearchResults([]);
     setShowRoleDropdown(false);
-  }, [customRole, importedRoles]);
+  }, [customRole, roleImport]);
 
   // Remove an imported role and its actions
   const handleRemoveImportedRole = useCallback((roleId: string) => {
-    const roleToRemove = importedRoles.find(imported => imported.role.id === roleId);
+    const roleToRemove = roleImport.handleRemoveImportedRole(roleId);
     if (!roleToRemove) return;
-
-    // Remove the role from imported list
-    setImportedRoles(importedRoles.filter(imported => imported.role.id !== roleId));
 
     // Remove the role's actions from custom role using utility function
     const filteredPermissions = filterPermissionBuckets(
@@ -251,26 +181,12 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
       ...customRole,
       ...filteredPermissions
     });
-  }, [customRole, importedRoles]);
+  }, [customRole, roleImport]);
 
-  // Handle role search
+  // Handle role search - delegate to sub-hook
   const handleRoleSearchChange = useCallback((query: string) => {
-    setRoleSearchQuery(query);
-
-    if (!query.trim() || query.length < 2) {
-      setRoleSearchResults([]);
-      return;
-    }
-
-    const results = filterAndSortByQuery(
-      availableRoles,
-      query,
-      (role) => role.roleName,
-      10
-    );
-
-    setRoleSearchResults(results);
-  }, [availableRoles]);
+    roleImport.handleRoleSearchChange(query);
+  }, [roleImport]);
 
   // Handle role selection from dropdown
   const handleRoleSelect = useCallback((item: DropdownItem) => {
@@ -278,8 +194,6 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     if (role) {
       handleImportFromRole(role);
     }
-    setRoleSearchQuery('');
-    setRoleSearchResults([]);
   }, [availableRoles, handleImportFromRole]);
 
   // Add action to selected permission type
@@ -295,28 +209,14 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
       newManuallyAdded.add(actionName);
       setManuallyAddedActions(newManuallyAdded);
     }
-    setActionSearchQuery('');
-    setActionSearchResults([]);
+    actionSearch.clearActionSearch();
     setShowActionDropdown(false);
-  }, [customRole, activePermissionType, manuallyAddedActions]);
+  }, [customRole, activePermissionType, manuallyAddedActions, actionSearch]);
 
-  // Handle action search
+  // Handle action search - delegate to sub-hook
   const handleActionSearchChange = useCallback(async (query: string) => {
-    setActionSearchQuery(query);
-
-    if (!query.trim() || query.length < 3) {
-      setActionSearchResults([]);
-      return;
-    }
-
-    try {
-      const results = await onSearchActions(query);
-      setActionSearchResults(results.slice(0, 10));
-    } catch (err) {
-      console.error('Action search failed:', err);
-      setActionSearchResults([]);
-    }
-  }, [onSearchActions]);
+    await actionSearch.handleActionSearchChange(query);
+  }, [actionSearch]);
 
   // Handle action selection from dropdown
   const handleActionSelect = useCallback((item: DropdownItem) => {
@@ -353,108 +253,22 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     }
   }, [customRole]);
 
-  // Add assignable scope
+  // Scope management - delegate to sub-hook
   const handleAddScope = useCallback((scope: string) => {
-    if (scope && !customRole.assignableScopes.includes(scope)) {
-      // Remove placeholder if it exists when adding a real scope
-      const newScopes = customRole.assignableScopes.filter(
-        s => !s.includes('00000000-0000-0000-0000-000000000000')
-      );
-      setCustomRole({
-        ...customRole,
-        assignableScopes: [...newScopes, scope]
-      });
-    }
-  }, [customRole]);
+    scopeManagement.handleAddScope(scope);
+  }, [scopeManagement]);
 
-  // Remove assignable scope
   const handleRemoveScope = useCallback((scope: string) => {
-    const newScopes = customRole.assignableScopes.filter(s => s !== scope);
+    scopeManagement.handleRemoveScope(scope);
+  }, [scopeManagement]);
 
-    // If no scopes remain, add back the placeholder
-    if (newScopes.length === 0) {
-      setCustomRole({
-        ...customRole,
-        assignableScopes: ['/subscriptions/00000000-0000-0000-0000-000000000000']
-      });
-    } else {
-      setCustomRole({
-        ...customRole,
-        assignableScopes: newScopes
-      });
-    }
-  }, [customRole]);
-
-  // Export to JSON
+  // Export to JSON - use pure function
   const handleExport = useCallback(() => {
-    if (!customRole.roleName.trim()) {
-      alert('Please provide a role name before exporting');
-      return;
-    }
-
-    // Check if placeholder subscription is still being used
-    const hasPlaceholder = customRole.assignableScopes.some(scope =>
-      scope.includes('00000000-0000-0000-0000-000000000000')
-    );
-
-    if (hasPlaceholder) {
-      const proceed = confirm(
-        '⚠️ Placeholder Subscription Detected\n\n' +
-        'Your assignable scopes contain a placeholder subscription ID (00000000-0000-0000-0000-000000000000).\n\n' +
-        'Azure Portal will require you to update this with your actual subscription ID before you can save the role definition.\n\n' +
-        'Do you want to export anyway?'
-      );
-      if (!proceed) return;
-    }
-
-    // Check for validation issues (only for manually added actions)
-    const validationIssues: string[] = [];
-
-    customRole.actions.forEach(action => {
-      if (manuallyAddedActions.has(action)) {
-        const validation = validateActionCategory(action, 'actions');
-        if (!validation.isValid) {
-          validationIssues.push(`"${action}" in actions might be misclassified`);
-        }
-      }
+    exportRoleDefinition({
+      customRole,
+      manuallyAddedActions
     });
-
-    customRole.dataActions.forEach(action => {
-      if (manuallyAddedActions.has(action)) {
-        const validation = validateActionCategory(action, 'dataActions');
-        if (!validation.isValid) {
-          validationIssues.push(`"${action}" in dataActions might be misclassified`);
-        }
-      }
-    });
-
-    if (validationIssues.length > 0) {
-      const proceed = confirm(
-        `⚠️ Validation Warning:\n\n${validationIssues.slice(0, 5).join('\n')}${validationIssues.length > 5 ? `\n\n...and ${validationIssues.length - 5} more issues` : ''}\n\nThese may cause Azure validation errors. Do you want to export anyway?`
-      );
-      if (!proceed) return;
-    }
-
-    const exportData = {
-      properties: {
-        roleName: customRole.roleName,
-        description: customRole.description,
-        assignableScopes: customRole.assignableScopes,
-        permissions: [
-          {
-            actions: customRole.actions,
-            notActions: customRole.notActions,
-            dataActions: customRole.dataActions,
-            notDataActions: customRole.notDataActions
-          }
-        ]
-      }
-    };
-
-    const jsonContent = JSON.stringify(exportData, null, 2);
-    const filename = generateNameFilename(customRole.roleName, 'json', 'custom_role');
-    downloadJSON(jsonContent, filename);
-  }, [customRole, manuallyAddedActions, validateActionCategory]);
+  }, [customRole, manuallyAddedActions]);
 
   // Deduplicate all actions using utility function
   const handleDeduplicate = useCallback(() => {
@@ -482,29 +296,28 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
       dataActions: [],
       notDataActions: []
     });
-    setImportedRoles([]);
     setManuallyAddedActions(new Set());
-    setRoleSearchQuery('');
-    setActionSearchQuery('');
-  }, []);
+    roleImport.clearRoleSearch();
+    actionSearch.clearActionSearch();
+  }, [roleImport, actionSearch]);
 
   // Convert to DropdownItems
   const roleDropdownItems: DropdownItem[] = useMemo(() =>
-    roleSearchResults.map(role => ({
+    roleImport.roleSearchResults.map(role => ({
       id: role.id,
       label: role.roleName,
       description: role.description
     })),
-    [roleSearchResults]
+    [roleImport.roleSearchResults]
   );
 
   const actionDropdownItems: DropdownItem[] = useMemo(() =>
-    actionSearchResults.map(action => ({
+    actionSearch.actionSearchResults.map(action => ({
       id: action.name,
       label: action.name,
       description: action.description
     })),
-    [actionSearchResults]
+    [actionSearch.actionSearchResults]
   );
 
   // Computed values (memoized for performance)
@@ -527,13 +340,13 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
   return {
     // State
     customRole,
-    importedRoles,
+    importedRoles: roleImport.importedRoles,
     manuallyAddedActions,
-    roleSearchQuery,
-    roleSearchResults,
+    roleSearchQuery: roleImport.roleSearchQuery,
+    roleSearchResults: roleImport.roleSearchResults,
     showRoleDropdown,
-    actionSearchQuery,
-    actionSearchResults,
+    actionSearchQuery: actionSearch.actionSearchQuery,
+    actionSearchResults: actionSearch.actionSearchResults,
     showActionDropdown,
     activePermissionType,
 
@@ -545,9 +358,9 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
 
     // Actions
     setCustomRole,
-    setRoleSearchQuery,
+    setRoleSearchQuery: roleImport.setRoleSearchQuery,
     setShowRoleDropdown,
-    setActionSearchQuery,
+    setActionSearchQuery: actionSearch.setActionSearchQuery,
     setShowActionDropdown,
     setActivePermissionType,
     handleLoadTemplate,
