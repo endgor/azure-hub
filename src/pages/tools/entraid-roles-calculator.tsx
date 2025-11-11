@@ -54,6 +54,7 @@ export default function EntraIdRolesCalculatorPage() {
     handleSearch: handleAdvancedSearchRaw,
     handleAddAction: handleAddActionAdvanced,
     clearSearch,
+    clearResults,
   } = useAdvancedSearch({
     onSearch: async (query) => {
       const actionNames = await searchEntraIDActions(query);
@@ -105,8 +106,14 @@ export default function EntraIdRolesCalculatorPage() {
 
   // Close dropdowns when clicking outside
   useClickOutside(serviceDropdownRef as React.RefObject<HTMLElement>, () => setShowServiceDropdown(false), showServiceDropdown);
-  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => setRoleSearchResults([]), roleSearchResults.length > 0);
-  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => clearSearch(), searchResults.length > 0);
+  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    setRoleSearchResults([]);
+    setShowRoleResults(false);
+  }, roleSearchResults.length > 0);
+  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    // Only hide the suggestions dropdown, don't clear the input
+    clearResults();
+  }, searchResults.length > 0);
 
   const handleDismissDisclaimer = () => {
     setDisclaimerDismissed(true);
