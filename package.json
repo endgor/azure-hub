@@ -8,11 +8,11 @@
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "next lint",
-    "update-ip-data": "ts-node scripts/updateIpData.ts",
-    "update-rbac-data": "ts-node scripts/updateRbacData.ts",
+    "update-ip-data": "ts-node -r tsconfig-paths/register scripts/updateIpData.ts",
+    "update-rbac-data": "ts-node -r tsconfig-paths/register scripts/updateRbacData.ts",
     "fetch-entraid-roles": "ts-node --project tsconfig.node.json scripts/fetchEntraIdRoles.ts",
-    "generate-actions-cache": "ts-node scripts/generateActionsCache.ts",
-    "generate-ip-indexes": "ts-node scripts/generateIpIndexes.ts"
+    "generate-actions-cache": "ts-node -r tsconfig-paths/register scripts/generateActionsCache.ts",
+    "generate-ip-indexes": "ts-node -r tsconfig-paths/register scripts/generateIpIndexes.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",
