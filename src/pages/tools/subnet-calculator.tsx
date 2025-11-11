@@ -260,7 +260,11 @@ export default function SubnetCalculatorPage(): ReactElement {
 
 
   useEffect(() => {
-    if (!router.isReady || hasRestoredShare) {
+    if (hasRestoredShare) {
+      return;
+    }
+
+    if (!router.isReady) {
       return;
     }
 
@@ -349,7 +353,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     setSelectedColorId(DEFAULT_COLOR_ID);
     closeCommentEditor();
     setHasRestoredShare(true);
-  }, [router.isReady, router.query.state, hasRestoredShare]);
+  }, [hasRestoredShare, router.isReady, router.query.state]);
 
   useEffect(() => {
     const visibleRowIds = new Set(renderRows.map((row) => row.id));
