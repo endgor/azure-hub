@@ -35217,5 +35217,47 @@
     "permissionCount": 334.3333333333333,
     "dataActions": [],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-11-10T16:07:20.985868+00:00",
+    "description": "Microsoft.GcpConnector contributor role",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/a51d5f27-deba-47d1-9ccd-8589014b2e28",
+    "name": "a51d5f27-deba-47d1-9ccd-8589014b2e28",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.GcpConnector/bigQueryDatasets/delete",
+          "Microsoft.GcpConnector/bigQueryDatasets/write",
+          "Microsoft.GcpConnector/cloudFunctions/delete",
+          "Microsoft.GcpConnector/cloudFunctions/write",
+          "Microsoft.GcpConnector/computeInstances/delete",
+          "Microsoft.GcpConnector/computeInstances/write",
+          "Microsoft.GcpConnector/containerClusters/delete",
+          "Microsoft.GcpConnector/containerClusters/write",
+          "Microsoft.GcpConnector/Locations/OperationStatuses/write",
+          "Microsoft.GcpConnector/sqlAdminInstances/delete",
+          "Microsoft.GcpConnector/sqlAdminInstances/write",
+          "Microsoft.GcpConnector/storageBuckets/delete",
+          "Microsoft.GcpConnector/storageBuckets/write"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Gcp Connector contributor role",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-11-10T16:07:20.985868+00:00",
+    "permissionCount": 13,
+    "dataActions": [],
+    "notDataActions": []
   }
 ]
