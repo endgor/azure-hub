@@ -182,7 +182,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     setIsColorModeActive(false);
     setSelectedColorId(DEFAULT_COLOR_ID);
     closeCommentEditor();
-  }, [hasRestoredShare]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [restoreFromUrl, setRowColors, setRowComments, setUseAzureReservations, closeCommentEditor]);
 
   // Event handlers
   const handleFieldChange = (field: 'network' | 'prefix') => (event: ChangeEvent<HTMLInputElement>) => {

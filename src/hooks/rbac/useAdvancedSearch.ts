@@ -12,6 +12,7 @@ export interface UseAdvancedSearchReturn {
   handleSearch: (query: string) => Promise<void>;
   handleAddAction: (action: string) => void;
   clearSearch: () => void;
+  clearResults: () => void;
 }
 
 /**
@@ -105,6 +106,10 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     setSearchResults([]);
   }, []);
 
+  const clearResults = useCallback(() => {
+    setSearchResults([]);
+  }, []);
+
   return {
     actionsInput,
     searchResults,
@@ -112,5 +117,6 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     handleSearch,
     handleAddAction,
     clearSearch,
+    clearResults,
   };
 }

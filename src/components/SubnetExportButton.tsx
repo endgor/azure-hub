@@ -37,6 +37,9 @@ export default function SubnetExportButton({
       return;
     }
 
+    // Disable color mode before exporting
+    onTrigger?.();
+
     setIsExporting(true);
     try {
       const [{ prepareSubnetExportData, generateSubnetExportFilename }, { exportToCSV, exportToExcel, exportToMarkdown }] = await Promise.all([
@@ -85,7 +88,6 @@ export default function SubnetExportButton({
         type="button"
         className={triggerClasses}
         onClick={() => {
-          onTrigger?.();
           setIsOpen((current) => !current);
         }}
         aria-expanded={isOpen}

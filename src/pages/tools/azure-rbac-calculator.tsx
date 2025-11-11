@@ -50,6 +50,7 @@ export default function AzureRbacCalculatorPage() {
     handleSearch: handleAdvancedSearch,
     handleAddAction: handleAddActionAdvanced,
     clearSearch,
+    clearResults,
   } = useAdvancedSearch({
     onSearch: searchOperations,
   });
@@ -93,8 +94,14 @@ export default function AzureRbacCalculatorPage() {
 
   // Close dropdowns when clicking outside
   useClickOutside(serviceDropdownRef as React.RefObject<HTMLElement>, () => setShowServiceDropdown(false), showServiceDropdown);
-  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => setRoleSearchResults([]), roleSearchResults.length > 0);
-  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => clearSearch(), searchResults.length > 0);
+  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    setRoleSearchResults([]);
+    setShowRoleResults(false);
+  }, roleSearchResults.length > 0);
+  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    // Only hide the suggestions dropdown, don't clear the input
+    clearResults();
+  }, searchResults.length > 0);
 
   const handleDismissDisclaimer = () => {
     setDisclaimerDismissed(true);
