@@ -9,7 +9,7 @@ import {
   getEntraIDRolesDataStatus,
   loadEntraIDRoles
 } from '@/lib/entraIdRbacService';
-import type { Operation, EntraIDRole, EntraIDLeastPrivilegeResult } from '@/types/rbac';
+import type { EntraIDRole, EntraIDLeastPrivilegeResult } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
@@ -29,27 +29,66 @@ import DisclaimerBanner from '@/components/shared/RbacCalculator/DisclaimerBanne
 import ExampleScenarios from '@/components/shared/RbacCalculator/ExampleScenarios';
 import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
 
+// Import shared hooks
+import { useAdvancedSearch } from '@/hooks/rbac/useAdvancedSearch';
+import { useServiceActions } from '@/hooks/rbac/useServiceActions';
+import { useRbacMode } from '@/hooks/rbac/useRbacMode';
+
 // Lazy load larger components for bundle optimization
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
 
-type InputMode = 'simple' | 'advanced' | 'roleExplorer';
-
 export default function EntraIdRolesCalculatorPage() {
-  const [inputMode, setInputMode] = useState<InputMode>('simple');
-  const [actionsInput, setActionsInput] = useState('');
+  // Mode management
+  const { mode: inputMode, setMode: setInputMode, isSimpleMode, isRoleExplorerMode } = useRbacMode({
+    initialMode: 'simple',
+    supportedModes: ['simple', 'advanced', 'roleExplorer'],
+  });
+
+  // Advanced search management
+  const {
+    actionsInput,
+    searchResults,
+    textareaRef: advancedTextareaRef,
+    handleSearch: handleAdvancedSearchRaw,
+    handleAddAction: handleAddActionAdvanced,
+    clearSearch,
+    clearResults,
+  } = useAdvancedSearch({
+    onSearch: async (query) => {
+      const actionNames = await searchEntraIDActions(query);
+      return actionNames.slice(0, 10).map(name => ({
+        name,
+        displayName: name.split('/').pop() || name,
+        description: '',
+        provider: name.split('/')[0] || '',
+      }));
+    },
+  });
+
+  // Service actions management for simple mode
+  const {
+    availableServices,
+    availableActions,
+    selectedService,
+    serviceSearch,
+    isLoadingServices,
+    isLoadingActions,
+    handleSelectService,
+    handleServiceSearchChange,
+    clearServices,
+  } = useServiceActions({
+    loadServices: getEntraIDNamespaces,
+    loadActions: getEntraIDActionsByNamespace,
+    isActive: isSimpleMode,
+  });
+
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
-  const [selectedService, setSelectedService] = useState('');
-  const [availableServices, setAvailableServices] = useState<string[]>([]);
-  const [serviceSearch, setServiceSearch] = useState('');
   const [showServiceDropdown, setShowServiceDropdown] = useState(false);
   const [actionSearch, setActionSearch] = useState('');
-  const [availableActions, setAvailableActions] = useState<Operation[]>([]);
   const [results, setResults] = useState<EntraIDLeastPrivilegeResult[]>([]);
-  const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingActions, setIsLoadingActions] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('entraid-roles-disclaimer-dismissed', false);
 
@@ -59,10 +98,6 @@ export default function EntraIdRolesCalculatorPage() {
   const [selectedRoles, setSelectedRoles] = useState<EntraIDRole[]>([]);
   const [roleSearchResults, setRoleSearchResults] = useState<EntraIDRole[]>([]);
   const [showRoleResults, setShowRoleResults] = useState(false);
-  const [isLoadingServices, setIsLoadingServices] = useState(false);
-
-  // Track textarea cursor position for advanced mode
-  const advancedTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Refs for click-outside detection
   const serviceDropdownRef = useRef<HTMLDivElement>(null);
@@ -71,8 +106,14 @@ export default function EntraIdRolesCalculatorPage() {
 
   // Close dropdowns when clicking outside
   useClickOutside(serviceDropdownRef as React.RefObject<HTMLElement>, () => setShowServiceDropdown(false), showServiceDropdown);
-  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => setRoleSearchResults([]), roleSearchResults.length > 0);
-  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => setSearchResults([]), searchResults.length > 0);
+  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    setRoleSearchResults([]);
+    setShowRoleResults(false);
+  }, roleSearchResults.length > 0);
+  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    // Only hide the suggestions dropdown, don't clear the input
+    clearResults();
+  }, searchResults.length > 0);
 
   const handleDismissDisclaimer = () => {
     setDisclaimerDismissed(true);
@@ -94,7 +135,7 @@ export default function EntraIdRolesCalculatorPage() {
 
   // Load roles for Role Explorer mode
   useEffect(() => {
-    if (inputMode === 'roleExplorer') {
+    if (isRoleExplorerMode) {
       const loadRoles = async () => {
         try {
           setIsLoading(true);
@@ -111,61 +152,7 @@ export default function EntraIdRolesCalculatorPage() {
       };
       loadRoles();
     }
-  }, [inputMode]);
-
-  // Lazy load services/namespaces only when Simple mode is active
-  useEffect(() => {
-    if (inputMode !== 'simple') {
-      return;
-    }
-
-    const loadServices = async () => {
-      try {
-        setIsLoadingServices(true);
-        const namespaces = await getEntraIDNamespaces();
-        setAvailableServices(namespaces);
-      } catch (err) {
-        console.error('Failed to load namespaces:', err);
-      } finally {
-        setIsLoadingServices(false);
-      }
-    };
-
-    // Clear services when changing mode
-    setAvailableServices([]);
-    setSelectedService('');
-    setAvailableActions([]);
-
-    loadServices();
-  }, [inputMode]);
-
-  useEffect(() => {
-    const loadActions = async () => {
-      if (!selectedService) {
-        setAvailableActions([]);
-        return;
-      }
-
-      setIsLoadingActions(true);
-      try {
-        // Entra ID returns string[], convert to Operation[] for consistency
-        const actionNames = await getEntraIDActionsByNamespace(selectedService);
-        const operations: Operation[] = actionNames.map(name => ({
-          name,
-          displayName: name.split('/').pop() || name,
-          description: '',
-          provider: name.split('/')[0] || '',
-        }));
-        setAvailableActions(operations);
-      } catch (err) {
-        console.error('Failed to load actions:', err);
-        setAvailableActions([]);
-      } finally {
-        setIsLoadingActions(false);
-      }
-    };
-    loadActions();
-  }, [selectedService]);
+  }, [isRoleExplorerMode]);
 
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
@@ -173,13 +160,13 @@ export default function EntraIdRolesCalculatorPage() {
     setResults([]);
 
     // Role Explorer mode doesn't use form submission
-    if (inputMode === 'roleExplorer') {
+    if (isRoleExplorerMode) {
       return;
     }
 
     let actions: string[] = [];
 
-    if (inputMode === 'simple') {
+    if (isSimpleMode) {
       if (selectedActions.length === 0) {
         setError('Please select at least one permission');
         return;
@@ -229,54 +216,7 @@ export default function EntraIdRolesCalculatorPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [inputMode, selectedActions, actionsInput]);
-
-  const handleAdvancedSearch = useCallback(async (query: string) => {
-    setActionsInput(query);
-
-    // Get the current line being edited based on cursor position
-    const textarea = advancedTextareaRef.current;
-    if (!textarea) {
-      setSearchResults([]);
-      return;
-    }
-
-    const cursorPosition = textarea.selectionStart;
-    const lines = query.split('\n');
-    let charCount = 0;
-    let currentLineText = '';
-
-    // Find which line the cursor is on
-    for (const line of lines) {
-      if (cursorPosition <= charCount + line.length) {
-        currentLineText = line;
-        break;
-      }
-      charCount += line.length + 1; // +1 for newline character
-    }
-
-    // Only search based on the current line
-    const trimmedLine = currentLineText.trim();
-    if (trimmedLine.length < 3 || trimmedLine.startsWith('#')) {
-      setSearchResults([]);
-      return;
-    }
-
-    try {
-      // Entra ID search
-      const actionNames = await searchEntraIDActions(trimmedLine);
-      const operations: Operation[] = actionNames.slice(0, 10).map(name => ({
-        name,
-        displayName: name.split('/').pop() || name,
-        description: '',
-        provider: name.split('/')[0] || '',
-      }));
-      setSearchResults(operations);
-    } catch (err) {
-      console.warn('Search failed:', err);
-      setSearchResults([]);
-    }
-  }, []);
+  }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
 
   const handleAddActionSimple = useCallback((action: string) => {
     if (!selectedActions.includes(action)) {
@@ -288,68 +228,28 @@ export default function EntraIdRolesCalculatorPage() {
     setSelectedActions(prev => prev.filter(a => a !== action));
   }, []);
 
-  const handleAddActionAdvanced = useCallback((action: string) => {
-    const textarea = advancedTextareaRef.current;
-    if (!textarea) return;
-
-    const cursorPosition = textarea.selectionStart;
-    const lines = actionsInput.split('\n');
-    let charCount = 0;
-    let currentLineIndex = 0;
-
-    // Find which line the cursor is on
-    for (let i = 0; i < lines.length; i++) {
-      if (cursorPosition <= charCount + lines[i].length) {
-        currentLineIndex = i;
-        break;
-      }
-      charCount += lines[i].length + 1; // +1 for newline character
-    }
-
-    // Replace the current line with the selected action
-    const newLines = [...lines];
-    newLines[currentLineIndex] = action;
-    const newText = newLines.join('\n');
-    setActionsInput(newText);
-    setSearchResults([]);
-
-    // Move cursor to the end of the replaced line
-    setTimeout(() => {
-      if (textarea) {
-        const newCursorPosition = newLines.slice(0, currentLineIndex).join('\n').length +
-                                   (currentLineIndex > 0 ? 1 : 0) +
-                                   action.length;
-        textarea.focus();
-        textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-      }
-    }, 0);
-  }, [actionsInput]);
-
   const handleLoadExample = useCallback((actions: readonly string[]) => {
-    if (inputMode === 'simple') {
+    if (isSimpleMode) {
       setSelectedActions([...actions]);
     } else {
-      setActionsInput([...actions].join('\n'));
+      handleAdvancedSearchRaw([...actions].join('\n'));
     }
-    setSearchResults([]);
-  }, [inputMode]);
+    clearSearch();
+  }, [isSimpleMode, handleAdvancedSearchRaw, clearSearch]);
 
   const handleClear = useCallback(() => {
-    setActionsInput('');
+    clearSearch();
+    clearServices();
     setSelectedActions([]);
-    setSelectedService('');
-    setServiceSearch('');
     setShowServiceDropdown(false);
     setActionSearch('');
-    setAvailableActions([]);
     setResults([]);
     setError(null);
-    setSearchResults([]);
     setRoleSearchQuery('');
     setSelectedRoles([]);
     setRoleSearchResults([]);
     setShowRoleResults(false);
-  }, []);
+  }, [clearSearch, clearServices]);
 
   const handleRoleSearch = useCallback((query: string) => {
     setRoleSearchQuery(query);
@@ -396,20 +296,11 @@ export default function EntraIdRolesCalculatorPage() {
     setShowRoleResults(true);
   }, [selectedRoles]);
 
-  const handleSelectService = useCallback((service: string) => {
-    setSelectedService(service);
-    setServiceSearch(service);
+  const handleSelectServiceWrapper = useCallback((service: string) => {
+    handleSelectService(service);
     setShowServiceDropdown(false);
     setActionSearch('');
-  }, []);
-
-  const handleServiceSearchChange = useCallback((value: string) => {
-    setServiceSearch(value);
-    if (value !== selectedService) {
-      setSelectedService('');
-      setAvailableActions([]);
-    }
-  }, [selectedService]);
+  }, [handleSelectService]);
 
   // Use intelligent sorting for service search: exact matches first, then starts with, then alphabetical
   const filteredServices = serviceSearch
@@ -525,7 +416,7 @@ export default function EntraIdRolesCalculatorPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Simple Mode */}
-          {inputMode === 'simple' && (
+          {isSimpleMode && (
             <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
               <SimpleMode
                 config={entraIdConfig}
@@ -537,7 +428,7 @@ export default function EntraIdRolesCalculatorPage() {
                 isLoadingServices={isLoadingServices}
                 filteredServices={filteredServices}
                 serviceDropdownRef={serviceDropdownRef}
-                onSelectService={handleSelectService}
+                onSelectService={handleSelectServiceWrapper}
                 actionSearch={actionSearch}
                 onActionSearchChange={setActionSearch}
                 isLoadingActions={isLoadingActions}
@@ -556,7 +447,7 @@ export default function EntraIdRolesCalculatorPage() {
             <AdvancedMode
               config={entraIdConfig}
               actionsInput={actionsInput}
-              onActionsInputChange={handleAdvancedSearch}
+              onActionsInputChange={handleAdvancedSearchRaw}
               searchResults={searchResults}
               advancedSearchDropdownRef={advancedSearchDropdownRef}
               textareaRef={advancedTextareaRef}
@@ -565,7 +456,7 @@ export default function EntraIdRolesCalculatorPage() {
           )}
 
           {/* Role Explorer Mode */}
-          {inputMode === 'roleExplorer' && (
+          {isRoleExplorerMode && (
             <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
               <RoleExplorerMode
                 config={entraIdConfig}
@@ -584,11 +475,11 @@ export default function EntraIdRolesCalculatorPage() {
           )}
 
           {/* Submit Buttons (Simple & Advanced modes only) */}
-          {inputMode !== 'roleExplorer' && (
+          {!isRoleExplorerMode && (
             <div className="flex gap-3">
               <Button
                 type="submit"
-                disabled={isLoading || (inputMode === 'simple' ? selectedActions.length === 0 : !actionsInput.trim())}
+                disabled={isLoading || (isSimpleMode ? selectedActions.length === 0 : !actionsInput.trim())}
                 isLoading={isLoading}
               >
                 {isLoading ? 'Calculating...' : 'Find Roles'}
@@ -619,17 +510,17 @@ export default function EntraIdRolesCalculatorPage() {
         )}
 
         {/* Results for Simple & Advanced modes */}
-        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && (
+        {!isLoading && !error && results.length > 0 && !isRoleExplorerMode && (
           <RoleResultsTable results={results} roleSystem="entraid" />
         )}
 
         {/* Results for Role Explorer mode */}
-        {inputMode === 'roleExplorer' && showRoleResults && selectedRoles.length > 0 && !isLoading && (
+        {isRoleExplorerMode && showRoleResults && selectedRoles.length > 0 && !isLoading && (
           <EntraIdRolePermissionsTable roles={selectedRoles} />
         )}
 
         {/* Example Scenarios (Simple & Advanced modes only, when no results) */}
-        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && (
+        {results.length === 0 && !isLoading && !isRoleExplorerMode && (
           <ExampleScenarios config={entraIdConfig} onLoadExample={handleLoadExample} />
         )}
       </section>
