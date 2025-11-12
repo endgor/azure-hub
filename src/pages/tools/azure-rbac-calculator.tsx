@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
 import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
-import type { LeastPrivilegeResult, Operation, AzureRole } from '@/types/rbac';
+import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
@@ -24,28 +24,59 @@ import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
 // Import Azure-specific components
 import ModeTabs from '@/components/RbacCalculator/ModeTabs';
 
+// Import shared hooks
+import { useAdvancedSearch } from '@/hooks/rbac/useAdvancedSearch';
+import { useServiceActions } from '@/hooks/rbac/useServiceActions';
+import { useRbacMode } from '@/hooks/rbac/useRbacMode';
+
 // Lazy load larger components for bundle optimization
 const RoleCreator = lazy(() => import('@/components/RoleCreator'));
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
 
-type InputMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
-
 export default function AzureRbacCalculatorPage() {
-  const [inputMode, setInputMode] = useState<InputMode>('simple');
-  const [actionsInput, setActionsInput] = useState('');
+  // Mode management
+  const { mode: inputMode, setMode: setInputMode, isSimpleMode, isRoleExplorerMode, isRoleCreatorMode } = useRbacMode({
+    initialMode: 'simple',
+    supportedModes: ['simple', 'advanced', 'roleExplorer', 'roleCreator'],
+  });
+
+  // Advanced search management
+  const {
+    actionsInput,
+    searchResults,
+    textareaRef: advancedTextareaRef,
+    handleSearch: handleAdvancedSearch,
+    handleAddAction: handleAddActionAdvanced,
+    clearSearch,
+    clearResults,
+  } = useAdvancedSearch({
+    onSearch: searchOperations,
+  });
+
+  // Service actions management for simple mode
+  const {
+    availableServices,
+    availableActions,
+    selectedService,
+    serviceSearch,
+    isLoadingServices,
+    isLoadingActions,
+    handleSelectService,
+    handleServiceSearchChange,
+    clearServices,
+  } = useServiceActions({
+    loadServices: getServiceNamespaces,
+    loadActions: getActionsByService,
+    isActive: isSimpleMode,
+  });
+
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
-  const [selectedService, setSelectedService] = useState('');
-  const [availableServices, setAvailableServices] = useState<string[]>([]);
-  const [serviceSearch, setServiceSearch] = useState('');
   const [showServiceDropdown, setShowServiceDropdown] = useState(false);
   const [actionSearch, setActionSearch] = useState('');
-  const [availableActions, setAvailableActions] = useState<Operation[]>([]);
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
-  const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingActions, setIsLoadingActions] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('azure-rbac-disclaimer-dismissed', false);
 
@@ -55,10 +86,6 @@ export default function AzureRbacCalculatorPage() {
   const [selectedRoles, setSelectedRoles] = useState<AzureRole[]>([]);
   const [roleSearchResults, setRoleSearchResults] = useState<AzureRole[]>([]);
   const [showRoleResults, setShowRoleResults] = useState(false);
-  const [isLoadingServices, setIsLoadingServices] = useState(false);
-
-  // Track textarea cursor position for advanced mode
-  const advancedTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Refs for click-outside detection
   const serviceDropdownRef = useRef<HTMLDivElement>(null);
@@ -67,8 +94,14 @@ export default function AzureRbacCalculatorPage() {
 
   // Close dropdowns when clicking outside
   useClickOutside(serviceDropdownRef as React.RefObject<HTMLElement>, () => setShowServiceDropdown(false), showServiceDropdown);
-  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => setRoleSearchResults([]), roleSearchResults.length > 0);
-  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => setSearchResults([]), searchResults.length > 0);
+  useClickOutside(roleSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    setRoleSearchResults([]);
+    setShowRoleResults(false);
+  }, roleSearchResults.length > 0);
+  useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    // Only hide the suggestions dropdown, don't clear the input
+    clearResults();
+  }, searchResults.length > 0);
 
   const handleDismissDisclaimer = () => {
     setDisclaimerDismissed(true);
@@ -90,7 +123,7 @@ export default function AzureRbacCalculatorPage() {
 
   // Load roles for Role Explorer and Role Creator modes
   useEffect(() => {
-    if (inputMode === 'roleExplorer' || inputMode === 'roleCreator') {
+    if (isRoleExplorerMode || isRoleCreatorMode) {
       const loadRoles = async () => {
         try {
           setIsLoading(true);
@@ -107,54 +140,7 @@ export default function AzureRbacCalculatorPage() {
       };
       loadRoles();
     }
-  }, [inputMode]);
-
-  // Lazy load services only when Simple mode is active
-  useEffect(() => {
-    if (inputMode !== 'simple') {
-      return;
-    }
-
-    const loadServices = async () => {
-      try {
-        setIsLoadingServices(true);
-        const services = await getServiceNamespaces();
-        setAvailableServices(services);
-      } catch (err) {
-        console.error('Failed to load services:', err);
-      } finally {
-        setIsLoadingServices(false);
-      }
-    };
-
-    // Clear services when changing mode
-    setAvailableServices([]);
-    setSelectedService('');
-    setAvailableActions([]);
-
-    loadServices();
-  }, [inputMode]);
-
-  useEffect(() => {
-    const loadActions = async () => {
-      if (!selectedService) {
-        setAvailableActions([]);
-        return;
-      }
-
-      setIsLoadingActions(true);
-      try {
-        const actions = await getActionsByService(selectedService);
-        setAvailableActions(actions);
-      } catch (err) {
-        console.error('Failed to load actions:', err);
-        setAvailableActions([]);
-      } finally {
-        setIsLoadingActions(false);
-      }
-    };
-    loadActions();
-  }, [selectedService]);
+  }, [isRoleExplorerMode, isRoleCreatorMode]);
 
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
@@ -162,13 +148,13 @@ export default function AzureRbacCalculatorPage() {
     setResults([]);
 
     // Role Explorer mode doesn't use form submission
-    if (inputMode === 'roleExplorer') {
+    if (isRoleExplorerMode) {
       return;
     }
 
     let actions: string[] = [];
 
-    if (inputMode === 'simple') {
+    if (isSimpleMode) {
       if (selectedActions.length === 0) {
         setError('Please select at least one action');
         return;
@@ -209,47 +195,7 @@ export default function AzureRbacCalculatorPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [inputMode, selectedActions, actionsInput]);
-
-  const handleAdvancedSearch = useCallback(async (query: string) => {
-    setActionsInput(query);
-
-    // Get the current line being edited based on cursor position
-    const textarea = advancedTextareaRef.current;
-    if (!textarea) {
-      setSearchResults([]);
-      return;
-    }
-
-    const cursorPosition = textarea.selectionStart;
-    const lines = query.split('\n');
-    let charCount = 0;
-    let currentLineText = '';
-
-    // Find which line the cursor is on
-    for (const line of lines) {
-      if (cursorPosition <= charCount + line.length) {
-        currentLineText = line;
-        break;
-      }
-      charCount += line.length + 1; // +1 for newline character
-    }
-
-    // Only search based on the current line
-    const trimmedLine = currentLineText.trim();
-    if (trimmedLine.length < 3 || trimmedLine.startsWith('#')) {
-      setSearchResults([]);
-      return;
-    }
-
-    try {
-      const operations = await searchOperations(trimmedLine);
-      setSearchResults(operations.slice(0, 10));
-    } catch (err) {
-      console.warn('Search failed:', err);
-      setSearchResults([]);
-    }
-  }, []);
+  }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
 
   const handleAddActionSimple = useCallback((action: string) => {
     if (!selectedActions.includes(action)) {
@@ -261,68 +207,28 @@ export default function AzureRbacCalculatorPage() {
     setSelectedActions(prev => prev.filter(a => a !== action));
   }, []);
 
-  const handleAddActionAdvanced = useCallback((action: string) => {
-    const textarea = advancedTextareaRef.current;
-    if (!textarea) return;
-
-    const cursorPosition = textarea.selectionStart;
-    const lines = actionsInput.split('\n');
-    let charCount = 0;
-    let currentLineIndex = 0;
-
-    // Find which line the cursor is on
-    for (let i = 0; i < lines.length; i++) {
-      if (cursorPosition <= charCount + lines[i].length) {
-        currentLineIndex = i;
-        break;
-      }
-      charCount += lines[i].length + 1; // +1 for newline character
-    }
-
-    // Replace the current line with the selected action
-    const newLines = [...lines];
-    newLines[currentLineIndex] = action;
-    const newText = newLines.join('\n');
-    setActionsInput(newText);
-    setSearchResults([]);
-
-    // Move cursor to the end of the replaced line
-    setTimeout(() => {
-      if (textarea) {
-        const newCursorPosition = newLines.slice(0, currentLineIndex).join('\n').length +
-                                   (currentLineIndex > 0 ? 1 : 0) +
-                                   action.length;
-        textarea.focus();
-        textarea.setSelectionRange(newCursorPosition, newCursorPosition);
-      }
-    }, 0);
-  }, [actionsInput]);
-
   const handleLoadExample = useCallback((actions: readonly string[]) => {
-    if (inputMode === 'simple') {
+    if (isSimpleMode) {
       setSelectedActions([...actions]);
     } else {
-      setActionsInput([...actions].join('\n'));
+      handleAdvancedSearch([...actions].join('\n'));
     }
-    setSearchResults([]);
-  }, [inputMode]);
+    clearSearch();
+  }, [isSimpleMode, handleAdvancedSearch, clearSearch]);
 
   const handleClear = useCallback(() => {
-    setActionsInput('');
+    clearSearch();
+    clearServices();
     setSelectedActions([]);
-    setSelectedService('');
-    setServiceSearch('');
     setShowServiceDropdown(false);
     setActionSearch('');
-    setAvailableActions([]);
     setResults([]);
     setError(null);
-    setSearchResults([]);
     setRoleSearchQuery('');
     setSelectedRoles([]);
     setRoleSearchResults([]);
     setShowRoleResults(false);
-  }, []);
+  }, [clearSearch, clearServices]);
 
   const handleRoleSearch = useCallback((query: string) => {
     setRoleSearchQuery(query);
@@ -369,20 +275,11 @@ export default function AzureRbacCalculatorPage() {
     setShowRoleResults(true);
   }, [selectedRoles]);
 
-  const handleSelectService = useCallback((service: string) => {
-    setSelectedService(service);
-    setServiceSearch(service);
+  const handleSelectServiceWrapper = useCallback((service: string) => {
+    handleSelectService(service);
     setShowServiceDropdown(false);
     setActionSearch('');
-  }, []);
-
-  const handleServiceSearchChange = useCallback((value: string) => {
-    setServiceSearch(value);
-    if (value !== selectedService) {
-      setSelectedService('');
-      setAvailableActions([]);
-    }
-  }, [selectedService]);
+  }, [handleSelectService]);
 
   // Use intelligent sorting for service search: exact matches first, then starts with, then alphabetical
   const filteredServices = serviceSearch
@@ -494,7 +391,7 @@ export default function AzureRbacCalculatorPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Simple Mode */}
-            {inputMode === 'simple' && (
+            {isSimpleMode && (
               <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
                 <SimpleMode
                   config={azureRbacConfig}
@@ -506,7 +403,7 @@ export default function AzureRbacCalculatorPage() {
                   isLoadingServices={isLoadingServices}
                   filteredServices={filteredServices}
                   serviceDropdownRef={serviceDropdownRef}
-                  onSelectService={handleSelectService}
+                  onSelectService={handleSelectServiceWrapper}
                   actionSearch={actionSearch}
                   onActionSearchChange={setActionSearch}
                   isLoadingActions={isLoadingActions}
@@ -534,7 +431,7 @@ export default function AzureRbacCalculatorPage() {
             )}
 
             {/* Role Explorer Mode */}
-            {inputMode === 'roleExplorer' && (
+            {isRoleExplorerMode && (
               <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
                 <RoleExplorerMode
                   config={azureRbacConfig}
@@ -553,11 +450,11 @@ export default function AzureRbacCalculatorPage() {
             )}
 
             {/* Submit Buttons (Simple & Advanced modes only) */}
-            {inputMode !== 'roleExplorer' && (
+            {!isRoleExplorerMode && (
               <div className="flex gap-3">
                 <Button
                   type="submit"
-                  disabled={isLoading || (inputMode === 'simple' ? selectedActions.length === 0 : !actionsInput.trim())}
+                  disabled={isLoading || (isSimpleMode ? selectedActions.length === 0 : !actionsInput.trim())}
                   isLoading={isLoading}
                 >
                   {isLoading ? 'Calculating...' : 'Find Roles'}
@@ -575,31 +472,31 @@ export default function AzureRbacCalculatorPage() {
         )}
 
         {/* Loading State */}
-        {isLoading && inputMode !== 'roleCreator' && (
+        {isLoading && !isRoleCreatorMode && (
           <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
             <LoadingSpinner size="lg" label="Calculating least privileged roles..." />
           </div>
         )}
 
         {/* Error State */}
-        {error && inputMode !== 'roleCreator' && (
+        {error && !isRoleCreatorMode && (
           <ErrorBox>
             {error}
           </ErrorBox>
         )}
 
         {/* Results for Simple & Advanced modes */}
-        {!isLoading && !error && results.length > 0 && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+        {!isLoading && !error && results.length > 0 && !isRoleExplorerMode && !isRoleCreatorMode && (
           <RoleResultsTable results={results} roleSystem="azure" />
         )}
 
         {/* Results for Role Explorer mode */}
-        {inputMode === 'roleExplorer' && showRoleResults && selectedRoles.length > 0 && !isLoading && (
+        {isRoleExplorerMode && showRoleResults && selectedRoles.length > 0 && !isLoading && (
           <RolePermissionsTable roles={selectedRoles} />
         )}
 
         {/* Example Scenarios (Simple & Advanced modes only, when no results) */}
-        {results.length === 0 && !isLoading && inputMode !== 'roleExplorer' && inputMode !== 'roleCreator' && (
+        {results.length === 0 && !isLoading && !isRoleExplorerMode && !isRoleCreatorMode && (
           <ExampleScenarios config={azureRbacConfig} onLoadExample={handleLoadExample} />
         )}
       </section>
