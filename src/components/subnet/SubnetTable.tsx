@@ -22,8 +22,6 @@ export interface SubnetTableProps {
   renderRows: RenderableRow[];
   tree: SubnetTree;
   rootId: string;
-  baseNetwork: number;
-  basePrefix: number;
   leafCounts: Record<string, number>;
   useAzureReservations: boolean;
   rowColors: Record<string, string>;
@@ -31,7 +29,6 @@ export interface SubnetTableProps {
   activeCommentRow: string | null;
   commentDraft: string;
   isColorModeActive: boolean;
-  activeColorHex: string | null;
   resetPulse: boolean;
   onSplit: (nodeId: string) => void;
   onJoin: (nodeId: string) => void;
@@ -67,8 +64,6 @@ export default function SubnetTable({
   renderRows,
   tree,
   rootId,
-  baseNetwork: _baseNetwork,
-  basePrefix: _basePrefix,
   leafCounts,
   useAzureReservations,
   rowColors,
@@ -76,7 +71,6 @@ export default function SubnetTable({
   activeCommentRow,
   commentDraft,
   isColorModeActive,
-  activeColorHex: _activeColorHex,
   resetPulse,
   onSplit,
   onJoin,

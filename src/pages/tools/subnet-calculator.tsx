@@ -432,8 +432,6 @@ export default function SubnetCalculatorPage(): ReactElement {
             renderRows={renderRows}
             tree={state.tree}
             rootId={state.rootId}
-            baseNetwork={state.baseNetwork}
-            basePrefix={state.basePrefix}
             leafCounts={leafCounts}
             useAzureReservations={useAzureReservations}
             rowColors={rowColors}
@@ -441,7 +439,6 @@ export default function SubnetCalculatorPage(): ReactElement {
             activeCommentRow={activeCommentRow}
             commentDraft={commentDraft}
             isColorModeActive={isColorModeActive}
-            activeColorHex={activeColorHex}
             resetPulse={resetPulse}
             onSplit={handleSplitWithMetadata}
             onJoin={handleJoinWithMetadata}
