@@ -133,7 +133,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     rowComments,
     tree: state.tree
   });
-  const { isGeneratingShare, shareStatus, hasRestoredShare, handleShare, restoreFromUrl } = shareHook;
+  const { isGeneratingShare, shareStatus, handleShare, restoreFromUrl } = shareHook;
 
   // Color mode
   const [isColorModeActive, setIsColorModeActive] = useState(false);
@@ -182,7 +182,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     setIsColorModeActive(false);
     setSelectedColorId(DEFAULT_COLOR_ID);
     closeCommentEditor();
-  }, [restoreFromUrl, setRowColors, setRowComments, setUseAzureReservations, closeCommentEditor]);
+  }, [restoreFromUrl, setState, setRowColors, setRowComments, setUseAzureReservations, closeCommentEditor]);
 
   // Event handlers
   const handleFieldChange = (field: 'network' | 'prefix') => (event: ChangeEvent<HTMLInputElement>) => {
