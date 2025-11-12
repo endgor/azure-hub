@@ -61,10 +61,15 @@ const DEFAULT_DESCRIPTION =
   'Azure Hub delivers Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud architects and administrators.';
 const DEFAULT_KEYWORDS = [
   'Azure IP lookup',
+  'Azure IP ranges',
+  'Azure IP addresses',
   'Azure tenant lookup',
   'Azure subnet calculator',
   'Azure service tags',
   'Azure RBAC calculator',
+  'Azure RBAC roles',
+  'Azure RBAC permissions',
+  'Entra ID roles',
   'Entra ID roles calculator',
   'Microsoft Entra tools',
   'Azure networking utilities'
