@@ -117,9 +117,12 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
  * IMPORTANT: Returns cloned objects to prevent cache pollution.
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
-  const { region, service } = options;
+  const regionFilter = options.region?.trim();
+  const serviceFilter = options.service?.trim();
+  const hasRegionFilter = Boolean(regionFilter);
+  const hasServiceFilter = Boolean(serviceFilter);
 
-  if (!region && !service) {
+  if (!hasRegionFilter && !hasServiceFilter) {
     return []; // Require at least one filter
   }
 
@@ -131,19 +134,19 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   let results = azureIpAddressList;
 
   // Filter by region (if specified)
-  if (region) {
-    results = results.filter(ip => matchesSearchTerm(ip.region, region));
+  if (hasRegionFilter && regionFilter) {
+    results = results.filter(ip => matchesSearchTerm(ip.region, regionFilter));
   }
 
   // Filter by service (if specified)
-  if (service) {
+  if (hasServiceFilter && serviceFilter) {
     results = results.filter(ip => {
       // Check systemService first (e.g., "AzureStorage")
-      if (ip.systemService && matchesSearchTerm(ip.systemService, service)) {
+      if (ip.systemService && matchesSearchTerm(ip.systemService, serviceFilter)) {
         return true;
       }
       // Then check serviceTagId (e.g., "Storage.WestEurope")
-      return matchesSearchTerm(ip.serviceTagId, service);
+      return matchesSearchTerm(ip.serviceTagId, serviceFilter);
     });
   }
 

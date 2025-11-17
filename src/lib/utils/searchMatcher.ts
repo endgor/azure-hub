@@ -16,15 +16,20 @@ import { getCachedNormalization } from '../normalization';
 export function matchesSearchTerm(target: string, searchTerm: string): boolean {
   if (!target) return false;
 
+  const cleanedSearchTerm = searchTerm.trim();
+  if (!cleanedSearchTerm) {
+    return true; // treat blank input as "no filter"
+  }
+
   const targetLower = target.toLowerCase();
-  const searchLower = searchTerm.toLowerCase();
+  const searchLower = cleanedSearchTerm.toLowerCase();
 
   // Strategy 1: Direct substring match
   if (targetLower.includes(searchLower)) return true;
 
   // Strategy 2: Normalized match (splits camelCase and removes extra spaces)
   const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));
-  const normalizedSearch = getCachedNormalization(searchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
+  const normalizedSearch = getCachedNormalization(cleanedSearchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
 
   return normalizedTarget.includes(normalizedSearch);
 }
