@@ -126,15 +126,24 @@ export default function Layout({
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Initialize dark mode with system preference if no stored value exists
-  const getInitialDarkMode = () => {
-    if (typeof window === 'undefined') return false;
-    const stored = localStorage.getItem('theme-dark');
-    if (stored !== null) return stored === 'true';
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  };
+  // Initialize dark mode - always start with false during SSR to avoid hydration mismatch
+  // The actual preference will be applied after mount via useEffect
+  const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', false);
+  const [hasInitializedTheme, setHasInitializedTheme] = useState(false);
 
-  const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', getInitialDarkMode());
+  // On mount, check for user preference (localStorage or system preference)
+  useEffect(() => {
+    if (typeof window === 'undefined' || hasInitializedTheme) return;
+
+    const stored = localStorage.getItem('theme-dark');
+    if (stored === null) {
+      // No stored preference, use system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDarkMode(prefersDark);
+    }
+    // If stored is not null, useLocalStorageBoolean will handle it
+    setHasInitializedTheme(true);
+  }, [hasInitializedTheme, setIsDarkMode]);
 
   // Toggle dark class and theme-color meta tag when theme changes
   useEffect(() => {
