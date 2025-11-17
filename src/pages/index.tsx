@@ -86,7 +86,7 @@ const CORE_TOOLS = [
 export default function Home() {
   return (
     <Layout
-      title="Azure Hub"
+      title="Azure Hub - IP Lookup, RBAC & Networking Tools"
       description="Azure Hub centralizes Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud engineers."
     >
       <section className="space-y-12">
