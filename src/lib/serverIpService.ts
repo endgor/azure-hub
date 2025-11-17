@@ -95,9 +95,12 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
  * Searches Azure IP ranges by region and/or service name.
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
-  const { region, service } = options;
+  const regionFilter = options.region?.trim();
+  const serviceFilter = options.service?.trim();
+  const hasRegionFilter = Boolean(regionFilter);
+  const hasServiceFilter = Boolean(serviceFilter);
 
-  if (!region && !service) {
+  if (!hasRegionFilter && !hasServiceFilter) {
     return [];
   }
 
@@ -108,16 +111,16 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
 
   let results = azureIpAddressList;
 
-  if (region) {
-    results = results.filter(ip => matchesSearchTerm(ip.region, region));
+  if (hasRegionFilter && regionFilter) {
+    results = results.filter(ip => matchesSearchTerm(ip.region, regionFilter));
   }
 
-  if (service) {
+  if (hasServiceFilter && serviceFilter) {
     results = results.filter(ip => {
-      if (ip.systemService && matchesSearchTerm(ip.systemService, service)) {
+      if (ip.systemService && matchesSearchTerm(ip.systemService, serviceFilter)) {
         return true;
       }
-      return matchesSearchTerm(ip.serviceTagId, service);
+      return matchesSearchTerm(ip.serviceTagId, serviceFilter);
     });
   }
 
