@@ -168,7 +168,9 @@ export default function Layout({
       // Auto-generate from router.asPath, stripping query params and hash
       // Note: This works for static routes, but dynamic routes should pass explicit canonicalUrl
       const pathWithoutQuery = router.asPath.split('?')[0].split('#')[0];
-      const cleanPath = pathWithoutQuery === '/' ? '/' : `${pathWithoutQuery}/`;
+      // Normalize trailing slash: remove existing one (if any) before appending
+      const pathWithoutTrailingSlash = pathWithoutQuery.replace(/\/$/, '');
+      const cleanPath = pathWithoutTrailingSlash === '' ? '/' : `${pathWithoutTrailingSlash}/`;
       finalCanonicalUrl = `https://azurehub.org${cleanPath}`;
     }
 
