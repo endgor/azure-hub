@@ -1,6 +1,6 @@
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress } from '../types/azure';
-import { getCachedNormalization } from './normalization';
+import { matchesSearchTerm } from './utils/searchMatcher';
 import { CACHE_TTL_MS } from '@/config/constants';
 
 /**
@@ -14,31 +14,6 @@ let ipCacheExpiry = 0;
 export interface SearchOptions {
   region?: string; // Region name (e.g., "westeurope", "East US")
   service?: string; // Service name or tag (e.g., "AzureStorage", "SQL")
-}
-
-/**
- * Multi-strategy search term matcher with normalization.
- * Handles:
- * 1. Substring matching (case-insensitive)
- * 2. Normalized matching for camelCase/PascalCase variations
- *    (e.g., "WestEurope" matches "west europe")
- *
- * Uses LRU-cached normalization for performance.
- */
-function matchesSearchTerm(target: string, searchTerm: string): boolean {
-  if (!target) return false;
-
-  const targetLower = target.toLowerCase();
-  const searchLower = searchTerm.toLowerCase();
-
-  // Strategy 1: Direct substring match
-  if (targetLower.includes(searchLower)) return true;
-
-  // Strategy 2: Normalized match (splits camelCase and removes extra spaces)
-  const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));
-  const normalizedSearch = getCachedNormalization(searchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
-
-  return normalizedTarget.includes(normalizedSearch);
 }
 
 /**
@@ -142,9 +117,12 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
  * IMPORTANT: Returns cloned objects to prevent cache pollution.
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
-  const { region, service } = options;
+  const regionFilter = options.region?.trim();
+  const serviceFilter = options.service?.trim();
+  const hasRegionFilter = Boolean(regionFilter);
+  const hasServiceFilter = Boolean(serviceFilter);
 
-  if (!region && !service) {
+  if (!hasRegionFilter && !hasServiceFilter) {
     return []; // Require at least one filter
   }
 
@@ -156,19 +134,19 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   let results = azureIpAddressList;
 
   // Filter by region (if specified)
-  if (region) {
-    results = results.filter(ip => matchesSearchTerm(ip.region, region));
+  if (hasRegionFilter && regionFilter) {
+    results = results.filter(ip => matchesSearchTerm(ip.region, regionFilter));
   }
 
   // Filter by service (if specified)
-  if (service) {
+  if (hasServiceFilter && serviceFilter) {
     results = results.filter(ip => {
       // Check systemService first (e.g., "AzureStorage")
-      if (ip.systemService && matchesSearchTerm(ip.systemService, service)) {
+      if (ip.systemService && matchesSearchTerm(ip.systemService, serviceFilter)) {
         return true;
       }
       // Then check serviceTagId (e.g., "Storage.WestEurope")
-      return matchesSearchTerm(ip.serviceTagId, service);
+      return matchesSearchTerm(ip.serviceTagId, serviceFilter);
     });
   }
 

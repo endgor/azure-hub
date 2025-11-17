@@ -24,48 +24,7 @@ export interface FlattenedPermissions {
 }
 
 /**
- * Generator function that yields flattened permissions from a role.
- * Useful for streaming large permission sets without allocating arrays upfront.
- *
- * @param role - The Azure role to flatten permissions from
- * @yields Flattened permission entries one at a time
- *
- * @example
- * for (const { type, permission } of flattenRolePermissions(role)) {
- *   console.log(`${type}: ${permission}`);
- * }
- */
-export function* flattenRolePermissions(role: AzureRole): Generator<FlattenedPermission> {
-  for (const permission of role.permissions) {
-    // Yield actions
-    for (const action of permission.actions) {
-      yield { type: 'Action', permission: action };
-    }
-
-    // Yield notActions
-    for (const notAction of permission.notActions) {
-      yield { type: 'Not Action', permission: notAction };
-    }
-
-    // Yield dataActions
-    if (permission.dataActions) {
-      for (const dataAction of permission.dataActions) {
-        yield { type: 'Data Action', permission: dataAction };
-      }
-    }
-
-    // Yield notDataActions
-    if (permission.notDataActions) {
-      for (const notDataAction of permission.notDataActions) {
-        yield { type: 'Not Data Action', permission: notDataAction };
-      }
-    }
-  }
-}
-
-/**
  * Extracts all permissions from a role and returns them grouped by type.
- * This is a convenience wrapper around flattenRolePermissions that returns arrays.
  *
  * @param role - The Azure role to extract permissions from
  * @returns Permissions grouped by type (actions, notActions, dataActions, notDataActions)
