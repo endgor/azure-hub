@@ -64,8 +64,8 @@ export default function GuidePage({ guide }: GuidePageProps) {
             prose-code:text-sky-600 dark:prose-code:text-sky-300 prose-code:bg-slate-100 dark:prose-code:bg-slate-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-medium prose-code:before:content-[''] prose-code:after:content-['']
             prose-pre:bg-slate-900 dark:prose-pre:bg-slate-950 prose-pre:text-slate-100 prose-pre:border prose-pre:border-slate-700
             prose-table:border-collapse prose-table:w-full
-            prose-th:bg-slate-50 dark:prose-th:bg-slate-800 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-slate-300 dark:prose-th:border-slate-600
-            prose-td:px-4 prose-td:py-2 prose-td:border prose-td:border-slate-300 dark:prose-td:border-slate-600
+            prose-th:bg-slate-50 dark:prose-th:bg-slate-800 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:font-semibold prose-th:text-slate-900 dark:prose-th:text-slate-100 prose-th:border prose-th:border-slate-300 dark:prose-th:border-slate-600
+            prose-td:px-4 prose-td:py-2 prose-td:text-slate-600 dark:prose-td:text-slate-300 prose-td:border prose-td:border-slate-300 dark:prose-td:border-slate-600
             prose-ul:list-disc prose-ul:pl-6
             prose-ol:list-decimal prose-ol:pl-6
             prose-li:text-slate-600 dark:prose-li:text-slate-300
