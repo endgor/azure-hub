@@ -17,6 +17,8 @@ const nextConfig = {
 
   // Security headers
   async headers() {
+    const isProd = process.env.NODE_ENV === 'production';
+
     return [
       {
         // Apply security headers to all routes
@@ -47,13 +49,13 @@ const nextConfig = {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
           },
-          // Content Security Policy
+          // Content Security Policy - stricter in production
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              // unsafe-eval needed for Next.js dev; Vercel analytics domains for production
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+              // unsafe-eval only needed for Next.js dev mode
+              `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval' "}https://va.vercel-scripts.com`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
