@@ -1,6 +1,6 @@
 import IPCIDR from 'ip-cidr';
 import { AzureIpAddress } from '../types/azure';
-import { getCachedNormalization } from './normalization';
+import { matchesSearchTerm } from './utils/searchMatcher';
 import { CACHE_TTL_MS } from '@/config/constants';
 
 /**
@@ -14,31 +14,6 @@ let ipCacheExpiry = 0;
 export interface SearchOptions {
   region?: string; // Region name (e.g., "westeurope", "East US")
   service?: string; // Service name or tag (e.g., "AzureStorage", "SQL")
-}
-
-/**
- * Multi-strategy search term matcher with normalization.
- * Handles:
- * 1. Substring matching (case-insensitive)
- * 2. Normalized matching for camelCase/PascalCase variations
- *    (e.g., "WestEurope" matches "west europe")
- *
- * Uses LRU-cached normalization for performance.
- */
-function matchesSearchTerm(target: string, searchTerm: string): boolean {
-  if (!target) return false;
-
-  const targetLower = target.toLowerCase();
-  const searchLower = searchTerm.toLowerCase();
-
-  // Strategy 1: Direct substring match
-  if (targetLower.includes(searchLower)) return true;
-
-  // Strategy 2: Normalized match (splits camelCase and removes extra spaces)
-  const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));
-  const normalizedSearch = getCachedNormalization(searchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
-
-  return normalizedTarget.includes(normalizedSearch);
 }
 
 /**
