@@ -1,0 +1,6 @@
+{
+  "virtual-machines": {
+    "name": "Virtual Machines",
+    "description": "Guides about Azure VMs, sizing, and compute resources"
+  }
+}
