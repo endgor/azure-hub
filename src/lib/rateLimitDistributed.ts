@@ -135,14 +135,3 @@ export function isDistributedRateLimitEnabled(): boolean {
   return Boolean(hasRedis && useDistributed);
 }
 
-/**
- * Get current rate limit configuration.
- */
-export function getRateLimitConfig() {
-  return {
-    limit: RATE_LIMIT_REQUESTS,
-    windowMs: RATE_LIMIT_WINDOW_MS,
-    distributed: isDistributedRateLimitEnabled(),
-    backend: isDistributedRateLimitEnabled() ? 'Redis' : 'In-Memory (per-instance)'
-  };
-}

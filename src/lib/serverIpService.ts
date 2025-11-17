@@ -2,7 +2,7 @@ import IPCIDR from 'ip-cidr';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { AzureIpAddress } from '../types/azure';
-import { getCachedNormalization } from './normalization';
+import { matchesSearchTerm } from './utils/searchMatcher';
 import { CACHE_TTL_MS } from '@/config/constants';
 
 /**
@@ -22,25 +22,6 @@ let ipCacheExpiry = 0;
 export interface SearchOptions {
   region?: string;
   service?: string;
-}
-
-/**
- * Multi-strategy search term matcher with normalization.
- */
-function matchesSearchTerm(target: string, searchTerm: string): boolean {
-  if (!target) return false;
-
-  const targetLower = target.toLowerCase();
-  const searchLower = searchTerm.toLowerCase();
-
-  // Strategy 1: Direct substring match
-  if (targetLower.includes(searchLower)) return true;
-
-  // Strategy 2: Normalized match (splits camelCase and removes extra spaces)
-  const normalizedTarget = getCachedNormalization(target.replace(/([a-z])([A-Z])/g, '$1 $2'));
-  const normalizedSearch = getCachedNormalization(searchTerm.replace(/([a-z])([A-Z])/g, '$1 $2'));
-
-  return normalizedTarget.includes(normalizedSearch);
 }
 
 /**
@@ -114,9 +95,12 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
  * Searches Azure IP ranges by region and/or service name.
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
-  const { region, service } = options;
+  const regionFilter = options.region?.trim();
+  const serviceFilter = options.service?.trim();
+  const hasRegionFilter = Boolean(regionFilter);
+  const hasServiceFilter = Boolean(serviceFilter);
 
-  if (!region && !service) {
+  if (!hasRegionFilter && !hasServiceFilter) {
     return [];
   }
 
@@ -127,16 +111,16 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
 
   let results = azureIpAddressList;
 
-  if (region) {
-    results = results.filter(ip => matchesSearchTerm(ip.region, region));
+  if (hasRegionFilter && regionFilter) {
+    results = results.filter(ip => matchesSearchTerm(ip.region, regionFilter));
   }
 
-  if (service) {
+  if (hasServiceFilter && serviceFilter) {
     results = results.filter(ip => {
-      if (ip.systemService && matchesSearchTerm(ip.systemService, service)) {
+      if (ip.systemService && matchesSearchTerm(ip.systemService, serviceFilter)) {
         return true;
       }
-      return matchesSearchTerm(ip.serviceTagId, service);
+      return matchesSearchTerm(ip.serviceTagId, serviceFilter);
     });
   }
 
