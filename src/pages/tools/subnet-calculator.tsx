@@ -299,7 +299,7 @@ export default function SubnetCalculatorPage(): ReactElement {
 
   return (
     <Layout
-      title="Azure Subnet Calculator"
+      title="Azure Subnet Calculator - Plan & Split CIDR Networks"
       description="Plan Azure address spaces, model subnet splits, and export allocation charts with the Azure Hub subnet calculator."
       keywords={[
         'azure subnet calculator',

@@ -29,54 +29,54 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
 
   return (
     <Layout
-      title="About Azure Hub"
+      title="About Azure Hub - Mission, Data Sources & Project Roadmap"
       description="Discover the mission, data refresh cadence, and upcoming roadmap for Azure Hub, the home for Azure networking tools."
     >
       <section className="space-y-8">
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h1 className="text-2xl font-semibold text-slate-900">About Azure Hub</h1>
-          <p className="text-sm text-slate-600">
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">About Azure Hub</h1>
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             Azure Hub started as a simple IP lookup tool and is steadily growing into a multi-feature workspace for Azure
             administrators who need fast access to the right utilities. It remains a hobby project maintained by me (Ender),
-            with a focus on making common networking tasks quicker to execute and easier to repeat.
+            with a focus on making common networking and identity tasks quicker to execute and easier to repeat.
           </p>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             Data on this site refreshes daily from the official Microsoft feeds across Azure Public, China, and US
             Government clouds.
           </p>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">Service tag feeds &amp; definitions</h2>
-          <p className="text-sm text-slate-600">
-            Review the latest change numbers, download locations, and retrieval timestamps for each supported cloud. The
-            table updates automatically whenever Microsoft publishes new payloads.
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Service tag feeds &amp; definitions</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-300">
+            Service tag data comes from Microsoft's official Download Center feeds for Azure Public, China, and US Government clouds.
+            The table below shows the latest change numbers and retrieval timestamps for each feed.
           </p>
           <DefinitionsTable metadata={fileMetadata} />
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">RBAC Role Definitions</h2>
-          <p className="text-sm text-slate-600">
-            Built-in Azure role definitions are retrieved from the Azure Resource Manager API and updated periodically to
-            ensure the RBAC Calculator has the latest role permissions.
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">RBAC Role Definitions</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-300">
+            Built-in role definitions are retrieved from the Azure Resource Manager API and Microsoft Graph API.
+            These are updated periodically to keep the calculators current with newly released roles and permissions.
           </p>
           {rbacLastRetrieved && (
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               <strong>Last retrieved:</strong> {formatDate(rbacLastRetrieved)}
             </p>
           )}
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">Open source &amp; feedback</h2>
-          <p className="text-sm text-slate-600">
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Open source &amp; feedback</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-300">
             Azure Hub is an independent community project. Visit the{' '}
             <Link
               href="https://github.com/endgor/azure-hub"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-sky-600 hover:text-sky-700"
+              className="font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
             >
               GitHub repository
             </Link>{' '}
@@ -84,15 +84,15 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
           </p>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-          <h2 className="text-xl font-semibold text-slate-900">Credits</h2>
-          <ul className="space-y-2 text-sm text-slate-600">
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Credits</h2>
+          <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
             <li>
               <Link
                 href="https://github.com/davidc/subnets"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-sky-600 hover:text-sky-700"
+                className="font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
               >
                 DavidC
               </Link>{' '}
@@ -103,7 +103,7 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
                 href="https://github.com/vjirovsky/azure-rbac-least-calculator"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-sky-600 hover:text-sky-700"
+                className="font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
               >
                 Václav Jirovsky
               </Link>{' '}
