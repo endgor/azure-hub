@@ -11,36 +11,7 @@ interface RateLimitResult {
 }
 
 /**
- * In-memory rate limiter implementation.
- *
- * ⚠️ IMPORTANT LIMITATION - Per-Instance Only:
- * This rate limiter stores state in memory, which means each serverless function
- * instance maintains its own separate counter. On platforms like Vercel, AWS Lambda,
- * or any multi-instance deployment:
- *
- * - Each request may hit a different instance
- * - Attackers can bypass limits by retrying until they hit a different instance
- * - Rate limits are enforced per-instance, not globally
- *
- * For production use with distributed deployments, consider migrating to:
- *
- * 1. **Vercel KV** (Redis):
- *    - Install: npm install @vercel/kv
- *    - Set up: https://vercel.com/docs/storage/vercel-kv
- *
- * 2. **Upstash Redis**:
- *    - Install: npm install @upstash/redis
- *    - Set up: https://upstash.com/
- *
- * 3. **Vercel Edge Config** (for simple read-heavy rate limits):
- *    - Install: npm install @vercel/edge-config
- *
- * 4. **Cloudflare Workers KV** (if using Cloudflare)
- *
- * The current implementation is suitable for:
- * - Development environments
- * - Single-instance deployments
- * - Basic abuse prevention (not security-critical)
+ * Request rate limiter for API endpoints.
  */
 export class RateLimiter {
   private cache: Map<string, RateLimitEntry>;
@@ -55,13 +26,6 @@ export class RateLimiter {
     this.cleanupInterval = null;
     this.startCleanup();
 
-    // Log warning in production environments with serverless deployment
-    if (process.env.NODE_ENV === 'production' && (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME)) {
-      console.warn(
-        '[RateLimit] Using in-memory rate limiter in distributed environment. ' +
-        'Rate limits are per-instance only. Consider using Redis (Vercel KV/Upstash) for global limits.'
-      );
-    }
   }
 
   private startCleanup(): void {
@@ -135,12 +99,6 @@ const rateLimiter = new RateLimiter(RATE_LIMIT_REQUESTS, RATE_LIMIT_WINDOW_MS);
 
 /**
  * Extracts client identifier for rate limiting.
- *
- * On Vercel, x-forwarded-for is reliably set by the platform and can be trusted.
- * In other environments, falls back to socket remote address.
- *
- * Security note: Only trusts x-forwarded-for when VERCEL=1 environment variable
- * is set, otherwise uses socket address to prevent header spoofing.
  */
 export function getClientIdentifier(req: {
   headers: Record<string, string | string[] | undefined>;
@@ -148,7 +106,6 @@ export function getClientIdentifier(req: {
 }): string {
   const isVercel = process.env.VERCEL === '1';
 
-  // On Vercel, trust x-forwarded-for header set by the platform
   if (isVercel) {
     const forwarded = req.headers['x-forwarded-for'];
     if (typeof forwarded === 'string') {
@@ -160,38 +117,13 @@ export function getClientIdentifier(req: {
     if (typeof realIp === 'string' && realIp) return realIp;
   }
 
-  // Fallback to socket address (cannot be spoofed)
   if (req.socket?.remoteAddress) {
     return req.socket.remoteAddress;
   }
 
-  // Last resort fallback
   return 'unknown';
 }
 
-/**
- * Check rate limit for an identifier.
- * Automatically uses distributed (Vercel KV) limiter if configured,
- * otherwise falls back to in-memory limiter.
- *
- * To enable distributed rate limiting:
- * 1. Install: npm install @vercel/kv
- * 2. Set up Vercel KV in dashboard
- * 3. Set environment variable: USE_DISTRIBUTED_RATE_LIMIT=true
- */
 export async function checkRateLimit(identifier: string): Promise<RateLimitResult> {
-  // Try distributed rate limiter first (if configured)
-  if (process.env.USE_DISTRIBUTED_RATE_LIMIT === 'true') {
-    try {
-      const { checkRateLimitDistributed, isDistributedRateLimitEnabled } = await import('./rateLimitDistributed');
-      if (isDistributedRateLimitEnabled()) {
-        return await checkRateLimitDistributed(identifier);
-      }
-    } catch (error) {
-      console.warn('[RateLimit] Distributed limiter failed, falling back to in-memory:', error);
-    }
-  }
-
-  // Fall back to in-memory limiter
   return rateLimiter.check(identifier);
 }
