@@ -183,7 +183,7 @@ export default function IpLookupPage() {
 
   return (
     <Layout
-      title="Azure IP Lookup"
+      title="Azure IP Lookup - Verify IP Addresses & Service Tags"
       description="Search Microsoft Azure IP ranges, CIDR prefixes, and service tags with the Azure Hub IP lookup tool."
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },

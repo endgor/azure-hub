@@ -105,7 +105,7 @@ export const entraIdConfig: RoleSystemConfig = {
   },
 
   metadata: {
-    title: 'Entra ID Roles - Least Privilege Calculator',
+    title: 'Entra ID Roles Calculator - Find Least Privilege Directory Roles',
     description:
       'Find the least privileged Microsoft Entra ID role for managing directory objects like users, groups, and applications. Search by permissions to discover built-in roles that grant access without excessive privileges.',
     keywords: [

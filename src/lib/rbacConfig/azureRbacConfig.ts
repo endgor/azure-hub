@@ -99,7 +99,7 @@ export const azureRbacConfig: RoleSystemConfig = {
   },
 
   metadata: {
-    title: 'Azure RBAC Calculator & Role Generator',
+    title: 'Azure RBAC Calculator - Find Least Privilege Roles & Generate Custom Definitions',
     description:
       'Find the least privileged Azure RBAC roles and generate custom role definitions for your required permissions using Azure Hub\'s RBAC calculator and role generator.',
     keywords: [

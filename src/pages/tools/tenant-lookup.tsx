@@ -159,7 +159,7 @@ export default function TenantLookupPage() {
 
   return (
     <Layout
-      title="Azure Tenant Lookup"
+      title="Azure Tenant Lookup - Discover Tenant IDs & Metadata"
       description="Find Microsoft Entra tenant IDs, default domains, and cloud instances from any verified domain with the Azure Hub tenant lookup tool."
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },

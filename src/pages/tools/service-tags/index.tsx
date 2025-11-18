@@ -61,7 +61,7 @@ export default function ServiceTags() {
 
   return (
     <Layout
-      title="Azure Service Tags"
+      title="Azure Service Tags - Browse IP Ranges & Network Features"
       description="Explore Microsoft Azure service tags, discover associated IP ranges, and research network dependencies by cloud region."
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },
