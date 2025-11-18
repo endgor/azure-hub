@@ -49,7 +49,7 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
         <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Service tag feeds &amp; definitions</h2>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Service tag data comes from Microsoft's official Download Center feeds for Azure Public, China, and US Government clouds.
+            Service tag data comes from Microsoft&apos;s official Download Center feeds for Azure Public, China, and US Government clouds.
             The table below shows the latest change numbers and retrieval timestamps for each feed.
           </p>
           <DefinitionsTable metadata={fileMetadata} />
