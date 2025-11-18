@@ -67,9 +67,7 @@ const REGION_SCOPE_LABELS: Record<string, string> = {
 
 class MissingCredentialsError extends Error {
   constructor() {
-    super(
-      'Missing Azure AD app registration credentials. Set AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, and AZURE_TENANT_ID (or legacy GRAPH_* equivalents).'
-    );
+    super('Missing required Azure credentials');
     this.name = 'MissingCredentialsError';
   }
 }

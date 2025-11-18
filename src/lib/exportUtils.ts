@@ -34,12 +34,11 @@ export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
 /**
  * Exports data to CSV format using PapaParse library.
  * Uses dynamic import to reduce initial bundle size.
- * Sanitizes all string values to prevent formula injection.
  */
 export async function exportToCSV<T extends ExportRow>(data: T[], filename: string = 'azure-ip-ranges.csv'): Promise<void> {
   const Papa = (await import('papaparse')).default;
 
-  // Sanitize all string values in the data to prevent formula injection
+  // Sanitize all string values in the data
   const sanitizedData = data.map(row => {
     const sanitizedRow: ExportRow = {};
     for (const [key, value] of Object.entries(row)) {
@@ -141,16 +140,7 @@ export function generateFilename(query: string, format: 'csv' | 'xlsx' | 'md'): 
 }
 
 /**
- * Sanitizes cell values to prevent CSV/Excel formula injection.
- *
- * CSV injection (also known as formula injection) occurs when spreadsheet applications
- * interpret cell values starting with =, +, -, @, \t, \r, or \n as formulas, which can
- * execute arbitrary commands when the file is opened.
- *
- * This function prefixes potentially dangerous values with a single quote to force
- * spreadsheet applications to treat them as text literals.
- *
- * @see https://owasp.org/www-community/attacks/CSV_Injection
+ * Sanitizes CSV export values to ensure safe spreadsheet imports.
  */
 function sanitizeCellValue(value: string): string {
   if (!value || value.length === 0) return value;
@@ -169,7 +159,6 @@ function sanitizeCellValue(value: string): string {
 /**
  * Formats cell values for Excel export.
  * Preserves numbers as numeric type, converts booleans to TRUE/FALSE strings.
- * Sanitizes strings to prevent formula injection.
  */
 function formatCellValue(value: ExportRow[keyof ExportRow]): string | number {
   if (value == null) return '';

@@ -113,7 +113,6 @@ function escapeXml(unsafe) {
 
 /**
  * Validates service tag name format
- * Only allows alphanumeric characters, dots, underscores, and hyphens
  * @param {string} tag - Service tag name to validate
  * @returns {boolean} True if valid, false otherwise
  */
@@ -215,7 +214,7 @@ function generateSitemap() {
 ${serviceTagsArray
   .filter(tag => {
     if (!isValidServiceTag(tag)) {
-      console.warn(`⚠ Skipping invalid service tag (contains special characters): ${tag}`);
+      console.warn(`⚠ Skipping invalid service tag: ${tag}`);
       return false;
     }
     // Only include popular/commonly-used service tags

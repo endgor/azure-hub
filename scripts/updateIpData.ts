@@ -52,7 +52,6 @@ function extractFilenameFromUrl(url: string): string {
 
 /**
  * Validates service tag name format
- * Only allows alphanumeric characters, dots, underscores, and hyphens
  * @param tag - Service tag name to validate
  * @returns True if valid, false otherwise
  */
@@ -61,7 +60,7 @@ function isValidServiceTagName(tag: string): boolean {
 }
 
 /**
- * Validates Azure service tags data for security
+ * Validates Azure service tags data
  * @param data - Azure service tags data to validate
  * @returns Validated data with invalid tags filtered out
  */
@@ -79,8 +78,7 @@ function validateAndSanitizeData(data: AzureServiceTagsRoot): AzureServiceTagsRo
     }
 
     if (!isValidServiceTagName(item.name)) {
-      console.warn(`⚠ SECURITY: Rejecting service tag with invalid characters: "${item.name}"`);
-      console.warn(`  Expected format: alphanumeric, dots, underscores, hyphens only`);
+      console.warn(`⚠ Rejecting service tag with invalid format: "${item.name}"`);
       return false;
     }
 
@@ -378,7 +376,7 @@ async function updateAllIpData(): Promise<void> {
       const fileContent = fs.readFileSync(dataFilePath, 'utf8');
       let data = JSON.parse(fileContent) as AzureServiceTagsRoot;
 
-      // Validate and sanitize the data for security
+      // Validate and sanitize the data
       console.info(`Validating service tags for ${mapping.cloud}...`);
       data = validateAndSanitizeData(data);
 

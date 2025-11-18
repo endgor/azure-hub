@@ -13,14 +13,7 @@ interface DnsLookupResponse {
 }
 
 /**
- * API route to perform DNS lookup for hostnames.
- * Returns resolved IP addresses that can be used for Azure IP lookup.
- *
- * Security notes:
- * - Uses distributed rate limiting (Redis) to prevent bypass via cold starts
- * - Generic error messages to avoid leaking DNS resolver details
- * - On Vercel, only resolves public DNS (no internal network access)
- * - Falls back to in-memory rate limiting if Redis unavailable
+ * DNS lookup API route. Returns IP addresses for hostname resolution.
  */
 export default async function handler(
   req: NextApiRequest,
@@ -34,7 +27,6 @@ export default async function handler(
     });
   }
 
-  // Apply distributed rate limiting (uses Redis if configured)
   const clientId = getClientIdentifier(req);
   const rateLimitResult = await checkRateLimit(clientId);
 
@@ -50,7 +42,6 @@ export default async function handler(
     });
   }
 
-  // Set rate limit headers
   res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
   res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
   res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
@@ -64,8 +55,6 @@ export default async function handler(
       error: 'Hostname parameter is required'
     });
   }
-
-  // Basic hostname validation
   const hostnamePattern = /^[a-zA-Z0-9][a-zA-Z0-9-_.]*[a-zA-Z0-9]$/;
   if (!hostnamePattern.test(hostname)) {
     return res.status(400).json({
@@ -78,11 +67,9 @@ export default async function handler(
   try {
     const ipAddresses: string[] = [];
 
-    // Try IPv4 resolution
     const ipv4 = await resolve4(hostname).catch(() => []);
     ipAddresses.push(...ipv4);
 
-    // Try IPv6 resolution
     const ipv6 = await resolve6(hostname).catch(() => []);
     ipAddresses.push(...ipv6);
 
@@ -99,7 +86,6 @@ export default async function handler(
       ipAddresses
     });
   } catch (error) {
-    // Log detailed error internally but return generic message to prevent info leakage
     console.error('DNS lookup error:', error);
     return res.status(500).json({
       hostname: '',

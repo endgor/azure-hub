@@ -100,12 +100,6 @@ export function serialiseShareableSubnetPlan(plan: ShareableSubnetPlan): string 
 /**
  * Parses and validates a Base64URL-encoded subnet plan.
  * Returns null if parsing fails or data is invalid.
- *
- * Security measures:
- * - Validates all required fields and types
- * - Sanitizes color codes (must be valid hex)
- * - Limits comment length to 2000 chars
- * - Ensures unsigned integers for network addresses
  */
 export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan | null {
   try {
