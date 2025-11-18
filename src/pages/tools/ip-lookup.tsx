@@ -185,6 +185,18 @@ export default function IpLookupPage() {
     <Layout
       title="Azure IP Lookup - Verify IP Addresses & Service Tags"
       description="Search Microsoft Azure IP ranges, CIDR prefixes, and service tags with the Azure Hub IP lookup tool."
+      keywords={[
+        'azure ip lookup',
+        'azure ip checker',
+        'azure ip ranges',
+        'azure ip address lookup',
+        'azure service tags',
+        'azure cidr lookup',
+        'microsoft azure ip',
+        'azure networking tools',
+        'verify azure ip',
+        'azure ip verification'
+      ]}
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },
         { name: 'IP Lookup', url: 'https://azurehub.org/tools/ip-lookup/' }

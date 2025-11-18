@@ -161,6 +161,18 @@ export default function TenantLookupPage() {
     <Layout
       title="Azure Tenant Lookup - Discover Tenant IDs & Metadata"
       description="Find Microsoft Entra tenant IDs, default domains, and cloud instances from any verified domain with the Azure Hub tenant lookup tool."
+      keywords={[
+        'azure tenant lookup',
+        'tenant id lookup',
+        'azure id lookup',
+        'tenant domain lookup',
+        'tenant lookup microsoft',
+        'entra tenant lookup',
+        'azure ad tenant id',
+        'microsoft tenant discovery',
+        'azure tenant id finder',
+        'entra id tenant lookup'
+      ]}
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },
         { name: 'Tenant Lookup', url: 'https://azurehub.org/tools/tenant-lookup/' }
