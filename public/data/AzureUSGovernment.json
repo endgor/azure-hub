@@ -1,5 +1,5 @@
 {
-  "changeNumber": 373,
+  "changeNumber": 374,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -458,7 +458,7 @@
       "name": "AzureArcInfrastructure",
       "id": "AzureArcInfrastructure",
       "properties": {
-        "changeNumber": 10,
+        "changeNumber": 11,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -489,6 +489,7 @@
           "20.158.166.0/24",
           "20.158.170.192/29",
           "20.158.170.200/31",
+          "51.54.172.64/29",
           "52.126.205.62/32",
           "52.127.5.154/32",
           "52.127.12.234/31",
@@ -504,6 +505,7 @@
           "52.243.243.48/31",
           "52.245.156.122/31",
           "52.245.156.152/29",
+          "2001:489a:3103:8::f0/124",
           "2001:489a:3203:3::6d0/124",
           "2001:489a:3403:6::5d0/124",
           "2001:489a:3607:1::/64",
@@ -523,7 +525,7 @@
       "name": "AzureAttestation",
       "id": "AzureAttestation",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -535,6 +537,8 @@
           "20.140.94.140/30",
           "20.140.144.136/30",
           "20.140.154.84/30",
+          "51.54.170.216/29",
+          "51.54.231.96/29",
           "52.127.12.48/30",
           "52.127.29.128/30",
           "52.127.38.188/30",
@@ -1524,7 +1528,7 @@
       "name": "AzureMonitor",
       "id": "AzureMonitor",
       "properties": {
-        "changeNumber": 31,
+        "changeNumber": 32,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -1580,6 +1584,9 @@
           "20.159.232.208/30",
           "23.97.3.12/32",
           "23.97.4.113/32",
+          "51.54.170.192/28",
+          "51.54.207.32/28",
+          "51.54.231.16/28",
           "52.126.203.64/29",
           "52.126.203.192/29",
           "52.126.249.0/27",
@@ -1632,6 +1639,7 @@
           "2001:489a:3103:1::780/121",
           "2001:489a:3103:3::a0/123",
           "2001:489a:3103:3::100/122",
+          "2001:489a:3103:8::30/124",
           "2001:489a:3103:402::500/121",
           "2001:489a:3203::2a0/123",
           "2001:489a:3203::780/121",
@@ -1658,6 +1666,7 @@
           "2001:489a:3403:1::500/121",
           "2001:489a:3403:3::c0/123",
           "2001:489a:3403:3::100/122",
+          "2001:489a:3403:8::6e0/124",
           "2001:489a:3403:402::600/121",
           "2001:489a:3600::9f/128",
           "2001:489a:3602:a::4/128",
@@ -1709,13 +1718,12 @@
       "name": "AzurePortal",
       "id": "AzurePortal",
       "properties": {
-        "changeNumber": 7,
+        "changeNumber": 8,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "AzurePortal",
         "addressPrefixes": [
-          "13.72.12.98/32",
           "20.140.48.232/29",
           "20.140.49.160/28",
           "20.140.49.180/30",
@@ -1739,12 +1747,6 @@
           "20.140.153.152/29",
           "20.159.108.32/28",
           "20.159.108.64/28",
-          "23.97.12.183/32",
-          "23.97.26.80/32",
-          "23.97.28.145/32",
-          "23.97.29.154/32",
-          "23.97.30.7/32",
-          "23.97.30.48/32",
           "52.126.250.80/28",
           "52.127.20.16/28",
           "52.127.49.168/29",
@@ -1753,16 +1755,6 @@
           "52.127.50.168/30",
           "52.127.50.176/28",
           "52.127.55.8/29",
-          "52.227.15.80/32",
-          "52.227.80.140/32",
-          "52.238.115.136/32",
-          "52.238.116.132/32",
-          "52.238.118.115/32",
-          "52.238.118.253/32",
-          "52.238.119.77/32",
-          "52.244.48.71/32",
-          "52.244.64.173/32",
-          "52.244.67.177/32",
           "52.244.239.32/27",
           "62.10.84.112/28",
           "62.10.84.144/28",
@@ -3988,7 +3980,7 @@
       "name": "SerialConsole",
       "id": "SerialConsole",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -4003,8 +3995,14 @@
           "20.141.13.121/32",
           "20.141.15.104/32",
           "20.159.233.94/31",
+          "20.159.235.71/32",
+          "20.159.235.134/31",
+          "51.54.207.224/31",
+          "51.54.207.226/32",
           "52.127.55.131/32",
           "52.181.41.132/31",
+          "52.181.43.177/32",
+          "52.181.51.100/31",
           "52.235.252.252/31",
           "52.243.247.124/32",
           "52.245.155.139/32",
@@ -4213,6 +4211,27 @@
           "NSG",
           "UDR",
           "FW"
+        ]
+      }
+    },
+    {
+      "name": "SystemServiceAzureSpringAppsResourceProvider",
+      "id": "SystemServiceAzureSpringAppsResourceProvider",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "regionId": 0,
+        "platform": "Azure",
+        "systemService": "SystemServiceAzureSpringAppsResourceProvider",
+        "addressPrefixes": [
+          "62.10.193.64/27",
+          "62.11.9.128/27"
+        ],
+        "networkFeatures": [
+          "NSG",
+          "API",
+          "FW",
+          "UDR"
         ]
       }
     },
@@ -4908,7 +4927,7 @@
       "name": "AzureArcInfrastructure.USGovVirginia",
       "id": "AzureArcInfrastructure.USGovVirginia",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -4919,9 +4938,11 @@
           "20.140.200.18/31",
           "20.141.167.218/31",
           "20.141.167.224/29",
+          "51.54.172.64/29",
           "52.127.42.163/32",
           "52.127.50.160/30",
-          "52.127.55.0/30"
+          "52.127.55.0/30",
+          "2001:489a:3103:8::f0/124"
         ],
         "networkFeatures": null
       }
@@ -4963,13 +4984,14 @@
       "name": "AzureAttestation.USGovArizona",
       "id": "AzureAttestation.USGovArizona",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
         "systemService": "AzureAttestation",
         "addressPrefixes": [
           "20.140.53.116/30",
+          "51.54.231.96/29",
           "52.127.12.48/30",
           "2001:489a:3604:2::700/124"
         ],
@@ -5013,13 +5035,14 @@
       "name": "AzureAttestation.USGovVirginia",
       "id": "AzureAttestation.USGovVirginia",
       "properties": {
-        "changeNumber": 1,
+        "changeNumber": 2,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
         "systemService": "AzureAttestation",
         "addressPrefixes": [
           "20.140.94.140/30",
+          "51.54.170.216/29",
           "52.127.55.156/30"
         ],
         "networkFeatures": null
@@ -6734,7 +6757,7 @@
       "name": "AzureMonitor.USGovArizona",
       "id": "AzureMonitor.USGovArizona",
       "properties": {
-        "changeNumber": 21,
+        "changeNumber": 22,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -6759,6 +6782,7 @@
           "20.158.174.32/27",
           "20.158.174.64/26",
           "20.158.176.0/28",
+          "51.54.231.16/28",
           "52.127.2.232/29",
           "52.127.3.184/29",
           "52.127.10.80/30",
@@ -6816,7 +6840,7 @@
       "name": "AzureMonitor.USGovTexas",
       "id": "AzureMonitor.USGovTexas",
       "properties": {
-        "changeNumber": 13,
+        "changeNumber": 14,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -6829,6 +6853,7 @@
           "20.140.147.170/31",
           "20.159.106.0/27",
           "20.159.106.64/26",
+          "51.54.207.32/28",
           "52.127.34.208/28",
           "52.127.35.208/29",
           "62.11.95.16/28",
@@ -6842,6 +6867,7 @@
           "2001:489a:3403:1::500/121",
           "2001:489a:3403:3::c0/123",
           "2001:489a:3403:3::100/122",
+          "2001:489a:3403:8::6e0/124",
           "2001:489a:3403:402::600/121"
         ],
         "networkFeatures": [
@@ -6853,7 +6879,7 @@
       "name": "AzureMonitor.USGovVirginia",
       "id": "AzureMonitor.USGovVirginia",
       "properties": {
-        "changeNumber": 18,
+        "changeNumber": 19,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -6875,6 +6901,7 @@
           "20.159.7.192/26",
           "23.97.3.12/32",
           "23.97.4.113/32",
+          "51.54.170.192/28",
           "52.127.42.168/29",
           "52.127.43.152/29",
           "52.127.48.68/31",
@@ -6897,6 +6924,7 @@
           "2001:489a:3103:1::780/121",
           "2001:489a:3103:3::a0/123",
           "2001:489a:3103:3::100/122",
+          "2001:489a:3103:8::30/124",
           "2001:489a:3103:402::500/121"
         ],
         "networkFeatures": [
@@ -6947,7 +6975,7 @@
       "name": "AzurePortal.USGovArizona",
       "id": "AzurePortal.USGovArizona",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -6959,9 +6987,6 @@
           "20.140.49.184/30",
           "20.140.52.104/29",
           "52.127.20.16/28",
-          "52.244.48.71/32",
-          "52.244.64.173/32",
-          "52.244.67.177/32",
           "52.244.239.32/27",
           "2001:489a:3604::680/121",
           "2001:489a:3604:1::100/121"
@@ -6973,19 +6998,14 @@
       "name": "AzurePortal.USGovIowa",
       "id": "AzurePortal.USGovIowa",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgoviowa",
         "regionId": 40,
         "platform": "Azure",
         "systemService": "AzurePortal",
         "addressPrefixes": [
           "20.140.152.104/30",
-          "20.140.153.152/29",
-          "23.97.26.80/32",
-          "23.97.28.145/32",
-          "23.97.29.154/32",
-          "23.97.30.7/32",
-          "23.97.30.48/32"
+          "20.140.153.152/29"
         ],
         "networkFeatures": null
       }
@@ -6994,7 +7014,7 @@
       "name": "AzurePortal.USGovTexas",
       "id": "AzurePortal.USGovTexas",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -7008,11 +7028,6 @@
           "20.140.144.56/31",
           "20.159.108.32/28",
           "20.159.108.64/28",
-          "52.238.115.136/32",
-          "52.238.116.132/32",
-          "52.238.118.115/32",
-          "52.238.118.253/32",
-          "52.238.119.77/32",
           "62.11.95.32/27",
           "2001:489a:3403::700/121"
         ],
@@ -7023,23 +7038,19 @@
       "name": "AzurePortal.USGovVirginia",
       "id": "AzurePortal.USGovVirginia",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
         "systemService": "AzurePortal",
         "addressPrefixes": [
-          "13.72.12.98/32",
           "20.140.94.160/28",
-          "23.97.12.183/32",
           "52.127.49.168/29",
           "52.127.49.184/30",
           "52.127.50.164/30",
           "52.127.50.168/30",
           "52.127.50.176/28",
           "52.127.55.8/29",
-          "52.227.15.80/32",
-          "52.227.80.140/32",
           "62.10.84.112/28",
           "62.10.84.144/28",
           "2001:489a:3103::680/121",
@@ -10273,35 +10284,6 @@
       }
     },
     {
-      "name": "AzurePortal.AzureAppServiceUx",
-      "id": "AzurePortal.AzureAppServiceUx",
-      "properties": {
-        "changeNumber": 1,
-        "region": "",
-        "regionId": 0,
-        "platform": "Azure",
-        "systemService": "AzurePortal",
-        "addressPrefixes": [
-          "23.97.26.80/32",
-          "23.97.28.145/32",
-          "23.97.29.154/32",
-          "23.97.30.7/32",
-          "23.97.30.48/32",
-          "52.238.115.136/32",
-          "52.238.116.132/32",
-          "52.238.118.115/32",
-          "52.238.118.253/32",
-          "52.238.119.77/32"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
       "name": "DataFactoryManagement",
       "id": "DataFactoryManagement",
       "properties": {
@@ -10737,7 +10719,7 @@
       "name": "AzureCloud.usgovarizona",
       "id": "AzureCloud.usgovarizona",
       "properties": {
-        "changeNumber": 65,
+        "changeNumber": 66,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -10748,7 +10730,12 @@
           "13.72.140.0/24",
           "13.72.144.0/24",
           "13.72.146.0/24",
+          "13.72.148.0/24",
+          "13.72.150.0/24",
+          "13.72.152.0/24",
+          "13.72.154.0/24",
           "13.72.156.0/24",
+          "13.72.158.0/24",
           "13.73.65.0/24",
           "20.34.40.0/22",
           "20.34.44.0/23",
@@ -10887,7 +10874,7 @@
       "name": "AzureCloud.usgoviowa",
       "id": "AzureCloud.usgoviowa",
       "properties": {
-        "changeNumber": 20,
+        "changeNumber": 21,
         "region": "usgoviowa",
         "regionId": 40,
         "platform": "Azure",
@@ -10920,13 +10907,8 @@
           "23.97.22.52/32",
           "23.97.22.130/32",
           "23.97.23.124/32",
-          "23.97.26.80/32",
-          "23.97.28.145/32",
           "23.97.28.154/32",
-          "23.97.29.154/32",
           "23.97.29.209/32",
-          "23.97.30.7/32",
-          "23.97.30.48/32",
           "23.97.40.64/26",
           "40.66.2.128/28",
           "40.66.3.128/27",
@@ -10960,7 +10942,7 @@
       "name": "AzureCloud.usgovtexas",
       "id": "AzureCloud.usgovtexas",
       "properties": {
-        "changeNumber": 54,
+        "changeNumber": 55,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -10971,7 +10953,12 @@
           "13.72.141.0/24",
           "13.72.145.0/24",
           "13.72.147.0/24",
+          "13.72.149.0/24",
+          "13.72.151.0/24",
+          "13.72.153.0/24",
+          "13.72.155.0/24",
           "13.72.157.0/24",
+          "13.72.159.0/24",
           "20.34.38.0/23",
           "20.35.248.0/26",
           "20.140.20.0/22",
@@ -11223,7 +11210,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 115,
+        "changeNumber": 116,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -11240,8 +11227,18 @@
           "13.72.145.0/24",
           "13.72.146.0/24",
           "13.72.147.0/24",
+          "13.72.148.0/24",
+          "13.72.149.0/24",
+          "13.72.150.0/24",
+          "13.72.151.0/24",
+          "13.72.152.0/24",
+          "13.72.153.0/24",
+          "13.72.154.0/24",
+          "13.72.155.0/24",
           "13.72.156.0/24",
           "13.72.157.0/24",
+          "13.72.158.0/24",
+          "13.72.159.0/24",
           "13.72.168.64/27",
           "13.72.180.105/32",
           "13.72.184.23/32",
@@ -11390,13 +11387,8 @@
           "23.97.22.52/32",
           "23.97.22.130/32",
           "23.97.23.124/32",
-          "23.97.26.80/32",
-          "23.97.28.145/32",
           "23.97.28.154/32",
-          "23.97.29.154/32",
           "23.97.29.209/32",
-          "23.97.30.7/32",
-          "23.97.30.48/32",
           "23.97.32.0/21",
           "23.97.40.64/26",
           "40.66.0.128/27",
