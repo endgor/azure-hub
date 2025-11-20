@@ -51,8 +51,8 @@ export function buildShareableSubnetPlan({
   rowComments,
   tree
 }: BuildSharePlanOptions): ShareableSubnetPlan {
+  // Build shareable entries from actual leaves
   const shareLeaves: ShareableLeaf[] = [...leaves]
-    .sort((a, b) => a.network - b.network)
     .map((leaf) => {
       const entry: ShareableLeaf = {
         n: leaf.network,
@@ -78,6 +78,30 @@ export function buildShareableSubnetPlan({
       }
       return entry;
     });
+
+  // Also include VNet parents that have children (locked VNets)
+  // These are not leaves but need to be serialized to preserve the VNet type
+  Object.values(tree).forEach((node) => {
+    if (node.children && node.networkType === 'vnet') {
+      const entry: ShareableLeaf = {
+        n: node.network,
+        p: node.prefix,
+        t: 'v'
+      };
+      const color = rowColors[node.id];
+      const comment = rowComments[node.id]?.trim();
+      if (color) {
+        entry.c = color;
+      }
+      if (comment) {
+        entry.m = comment;
+      }
+      shareLeaves.push(entry);
+    }
+  });
+
+  // Sort by network address for consistent encoding
+  shareLeaves.sort((a, b) => a.n - b.n);
 
   return {
     v: 1,
