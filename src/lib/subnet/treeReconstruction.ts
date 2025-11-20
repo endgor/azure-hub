@@ -2,9 +2,6 @@ import type { SubnetTree, NetworkType } from './types';
 import {
   createTreeFromLeafDefinitions
 } from './treeBuilder';
-import {
-  collectLeaves
-} from './treeTraversal';
 import type { ShareableSubnetPlan } from '@/lib/shareSubnetPlan';
 
 export interface ReconstructedState {
@@ -60,31 +57,32 @@ export function reconstructTreeFromSharePlan(
     }
   });
 
-  const rebuiltLeaves = collectLeaves(rebuiltTree, rootId);
   const nextColors: Record<string, string> = {};
   const nextComments: Record<string, string> = {};
 
   // Apply metadata to rebuilt tree
   let updatedTree = rebuiltTree;
-  rebuiltLeaves.forEach((leaf) => {
-    const mapKey = `${leaf.network}/${leaf.prefix}`;
+
+  // First apply metadata to all nodes (including VNet parents)
+  Object.values(rebuiltTree).forEach((node) => {
+    const mapKey = `${node.network}/${node.prefix}`;
 
     const mappedColor = colorByKey.get(mapKey);
     if (mappedColor) {
-      nextColors[leaf.id] = mappedColor;
+      nextColors[node.id] = mappedColor;
     }
 
     const mappedComment = commentByKey.get(mapKey);
     if (mappedComment) {
-      nextComments[leaf.id] = mappedComment;
+      nextComments[node.id] = mappedComment;
     }
 
     const mappedType = typeByKey.get(mapKey);
     if (mappedType) {
       updatedTree = {
         ...updatedTree,
-        [leaf.id]: {
-          ...updatedTree[leaf.id],
+        [node.id]: {
+          ...updatedTree[node.id],
           networkType: mappedType
         }
       };
