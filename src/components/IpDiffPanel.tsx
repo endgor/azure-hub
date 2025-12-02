@@ -1,0 +1,335 @@
+import { useState, useEffect } from 'react';
+import { loadIpDiff } from '@/lib/clientIpDiffService';
+import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
+
+interface IpDiffPanelProps {
+  className?: string;
+}
+
+export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [diffData, setDiffData] = useState<IpDiffFile | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
+
+  // Load diff data when panel is expanded
+  useEffect(() => {
+    if (isExpanded && !diffData && !isLoading) {
+      setIsLoading(true);
+      setError(null);
+
+      loadIpDiff()
+        .then((data) => {
+          setDiffData(data);
+        })
+        .catch((err) => {
+          setError(err.message || 'Failed to load diff data');
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [isExpanded, diffData, isLoading]);
+
+  const toggleTag = (tagName: string) => {
+    setExpandedTags((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(tagName)) {
+        newSet.delete(tagName);
+      } else {
+        newSet.add(tagName);
+      }
+      return newSet;
+    });
+  };
+
+  // Don't render if there's no diff data and we've finished loading
+  if (!isExpanded && diffData === null && !isLoading) {
+    // Still render collapsed header to allow loading
+  }
+
+  const summary = diffData?.meta.summary;
+  const hasChanges = summary && (
+    summary.totalPrefixesAdded > 0 ||
+    summary.totalPrefixesRemoved > 0 ||
+    summary.serviceTagsAdded > 0 ||
+    summary.serviceTagsRemoved > 0
+  );
+
+  return (
+    <div className={`rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900 ${className}`}>
+      {/* Collapsible Header */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="flex w-full items-center justify-between px-5 py-4 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+      >
+        <div className="flex items-center gap-3">
+          <svg
+            className={`h-5 w-5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+          <span className="font-medium text-slate-900 dark:text-slate-100">Recent Changes</span>
+          {summary && hasChanges && (
+            <span className="rounded-full bg-sky-100 px-2.5 py-0.5 text-xs font-medium text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
+              {summary.totalPrefixesAdded > 0 && `+${summary.totalPrefixesAdded}`}
+              {summary.totalPrefixesAdded > 0 && summary.totalPrefixesRemoved > 0 && ', '}
+              {summary.totalPrefixesRemoved > 0 && `-${summary.totalPrefixesRemoved}`}
+              {' '}prefixes
+            </span>
+          )}
+        </div>
+        {diffData && (
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            v{diffData.meta.fromChangeNumber} → v{diffData.meta.toChangeNumber}
+          </span>
+        )}
+      </button>
+
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="border-t border-slate-200 px-5 py-4 dark:border-slate-700">
+          {isLoading && (
+            <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              Loading changes...
+            </div>
+          )}
+
+          {error && (
+            <div className="text-sm text-rose-600 dark:text-rose-400">
+              {error}
+            </div>
+          )}
+
+          {!isLoading && !error && !diffData && (
+            <div className="text-sm text-slate-500 dark:text-slate-400">
+              No version history available yet. Changes will appear after the next data update.
+            </div>
+          )}
+
+          {!isLoading && !error && diffData && !hasChanges && (
+            <div className="text-sm text-slate-500 dark:text-slate-400">
+              No IP prefix changes between versions.
+            </div>
+          )}
+
+          {!isLoading && !error && diffData && hasChanges && (
+            <div className="space-y-4">
+              {/* Version Info */}
+              <div className="text-xs text-slate-500 dark:text-slate-400">
+                Updated {new Date(diffData.meta.generatedAt).toLocaleDateString()}
+              </div>
+
+              {/* Added Tags Section */}
+              {diffData.addedTags.length > 0 && (
+                <TagSection
+                  title="New Service Tags"
+                  count={diffData.addedTags.length}
+                  tags={diffData.addedTags}
+                  type="added"
+                  expandedTags={expandedTags}
+                  onToggleTag={toggleTag}
+                />
+              )}
+
+              {/* Removed Tags Section */}
+              {diffData.removedTags.length > 0 && (
+                <TagSection
+                  title="Removed Service Tags"
+                  count={diffData.removedTags.length}
+                  tags={diffData.removedTags}
+                  type="removed"
+                  expandedTags={expandedTags}
+                  onToggleTag={toggleTag}
+                />
+              )}
+
+              {/* Modified Tags Section */}
+              {diffData.modifiedTags.length > 0 && (
+                <ModifiedTagSection
+                  tags={diffData.modifiedTags}
+                  expandedTags={expandedTags}
+                  onToggleTag={toggleTag}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface TagSectionProps {
+  title: string;
+  count: number;
+  tags: AddedTag[] | RemovedTag[];
+  type: 'added' | 'removed';
+  expandedTags: Set<string>;
+  onToggleTag: (tagName: string) => void;
+}
+
+function TagSection({ title, count, tags, type, expandedTags, onToggleTag }: TagSectionProps) {
+  const colorClass = type === 'added'
+    ? 'text-emerald-700 dark:text-emerald-400'
+    : 'text-rose-700 dark:text-rose-400';
+
+  return (
+    <div>
+      <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        {title} ({count})
+      </h4>
+      <div className="space-y-1">
+        {tags.map((tag) => {
+          const isTagExpanded = expandedTags.has(tag.name);
+          return (
+            <div key={tag.name} className="rounded-lg bg-slate-50 dark:bg-slate-800">
+              <button
+                onClick={() => onToggleTag(tag.name)}
+                className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+              >
+                <div className="flex items-center gap-2">
+                  <svg
+                    className={`h-4 w-4 transition-transform ${isTagExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                  <span className={`font-medium ${colorClass}`}>
+                    {type === 'added' ? '+' : '-'} {tag.name}
+                  </span>
+                  {tag.region && (
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      ({tag.region})
+                    </span>
+                  )}
+                </div>
+                <span className="text-xs text-slate-500 dark:text-slate-400">
+                  {tag.prefixCount} prefixes
+                </span>
+              </button>
+              {isTagExpanded && tag.prefixes.length > 0 && (
+                <div className="border-t border-slate-200 px-3 py-2 dark:border-slate-700">
+                  <div className="max-h-48 overflow-y-auto">
+                    <div className="grid gap-0.5">
+                      {tag.prefixes.slice(0, 100).map((prefix, idx) => (
+                        <div key={idx} className={`font-mono text-xs ${colorClass}`}>
+                          {type === 'added' ? '+' : '-'} {prefix}
+                        </div>
+                      ))}
+                      {tag.prefixes.length > 100 && (
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                          ... and {tag.prefixes.length - 100} more
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+interface ModifiedTagSectionProps {
+  tags: ModifiedTag[];
+  expandedTags: Set<string>;
+  onToggleTag: (tagName: string) => void;
+}
+
+function ModifiedTagSection({ tags, expandedTags, onToggleTag }: ModifiedTagSectionProps) {
+  return (
+    <div>
+      <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        Modified Service Tags ({tags.length})
+      </h4>
+      <div className="space-y-1">
+        {tags.map((tag) => {
+          const isTagExpanded = expandedTags.has(tag.name);
+          const totalChanges = tag.addedPrefixes.length + tag.removedPrefixes.length;
+
+          return (
+            <div key={tag.name} className="rounded-lg bg-slate-50 dark:bg-slate-800">
+              <button
+                onClick={() => onToggleTag(tag.name)}
+                className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+              >
+                <div className="flex items-center gap-2">
+                  <svg
+                    className={`h-4 w-4 transition-transform ${isTagExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                  <span className="font-medium text-slate-900 dark:text-slate-100">
+                    {tag.name}
+                  </span>
+                  {tag.region && (
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      ({tag.region})
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  {tag.addedPrefixes.length > 0 && (
+                    <span className="text-emerald-600 dark:text-emerald-400">
+                      +{tag.addedPrefixes.length}
+                    </span>
+                  )}
+                  {tag.removedPrefixes.length > 0 && (
+                    <span className="text-rose-600 dark:text-rose-400">
+                      -{tag.removedPrefixes.length}
+                    </span>
+                  )}
+                </div>
+              </button>
+              {isTagExpanded && totalChanges > 0 && (
+                <div className="border-t border-slate-200 px-3 py-2 dark:border-slate-700">
+                  <div className="max-h-48 overflow-y-auto">
+                    <div className="grid gap-0.5">
+                      {tag.addedPrefixes.slice(0, 50).map((prefix, idx) => (
+                        <div key={`add-${idx}`} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
+                          + {prefix}
+                        </div>
+                      ))}
+                      {tag.addedPrefixes.length > 50 && (
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                          ... and {tag.addedPrefixes.length - 50} more added
+                        </div>
+                      )}
+                      {tag.removedPrefixes.slice(0, 50).map((prefix, idx) => (
+                        <div key={`rem-${idx}`} className="font-mono text-xs text-rose-700 dark:text-rose-400">
+                          - {prefix}
+                        </div>
+                      ))}
+                      {tag.removedPrefixes.length > 50 && (
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                          ... and {tag.removedPrefixes.length - 50} more removed
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

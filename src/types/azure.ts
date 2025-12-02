@@ -45,4 +45,8 @@ export interface AzureFileMetadata {
   filename: string;
   downloadUrl: string;
   lastRetrieved: string;
+  // Diff-related fields (optional, added when diff is computed)
+  previousChangeNumber?: number;
+  previousFilename?: string;
+  diffAvailable?: boolean;
 }
