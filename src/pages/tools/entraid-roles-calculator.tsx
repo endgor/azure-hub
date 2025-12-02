@@ -200,7 +200,7 @@ export default function EntraIdRolesCalculatorPage() {
       if (leastPrivilegedRoles.length === 0) {
         const dataStatus = getEntraIDRolesDataStatus();
         if (dataStatus === 'missing') {
-          setError('No Entra ID roles data found. Please run "npm run fetch-entraid-roles" to download role definitions from Microsoft Graph API. See docs/ENTRAID_ROLES_SETUP.md for setup instructions.');
+          setError('No Entra ID roles data found. Run "npm run fetch-entraid-roles" with Azure credentials (AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID) to download role definitions.');
         } else {
           setError('No Entra ID roles found that grant all the specified permissions. Try fewer or more general permissions.');
         }
@@ -208,7 +208,7 @@ export default function EntraIdRolesCalculatorPage() {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       if (errorMessage.includes('Entra ID roles')) {
-        setError('Entra ID roles data not available. Run "npm run fetch-entraid-roles" to fetch role definitions. See docs/ENTRAID_ROLES_SETUP.md for setup.');
+        setError('Entra ID roles data not available. Run "npm run fetch-entraid-roles" with Azure credentials to fetch role definitions.');
       } else {
         setError('Failed to calculate least privileged roles. Please try again.');
       }
