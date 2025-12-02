@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
 import { AzureCloudName, AzureFileMetadata, AzureServiceTagsRoot } from '../src/types/azure';
+import { computeIpDiff } from './computeIpDiff';
 
 interface DownloadMapping {
   id: string;
@@ -20,6 +21,9 @@ const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
 // Metadata file to store file information
 const METADATA_FILE = path.join(DATA_DIR, 'file-metadata.json');
+
+// Diff file to store changes between versions
+const DIFF_FILE = path.join(DATA_DIR, 'ip-diff.json');
 
 const debugEnv = process.env.DEBUG_UPDATE_IP_DATA ?? '';
 const DEBUG_UPDATE_LOGS = debugEnv === '1' || debugEnv.toLowerCase() === 'true';
@@ -368,11 +372,26 @@ async function updateAllIpData(): Promise<void> {
       }
 
       const dataFilePath = path.join(DATA_DIR, `${mapping.cloud}.json`);
-      
+
+      // Find existing metadata for this cloud
+      const existingIndex = metadata.findIndex(m => m.cloud === mapping.cloud);
+      const existingMetadata = existingIndex >= 0 ? metadata[existingIndex] : null;
+
+      // For AzureCloud, load current version BEFORE downloading new one (for diff computation)
+      let currentVersionData: AzureServiceTagsRoot | null = null;
+      if (mapping.cloud === AzureCloudName.AzureCloud && fs.existsSync(dataFilePath)) {
+        try {
+          const currentContent = fs.readFileSync(dataFilePath, 'utf8');
+          currentVersionData = JSON.parse(currentContent) as AzureServiceTagsRoot;
+        } catch (error) {
+          console.warn(`Could not load current version for diff: ${error}`);
+        }
+      }
+
       // Download directly to public/data directory
       await downloadFile(downloadUrl, dataFilePath);
 
-      // Read the file to get change number
+      // Read the newly downloaded file to get change number
       const fileContent = fs.readFileSync(dataFilePath, 'utf8');
       let data = JSON.parse(fileContent) as AzureServiceTagsRoot;
 
@@ -380,21 +399,61 @@ async function updateAllIpData(): Promise<void> {
       console.info(`Validating service tags for ${mapping.cloud}...`);
       data = validateAndSanitizeData(data);
 
+      // Extract filename from download URL
+      const filename = extractFilenameFromUrl(downloadUrl);
+
+      // Check if we need to compute a diff (only for AzureCloud)
+      let previousChangeNumber: number | undefined;
+      let previousFilename: string | undefined;
+      let diffAvailable = false;
+
+      if (mapping.cloud === AzureCloudName.AzureCloud && currentVersionData) {
+        const previousDataPath = path.join(DATA_DIR, `${mapping.cloud}-previous.json`);
+
+        // If the changeNumber is different, compute diff
+        if (currentVersionData.changeNumber !== data.changeNumber) {
+          console.info(`Computing diff: changeNumber ${currentVersionData.changeNumber} → ${data.changeNumber}`);
+
+          const previousMeta = existingMetadata || { filename: 'unknown.json' };
+          const diff = computeIpDiff({
+            previousData: currentVersionData,
+            currentData: data,
+            previousFilename: previousMeta.filename,
+            currentFilename: filename,
+          });
+
+          // Save diff file
+          fs.writeFileSync(DIFF_FILE, JSON.stringify(diff, null, 2), 'utf8');
+          console.info(`Saved diff to ${DIFF_FILE}`);
+          console.info(`  Summary: +${diff.meta.summary.totalPrefixesAdded} prefixes, -${diff.meta.summary.totalPrefixesRemoved} prefixes`);
+          console.info(`  ${diff.meta.summary.serviceTagsAdded} tags added, ${diff.meta.summary.serviceTagsRemoved} removed, ${diff.meta.summary.serviceTagsModified} modified`);
+
+          previousChangeNumber = currentVersionData.changeNumber;
+          previousFilename = previousMeta.filename;
+          diffAvailable = true;
+
+          // Save the old current version as previous
+          fs.writeFileSync(previousDataPath, JSON.stringify(currentVersionData, null, 2), 'utf8');
+          console.info(`Archived previous version to ${previousDataPath}`);
+        } else {
+          console.info(`No changes detected for ${mapping.cloud} (changeNumber: ${data.changeNumber})`);
+        }
+      }
+
       // Write the validated data back to the file
       fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
       console.info(`Validated and saved sanitized data for ${mapping.cloud}`);
-      
-      // Extract filename from download URL
-      const filename = extractFilenameFromUrl(downloadUrl);
-      
+
       // Update metadata
-      const existingIndex = metadata.findIndex(m => m.cloud === mapping.cloud);
       const fileMetadata: AzureFileMetadata = {
         cloud: mapping.cloud,
         changeNumber: data.changeNumber,
         filename: filename,
         downloadUrl: downloadUrl,
-        lastRetrieved: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+        lastRetrieved: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+        ...(previousChangeNumber !== undefined && { previousChangeNumber }),
+        ...(previousFilename !== undefined && { previousFilename }),
+        ...(diffAvailable && { diffAvailable }),
       };
 
       if (existingIndex >= 0) {
@@ -402,7 +461,7 @@ async function updateAllIpData(): Promise<void> {
       } else {
         metadata.push(fileMetadata);
       }
-      
+
       console.info(`Successfully updated data for ${mapping.cloud} (${filename}) in public/data/ directory`);
 
     } catch (error: any) { // Catch specific error type if known, else any

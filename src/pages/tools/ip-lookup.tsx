@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
+import IpDiffPanel from '@/components/IpDiffPanel';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
@@ -273,32 +274,36 @@ export default function IpLookupPage() {
         </div>
 
         {!initialQuery && !initialRegion && !initialService && (
-          <section className="space-y-4">
-            <div>
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                Use IP addresses, CIDR notations, hostnames (with DNS lookup), service tags, or Azure regions to explore the dataset.
-              </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              {SAMPLE_QUERIES.map((item) => (
-                <div
-                  key={item.label}
-                  className="flex flex-col space-y-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-800"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                    {item.label}
-                  </p>
-                  <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
-                    {item.example}
-                  </p>
-                  <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
+          <>
+            <IpDiffPanel className="mb-6" />
+
+            <section className="space-y-4">
+              <div>
+                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
+                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                  Use IP addresses, CIDR notations, hostnames (with DNS lookup), service tags, or Azure regions to explore the dataset.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                {SAMPLE_QUERIES.map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex flex-col space-y-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-800"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      {item.label}
+                    </p>
+                    <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      {item.example}
+                    </p>
+                    <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </>
         )}
       </section>
     </Layout>
