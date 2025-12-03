@@ -2,5 +2,9 @@
   "virtual-machines": {
     "name": "Virtual Machines",
     "description": "Guides about Azure VMs, sizing, and compute resources"
+  },
+  "azure-policy": {
+    "name": "Azure Policy",
+    "description": "Guides about Azure Policy for governance and compliance"
   }
 }
