@@ -265,6 +265,13 @@ body {
   border-color: rgba(0, 113, 227, 0.4) !important;
 }
 
+/* Remove any background colors from code blocks */
+pre code,
+pre code *,
+pre span {
+  background-color: transparent !important;
+}
+
 /* Prism Syntax Highlighting - Light Theme */
 .token.comment,
 .token.prolog,
