@@ -109,8 +109,8 @@ export default function GuideContent({ html }: GuideContentProps) {
         prose-pre:bg-slate-50 dark:prose-pre:bg-slate-800 prose-pre:text-slate-800 dark:prose-pre:text-slate-100 prose-pre:border prose-pre:border-slate-200 dark:prose-pre:border-slate-700
         prose-pre:prose-code:bg-transparent prose-pre:prose-code:p-0 prose-pre:prose-code:text-inherit
         prose-table:border-collapse prose-table:w-full
-        prose-th:bg-slate-50 dark:prose-th:bg-slate-800 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:font-semibold prose-th:text-slate-900 dark:prose-th:text-slate-100 prose-th:border prose-th:border-slate-300 dark:prose-th:border-slate-600
-        prose-td:px-4 prose-td:py-2 prose-td:text-slate-600 dark:prose-td:text-slate-300 prose-td:border prose-td:border-slate-300 dark:prose-td:border-slate-600
+        prose-th:bg-white dark:prose-th:bg-slate-800 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:font-semibold prose-th:text-slate-900 dark:prose-th:text-slate-100 prose-th:border prose-th:border-slate-200 dark:prose-th:border-slate-600
+        prose-td:bg-white dark:prose-td:bg-slate-800 prose-td:px-4 prose-td:py-2 prose-td:text-slate-600 dark:prose-td:text-slate-300 prose-td:border prose-td:border-slate-200 dark:prose-td:border-slate-600
         prose-ul:list-disc prose-ul:pl-6
         prose-ol:list-decimal prose-ol:pl-6
         prose-li:text-slate-600 dark:prose-li:text-slate-300
