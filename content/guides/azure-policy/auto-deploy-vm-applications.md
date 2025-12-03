@@ -6,8 +6,6 @@ tags: ["policy", "vm", "vm-applications", "automation"]
 date: "2025-12-03"
 ---
 
-# Enforce VM Applications with Custom Azure Policy
-
 **[VM Applications](https://learn.microsoft.com/en-us/azure/virtual-machines/vm-applications?tabs=template%2CVM%2Cubuntu)** is a handy Azure feature that lets you package and deploy applications to your VMs in a consistent way. It's often overlooked, but it can save you a lot of time.
 
 If you're deploying VMs with code (Bicep, Terraform, etc.), you probably already handle application installation automatically. But with **manual VM deployments**, it's easy to forget installing things like monitoring agents, security tools, or other required software. And once VMs are deployed, it's hard to keep track of which ones are missing applications.
