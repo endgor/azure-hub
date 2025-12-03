@@ -11,6 +11,7 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeStringify from 'rehype-stringify';
+import rehypePrism from 'rehype-prism-plus';
 import { z } from 'zod';
 
 const guidesDirectory = path.join(process.cwd(), 'content/guides');
@@ -168,7 +169,14 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
         ...defaultSchema.attributes,
         a: [...(defaultSchema.attributes?.a || []), 'target', 'rel'],
         '*': [...(defaultSchema.attributes?.['*'] || []), 'className', 'id'],
+        code: [...(defaultSchema.attributes?.code || []), 'className'],
+        pre: [...(defaultSchema.attributes?.pre || []), 'className'],
+        span: [...(defaultSchema.attributes?.span || []), 'className', 'style'],
       },
+      tagNames: [
+        ...(defaultSchema.tagNames || []),
+        'span'
+      ]
     };
 
     // Convert markdown to sanitized HTML with enhanced features
@@ -177,6 +185,7 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
       .use(remarkGfm)
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeRaw)
+      .use(rehypePrism, { ignoreMissing: true })
       .use(rehypeSanitize, sanitizeSchema)
       .use(rehypeSlug)
       .use(rehypeAutolinkHeadings, { behavior: 'append' })
