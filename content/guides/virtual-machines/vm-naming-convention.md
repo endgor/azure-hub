@@ -6,8 +6,6 @@ tags: ["vm", "compute", "sizing"]
 date: "2025-11-17"
 ---
 
-# Understanding Azure VM Naming Conventions
-
 Azure virtual machine names follow a specific pattern that encodes important information about the VM's capabilities. Understanding this naming convention helps you quickly identify the right VM size for your workload.
 
 ## VM Name Structure
