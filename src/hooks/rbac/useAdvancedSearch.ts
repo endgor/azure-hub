@@ -16,10 +16,6 @@ export interface UseAdvancedSearchReturn {
   clearResults: () => void;
 }
 
-/**
- * Hook for managing advanced search with cursor-based textarea logic.
- * Handles line-aware searching and action insertion at cursor position.
- */
 export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdvancedSearchReturn {
   const [actionsInput, setActionsInput] = useState('');
   const [searchResults, setSearchResults] = useState<Operation[]>([]);
@@ -28,7 +24,6 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
   const handleSearch = useCallback(async (query: string) => {
     setActionsInput(query);
 
-    // Get the current line being edited based on cursor position
     const textarea = textareaRef.current;
     if (!textarea) {
       setSearchResults([]);
@@ -40,23 +35,20 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     let charCount = 0;
     let currentLineText = '';
 
-    // Find which line the cursor is on
     for (const line of lines) {
       if (cursorPosition <= charCount + line.length) {
         currentLineText = line;
         break;
       }
-      charCount += line.length + 1; // +1 for newline character
+      charCount += line.length + 1;
     }
 
-    // Only search based on the current line
     let trimmedLine = currentLineText.trim();
     if (trimmedLine.length < 3 || trimmedLine.startsWith('#')) {
       setSearchResults([]);
       return;
     }
 
-    // Strip data: or control: prefix for search
     if (trimmedLine.toLowerCase().startsWith('data:')) {
       trimmedLine = trimmedLine.substring(5).trim();
     } else if (trimmedLine.toLowerCase().startsWith('control:')) {
@@ -86,23 +78,20 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     let charCount = 0;
     let currentLineIndex = 0;
 
-    // Find which line the cursor is on
     for (let i = 0; i < lines.length; i++) {
       if (cursorPosition <= charCount + lines[i].length) {
         currentLineIndex = i;
         break;
       }
-      charCount += lines[i].length + 1; // +1 for newline character
+      charCount += lines[i].length + 1;
     }
 
-    // Replace the current line with the selected action
     const newLines = [...lines];
     newLines[currentLineIndex] = action;
     const newText = newLines.join('\n');
     setActionsInput(newText);
     setSearchResults([]);
 
-    // Move cursor to the end of the replaced line
     setTimeout(() => {
       if (textarea) {
         const newCursorPosition = newLines.slice(0, currentLineIndex).join('\n').length +
