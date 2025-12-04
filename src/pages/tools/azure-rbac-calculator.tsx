@@ -80,6 +80,7 @@ export default function AzureRbacCalculatorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('azure-rbac-disclaimer-dismissed', false);
+  const [crossLinkDismissed, setCrossLinkDismissed] = useLocalStorageBoolean('azure-rbac-crosslink-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<AzureRole[]>([]);
@@ -399,14 +400,24 @@ export default function AzureRbacCalculatorPage() {
         )}
 
         {/* Cross-link to Entra ID */}
-        {azureRbacConfig.crossLink && (
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+        {azureRbacConfig.crossLink && !crossLinkDismissed && (
+          <div className="relative rounded-lg border border-slate-200 bg-slate-50 p-4 pr-10 dark:border-slate-700 dark:bg-slate-800/50">
             <p className="text-sm text-slate-600 dark:text-slate-300">
               <strong>Looking for directory roles?</strong>{' '}
               <Link href={azureRbacConfig.crossLink.url} className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline">
                 {azureRbacConfig.crossLink.text}
               </Link>
             </p>
+            <button
+              type="button"
+              onClick={() => setCrossLinkDismissed(true)}
+              className="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+              aria-label="Dismiss"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         )}
 
