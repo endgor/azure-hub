@@ -4,23 +4,20 @@
     "changeNumber": 378,
     "filename": "ServiceTags_Public_20251124.json",
     "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20251124.json",
-    "lastRetrieved": "2025-12-03",
-    "previousChangeNumber": 377,
-    "previousFilename": "ServiceTags_Public_20251117.json",
-    "diffAvailable": true
+    "lastRetrieved": "2025-12-04"
   },
   {
     "cloud": "AzureChinaCloud",
     "changeNumber": 373,
     "filename": "ServiceTags_China_20251124.json",
     "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20251124.json",
-    "lastRetrieved": "2025-12-03"
+    "lastRetrieved": "2025-12-04"
   },
   {
     "cloud": "AzureUSGovernment",
     "changeNumber": 375,
     "filename": "ServiceTags_AzureGovernment_20251124.json",
     "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20251124.json",
-    "lastRetrieved": "2025-12-03"
+    "lastRetrieved": "2025-12-04"
   }
 ]
