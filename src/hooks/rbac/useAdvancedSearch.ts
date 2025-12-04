@@ -11,6 +11,7 @@ export interface UseAdvancedSearchReturn {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
   handleSearch: (query: string) => Promise<void>;
   handleAddAction: (action: string) => void;
+  setActionsInputDirect: (value: string) => void;
   clearSearch: () => void;
   clearResults: () => void;
 }
@@ -101,6 +102,11 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     }, 0);
   }, [actionsInput]);
 
+  const setActionsInputDirect = useCallback((value: string) => {
+    setActionsInput(value);
+    setSearchResults([]);
+  }, []);
+
   const clearSearch = useCallback(() => {
     setActionsInput('');
     setSearchResults([]);
@@ -116,6 +122,7 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     textareaRef,
     handleSearch,
     handleAddAction,
+    setActionsInputDirect,
     clearSearch,
     clearResults,
   };

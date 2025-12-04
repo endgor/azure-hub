@@ -67,10 +67,10 @@ export const azureRbacConfig: RoleSystemConfig = {
     },
     {
       label: 'Key Vault Secrets',
-      description: 'Read secrets from Key Vault',
+      description: 'Read Key Vault and access secrets (control + data plane)',
       actions: [
         'Microsoft.KeyVault/vaults/read',
-        'Microsoft.KeyVault/vaults/secrets/read',
+        'data:Microsoft.KeyVault/vaults/secrets/getSecret/action',
       ],
     },
     {
@@ -94,7 +94,7 @@ export const azureRbacConfig: RoleSystemConfig = {
 
   placeholders: {
     advancedMode:
-      'Microsoft.Compute/virtualMachines/read\nMicrosoft.Compute/virtualMachines/start/action\nMicrosoft.Storage/storageAccounts/read',
+      'Microsoft.KeyVault/vaults/read\ndata:Microsoft.KeyVault/vaults/secrets/getSecret/action',
     wildcardExample: 'Microsoft.Storage/*',
   },
 

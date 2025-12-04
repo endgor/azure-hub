@@ -54,6 +54,7 @@ export default function EntraIdRolesCalculatorPage() {
     textareaRef: advancedTextareaRef,
     handleSearch: handleAdvancedSearchRaw,
     handleAddAction: handleAddActionAdvanced,
+    setActionsInputDirect,
     clearSearch,
     clearResults,
   } = useAdvancedSearch({
@@ -236,10 +237,10 @@ export default function EntraIdRolesCalculatorPage() {
     if (isSimpleMode) {
       setSelectedActions([...actions]);
     } else {
-      handleAdvancedSearchRaw([...actions].join('\n'));
+      setActionsInputDirect([...actions].join('\n'));
     }
     clearSearch();
-  }, [isSimpleMode, handleAdvancedSearchRaw, clearSearch]);
+  }, [isSimpleMode, setActionsInputDirect, clearSearch]);
 
   const handleClear = useCallback(() => {
     clearSearch();

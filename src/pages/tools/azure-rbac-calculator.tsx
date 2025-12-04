@@ -50,6 +50,7 @@ export default function AzureRbacCalculatorPage() {
     textareaRef: advancedTextareaRef,
     handleSearch: handleAdvancedSearch,
     handleAddAction: handleAddActionAdvanced,
+    setActionsInputDirect,
     clearSearch,
     clearResults,
   } = useAdvancedSearch({
@@ -238,10 +239,10 @@ export default function AzureRbacCalculatorPage() {
       // Default to control plane for examples
       setSelectedActions(actions.map(name => ({ name, planeType: 'control' as const })));
     } else {
-      handleAdvancedSearch([...actions].join('\n'));
+      setActionsInputDirect([...actions].join('\n'));
     }
     clearSearch();
-  }, [isSimpleMode, handleAdvancedSearch, clearSearch]);
+  }, [isSimpleMode, setActionsInputDirect, clearSearch]);
 
   const handleClear = useCallback(() => {
     clearSearch();
