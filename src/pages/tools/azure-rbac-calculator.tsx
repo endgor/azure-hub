@@ -225,9 +225,14 @@ export default function AzureRbacCalculatorPage() {
     setSelectedActions(prev => prev.filter(a => a.name !== actionName));
   }, []);
 
-  const handleLoadExample = useCallback((actions: readonly string[]) => {
+  const handleLoadExample = useCallback(async (actions: readonly string[]) => {
     if (isSimpleMode) {
-      setSelectedActions(actions.map(name => ({ name, planeType: 'control' as const })));
+      const classified = await classifyActions([...actions]);
+      const selectedWithPlaneType: SelectedAction[] = [
+        ...classified.controlActions.map(name => ({ name, planeType: 'control' as const })),
+        ...classified.dataActions.map(name => ({ name, planeType: 'data' as const })),
+      ];
+      setSelectedActions(selectedWithPlaneType);
       clearSearch();
     } else {
       setActionsInputDirect([...actions].join('\n'));
