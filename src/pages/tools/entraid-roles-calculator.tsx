@@ -38,6 +38,7 @@ import { useRbacMode } from '@/hooks/rbac/useRbacMode';
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
+import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
 export default function EntraIdRolesCalculatorPage() {
   // Mode management
@@ -53,6 +54,7 @@ export default function EntraIdRolesCalculatorPage() {
     textareaRef: advancedTextareaRef,
     handleSearch: handleAdvancedSearchRaw,
     handleAddAction: handleAddActionAdvanced,
+    setActionsInputDirect,
     clearSearch,
     clearResults,
   } = useAdvancedSearch({
@@ -91,6 +93,7 @@ export default function EntraIdRolesCalculatorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('entraid-roles-disclaimer-dismissed', false);
+  const [crossLinkDismissed, setCrossLinkDismissed] = useLocalStorageBoolean('entraid-crosslink-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<EntraIDRole[]>([]);
@@ -218,9 +221,11 @@ export default function EntraIdRolesCalculatorPage() {
     }
   }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
 
-  const handleAddActionSimple = useCallback((action: string) => {
-    if (!selectedActions.includes(action)) {
-      setSelectedActions(prev => [...prev, action]);
+  const handleAddActionSimple = useCallback((action: SelectedAction | string) => {
+    // Extract action name from either string or SelectedAction object
+    const actionName = typeof action === 'string' ? action : action.name;
+    if (!selectedActions.includes(actionName)) {
+      setSelectedActions(prev => [...prev, actionName]);
     }
   }, [selectedActions]);
 
@@ -231,11 +236,11 @@ export default function EntraIdRolesCalculatorPage() {
   const handleLoadExample = useCallback((actions: readonly string[]) => {
     if (isSimpleMode) {
       setSelectedActions([...actions]);
+      clearSearch();
     } else {
-      handleAdvancedSearchRaw([...actions].join('\n'));
+      setActionsInputDirect([...actions].join('\n'));
     }
-    clearSearch();
-  }, [isSimpleMode, handleAdvancedSearchRaw, clearSearch]);
+  }, [isSimpleMode, setActionsInputDirect, clearSearch]);
 
   const handleClear = useCallback(() => {
     clearSearch();
@@ -381,14 +386,24 @@ export default function EntraIdRolesCalculatorPage() {
         )}
 
         {/* Cross-link to Azure RBAC */}
-        {entraIdConfig.crossLink && (
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+        {entraIdConfig.crossLink && !crossLinkDismissed && (
+          <div className="relative rounded-lg border border-slate-200 bg-slate-50 p-4 pr-10 dark:border-slate-700 dark:bg-slate-800/50">
             <p className="text-sm text-slate-600 dark:text-slate-300">
               <strong>Looking for Azure resource roles?</strong>{' '}
               <Link href={entraIdConfig.crossLink.url} className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline">
                 {entraIdConfig.crossLink.text}
               </Link>
             </p>
+            <button
+              type="button"
+              onClick={() => setCrossLinkDismissed(true)}
+              className="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+              aria-label="Dismiss"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         )}
 

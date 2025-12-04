@@ -4,9 +4,7 @@ import type { RoleSystemConfig } from '@/lib/rbacConfig';
 import ActionSuggestionList from '@/components/ActionSuggestionList';
 
 interface AdvancedModeProps {
-  /** Configuration for role system-specific placeholders and help text */
   config: RoleSystemConfig;
-
   actionsInput: string;
   onActionsInputChange: (value: string) => void;
   searchResults: Operation[];
@@ -15,16 +13,6 @@ interface AdvancedModeProps {
   onAddAction: (actionName: string) => void;
 }
 
-/**
- * AdvancedMode - Free-form text input for actions/permissions
- *
- * Config-driven component that adapts to Azure RBAC or Entra ID contexts.
- *
- * Allows entering multiple actions (one per line) with:
- * - Wildcard support (e.g., Microsoft.Storage/* or microsoft.directory/*)
- * - Comment lines starting with #
- * - Action suggestions as you type
- */
 export default function AdvancedMode({
   config,
   actionsInput,
@@ -34,6 +22,8 @@ export default function AdvancedMode({
   textareaRef,
   onAddAction,
 }: AdvancedModeProps) {
+  const isAzure = config.systemType === 'azure';
+
   return (
     <div ref={advancedSearchDropdownRef}>
       <div className="space-y-2">
@@ -66,11 +56,13 @@ export default function AdvancedMode({
           </div>
           <ActionSuggestionList
             suggestions={searchResults.map((operation) => ({
-              id: operation.name,
+              id: `${operation.name}-${operation.planeType || 'control'}`,
               name: operation.name,
-              detail: operation.displayName || undefined
+              detail: operation.displayName || undefined,
+              planeType: operation.planeType
             }))}
             onSelect={onAddAction}
+            showPlaneType={isAzure}
           />
         </div>
       )}

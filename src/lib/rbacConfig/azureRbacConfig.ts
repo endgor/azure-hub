@@ -66,11 +66,11 @@ export const azureRbacConfig: RoleSystemConfig = {
       ],
     },
     {
-      label: 'Key Vault Secrets',
-      description: 'Read secrets from Key Vault',
+      label: 'Storage Blob Reader',
+      description: 'Read storage accounts and blob data (control + data plane)',
       actions: [
-        'Microsoft.KeyVault/vaults/read',
-        'Microsoft.KeyVault/vaults/secrets/read',
+        'Microsoft.Storage/storageAccounts/read',
+        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read',
       ],
     },
     {
@@ -94,7 +94,7 @@ export const azureRbacConfig: RoleSystemConfig = {
 
   placeholders: {
     advancedMode:
-      'Microsoft.Compute/virtualMachines/read\nMicrosoft.Compute/virtualMachines/start/action\nMicrosoft.Storage/storageAccounts/read',
+      'Microsoft.Storage/storageAccounts/read\nMicrosoft.Storage/storageAccounts/blobServices/containers/blobs/read',
     wildcardExample: 'Microsoft.Storage/*',
   },
 

@@ -37,6 +37,13 @@ export interface RolePermission {
 }
 
 /**
+ * Action plane type - distinguishes between control plane and data plane operations
+ * Control plane: Management operations (e.g., create/delete resources)
+ * Data plane: Data operations (e.g., read/write data within resources)
+ */
+export type ActionPlaneType = 'control' | 'data';
+
+/**
  * Represents a single Azure operation/permission
  */
 export interface Operation {
@@ -47,6 +54,8 @@ export interface Operation {
   provider: string;
   /** Number of roles that grant this permission (used for sorting in fallback mode) */
   roleCount?: number;
+  /** Whether this is a control plane or data plane action */
+  planeType?: ActionPlaneType;
 }
 
 /**

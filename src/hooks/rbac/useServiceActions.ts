@@ -113,7 +113,6 @@ export function useServiceActions({
   }, [selectedService]);
 
   const clearServices = useCallback(() => {
-    setAvailableServices([]);
     setAvailableActions([]);
     setSelectedService('');
     setServiceSearch('');
