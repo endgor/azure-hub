@@ -236,12 +236,11 @@ export default function AzureRbacCalculatorPage() {
 
   const handleLoadExample = useCallback((actions: readonly string[]) => {
     if (isSimpleMode) {
-      // Default to control plane for examples
       setSelectedActions(actions.map(name => ({ name, planeType: 'control' as const })));
+      clearSearch();
     } else {
       setActionsInputDirect([...actions].join('\n'));
     }
-    clearSearch();
   }, [isSimpleMode, setActionsInputDirect, clearSearch]);
 
   const handleClear = useCallback(() => {

@@ -236,10 +236,10 @@ export default function EntraIdRolesCalculatorPage() {
   const handleLoadExample = useCallback((actions: readonly string[]) => {
     if (isSimpleMode) {
       setSelectedActions([...actions]);
+      clearSearch();
     } else {
       setActionsInputDirect([...actions].join('\n'));
     }
-    clearSearch();
   }, [isSimpleMode, setActionsInputDirect, clearSearch]);
 
   const handleClear = useCallback(() => {
