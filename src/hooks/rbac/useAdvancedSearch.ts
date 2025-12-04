@@ -50,8 +50,20 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     }
 
     // Only search based on the current line
-    const trimmedLine = currentLineText.trim();
+    let trimmedLine = currentLineText.trim();
     if (trimmedLine.length < 3 || trimmedLine.startsWith('#')) {
+      setSearchResults([]);
+      return;
+    }
+
+    // Strip data: or control: prefix for search
+    if (trimmedLine.toLowerCase().startsWith('data:')) {
+      trimmedLine = trimmedLine.substring(5).trim();
+    } else if (trimmedLine.toLowerCase().startsWith('control:')) {
+      trimmedLine = trimmedLine.substring(8).trim();
+    }
+
+    if (trimmedLine.length < 3) {
       setSearchResults([]);
       return;
     }
