@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import { RefObject, useCallback } from 'react';
 import type { Operation } from '@/types/rbac';
 import type { RoleSystemConfig } from '@/lib/rbacConfig';
 import ActionSuggestionList from '@/components/ActionSuggestionList';
@@ -22,6 +22,16 @@ export default function AdvancedMode({
   textareaRef,
   onAddAction,
 }: AdvancedModeProps) {
+  const isAzure = config.systemType === 'azure';
+
+  const handleSelectAction = useCallback((name: string, planeType?: 'control' | 'data') => {
+    if (isAzure && planeType === 'data') {
+      onAddAction(`data:${name}`);
+    } else {
+      onAddAction(name);
+    }
+  }, [isAzure, onAddAction]);
+
   return (
     <div ref={advancedSearchDropdownRef}>
       <div className="space-y-2">
@@ -42,9 +52,9 @@ export default function AdvancedMode({
         />
         <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
           <p>Supports wildcards (e.g., {config.placeholders.wildcardExample}). Lines starting with # are treated as comments.</p>
-          {config.systemType === 'azure' && (
+          {isAzure && (
             <p>
-              <span className="font-medium text-violet-600 dark:text-violet-400">Data plane actions:</span> Prefix with <code className="rounded bg-violet-100 px-1 py-0.5 font-mono dark:bg-violet-900/40">data:</code> (e.g., <code className="rounded bg-violet-100 px-1 py-0.5 font-mono dark:bg-violet-900/40">data:Microsoft.KeyVault/vaults/secrets/getSecret/action</code>)
+              <span className="font-medium text-violet-600 dark:text-violet-400">Data plane actions:</span> Prefix with <code className="rounded bg-violet-100 px-1 py-0.5 font-mono dark:bg-violet-900/40">data:</code> or select from suggestions (auto-prefixed).
             </p>
           )}
         </div>
@@ -59,11 +69,13 @@ export default function AdvancedMode({
           </div>
           <ActionSuggestionList
             suggestions={searchResults.map((operation) => ({
-              id: operation.name,
+              id: `${operation.name}-${operation.planeType || 'control'}`,
               name: operation.name,
-              detail: operation.displayName || undefined
+              detail: operation.displayName || undefined,
+              planeType: operation.planeType
             }))}
-            onSelect={onAddAction}
+            onSelect={handleSelectAction}
+            showPlaneType={isAzure}
           />
         </div>
       )}

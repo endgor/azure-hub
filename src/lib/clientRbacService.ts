@@ -134,31 +134,52 @@ export async function searchOperations(query: string): Promise<Operation[]> {
     return [];
   }
 
-  const permissions = await loadPermissions();
+  const roles = await loadRoleDefinitions();
+  const queryLower = query.toLowerCase();
 
-  if (permissions.length > 0) {
-    const queryLower = query.toLowerCase();
-    return permissions.filter(operation => {
-      const nameLower = operation.name.toLowerCase();
-      const displayNameLower = operation.displayName?.toLowerCase() || '';
-      const descriptionLower = operation.description?.toLowerCase() || '';
+  const controlActions = new Map<string, { name: string; roleCount: number }>();
+  const dataActions = new Map<string, { name: string; roleCount: number }>();
 
-      return (
-        nameLower.includes(queryLower) ||
-        displayNameLower.includes(queryLower) ||
-        descriptionLower.includes(queryLower)
-      );
-    });
+  for (const role of roles) {
+    for (const permission of role.permissions) {
+      for (const action of permission.actions) {
+        if (action.includes('*')) continue;
+        const lowerAction = action.toLowerCase();
+        if (lowerAction.includes(queryLower)) {
+          const existing = controlActions.get(lowerAction);
+          if (existing) {
+            existing.roleCount++;
+          } else {
+            controlActions.set(lowerAction, { name: action, roleCount: 1 });
+          }
+        }
+      }
+
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (dataAction.includes('*')) continue;
+          const lowerAction = dataAction.toLowerCase();
+          if (lowerAction.includes(queryLower)) {
+            const existing = dataActions.get(lowerAction);
+            if (existing) {
+              existing.roleCount++;
+            } else {
+              dataActions.set(lowerAction, { name: dataAction, roleCount: 1 });
+            }
+          }
+        }
+      }
+    }
   }
 
-  const actionsMap = await extractActionsFromRoles();
-  const queryLower = query.toLowerCase();
   const results: Operation[] = [];
 
-  for (const [lowerActionKey, actionData] of Array.from(actionsMap.entries())) {
-    if (lowerActionKey.includes(queryLower)) {
-      results.push(createOperationFromAction(actionData.name, actionData.roleCount));
-    }
+  for (const [, actionData] of Array.from(controlActions.entries())) {
+    results.push(createOperationFromAction(actionData.name, actionData.roleCount, 'control'));
+  }
+
+  for (const [, actionData] of Array.from(dataActions.entries())) {
+    results.push(createOperationFromAction(actionData.name, actionData.roleCount, 'data'));
   }
 
   return results.sort((a, b) => {
