@@ -34,6 +34,7 @@ const RoleCreator = lazy(() => import('@/components/RoleCreator'));
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
+import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
 export default function AzureRbacCalculatorPage() {
   // Mode management
@@ -72,7 +73,7 @@ export default function AzureRbacCalculatorPage() {
     isActive: isSimpleMode,
   });
 
-  const [selectedActions, setSelectedActions] = useState<string[]>([]);
+  const [selectedActions, setSelectedActions] = useState<SelectedAction[]>([]);
   const [showServiceDropdown, setShowServiceDropdown] = useState(false);
   const [actionSearch, setActionSearch] = useState('');
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
@@ -152,25 +153,40 @@ export default function AzureRbacCalculatorPage() {
       return;
     }
 
-    let actions: string[] = [];
+    let controlActions: string[] = [];
+    let dataActions: string[] = [];
 
     if (isSimpleMode) {
       if (selectedActions.length === 0) {
         setError('Please select at least one action');
         return;
       }
-      actions = selectedActions;
+      // Separate control and data plane actions
+      controlActions = selectedActions.filter(a => a.planeType === 'control').map(a => a.name);
+      dataActions = selectedActions.filter(a => a.planeType === 'data').map(a => a.name);
     } else {
       if (!actionsInput.trim()) {
         setError('Please enter at least one action');
         return;
       }
-      actions = actionsInput
+      // Parse advanced mode input - lines starting with "data:" are data actions
+      const lines = actionsInput
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0 && !line.startsWith('#'));
 
-      if (actions.length === 0) {
+      for (const line of lines) {
+        if (line.toLowerCase().startsWith('data:')) {
+          dataActions.push(line.substring(5).trim());
+        } else if (line.toLowerCase().startsWith('control:')) {
+          controlActions.push(line.substring(8).trim());
+        } else {
+          // Default to control plane action
+          controlActions.push(line);
+        }
+      }
+
+      if (controlActions.length === 0 && dataActions.length === 0) {
         setError('Please enter at least one action');
         return;
       }
@@ -180,8 +196,8 @@ export default function AzureRbacCalculatorPage() {
 
     try {
       const leastPrivilegedRoles = await calculateLeastPrivilege({
-        requiredActions: actions,
-        requiredDataActions: []
+        requiredActions: controlActions,
+        requiredDataActions: dataActions
       });
 
       setResults(leastPrivilegedRoles);
@@ -197,19 +213,29 @@ export default function AzureRbacCalculatorPage() {
     }
   }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
 
-  const handleAddActionSimple = useCallback((action: string) => {
-    if (!selectedActions.includes(action)) {
-      setSelectedActions(prev => [...prev, action]);
+  const handleAddActionSimple = useCallback((action: SelectedAction | string) => {
+    // Handle both SelectedAction objects (Azure) and strings (Entra ID compatibility)
+    const actionObj: SelectedAction = typeof action === 'string'
+      ? { name: action, planeType: 'control' }
+      : action;
+
+    // Check if action with same name and planeType is already selected
+    const isAlreadySelected = selectedActions.some(
+      a => a.name === actionObj.name && a.planeType === actionObj.planeType
+    );
+    if (!isAlreadySelected) {
+      setSelectedActions(prev => [...prev, actionObj]);
     }
   }, [selectedActions]);
 
-  const handleRemoveAction = useCallback((action: string) => {
-    setSelectedActions(prev => prev.filter(a => a !== action));
+  const handleRemoveAction = useCallback((actionName: string) => {
+    setSelectedActions(prev => prev.filter(a => a.name !== actionName));
   }, []);
 
   const handleLoadExample = useCallback((actions: readonly string[]) => {
     if (isSimpleMode) {
-      setSelectedActions([...actions]);
+      // Default to control plane for examples
+      setSelectedActions(actions.map(name => ({ name, planeType: 'control' as const })));
     } else {
       handleAdvancedSearch([...actions].join('\n'));
     }
@@ -298,9 +324,20 @@ export default function AzureRbacCalculatorPage() {
   const selectedActionChips = useMemo(
     () =>
       selectedActions.map(action => ({
-        id: action,
-        content: <span className="font-mono text-xs break-all">{action}</span>,
-        removeAriaLabel: `Remove ${action}`
+        id: action.name,
+        content: (
+          <span className="flex items-center gap-1.5">
+            <span className={`inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase ${
+              action.planeType === 'data'
+                ? 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300'
+                : 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+            }`}>
+              {action.planeType === 'data' ? 'D' : 'C'}
+            </span>
+            <span className="font-mono text-xs break-all">{action.name}</span>
+          </span>
+        ),
+        removeAriaLabel: `Remove ${action.name}`
       })),
     [selectedActions]
   );

@@ -38,6 +38,7 @@ import { useRbacMode } from '@/hooks/rbac/useRbacMode';
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
+import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
 export default function EntraIdRolesCalculatorPage() {
   // Mode management
@@ -218,9 +219,11 @@ export default function EntraIdRolesCalculatorPage() {
     }
   }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
 
-  const handleAddActionSimple = useCallback((action: string) => {
-    if (!selectedActions.includes(action)) {
-      setSelectedActions(prev => [...prev, action]);
+  const handleAddActionSimple = useCallback((action: SelectedAction | string) => {
+    // Extract action name from either string or SelectedAction object
+    const actionName = typeof action === 'string' ? action : action.name;
+    if (!selectedActions.includes(actionName)) {
+      setSelectedActions(prev => [...prev, actionName]);
     }
   }, [selectedActions]);
 
