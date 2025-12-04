@@ -5,11 +5,21 @@ import SelectionChips, { type SelectionChip } from '@/components/SelectionChips'
 import SearchInput from '@/components/shared/SearchInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
-interface SimpleModeProps {
-  /** Configuration for role system-specific labels and text */
-  config: RoleSystemConfig;
+export interface SelectedAction {
+  name: string;
+  planeType: 'control' | 'data';
+}
 
-  // Service selection
+function isSelectedAction(action: string | SelectedAction): action is SelectedAction {
+  return typeof action === 'object' && 'name' in action && 'planeType' in action;
+}
+
+function getActionName(action: string | SelectedAction): string {
+  return isSelectedAction(action) ? action.name : action;
+}
+
+interface SimpleModeProps {
+  config: RoleSystemConfig;
   serviceSearch: string;
   onServiceSearchChange: (value: string) => void;
   selectedService: string;
@@ -19,28 +29,17 @@ interface SimpleModeProps {
   filteredServices: string[];
   serviceDropdownRef: RefObject<HTMLDivElement | null>;
   onSelectService: (service: string) => void;
-
-  // Action selection
   actionSearch: string;
   onActionSearchChange: (value: string) => void;
   isLoadingActions: boolean;
   availableActions: Operation[];
   filteredActions: Operation[];
-  selectedActions: string[];
+  selectedActions: (string | SelectedAction)[];
   selectedActionChips: SelectionChip[];
-  onAddAction: (actionName: string) => void;
+  onAddAction: (action: SelectedAction | string) => void;
   onRemoveAction: (actionName: string) => void;
 }
 
-/**
- * SimpleMode - Guided UI for selecting service/namespace and actions
- *
- * Config-driven component that adapts to Azure RBAC or Entra ID contexts.
- *
- * Two-step process:
- * 1. Select a service/namespace from dropdown
- * 2. Browse and select specific actions/permissions
- */
 export default function SimpleMode({
   config,
   serviceSearch,
@@ -143,33 +142,68 @@ export default function SimpleMode({
                 </p>
               </div>
               <div className="max-h-80 overflow-y-auto">
-                {filteredActions.map((operation) => (
-                  <button
-                    key={operation.name}
-                    type="button"
-                    onClick={() => onAddAction(operation.name)}
-                    disabled={selectedActions.includes(operation.name)}
-                    className="w-full text-left px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex-1">
-                        <div className="font-mono text-xs text-sky-600 dark:text-sky-400 break-all">
-                          {operation.name}
-                        </div>
-                        {operation.description && (
-                          <div className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                            {operation.description}
+                {filteredActions.map((operation) => {
+                  const planeType = operation.planeType || 'control';
+                  const hasPlaneTypes = isAzure && operation.planeType !== undefined;
+
+                  // Check if action is already selected
+                  const isSelected = selectedActions.some(a => {
+                    const actionName = getActionName(a);
+                    if (hasPlaneTypes && isSelectedAction(a)) {
+                      return actionName === operation.name && a.planeType === planeType;
+                    }
+                    return actionName === operation.name;
+                  });
+
+                  // Handle click - use SelectedAction for Azure, string for Entra ID
+                  const handleClick = () => {
+                    if (hasPlaneTypes) {
+                      onAddAction({ name: operation.name, planeType });
+                    } else {
+                      onAddAction(operation.name);
+                    }
+                  };
+
+                  return (
+                    <button
+                      key={`${operation.name}-${planeType}`}
+                      type="button"
+                      onClick={handleClick}
+                      disabled={isSelected}
+                      className="w-full text-left px-4 py-3 hover:bg-sky-50 dark:hover:bg-sky-900/20 transition border-b border-slate-100 dark:border-slate-800 last:border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            {/* Only show plane type badge for Azure RBAC */}
+                            {hasPlaneTypes && (
+                              <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                                planeType === 'data'
+                                  ? 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300'
+                                  : 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+                              }`}>
+                                {planeType === 'data' ? 'Data' : 'Control'}
+                              </span>
+                            )}
+                            <span className="font-mono text-xs text-sky-600 dark:text-sky-400 break-all">
+                              {operation.name}
+                            </span>
                           </div>
+                          {operation.description && (
+                            <div className={`text-xs text-slate-500 dark:text-slate-500 mt-1 ${hasPlaneTypes ? 'ml-[60px]' : ''}`}>
+                              {operation.description}
+                            </div>
+                          )}
+                        </div>
+                        {isSelected && (
+                          <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 shrink-0">
+                            Added
+                          </span>
                         )}
                       </div>
-                      {selectedActions.includes(operation.name) && (
-                        <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 shrink-0">
-                          Added
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           ) : (

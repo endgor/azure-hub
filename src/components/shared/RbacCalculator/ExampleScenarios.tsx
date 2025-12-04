@@ -1,19 +1,10 @@
 import type { RoleSystemConfig } from '@/lib/rbacConfig';
 
 interface ExampleScenariosProps {
-  /** Configuration containing the scenarios to display */
   config: RoleSystemConfig;
-
-  /** Callback when an example scenario is loaded */
   onLoadExample: (actions: readonly string[]) => void;
 }
 
-/**
- * ExampleScenarios - Pre-defined permission scenarios for quick testing
- *
- * Config-driven component that displays scenarios from the role system configuration.
- * Displays clickable scenario cards that load common permission sets.
- */
 export default function ExampleScenarios({ config, onLoadExample }: ExampleScenariosProps) {
   return (
     <section className="space-y-4">
@@ -38,9 +29,9 @@ export default function ExampleScenarios({ config, onLoadExample }: ExampleScena
             <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
               {scenario.description}
             </p>
-            <div className="text-xs font-mono text-slate-600 dark:text-slate-400">
+            <p className="text-xs font-mono text-slate-600 dark:text-slate-400">
               {scenario.actions.length} {config.labels.actionLabel.toLowerCase()}
-            </div>
+            </p>
           </button>
         ))}
       </div>

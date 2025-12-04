@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, FormEvent, useRef, useMemo, lazy, Sus
 import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
-import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
+import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions, classifyActions } from '@/lib/clientRbacService';
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
@@ -34,6 +34,7 @@ const RoleCreator = lazy(() => import('@/components/RoleCreator'));
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
+import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
 export default function AzureRbacCalculatorPage() {
   // Mode management
@@ -49,6 +50,7 @@ export default function AzureRbacCalculatorPage() {
     textareaRef: advancedTextareaRef,
     handleSearch: handleAdvancedSearch,
     handleAddAction: handleAddActionAdvanced,
+    setActionsInputDirect,
     clearSearch,
     clearResults,
   } = useAdvancedSearch({
@@ -72,13 +74,14 @@ export default function AzureRbacCalculatorPage() {
     isActive: isSimpleMode,
   });
 
-  const [selectedActions, setSelectedActions] = useState<string[]>([]);
+  const [selectedActions, setSelectedActions] = useState<SelectedAction[]>([]);
   const [showServiceDropdown, setShowServiceDropdown] = useState(false);
   const [actionSearch, setActionSearch] = useState('');
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('azure-rbac-disclaimer-dismissed', false);
+  const [crossLinkDismissed, setCrossLinkDismissed] = useLocalStorageBoolean('azure-rbac-crosslink-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<AzureRole[]>([]);
@@ -152,36 +155,42 @@ export default function AzureRbacCalculatorPage() {
       return;
     }
 
-    let actions: string[] = [];
+    let controlActions: string[] = [];
+    let dataActions: string[] = [];
 
     if (isSimpleMode) {
       if (selectedActions.length === 0) {
         setError('Please select at least one action');
         return;
       }
-      actions = selectedActions;
+      controlActions = selectedActions.filter(a => a.planeType === 'control').map(a => a.name);
+      dataActions = selectedActions.filter(a => a.planeType === 'data').map(a => a.name);
     } else {
       if (!actionsInput.trim()) {
         setError('Please enter at least one action');
         return;
       }
-      actions = actionsInput
+      const lines = actionsInput
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0 && !line.startsWith('#'));
 
-      if (actions.length === 0) {
+      if (lines.length === 0) {
         setError('Please enter at least one action');
         return;
       }
+
+      const classified = await classifyActions(lines);
+      controlActions = classified.controlActions;
+      dataActions = classified.dataActions;
     }
 
     setIsLoading(true);
 
     try {
       const leastPrivilegedRoles = await calculateLeastPrivilege({
-        requiredActions: actions,
-        requiredDataActions: []
+        requiredActions: controlActions,
+        requiredDataActions: dataActions
       });
 
       setResults(leastPrivilegedRoles);
@@ -197,24 +206,38 @@ export default function AzureRbacCalculatorPage() {
     }
   }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
 
-  const handleAddActionSimple = useCallback((action: string) => {
-    if (!selectedActions.includes(action)) {
-      setSelectedActions(prev => [...prev, action]);
+  const handleAddActionSimple = useCallback((action: SelectedAction | string) => {
+    // Handle both SelectedAction objects (Azure) and strings (Entra ID compatibility)
+    const actionObj: SelectedAction = typeof action === 'string'
+      ? { name: action, planeType: 'control' }
+      : action;
+
+    // Check if action with same name and planeType is already selected
+    const isAlreadySelected = selectedActions.some(
+      a => a.name === actionObj.name && a.planeType === actionObj.planeType
+    );
+    if (!isAlreadySelected) {
+      setSelectedActions(prev => [...prev, actionObj]);
     }
   }, [selectedActions]);
 
-  const handleRemoveAction = useCallback((action: string) => {
-    setSelectedActions(prev => prev.filter(a => a !== action));
+  const handleRemoveAction = useCallback((actionName: string) => {
+    setSelectedActions(prev => prev.filter(a => a.name !== actionName));
   }, []);
 
-  const handleLoadExample = useCallback((actions: readonly string[]) => {
+  const handleLoadExample = useCallback(async (actions: readonly string[]) => {
     if (isSimpleMode) {
-      setSelectedActions([...actions]);
+      const classified = await classifyActions([...actions]);
+      const selectedWithPlaneType: SelectedAction[] = [
+        ...classified.controlActions.map(name => ({ name, planeType: 'control' as const })),
+        ...classified.dataActions.map(name => ({ name, planeType: 'data' as const })),
+      ];
+      setSelectedActions(selectedWithPlaneType);
+      clearSearch();
     } else {
-      handleAdvancedSearch([...actions].join('\n'));
+      setActionsInputDirect([...actions].join('\n'));
     }
-    clearSearch();
-  }, [isSimpleMode, handleAdvancedSearch, clearSearch]);
+  }, [isSimpleMode, setActionsInputDirect, clearSearch]);
 
   const handleClear = useCallback(() => {
     clearSearch();
@@ -298,9 +321,20 @@ export default function AzureRbacCalculatorPage() {
   const selectedActionChips = useMemo(
     () =>
       selectedActions.map(action => ({
-        id: action,
-        content: <span className="font-mono text-xs break-all">{action}</span>,
-        removeAriaLabel: `Remove ${action}`
+        id: action.name,
+        content: (
+          <span className="flex items-center gap-1.5">
+            <span className={`inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase ${
+              action.planeType === 'data'
+                ? 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300'
+                : 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+            }`}>
+              {action.planeType === 'data' ? 'D' : 'C'}
+            </span>
+            <span className="font-mono text-xs break-all">{action.name}</span>
+          </span>
+        ),
+        removeAriaLabel: `Remove ${action.name}`
       })),
     [selectedActions]
   );
@@ -362,14 +396,24 @@ export default function AzureRbacCalculatorPage() {
         )}
 
         {/* Cross-link to Entra ID */}
-        {azureRbacConfig.crossLink && (
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+        {azureRbacConfig.crossLink && !crossLinkDismissed && (
+          <div className="relative rounded-lg border border-slate-200 bg-slate-50 p-4 pr-10 dark:border-slate-700 dark:bg-slate-800/50">
             <p className="text-sm text-slate-600 dark:text-slate-300">
               <strong>Looking for directory roles?</strong>{' '}
               <Link href={azureRbacConfig.crossLink.url} className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline">
                 {azureRbacConfig.crossLink.text}
               </Link>
             </p>
+            <button
+              type="button"
+              onClick={() => setCrossLinkDismissed(true)}
+              className="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+              aria-label="Dismiss"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         )}
 
