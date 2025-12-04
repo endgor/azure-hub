@@ -283,6 +283,15 @@ export async function classifyActions(actions: string[]): Promise<{ controlActio
     }
   }
 
+  // Build prefix sets from known data actions for wildcard matching
+  const dataActionPrefixes = new Set<string>();
+  for (const dataAction of allDataActions) {
+    const lastSlash = dataAction.lastIndexOf('/');
+    if (lastSlash > 0) {
+      dataActionPrefixes.add(dataAction.substring(0, lastSlash + 1));
+    }
+  }
+
   const controlActions: string[] = [];
   const dataActions: string[] = [];
 
@@ -290,6 +299,17 @@ export async function classifyActions(actions: string[]): Promise<{ controlActio
     const actionLower = action.toLowerCase();
     if (allDataActions.has(actionLower)) {
       dataActions.push(action);
+    } else if (action.includes('*')) {
+      // Check if wildcard matches a data action pattern
+      const prefix = actionLower.replace(/\*.*$/, ''); // Get prefix before wildcard
+      const isDataAction = [...dataActionPrefixes].some(dp =>
+        dp.startsWith(prefix) || prefix.startsWith(dp)
+      );
+      if (isDataAction) {
+        dataActions.push(action);
+      } else {
+        controlActions.push(action);
+      }
     } else {
       controlActions.push(action);
     }
