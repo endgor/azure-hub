@@ -1,4 +1,4 @@
-import { RefObject, useCallback } from 'react';
+import { RefObject } from 'react';
 import type { Operation } from '@/types/rbac';
 import type { RoleSystemConfig } from '@/lib/rbacConfig';
 import ActionSuggestionList from '@/components/ActionSuggestionList';
@@ -24,14 +24,6 @@ export default function AdvancedMode({
 }: AdvancedModeProps) {
   const isAzure = config.systemType === 'azure';
 
-  const handleSelectAction = useCallback((name: string, planeType?: 'control' | 'data') => {
-    if (isAzure && planeType === 'data') {
-      onAddAction(`data:${name}`);
-    } else {
-      onAddAction(name);
-    }
-  }, [isAzure, onAddAction]);
-
   return (
     <div ref={advancedSearchDropdownRef}>
       <div className="space-y-2">
@@ -50,14 +42,9 @@ export default function AdvancedMode({
           rows={8}
           className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-xs text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-sky-400"
         />
-        <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
-          <p>Supports wildcards (e.g., {config.placeholders.wildcardExample}). Lines starting with # are treated as comments.</p>
-          {isAzure && (
-            <p>
-              <span className="font-medium text-violet-600 dark:text-violet-400">Data plane actions:</span> Prefix with <code className="rounded bg-violet-100 px-1 py-0.5 font-mono dark:bg-violet-900/40">data:</code> or select from suggestions (auto-prefixed).
-            </p>
-          )}
-        </div>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Supports wildcards (e.g., {config.placeholders.wildcardExample}). Lines starting with # are treated as comments.
+        </p>
       </div>
 
       {searchResults.length > 0 && (
@@ -74,7 +61,7 @@ export default function AdvancedMode({
               detail: operation.displayName || undefined,
               planeType: operation.planeType
             }))}
-            onSelect={handleSelectAction}
+            onSelect={onAddAction}
             showPlaneType={isAzure}
           />
         </div>

@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, FormEvent, useRef, useMemo, lazy, Sus
 import Layout from '@/components/Layout';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
-import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions } from '@/lib/clientRbacService';
+import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions, classifyActions } from '@/lib/clientRbacService';
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
@@ -163,7 +163,6 @@ export default function AzureRbacCalculatorPage() {
         setError('Please select at least one action');
         return;
       }
-      // Separate control and data plane actions
       controlActions = selectedActions.filter(a => a.planeType === 'control').map(a => a.name);
       dataActions = selectedActions.filter(a => a.planeType === 'data').map(a => a.name);
     } else {
@@ -171,27 +170,19 @@ export default function AzureRbacCalculatorPage() {
         setError('Please enter at least one action');
         return;
       }
-      // Parse advanced mode input - lines starting with "data:" are data actions
       const lines = actionsInput
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0 && !line.startsWith('#'));
 
-      for (const line of lines) {
-        if (line.toLowerCase().startsWith('data:')) {
-          dataActions.push(line.substring(5).trim());
-        } else if (line.toLowerCase().startsWith('control:')) {
-          controlActions.push(line.substring(8).trim());
-        } else {
-          // Default to control plane action
-          controlActions.push(line);
-        }
-      }
-
-      if (controlActions.length === 0 && dataActions.length === 0) {
+      if (lines.length === 0) {
         setError('Please enter at least one action');
         return;
       }
+
+      const classified = await classifyActions(lines);
+      controlActions = classified.controlActions;
+      dataActions = classified.dataActions;
     }
 
     setIsLoading(true);

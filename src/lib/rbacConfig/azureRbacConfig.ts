@@ -70,7 +70,7 @@ export const azureRbacConfig: RoleSystemConfig = {
       description: 'Read storage accounts and blob data (control + data plane)',
       actions: [
         'Microsoft.Storage/storageAccounts/read',
-        'data:Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read',
+        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read',
       ],
     },
     {
@@ -94,7 +94,7 @@ export const azureRbacConfig: RoleSystemConfig = {
 
   placeholders: {
     advancedMode:
-      'Microsoft.Storage/storageAccounts/read\ndata:Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read',
+      'Microsoft.Storage/storageAccounts/read\nMicrosoft.Storage/storageAccounts/blobServices/containers/blobs/read',
     wildcardExample: 'Microsoft.Storage/*',
   },
 

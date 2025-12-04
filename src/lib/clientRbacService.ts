@@ -260,6 +260,44 @@ export async function calculateLeastPrivilege(input: LeastPrivilegeInput): Promi
   return calculateLeastPrivilegedRoles(roles, input);
 }
 
+export async function classifyActions(actions: string[]): Promise<{ controlActions: string[]; dataActions: string[] }> {
+  const roles = await loadRoleDefinitions();
+
+  const allControlActions = new Set<string>();
+  const allDataActions = new Set<string>();
+
+  for (const role of roles) {
+    for (const permission of role.permissions) {
+      for (const action of permission.actions) {
+        if (!action.includes('*')) {
+          allControlActions.add(action.toLowerCase());
+        }
+      }
+      if (permission.dataActions) {
+        for (const dataAction of permission.dataActions) {
+          if (!dataAction.includes('*')) {
+            allDataActions.add(dataAction.toLowerCase());
+          }
+        }
+      }
+    }
+  }
+
+  const controlActions: string[] = [];
+  const dataActions: string[] = [];
+
+  for (const action of actions) {
+    const actionLower = action.toLowerCase();
+    if (allDataActions.has(actionLower)) {
+      dataActions.push(action);
+    } else {
+      controlActions.push(action);
+    }
+  }
+
+  return { controlActions, dataActions };
+}
+
 export async function preloadActionsCache(): Promise<void> {
   try {
     await extractActionsFromRoles();

@@ -9,7 +9,7 @@ interface ActionSuggestion {
 
 interface ActionSuggestionListProps {
   suggestions: ActionSuggestion[];
-  onSelect: (name: string, planeType?: 'control' | 'data') => void;
+  onSelect: (name: string) => void;
   showPlaneType?: boolean;
 }
 
@@ -22,7 +22,7 @@ export default function ActionSuggestionList({ suggestions, onSelect, showPlaneT
           type="button"
           variant="ghost"
           fullWidth
-          onClick={() => onSelect(suggestion.name, suggestion.planeType)}
+          onClick={() => onSelect(suggestion.name)}
           className="border-b border-slate-200 px-3 py-2.5 text-left justify-start hover:bg-slate-50 last:border-b-0 dark:border-slate-700 dark:hover:bg-slate-800 rounded-none shadow-none"
         >
           <div className="flex flex-col gap-0.5">
