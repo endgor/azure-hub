@@ -625,11 +625,6 @@
     "roleCount": 33
   },
   {
-    "key": "microsoft.recoveryservices/locations/allocatedstamp/read",
-    "name": "Microsoft.RecoveryServices/locations/allocatedStamp/read",
-    "roleCount": 24
-  },
-  {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/operationResults/read",
     "roleCount": 24
@@ -638,6 +633,11 @@
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/operationResults/read",
     "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/backup/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/backup/action",
+    "roleCount": 7
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/operationresults/read",
@@ -655,28 +655,38 @@
     "roleCount": 25
   },
   {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/provisioninstantitemrecovery/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/provisionInstantItemRecovery/action",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/accesstoken/action",
+    "name": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/accessToken/action",
+    "roleCount": 7
+  },
+  {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/read",
     "roleCount": 25
   },
   {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/restore/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/restore/action",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/revokeinstantitemrecovery/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/revokeInstantItemRecovery/action",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/write",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/write",
+    "roleCount": 8
+  },
+  {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/read",
-    "roleCount": 24
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupjobs/operationresults/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupJobs/operationResults/read",
-    "roleCount": 24
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupjobs/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupJobs/read",
-    "roleCount": 24
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupoperationresults/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupOperationResults/read",
     "roleCount": 24
   },
   {
@@ -700,9 +710,19 @@
     "roleCount": 24
   },
   {
+    "key": "microsoft.recoveryservices/vaults/certificates/write",
+    "name": "Microsoft.RecoveryServices/Vaults/certificates/write",
+    "roleCount": 8
+  },
+  {
     "key": "microsoft.recoveryservices/vaults/extendedinformation/read",
     "name": "Microsoft.RecoveryServices/Vaults/extendedInformation/read",
     "roleCount": 27
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/extendedinformation/write",
+    "name": "Microsoft.RecoveryServices/Vaults/extendedInformation/write",
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/registeredidentities/operationresults/read",
@@ -715,19 +735,49 @@
     "roleCount": 27
   },
   {
-    "key": "microsoft.recoveryservices/vaults/backupstorageconfig/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupstorageconfig/read",
-    "roleCount": 24
+    "key": "microsoft.recoveryservices/vaults/registeredidentities/write",
+    "name": "Microsoft.RecoveryServices/Vaults/registeredIdentities/write",
+    "roleCount": 8
   },
   {
-    "key": "microsoft.recoveryservices/vaults/backupconfig/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupconfig/read",
-    "roleCount": 23
+    "key": "microsoft.recoveryservices/vaults/usages/read",
+    "name": "Microsoft.RecoveryServices/Vaults/usages/read",
+    "roleCount": 28
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backuptriggervalidateoperation/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupTriggerValidateOperation/action",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupvalidateoperationresults/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperationResults/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupvalidateoperationsstatuses/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperationsStatuses/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.recoveryservices/vaults/backuppolicies/operations/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupPolicies/operations/read",
     "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/write",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/write",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/inquire/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/inquire/action",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/backupprotectionintent/write",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/backupProtectionIntent/write",
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/backupprotectionintent/read",
@@ -740,9 +790,9 @@
     "roleCount": 24
   },
   {
-    "key": "microsoft.recoveryservices/vaults/usages/read",
-    "name": "Microsoft.RecoveryServices/Vaults/usages/read",
-    "roleCount": 28
+    "key": "microsoft.recoveryservices/locations/backupaadproperties/read",
+    "name": "Microsoft.RecoveryServices/locations/backupAadProperties/read",
+    "roleCount": 21
   },
   {
     "key": "microsoft.recoveryservices/locations/backupcrrjobs/action",
@@ -755,6 +805,11 @@
     "roleCount": 6
   },
   {
+    "key": "microsoft.recoveryservices/locations/backupcrossregionrestore/action",
+    "name": "Microsoft.RecoveryServices/locations/backupCrossRegionRestore/action",
+    "roleCount": 5
+  },
+  {
     "key": "microsoft.recoveryservices/locations/backupcrroperationresults/read",
     "name": "Microsoft.RecoveryServices/locations/backupCrrOperationResults/read",
     "roleCount": 22
@@ -763,6 +818,36 @@
     "key": "microsoft.recoveryservices/locations/backupcrroperationsstatus/read",
     "name": "Microsoft.RecoveryServices/locations/backupCrrOperationsStatus/read",
     "roleCount": 22
+  },
+  {
+    "key": "microsoft.recoveryservices/locations/allocatedstamp/read",
+    "name": "Microsoft.RecoveryServices/locations/allocatedStamp/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupjobs/operationresults/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupJobs/operationResults/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupjobs/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupJobs/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupoperationresults/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupOperationResults/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupstorageconfig/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupstorageconfig/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupconfig/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupconfig/read",
+    "roleCount": 23
   },
   {
     "key": "microsoft.blockchain/blockchainmembers/transactionnodes/read",
@@ -1355,6 +1440,46 @@
     "roleCount": 20
   },
   {
+    "key": "microsoft.insights/register/action",
+    "name": "Microsoft.Insights/Register/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.insights/metrics/write",
+    "name": "Microsoft.Insights/Metrics/Write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.insights/telemetry/write",
+    "name": "Microsoft.Insights/Telemetry/Write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/write",
+    "name": "Microsoft.OperationalInsights/workspaces/write",
+    "roleCount": 10
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/sharedkeys/action",
+    "name": "Microsoft.OperationalInsights/workspaces/sharedkeys/action",
+    "roleCount": 10
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/sharedkeys/read",
+    "name": "Microsoft.OperationalInsights/workspaces/sharedKeys/read",
+    "roleCount": 31
+  },
+  {
+    "key": "microsoft.operationalinsights/locations/workspaces/failover/action",
+    "name": "Microsoft.OperationalInsights/locations/workspaces/failover/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/failback/action",
+    "name": "Microsoft.OperationalInsights/workspaces/failback/action",
+    "roleCount": 5
+  },
+  {
     "key": "microsoft.cache/register/action",
     "name": "Microsoft.Cache/register/action",
     "roleCount": 3
@@ -1423,11 +1548,6 @@
     "key": "microsoft.recoveryservices/locations/allocatestamp/action",
     "name": "Microsoft.RecoveryServices/locations/allocateStamp/action",
     "roleCount": 6
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/certificates/write",
-    "name": "Microsoft.RecoveryServices/Vaults/certificates/write",
-    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/refreshcontainers/read",
@@ -1885,16 +2005,6 @@
     "roleCount": 33
   },
   {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/backupprotectionintent/write",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/backupProtectionIntent/write",
-    "roleCount": 8
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/write",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/write",
-    "roleCount": 8
-  },
-  {
     "key": "microsoft.recoveryservices/vaults/backuppolicies/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupPolicies/write",
     "roleCount": 7
@@ -2060,6 +2170,36 @@
     "roleCount": 28
   },
   {
+    "key": "microsoft.insights/workbooks/revisions/read",
+    "name": "microsoft.insights/workbooks/revisions/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.insights/workbooktemplates/read",
+    "name": "microsoft.insights/workbooktemplates/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.insights/workbooks/write",
+    "name": "Microsoft.Insights/workbooks/write",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.insights/workbooks/delete",
+    "name": "Microsoft.Insights/workbooks/delete",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.insights/workbooktemplates/write",
+    "name": "Microsoft.Insights/workbooktemplates/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.insights/workbooktemplates/delete",
+    "name": "Microsoft.Insights/workbooktemplates/delete",
+    "roleCount": 5
+  },
+  {
     "key": "microsoft.authorization/policyassignments/read",
     "name": "Microsoft.Authorization/policyassignments/read",
     "roleCount": 373
@@ -2138,6 +2278,11 @@
     "key": "microsoft.hybridcompute/machines/addextensions/action",
     "name": "Microsoft.HybridCompute/machines/addExtensions/action",
     "roleCount": 5
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/upgradeextensions/action",
+    "name": "Microsoft.HybridCompute/machines/UpgradeExtensions/action",
+    "roleCount": 13
   },
   {
     "key": "microsoft.managedservices/registrationassignments/read",
@@ -3105,6 +3250,16 @@
     "roleCount": 19
   },
   {
+    "key": "microsoft.kubernetes/connectedclusters/listclusterusercredentials/action",
+    "name": "Microsoft.Kubernetes/connectedClusters/listClusterUserCredentials/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.kubernetes/connectedclusters/listclusterusercredential/action",
+    "name": "Microsoft.Kubernetes/connectedClusters/listClusterUserCredential/action",
+    "roleCount": 6
+  },
+  {
     "key": "microsoft.signalrservice/signalr/auth/clienttoken/action",
     "name": "Microsoft.SignalRService/SignalR/auth/clientToken/action",
     "roleCount": 5
@@ -3355,6 +3510,31 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.purview/accounts/read",
+    "name": "Microsoft.Purview/accounts/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.purview/accounts/data/read",
+    "name": "Microsoft.Purview/accounts/data/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.purview/accounts/data/write",
+    "name": "Microsoft.Purview/accounts/data/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.purview/accounts/scan/read",
+    "name": "Microsoft.Purview/accounts/scan/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.purview/accounts/scan/write",
+    "name": "Microsoft.Purview/accounts/scan/write",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.desktopvirtualization/hostpools/read",
     "name": "Microsoft.DesktopVirtualization/hostpools/read",
     "roleCount": 30
@@ -3378,6 +3558,11 @@
     "key": "microsoft.compute/disks/begingetaccess/action",
     "name": "Microsoft.Compute/disks/beginGetAccess/action",
     "roleCount": 12
+  },
+  {
+    "key": "microsoft.autonomousdevelopmentplatform/workspaces/read",
+    "name": "Microsoft.AutonomousDevelopmentPlatform/workspaces/read",
+    "roleCount": 21
   },
   {
     "key": "microsoft.compute/disks/endgetaccess/action",
@@ -3508,6 +3693,36 @@
     "key": "microsoft.documentdb/locations/restorabledatabaseaccounts/read",
     "name": "Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read",
     "roleCount": 20
+  },
+  {
+    "key": "microsoft.logic/workflows/triggers/read",
+    "name": "Microsoft.Logic/workflows/triggers/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.logic/workflows/triggers/listcallbackurl/action",
+    "name": "Microsoft.Logic/workflows/triggers/listCallbackUrl/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.logic/workflows/runs/read",
+    "name": "Microsoft.Logic/workflows/runs/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.web/sites/hostruntime/webhooks/api/workflows/triggers/read",
+    "name": "Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.web/sites/hostruntime/webhooks/api/workflows/triggers/listcallbackurl/action",
+    "name": "Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers/listCallbackUrl/action",
+    "roleCount": 8
+  },
+  {
+    "key": "microsoft.web/sites/hostruntime/webhooks/api/workflows/runs/read",
+    "name": "Microsoft.Web/sites/hostruntime/webhooks/api/workflows/runs/read",
+    "roleCount": 24
   },
   {
     "key": "microsoft.capacity/resourceproviders/locations/servicelimits/read",
@@ -3770,11 +3985,6 @@
     "roleCount": 3
   },
   {
-    "key": "microsoft.operationalinsights/workspaces/sharedkeys/action",
-    "name": "Microsoft.OperationalInsights/workspaces/sharedkeys/action",
-    "roleCount": 10
-  },
-  {
     "key": "microsoft.kubernetesconfiguration/register/action",
     "name": "Microsoft.KubernetesConfiguration/register/action",
     "roleCount": 6
@@ -3908,11 +4118,6 @@
     "key": "microsoft.hybridcompute/machines/delete",
     "name": "Microsoft.HybridCompute/machines/delete",
     "roleCount": 14
-  },
-  {
-    "key": "microsoft.hybridcompute/machines/upgradeextensions/action",
-    "name": "Microsoft.HybridCompute/machines/UpgradeExtensions/action",
-    "roleCount": 13
   },
   {
     "key": "microsoft.hybridcompute/machines/assesspatches/action",
@@ -4295,171 +4500,6 @@
     "roleCount": 5
   },
   {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/backup/action",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/backup/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/provisioninstantitemrecovery/action",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/provisionInstantItemRecovery/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/accesstoken/action",
-    "name": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/accessToken/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/restore/action",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/restore/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/revokeinstantitemrecovery/action",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/revokeInstantItemRecovery/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/extendedinformation/write",
-    "name": "Microsoft.RecoveryServices/Vaults/extendedInformation/write",
-    "roleCount": 8
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/registeredidentities/write",
-    "name": "Microsoft.RecoveryServices/Vaults/registeredIdentities/write",
-    "roleCount": 8
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backuptriggervalidateoperation/action",
-    "name": "Microsoft.RecoveryServices/Vaults/backupTriggerValidateOperation/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupvalidateoperationresults/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperationResults/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupvalidateoperationsstatuses/read",
-    "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperationsStatuses/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/write",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/write",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/inquire/action",
-    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/inquire/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.recoveryservices/locations/backupaadproperties/read",
-    "name": "Microsoft.RecoveryServices/locations/backupAadProperties/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.recoveryservices/locations/backupcrossregionrestore/action",
-    "name": "Microsoft.RecoveryServices/locations/backupCrossRegionRestore/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.insights/workbooks/write",
-    "name": "Microsoft.Insights/workbooks/write",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.insights/workbooks/delete",
-    "name": "Microsoft.Insights/workbooks/delete",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.insights/workbooks/revisions/read",
-    "name": "Microsoft.Insights/workbooks/revisions/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.insights/workbooktemplates/write",
-    "name": "Microsoft.Insights/workbooktemplates/write",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.insights/workbooktemplates/delete",
-    "name": "Microsoft.Insights/workbooktemplates/delete",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.insights/workbooktemplates/read",
-    "name": "Microsoft.Insights/workbooktemplates/read",
-    "roleCount": 20
-  },
-  {
-    "key": "microsoft.insights/register/action",
-    "name": "Microsoft.Insights/Register/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.operationalinsights/workspaces/write",
-    "name": "Microsoft.OperationalInsights/workspaces/write",
-    "roleCount": 10
-  },
-  {
-    "key": "microsoft.operationalinsights/workspaces/sharedkeys/read",
-    "name": "Microsoft.OperationalInsights/workspaces/sharedKeys/read",
-    "roleCount": 31
-  },
-  {
-    "key": "microsoft.operationalinsights/locations/workspaces/failover/action",
-    "name": "Microsoft.OperationalInsights/locations/workspaces/failover/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.operationalinsights/workspaces/failback/action",
-    "name": "Microsoft.OperationalInsights/workspaces/failback/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.insights/metrics/write",
-    "name": "Microsoft.Insights/Metrics/Write",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.insights/telemetry/write",
-    "name": "Microsoft.Insights/Telemetry/Write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.purview/accounts/read",
-    "name": "Microsoft.Purview/accounts/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.purview/accounts/data/read",
-    "name": "Microsoft.Purview/accounts/data/read",
-    "roleCount": 20
-  },
-  {
-    "key": "microsoft.purview/accounts/data/write",
-    "name": "Microsoft.Purview/accounts/data/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.purview/accounts/scan/read",
-    "name": "Microsoft.Purview/accounts/scan/read",
-    "roleCount": 19
-  },
-  {
-    "key": "microsoft.purview/accounts/scan/write",
-    "name": "Microsoft.Purview/accounts/scan/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.autonomousdevelopmentplatform/workspaces/read",
-    "name": "Microsoft.AutonomousDevelopmentPlatform/workspaces/read",
-    "roleCount": 21
-  },
-  {
     "key": "microsoft.connectedvmwarevsphere/vcenters/write",
     "name": "Microsoft.ConnectedVMwarevSphere/vcenters/Write",
     "roleCount": 4
@@ -4523,36 +4563,6 @@
     "key": "microsoft.backupsolutions/vmwareapplications/read",
     "name": "Microsoft.BackupSolutions/vmwareapplications/read",
     "roleCount": 19
-  },
-  {
-    "key": "microsoft.logic/workflows/triggers/read",
-    "name": "Microsoft.Logic/workflows/triggers/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.logic/workflows/triggers/listcallbackurl/action",
-    "name": "Microsoft.Logic/workflows/triggers/listCallbackUrl/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.logic/workflows/runs/read",
-    "name": "Microsoft.Logic/workflows/runs/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.web/sites/hostruntime/webhooks/api/workflows/triggers/read",
-    "name": "Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers/read",
-    "roleCount": 24
-  },
-  {
-    "key": "microsoft.web/sites/hostruntime/webhooks/api/workflows/triggers/listcallbackurl/action",
-    "name": "Microsoft.Web/sites/hostruntime/webhooks/api/workflows/triggers/listCallbackUrl/action",
-    "roleCount": 8
-  },
-  {
-    "key": "microsoft.web/sites/hostruntime/webhooks/api/workflows/runs/read",
-    "name": "Microsoft.Web/sites/hostruntime/webhooks/api/workflows/runs/read",
-    "roleCount": 24
   },
   {
     "key": "microsoft.network/networksecuritygroups/defaultsecurityrules/read",
@@ -5050,16 +5060,6 @@
     "roleCount": 8
   },
   {
-    "key": "microsoft.kubernetes/connectedclusters/listclusterusercredentials/action",
-    "name": "Microsoft.Kubernetes/connectedClusters/listClusterUserCredentials/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.kubernetes/connectedclusters/listclusterusercredential/action",
-    "name": "Microsoft.Kubernetes/connectedClusters/listClusterUserCredential/action",
-    "roleCount": 6
-  },
-  {
     "key": "microsoft.compute/disks/download/action",
     "name": "Microsoft.Compute/disks/download/action",
     "roleCount": 4
@@ -5510,24 +5510,84 @@
     "roleCount": 21
   },
   {
-    "key": "microsoft.desktopvirtualization/hostpools/write",
-    "name": "Microsoft.DesktopVirtualization/hostpools/write",
+    "key": "microsoft.azurestackhci/virtualmachineinstances/read",
+    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.azurestackhci/virtualmachineinstances/start/action",
+    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/start/action",
     "roleCount": 6
   },
   {
-    "key": "microsoft.desktopvirtualization/hostpools/retrieveregistrationtoken/action",
-    "name": "Microsoft.DesktopVirtualization/hostpools/retrieveRegistrationToken/action",
+    "key": "microsoft.azurestackhci/virtualmachineinstances/restart/action",
+    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/restart/action",
     "roleCount": 5
   },
   {
-    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/write",
-    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/write",
-    "roleCount": 7
+    "key": "microsoft.azurestackhci/virtualmachineinstances/stop/action",
+    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/stop/action",
+    "roleCount": 5
   },
   {
-    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/delete",
-    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/delete",
+    "key": "microsoft.compute/virtualmachines/poweroff/action",
+    "name": "Microsoft.Compute/virtualMachines/powerOff/action",
     "roleCount": 6
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinescanceloperations/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesCancelOperations/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinesexecutedeallocate/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesExecuteDeallocate/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinesexecutehibernate/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesExecuteHibernate/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinesexecutestart/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesExecuteStart/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinesgetoperationerrors/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesGetOperationErrors/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinesgetoperationstatus/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesGetOperationStatus/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinessubmitdeallocate/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesSubmitDeallocate/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinessubmithibernate/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesSubmitHibernate/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/locations/virtualmachinessubmitstart/action",
+    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesSubmitStart/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.computeschedule/register/action",
+    "name": "Microsoft.ComputeSchedule/register/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/usersessions/delete",
+    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/delete",
+    "roleCount": 7
   },
   {
     "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/usersessions/read",
@@ -5535,14 +5595,39 @@
     "roleCount": 26
   },
   {
-    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/usersessions/disconnect/action",
-    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/disconnect/action",
-    "roleCount": 7
-  },
-  {
     "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/usersessions/sendmessage/action",
     "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/sendMessage/action",
     "roleCount": 8
+  },
+  {
+    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/write",
+    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/write",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.desktopvirtualization/hostpools/write",
+    "name": "Microsoft.DesktopVirtualization/hostpools/write",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.insights/eventtypes/values/read",
+    "name": "Microsoft.Insights/eventtypes/values/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.desktopvirtualization/hostpools/retrieveregistrationtoken/action",
+    "name": "Microsoft.DesktopVirtualization/hostpools/retrieveRegistrationToken/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/delete",
+    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/delete",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/usersessions/disconnect/action",
+    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/disconnect/action",
+    "roleCount": 7
   },
   {
     "key": "microsoft.desktopvirtualization/hostpools/sessionhostconfigurations/read",
@@ -5610,11 +5695,6 @@
     "roleCount": 10
   },
   {
-    "key": "microsoft.compute/virtualmachines/poweroff/action",
-    "name": "Microsoft.Compute/virtualMachines/powerOff/action",
-    "roleCount": 6
-  },
-  {
     "key": "microsoft.compute/virtualmachines/runcommand/action",
     "name": "Microsoft.Compute/virtualMachines/runCommand/action",
     "roleCount": 5
@@ -5660,91 +5740,6 @@
     "roleCount": 4
   },
   {
-    "key": "microsoft.azurestackhci/virtualmachineinstances/read",
-    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.azurestackhci/virtualmachineinstances/restart/action",
-    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/restart/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.azurestackhci/virtualmachineinstances/start/action",
-    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/start/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.azurestackhci/virtualmachineinstances/stop/action",
-    "name": "Microsoft.AzureStackHCI/virtualMachineInstances/stop/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinescanceloperations/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesCancelOperations/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinesexecutedeallocate/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesExecuteDeallocate/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinesexecutehibernate/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesExecuteHibernate/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinesexecutestart/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesExecuteStart/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinesgetoperationerrors/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesGetOperationErrors/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinesgetoperationstatus/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesGetOperationStatus/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinessubmitdeallocate/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesSubmitDeallocate/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinessubmithibernate/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesSubmitHibernate/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/locations/virtualmachinessubmitstart/action",
-    "name": "Microsoft.ComputeSchedule/locations/virtualMachinesSubmitStart/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.computeschedule/register/action",
-    "name": "Microsoft.ComputeSchedule/register/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.desktopvirtualization/hostpools/sessionhosts/usersessions/delete",
-    "name": "Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/delete",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.insights/eventtypes/values/read",
-    "name": "Microsoft.Insights/eventtypes/values/read",
-    "roleCount": 20
-  },
-  {
-    "key": "microsoft.elasticsan/locations/asyncoperations/read",
-    "name": "Microsoft.ElasticSan/locations/asyncoperations/read",
-    "roleCount": 25
-  },
-  {
     "key": "microsoft.authorization/roleassignments/delete",
     "name": "Microsoft.Authorization/roleAssignments/delete",
     "roleCount": 21
@@ -5753,6 +5748,11 @@
     "key": "microsoft.management/getentities/action",
     "name": "Microsoft.Management/getEntities/action",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.elasticsan/locations/asyncoperations/read",
+    "name": "Microsoft.ElasticSan/locations/asyncoperations/read",
+    "roleCount": 25
   },
   {
     "key": "microsoft.codesigning/identityverification/read",
@@ -5788,6 +5788,51 @@
     "key": "microsoft.containerservice/fleets/apps/controllerrevisions/read",
     "name": "Microsoft.ContainerService/fleets/apps/controllerrevisions/read",
     "roleCount": 25
+  },
+  {
+    "key": "microsoft.containerservice/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
+    "name": "Microsoft.ContainerService/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.containerservice/fleets/events.k8s.io/events/read",
+    "name": "Microsoft.ContainerService/fleets/events.k8s.io/events/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.containerservice/fleets/events/read",
+    "name": "Microsoft.ContainerService/fleets/events/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.containerservice/fleets/limitranges/read",
+    "name": "Microsoft.ContainerService/fleets/limitranges/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.containerservice/fleets/namespaces/read",
+    "name": "Microsoft.ContainerService/fleets/namespaces/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.containerservice/fleets/resourcequotas/read",
+    "name": "Microsoft.ContainerService/fleets/resourcequotas/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.containerservice/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
+    "name": "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
+    "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/works/read",
+    "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read",
+    "roleCount": 23
   },
   {
     "key": "microsoft.containerservice/fleets/apps/daemonsets/read",
@@ -5830,16 +5875,6 @@
     "roleCount": 25
   },
   {
-    "key": "microsoft.containerservice/fleets/events.k8s.io/events/read",
-    "name": "Microsoft.ContainerService/fleets/events.k8s.io/events/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.containerservice/fleets/events/read",
-    "name": "Microsoft.ContainerService/fleets/events/read",
-    "roleCount": 25
-  },
-  {
     "key": "microsoft.containerservice/fleets/extensions/daemonsets/read",
     "name": "Microsoft.ContainerService/fleets/extensions/daemonsets/read",
     "roleCount": 25
@@ -5857,16 +5892,6 @@
   {
     "key": "microsoft.containerservice/fleets/extensions/networkpolicies/read",
     "name": "Microsoft.ContainerService/fleets/extensions/networkpolicies/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.containerservice/fleets/limitranges/read",
-    "name": "Microsoft.ContainerService/fleets/limitranges/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.containerservice/fleets/namespaces/read",
-    "name": "Microsoft.ContainerService/fleets/namespaces/read",
     "roleCount": 25
   },
   {
@@ -5895,11 +5920,6 @@
     "roleCount": 25
   },
   {
-    "key": "microsoft.containerservice/fleets/resourcequotas/read",
-    "name": "Microsoft.ContainerService/fleets/resourcequotas/read",
-    "roleCount": 25
-  },
-  {
     "key": "microsoft.containerservice/fleets/serviceaccounts/read",
     "name": "Microsoft.ContainerService/fleets/serviceaccounts/read",
     "roleCount": 25
@@ -5910,29 +5930,9 @@
     "roleCount": 25
   },
   {
-    "key": "microsoft.containerservice/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
-    "name": "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
-    "roleCount": 23
-  },
-  {
     "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
     "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
     "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-    "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/works/read",
-    "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
-    "name": "Microsoft.ContainerService/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
-    "roleCount": 5
   },
   {
     "key": "microsoft.containerservice/fleets/apps/daemonsets/write",
@@ -6130,24 +6130,39 @@
     "roleCount": 20
   },
   {
-    "key": "microsoft.resources/subscriptions/resourcegroups/write",
-    "name": "Microsoft.Resources/subscriptions/resourceGroups/write",
-    "roleCount": 17
+    "key": "microsoft.workloads/operations/read",
+    "name": "Microsoft.Workloads/Operations/read",
+    "roleCount": 19
   },
   {
-    "key": "microsoft.network/loadbalancers/write",
-    "name": "Microsoft.Network/loadBalancers/write",
-    "roleCount": 6
+    "key": "microsoft.workloads/locations/operationstatuses/read",
+    "name": "Microsoft.Workloads/Locations/OperationStatuses/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.network/virtualnetworks/subnets/virtualmachines/read",
+    "name": "Microsoft.Network/virtualNetworks/subnets/virtualMachines/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.network/networkinterfaces/ipconfigurations/read",
+    "name": "Microsoft.Network/networkInterfaces/ipconfigurations/read",
+    "roleCount": 26
+  },
+  {
+    "key": "microsoft.network/networkinterfaces/loadbalancers/read",
+    "name": "Microsoft.Network/networkInterfaces/loadBalancers/read",
+    "roleCount": 26
+  },
+  {
+    "key": "microsoft.network/networkinterfaces/providers/microsoft.insights/metricdefinitions/read",
+    "name": "Microsoft.Network/networkInterfaces/providers/Microsoft.Insights/metricDefinitions/read",
+    "roleCount": 24
   },
   {
     "key": "microsoft.network/loadbalancers/backendaddresspools/read",
     "name": "Microsoft.Network/loadBalancers/backendAddressPools/read",
     "roleCount": 26
-  },
-  {
-    "key": "microsoft.network/loadbalancers/backendaddresspools/write",
-    "name": "Microsoft.Network/loadBalancers/backendAddressPools/write",
-    "roleCount": 4
   },
   {
     "key": "microsoft.network/loadbalancers/frontendipconfigurations/read",
@@ -6190,24 +6205,39 @@
     "roleCount": 25
   },
   {
-    "key": "microsoft.network/networkinterfaces/ipconfigurations/read",
-    "name": "Microsoft.Network/networkInterfaces/ipconfigurations/read",
-    "roleCount": 26
+    "key": "microsoft.network/privateendpoints/read",
+    "name": "Microsoft.Network/privateEndpoints/read",
+    "roleCount": 27
   },
   {
-    "key": "microsoft.network/networkinterfaces/loadbalancers/read",
-    "name": "Microsoft.Network/networkInterfaces/loadBalancers/read",
-    "roleCount": 26
+    "key": "microsoft.storage/storageaccounts/fileservices/read",
+    "name": "Microsoft.Storage/storageAccounts/fileServices/read",
+    "roleCount": 29
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/fileservices/shares/read",
+    "name": "Microsoft.Storage/storageAccounts/fileServices/shares/read",
+    "roleCount": 30
+  },
+  {
+    "key": "microsoft.resources/subscriptions/resourcegroups/write",
+    "name": "Microsoft.Resources/subscriptions/resourceGroups/write",
+    "roleCount": 17
+  },
+  {
+    "key": "microsoft.network/loadbalancers/write",
+    "name": "Microsoft.Network/loadBalancers/write",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.network/loadbalancers/backendaddresspools/write",
+    "name": "Microsoft.Network/loadBalancers/backendAddressPools/write",
+    "roleCount": 4
   },
   {
     "key": "microsoft.network/virtualnetworks/checkipaddressavailability/read",
     "name": "Microsoft.Network/virtualNetworks/checkIpAddressAvailability/read",
     "roleCount": 22
-  },
-  {
-    "key": "microsoft.network/virtualnetworks/subnets/virtualmachines/read",
-    "name": "Microsoft.Network/virtualNetworks/subnets/virtualMachines/read",
-    "roleCount": 24
   },
   {
     "key": "microsoft.network/virtualnetworks/virtualmachines/read",
@@ -6218,11 +6248,6 @@
     "key": "microsoft.network/networkinterfaces/ipconfigurations/join/action",
     "name": "Microsoft.Network/networkInterfaces/ipconfigurations/join/action",
     "roleCount": 6
-  },
-  {
-    "key": "microsoft.network/privateendpoints/read",
-    "name": "Microsoft.Network/privateEndpoints/read",
-    "roleCount": 27
   },
   {
     "key": "microsoft.network/privateendpoints/write",
@@ -6240,19 +6265,9 @@
     "roleCount": 10
   },
   {
-    "key": "microsoft.storage/storageaccounts/fileservices/read",
-    "name": "Microsoft.Storage/storageAccounts/fileServices/read",
-    "roleCount": 29
-  },
-  {
     "key": "microsoft.storage/storageaccounts/fileservices/write",
     "name": "Microsoft.Storage/storageAccounts/fileServices/write",
     "roleCount": 10
-  },
-  {
-    "key": "microsoft.storage/storageaccounts/fileservices/shares/read",
-    "name": "Microsoft.Storage/storageAccounts/fileServices/shares/read",
-    "roleCount": 30
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/shares/write",
@@ -6263,21 +6278,6 @@
     "key": "microsoft.compute/sshpublickeys/read",
     "name": "Microsoft.Compute/sshPublicKeys/read",
     "roleCount": 27
-  },
-  {
-    "key": "microsoft.workloads/operations/read",
-    "name": "Microsoft.Workloads/Operations/read",
-    "roleCount": 19
-  },
-  {
-    "key": "microsoft.workloads/locations/operationstatuses/read",
-    "name": "Microsoft.Workloads/Locations/OperationStatuses/read",
-    "roleCount": 20
-  },
-  {
-    "key": "microsoft.network/networkinterfaces/providers/microsoft.insights/metricdefinitions/read",
-    "name": "Microsoft.Network/networkInterfaces/providers/Microsoft.Insights/metricDefinitions/read",
-    "roleCount": 24
   },
   {
     "key": "microsoft.compute/sshpublickeys/write",
@@ -6485,14 +6485,14 @@
     "roleCount": 21
   },
   {
-    "key": "microsoft.containerservice/managedclusters/listclustermonitoringusercredential/action",
-    "name": "Microsoft.ContainerService/managedClusters/listClusterMonitoringUserCredential/action",
-    "roleCount": 6
-  },
-  {
     "key": "microsoft.app/containerapps/read",
     "name": "Microsoft.App/containerApps/read",
     "roleCount": 19
+  },
+  {
+    "key": "microsoft.containerservice/managedclusters/listclustermonitoringusercredential/action",
+    "name": "Microsoft.ContainerService/managedClusters/listClusterMonitoringUserCredential/action",
+    "roleCount": 6
   },
   {
     "key": "microsoft.edgemarketplace/locations/operationstatuses/read",
@@ -6655,24 +6655,24 @@
     "roleCount": 24
   },
   {
-    "key": "microsoft.agfoodplatform/farmbeats/parties/farms/read",
-    "name": "Microsoft.AgFoodPlatform/farmBeats/parties/farms/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.agfoodplatform/farmbeats/parties/fields/read",
-    "name": "Microsoft.AgFoodPlatform/farmBeats/parties/fields/read",
-    "roleCount": 28
-  },
-  {
     "key": "microsoft.agfoodplatform/farmbeats/parties/boundaries/write",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/boundaries/write",
     "roleCount": 6
   },
   {
+    "key": "microsoft.agfoodplatform/farmbeats/parties/farms/read",
+    "name": "Microsoft.AgFoodPlatform/farmBeats/parties/farms/read",
+    "roleCount": 25
+  },
+  {
     "key": "microsoft.agfoodplatform/farmbeats/parties/farms/write",
     "name": "Microsoft.AgFoodPlatform/farmBeats/parties/farms/write",
     "roleCount": 7
+  },
+  {
+    "key": "microsoft.agfoodplatform/farmbeats/parties/fields/read",
+    "name": "Microsoft.AgFoodPlatform/farmBeats/parties/fields/read",
+    "roleCount": 28
   },
   {
     "key": "microsoft.agfoodplatform/farmbeats/parties/fields/write",
@@ -6810,26 +6810,6 @@
     "roleCount": 4
   },
   {
-    "key": "microsoft.dbformysql/flexibleservers/validatebackup/action",
-    "name": "Microsoft.DBforMySQL/flexibleServers/validateBackup/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.dbformysql/flexibleservers/backupandexport/action",
-    "name": "Microsoft.DBforMySQL/flexibleServers/backupAndExport/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.dbformysql/locations/operationresults/read",
-    "name": "Microsoft.DBforMySQL/locations/operationResults/read",
-    "roleCount": 19
-  },
-  {
-    "key": "microsoft.dbformysql/locations/azureasyncoperation/read",
-    "name": "Microsoft.DBforMySQL/locations/azureAsyncOperation/read",
-    "roleCount": 19
-  },
-  {
     "key": "microsoft.azurestackhci/register/action",
     "name": "Microsoft.AzureStackHCI/Register/Action",
     "roleCount": 5
@@ -6955,6 +6935,26 @@
     "roleCount": 5
   },
   {
+    "key": "microsoft.dbformysql/flexibleservers/validatebackup/action",
+    "name": "Microsoft.DBforMySQL/flexibleServers/validateBackup/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbformysql/flexibleservers/backupandexport/action",
+    "name": "Microsoft.DBforMySQL/flexibleServers/backupAndExport/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbformysql/locations/operationresults/read",
+    "name": "Microsoft.DBforMySQL/locations/operationResults/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.dbformysql/locations/azureasyncoperation/read",
+    "name": "Microsoft.DBforMySQL/locations/azureAsyncOperation/read",
+    "roleCount": 19
+  },
+  {
     "key": "paloaltonetworks.cloudngfw/localrulestacks/read",
     "name": "PaloAltoNetworks.Cloudngfw/localRulestacks/read",
     "roleCount": 20
@@ -7020,6 +7020,11 @@
     "roleCount": 22
   },
   {
+    "key": "microsoft.apimanagement/service/users/read",
+    "name": "Microsoft.ApiManagement/service/users/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.apimanagement/service/tags/read",
     "name": "Microsoft.ApiManagement/service/tags/read",
     "roleCount": 23
@@ -7030,19 +7035,14 @@
     "roleCount": 23
   },
   {
-    "key": "microsoft.apimanagement/service/authorizationservers/read",
-    "name": "Microsoft.ApiManagement/service/authorizationServers/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.apimanagement/service/users/read",
-    "name": "Microsoft.ApiManagement/service/users/read",
-    "roleCount": 22
-  },
-  {
     "key": "microsoft.apimanagement/service/groups/read",
     "name": "Microsoft.ApiManagement/service/groups/read",
     "roleCount": 22
+  },
+  {
+    "key": "microsoft.apimanagement/service/authorizationservers/read",
+    "name": "Microsoft.ApiManagement/service/authorizationServers/read",
+    "roleCount": 23
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/readfilebackupsemantics/action",
@@ -7160,6 +7160,11 @@
     "roleCount": 6
   },
   {
+    "key": "microsoft.azuresphere/catalogs/listdeployments/action",
+    "name": "Microsoft.AzureSphere/catalogs/listDeployments/action",
+    "roleCount": 5
+  },
+  {
     "key": "microsoft.azuresphere/catalogs/products/countdevices/action",
     "name": "Microsoft.AzureSphere/catalogs/products/countDevices/action",
     "roleCount": 6
@@ -7170,14 +7175,14 @@
     "roleCount": 6
   },
   {
-    "key": "microsoft.azuresphere/catalogs/certificates/retrieveproofofpossessionnonce/action",
-    "name": "Microsoft.AzureSphere/catalogs/certificates/retrieveProofOfPossessionNonce/action",
-    "roleCount": 5
-  },
-  {
     "key": "microsoft.azuresphere/catalogs/certificates/retrievecertchain/action",
     "name": "Microsoft.AzureSphere/catalogs/certificates/retrieveCertChain/action",
     "roleCount": 6
+  },
+  {
+    "key": "microsoft.azuresphere/catalogs/certificates/retrieveproofofpossessionnonce/action",
+    "name": "Microsoft.AzureSphere/catalogs/certificates/retrieveProofOfPossessionNonce/action",
+    "roleCount": 5
   },
   {
     "key": "microsoft.azuresphere/catalogs/images/write",
@@ -7187,11 +7192,6 @@
   {
     "key": "microsoft.azuresphere/catalogs/uploadimage/action",
     "name": "Microsoft.AzureSphere/catalogs/uploadImage/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.azuresphere/catalogs/listdeployments/action",
-    "name": "Microsoft.AzureSphere/catalogs/listDeployments/action",
     "roleCount": 5
   },
   {
@@ -7630,61 +7630,6 @@
     "roleCount": 5
   },
   {
-    "key": "microsoft.web/sites/applyslotconfig/action",
-    "name": "Microsoft.Web/sites/applySlotConfig/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/restart/action",
-    "name": "Microsoft.Web/sites/restart/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/slots/restart/action",
-    "name": "Microsoft.Web/sites/slots/restart/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/slots/slotsswap/action",
-    "name": "Microsoft.Web/sites/slots/slotsswap/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/slots/start/action",
-    "name": "Microsoft.Web/sites/slots/start/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/slots/stop/action",
-    "name": "Microsoft.Web/sites/slots/stop/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/slotsdiffs/action",
-    "name": "Microsoft.Web/sites/slotsdiffs/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/slotsswap/action",
-    "name": "Microsoft.Web/sites/slotsswap/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/start/action",
-    "name": "Microsoft.Web/sites/start/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/stop/action",
-    "name": "Microsoft.Web/sites/stop/Action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.web/sites/write",
-    "name": "Microsoft.Web/sites/write",
-    "roleCount": 5
-  },
-  {
     "key": "microsoft.web/sites/config/list/action",
     "name": "Microsoft.Web/sites/config/list/Action",
     "roleCount": 6
@@ -7748,6 +7693,61 @@
     "key": "microsoft.web/sites/slots/publish/action",
     "name": "Microsoft.Web/sites/slots/publish/Action",
     "roleCount": 6
+  },
+  {
+    "key": "microsoft.web/sites/applyslotconfig/action",
+    "name": "Microsoft.Web/sites/applySlotConfig/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/restart/action",
+    "name": "Microsoft.Web/sites/restart/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/slots/restart/action",
+    "name": "Microsoft.Web/sites/slots/restart/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/slots/slotsswap/action",
+    "name": "Microsoft.Web/sites/slots/slotsswap/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/slots/start/action",
+    "name": "Microsoft.Web/sites/slots/start/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/slots/stop/action",
+    "name": "Microsoft.Web/sites/slots/stop/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/slotsdiffs/action",
+    "name": "Microsoft.Web/sites/slotsdiffs/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/slotsswap/action",
+    "name": "Microsoft.Web/sites/slotsswap/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/start/action",
+    "name": "Microsoft.Web/sites/start/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/stop/action",
+    "name": "Microsoft.Web/sites/stop/Action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.web/sites/write",
+    "name": "Microsoft.Web/sites/write",
+    "roleCount": 5
   },
   {
     "key": "microsoft.mixedreality/spatialmapsaccounts/read",
@@ -7855,13 +7855,13 @@
     "roleCount": 4
   },
   {
-    "key": "microsoft.eventgrid/topicspaces/publish/action",
-    "name": "Microsoft.EventGrid/topicSpaces/publish/action",
+    "key": "microsoft.eventgrid/topicspaces/subscribe/action",
+    "name": "Microsoft.EventGrid/topicSpaces/subscribe/action",
     "roleCount": 4
   },
   {
-    "key": "microsoft.eventgrid/topicspaces/subscribe/action",
-    "name": "Microsoft.EventGrid/topicSpaces/subscribe/action",
+    "key": "microsoft.eventgrid/topicspaces/publish/action",
+    "name": "Microsoft.EventGrid/topicSpaces/publish/action",
     "roleCount": 4
   },
   {
@@ -7875,6 +7875,11 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.healthdataaiservices/deidservices/batch/read",
+    "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/read",
+    "roleCount": 21
+  },
+  {
     "key": "microsoft.healthdataaiservices/deidservices/batch/write",
     "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/write",
     "roleCount": 4
@@ -7883,11 +7888,6 @@
     "key": "microsoft.healthdataaiservices/deidservices/batch/delete",
     "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/delete",
     "roleCount": 4
-  },
-  {
-    "key": "microsoft.healthdataaiservices/deidservices/batch/read",
-    "name": "Microsoft.HealthDataAIServices/DeidServices/Batch/read",
-    "roleCount": 21
   },
   {
     "key": "microsoft.carbon/carbonemissionreports/action",
@@ -7950,51 +7950,6 @@
     "roleCount": 19
   },
   {
-    "key": "microsoft.azurestackhci/virtualnetworks/read",
-    "name": "Microsoft.AzureStackHCI/VirtualNetworks/Read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.azurestackhci/virtualnetworks/join/action",
-    "name": "Microsoft.AzureStackHCI/VirtualNetworks/join/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.azurestackhci/logicalnetworks/read",
-    "name": "Microsoft.AzureStackHCI/LogicalNetworks/Read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.azurestackhci/logicalnetworks/join/action",
-    "name": "Microsoft.AzureStackHCI/LogicalNetworks/join/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.azurestackhci/galleryimages/read",
-    "name": "Microsoft.AzureStackHCI/GalleryImages/Read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.azurestackhci/galleryimages/deploy/action",
-    "name": "Microsoft.AzureStackHCI/GalleryImages/deploy/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.azurestackhci/storagecontainers/deploy/action",
-    "name": "Microsoft.AzureStackHCI/StorageContainers/deploy/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.azurestackhci/marketplacegalleryimages/read",
-    "name": "Microsoft.AzureStackHCI/MarketplaceGalleryImages/Read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.azurestackhci/marketplacegalleryimages/deploy/action",
-    "name": "Microsoft.AzureStackHCI/MarketPlaceGalleryImages/deploy/action",
-    "roleCount": 4
-  },
-  {
     "key": "microsoft.azurestackhci/virtualmachines/read",
     "name": "Microsoft.AzureStackHCI/VirtualMachines/Read",
     "roleCount": 21
@@ -8002,6 +7957,16 @@
   {
     "key": "microsoft.azurestackhci/virtualmachines/extensions/read",
     "name": "Microsoft.AzureStackHCI/VirtualMachines/Extensions/Read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.azurestackhci/virtualnetworks/read",
+    "name": "Microsoft.AzureStackHCI/VirtualNetworks/Read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.azurestackhci/logicalnetworks/read",
+    "name": "Microsoft.AzureStackHCI/LogicalNetworks/Read",
     "roleCount": 21
   },
   {
@@ -8015,6 +7980,16 @@
     "roleCount": 21
   },
   {
+    "key": "microsoft.azurestackhci/galleryimages/read",
+    "name": "Microsoft.AzureStackHCI/GalleryImages/Read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.azurestackhci/marketplacegalleryimages/read",
+    "name": "Microsoft.AzureStackHCI/MarketplaceGalleryImages/Read",
+    "roleCount": 21
+  },
+  {
     "key": "microsoft.hybridcompute/privatelinkscopes/networksecurityperimeterconfigurations/read",
     "name": "Microsoft.HybridCompute/privateLinkScopes/networkSecurityPerimeterConfigurations/read",
     "roleCount": 23
@@ -8025,8 +8000,28 @@
     "roleCount": 23
   },
   {
-    "key": "microsoft.insights/autoscalesettings/write",
-    "name": "Microsoft.Insights/AutoscaleSettings/write",
+    "key": "microsoft.azurestackhci/virtualnetworks/join/action",
+    "name": "Microsoft.AzureStackHCI/VirtualNetworks/join/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.azurestackhci/logicalnetworks/join/action",
+    "name": "Microsoft.AzureStackHCI/LogicalNetworks/join/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.azurestackhci/galleryimages/deploy/action",
+    "name": "Microsoft.AzureStackHCI/GalleryImages/deploy/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.azurestackhci/storagecontainers/deploy/action",
+    "name": "Microsoft.AzureStackHCI/StorageContainers/deploy/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.azurestackhci/marketplacegalleryimages/deploy/action",
+    "name": "Microsoft.AzureStackHCI/MarketPlaceGalleryImages/deploy/action",
     "roleCount": 4
   },
   {
@@ -8063,6 +8058,11 @@
     "key": "microsoft.advisor/triagerecommendations/reset/action",
     "name": "Microsoft.Advisor/triageRecommendations/reset/action",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.insights/autoscalesettings/write",
+    "name": "Microsoft.Insights/AutoscaleSettings/write",
+    "roleCount": 4
   },
   {
     "key": "microsoft.security/defenderforstoragesettings/read",
@@ -8160,6 +8160,11 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.hybridcontainerservice/provisionedclusterinstances/listuserkubeconfig/action",
+    "name": "Microsoft.HybridContainerService/provisionedClusterInstances/listUserKubeconfig/action",
+    "roleCount": 4
+  },
+  {
     "key": "microsoft.hybridcontainerservice/locations/operationstatuses/read",
     "name": "Microsoft.HybridContainerService/Locations/operationStatuses/read",
     "roleCount": 20
@@ -8222,11 +8227,6 @@
   {
     "key": "microsoft.hybridcontainerservice/virtualnetworks/delete",
     "name": "Microsoft.HybridContainerService/virtualNetworks/delete",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.hybridcontainerservice/provisionedclusterinstances/listuserkubeconfig/action",
-    "name": "Microsoft.HybridContainerService/provisionedClusterInstances/listUserKubeconfig/action",
     "roleCount": 4
   },
   {
@@ -8345,16 +8345,6 @@
     "roleCount": 4
   },
   {
-    "key": "microsoft.apicenter/services/workspaces/apis/versions/definitions/exportspecification/action",
-    "name": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions/exportSpecification/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.apicenter/services/workspaces/search/action",
-    "name": "Microsoft.ApiCenter/services/workspaces/search/action",
-    "roleCount": 4
-  },
-  {
     "key": "microsoft.appplatform/spring/configurationservices/read",
     "name": "Microsoft.AppPlatform/Spring/configurationServices/read",
     "roleCount": 22
@@ -8370,9 +8360,74 @@
     "roleCount": 20
   },
   {
+    "key": "microsoft.apicenter/services/workspaces/apis/versions/definitions/exportspecification/action",
+    "name": "Microsoft.ApiCenter/services/workspaces/apis/versions/definitions/exportSpecification/action",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/search/action",
+    "name": "Microsoft.ApiCenter/services/workspaces/search/action",
+    "roleCount": 4
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/listkeys/action",
     "name": "Microsoft.OperationalInsights/workspaces/listKeys/action",
     "roleCount": 7
+  },
+  {
+    "key": "microsoft.network/publicipaddresses/delete",
+    "name": "Microsoft.Network/publicIPAddresses/delete",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/joinnetworksecurityrule/action",
+    "name": "Microsoft.Network/applicationSecurityGroups/joinNetworkSecurityRule/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.network/privatelinkservices/write",
+    "name": "Microsoft.Network/privatelinkservices/write",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.network/privatelinkservices/read",
+    "name": "Microsoft.Network/privatelinkservices/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.network/privatelinkservices/delete",
+    "name": "Microsoft.Network/privatelinkservices/delete",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.network/networkintentpolicies/join/action",
+    "name": "Microsoft.Network/networkIntentPolicies/join/action",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.network/networkmanagers/ipampools/associateresourcestopool/action",
+    "name": "Microsoft.Network/networkManagers/ipamPools/associateResourcesToPool/action",
+    "roleCount": 8
+  },
+  {
+    "key": "microsoft.network/dnszones/a/delete",
+    "name": "Microsoft.Network/dnsZones/A/delete",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.network/dnszones/a/write",
+    "name": "Microsoft.Network/dnsZones/A/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.network/privatednszones/a/delete",
+    "name": "Microsoft.Network/privateDnsZones/A/delete",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.network/privatednszones/a/write",
+    "name": "Microsoft.Network/privateDnsZones/A/write",
+    "roleCount": 8
   },
   {
     "key": "microsoft.resources/tags/write",
@@ -8405,11 +8460,6 @@
     "roleCount": 8
   },
   {
-    "key": "microsoft.network/privatednszones/a/write",
-    "name": "Microsoft.Network/privateDnsZones/A/write",
-    "roleCount": 8
-  },
-  {
     "key": "microsoft.network/privatednszones/virtualnetworklinks/write",
     "name": "Microsoft.Network/privateDnsZones/virtualNetworkLinks/write",
     "roleCount": 8
@@ -8420,46 +8470,6 @@
     "roleCount": 23
   },
   {
-    "key": "microsoft.network/networkintentpolicies/join/action",
-    "name": "Microsoft.Network/networkIntentPolicies/join/action",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.network/networkmanagers/ipampools/associateresourcestopool/action",
-    "name": "Microsoft.Network/networkManagers/ipamPools/associateResourcesToPool/action",
-    "roleCount": 8
-  },
-  {
-    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/write",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/write",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.compute/locations/operations/read",
-    "name": "Microsoft.Compute/locations/operations/read",
-    "roleCount": 24
-  },
-  {
-    "key": "microsoft.compute/locations/diskoperations/read",
-    "name": "Microsoft.Compute/locations/DiskOperations/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.network/dnszones/a/delete",
-    "name": "Microsoft.Network/dnsZones/A/delete",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.network/dnszones/a/write",
-    "name": "Microsoft.Network/dnsZones/A/write",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.network/privatednszones/a/delete",
-    "name": "Microsoft.Network/privateDnsZones/A/delete",
-    "roleCount": 5
-  },
-  {
     "key": "microsoft.storage/storageaccounts/fileservices/shares/delete",
     "name": "Microsoft.Storage/storageAccounts/fileServices/shares/delete",
     "roleCount": 7
@@ -8468,31 +8478,6 @@
     "key": "microsoft.network/privatednsoperationstatuses/read",
     "name": "Microsoft.Network/privateDnsOperationStatuses/read",
     "roleCount": 22
-  },
-  {
-    "key": "microsoft.network/publicipaddresses/delete",
-    "name": "Microsoft.Network/publicIPAddresses/delete",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.network/applicationsecuritygroups/joinnetworksecurityrule/action",
-    "name": "Microsoft.Network/applicationSecurityGroups/joinNetworkSecurityRule/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.network/privatelinkservices/write",
-    "name": "Microsoft.Network/privatelinkservices/write",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.network/privatelinkservices/read",
-    "name": "Microsoft.Network/privatelinkservices/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.network/privatelinkservices/delete",
-    "name": "Microsoft.Network/privatelinkservices/delete",
-    "roleCount": 4
   },
   {
     "key": "microsoft.compute/availabilitysets/delete",
@@ -8513,6 +8498,21 @@
     "key": "microsoft.network/applicationsecuritygroups/read",
     "name": "Microsoft.Network/applicationSecurityGroups/read",
     "roleCount": 21
+  },
+  {
+    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/write",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.compute/locations/operations/read",
+    "name": "Microsoft.Compute/locations/operations/read",
+    "roleCount": 24
+  },
+  {
+    "key": "microsoft.compute/locations/diskoperations/read",
+    "name": "Microsoft.Compute/locations/DiskOperations/read",
+    "roleCount": 25
   },
   {
     "key": "microsoft.quota/groupquotas/read",
@@ -9130,14 +9130,14 @@
     "roleCount": 7
   },
   {
-    "key": "oracle.database/oraclesubscriptions/listcloudaccountdetails/action",
-    "name": "Oracle.Database/oracleSubscriptions/listCloudAccountDetails/action",
-    "roleCount": 7
-  },
-  {
     "key": "oracle.database/cloudvmclusters/listprivateipaddresses/action",
     "name": "Oracle.Database/cloudVmClusters/listPrivateIpAddresses/action",
     "roleCount": 5
+  },
+  {
+    "key": "oracle.database/oraclesubscriptions/listcloudaccountdetails/action",
+    "name": "Oracle.Database/oracleSubscriptions/listCloudAccountDetails/action",
+    "roleCount": 7
   },
   {
     "key": "oracle.database/exascaledbstoragevaults/read",
@@ -9900,11 +9900,6 @@
     "roleCount": 8
   },
   {
-    "key": "microsoft.app/jobs/read",
-    "name": "microsoft.app/jobs/read",
-    "roleCount": 21
-  },
-  {
     "key": "microsoft.app/containerapps/logstream/action",
     "name": "Microsoft.App/containerApps/logstream/action",
     "roleCount": 4
@@ -9918,6 +9913,11 @@
     "key": "microsoft.app/containerapps/debug/action",
     "name": "Microsoft.App/containerApps/debug/action",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.app/jobs/read",
+    "name": "microsoft.app/jobs/read",
+    "roleCount": 21
   },
   {
     "key": "microsoft.app/jobs/write",
@@ -10130,11 +10130,6 @@
     "roleCount": 3
   },
   {
-    "key": "microsoft.deviceupdate/updateaccounts/agents/requestupdate/action",
-    "name": "Microsoft.DeviceUpdate/updateAccounts/agents/requestUpdate/action",
-    "roleCount": 3
-  },
-  {
     "key": "microsoft.mission/enclaveconnections/approvalcallback/action",
     "name": "Microsoft.Mission/enclaveConnections/approvalCallback/action",
     "roleCount": 3
@@ -10160,6 +10155,11 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.deviceupdate/updateaccounts/agents/requestupdate/action",
+    "name": "Microsoft.DeviceUpdate/updateAccounts/agents/requestUpdate/action",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.keyvault/locations/deletedvaults/read",
     "name": "Microsoft.KeyVault/locations/deletedVaults/read",
     "roleCount": 26
@@ -10173,106 +10173,6 @@
     "key": "microsoft.keyvault/locations/operationresults/read",
     "name": "Microsoft.KeyVault/locations/operationResults/read",
     "roleCount": 26
-  },
-  {
-    "key": "microsoft.app/jobs/logstream/action",
-    "name": "Microsoft.App/jobs/logstream/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.app/jobs/exec/action",
-    "name": "Microsoft.App/jobs/exec/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.cloudtest/hostedpools/write",
-    "name": "Microsoft.CloudTest/hostedpools/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/hostedpools/delete",
-    "name": "Microsoft.CloudTest/hostedpools/delete",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/images/write",
-    "name": "Microsoft.CloudTest/images/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/images/delete",
-    "name": "Microsoft.CloudTest/images/delete",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/images/cancel/action",
-    "name": "Microsoft.CloudTest/images/cancel/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/images/refresh/action",
-    "name": "Microsoft.CloudTest/images/refresh/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/pools/write",
-    "name": "Microsoft.CloudTest/pools/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/pools/delete",
-    "name": "Microsoft.CloudTest/pools/delete",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/accounts/write",
-    "name": "Microsoft.CloudTest/accounts/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/accounts/delete",
-    "name": "Microsoft.CloudTest/accounts/delete",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/buildcaches/write",
-    "name": "Microsoft.CloudTest/buildcaches/write",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/buildcaches/delete",
-    "name": "Microsoft.CloudTest/buildcaches/delete",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/pools/leases/action",
-    "name": "Microsoft.CloudTest/pools/leases/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/pools/leases/complete/action",
-    "name": "Microsoft.CloudTest/pools/leases/complete/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/pools/leases/extend/action",
-    "name": "Microsoft.CloudTest/pools/leases/extend/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/hostedpools/leases/action",
-    "name": "Microsoft.CloudTest/hostedpools/leases/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/hostedpools/leases/complete/action",
-    "name": "Microsoft.CloudTest/hostedpools/leases/complete/action",
-    "roleCount": 3
-  },
-  {
-    "key": "microsoft.cloudtest/hostedpools/leases/extend/action",
-    "name": "Microsoft.CloudTest/hostedpools/leases/extend/action",
-    "roleCount": 3
   },
   {
     "key": "microsoft.botservice/listauthserviceproviders/action",
@@ -10437,6 +10337,106 @@
   {
     "key": "microsoft.botservice/botservices/connections/listwithsecrets/action",
     "name": "Microsoft.BotService/botServices/Connections/listWithSecrets/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.app/jobs/logstream/action",
+    "name": "Microsoft.App/jobs/logstream/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.app/jobs/exec/action",
+    "name": "Microsoft.App/jobs/exec/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.cloudtest/hostedpools/write",
+    "name": "Microsoft.CloudTest/hostedpools/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/hostedpools/delete",
+    "name": "Microsoft.CloudTest/hostedpools/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/images/write",
+    "name": "Microsoft.CloudTest/images/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/images/delete",
+    "name": "Microsoft.CloudTest/images/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/images/cancel/action",
+    "name": "Microsoft.CloudTest/images/cancel/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/images/refresh/action",
+    "name": "Microsoft.CloudTest/images/refresh/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/pools/write",
+    "name": "Microsoft.CloudTest/pools/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/pools/delete",
+    "name": "Microsoft.CloudTest/pools/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/accounts/write",
+    "name": "Microsoft.CloudTest/accounts/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/accounts/delete",
+    "name": "Microsoft.CloudTest/accounts/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/buildcaches/write",
+    "name": "Microsoft.CloudTest/buildcaches/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/buildcaches/delete",
+    "name": "Microsoft.CloudTest/buildcaches/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/pools/leases/action",
+    "name": "Microsoft.CloudTest/pools/leases/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/pools/leases/complete/action",
+    "name": "Microsoft.CloudTest/pools/leases/complete/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/pools/leases/extend/action",
+    "name": "Microsoft.CloudTest/pools/leases/extend/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/hostedpools/leases/action",
+    "name": "Microsoft.CloudTest/hostedpools/leases/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/hostedpools/leases/complete/action",
+    "name": "Microsoft.CloudTest/hostedpools/leases/complete/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.cloudtest/hostedpools/leases/extend/action",
+    "name": "Microsoft.CloudTest/hostedpools/leases/extend/action",
     "roleCount": 3
   },
   {
@@ -10620,11 +10620,6 @@
     "roleCount": 3
   },
   {
-    "key": "microsoft.batch/batchaccounts/read",
-    "name": "Microsoft.Batch/batchAccounts/read",
-    "roleCount": 21
-  },
-  {
     "key": "microsoft.batch/batchaccounts/applications/read",
     "name": "Microsoft.Batch/batchAccounts/applications/read",
     "roleCount": 22
@@ -10638,6 +10633,11 @@
     "key": "microsoft.batch/batchaccounts/pools/read",
     "name": "Microsoft.Batch/batchAccounts/pools/read",
     "roleCount": 22
+  },
+  {
+    "key": "microsoft.batch/batchaccounts/read",
+    "name": "Microsoft.Batch/batchAccounts/read",
+    "roleCount": 21
   },
   {
     "key": "microsoft.dashboard/grafana/write",
@@ -11410,16 +11410,6 @@
     "roleCount": 19
   },
   {
-    "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/read",
-    "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/read",
-    "roleCount": 20
-  },
-  {
-    "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/metadata/read",
-    "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/metadata/read",
-    "roleCount": 20
-  },
-  {
     "key": "microsoft.edgemanagement/locations/chat/action",
     "name": "Microsoft.EdgeManagement/locations/chat/action",
     "roleCount": 3
@@ -11428,6 +11418,16 @@
     "key": "microsoft.edgemanagement/troubleshoot/action",
     "name": "Microsoft.EdgeManagement/troubleshoot/action",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/read",
+    "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.durabletask/schedulers/taskhubs/orchestrations/metadata/read",
+    "name": "Microsoft.DurableTask/schedulers/taskhubs/orchestrations/metadata/read",
+    "roleCount": 20
   },
   {
     "key": "microsoft.onlineexperimentation/workspaces/read",
@@ -11680,6 +11680,11 @@
     "roleCount": 21
   },
   {
+    "key": "microsoft.containerregistry/registries/cacherules/read",
+    "name": "Microsoft.ContainerRegistry/registries/cacheRules/read",
+    "roleCount": 21
+  },
+  {
     "key": "microsoft.containerregistry/registries/credentialsets/write",
     "name": "Microsoft.ContainerRegistry/registries/credentialSets/write",
     "roleCount": 4
@@ -11693,11 +11698,6 @@
     "key": "microsoft.containerregistry/registries/credentialsets/operationstatuses/read",
     "name": "Microsoft.ContainerRegistry/registries/credentialSets/operationStatuses/read",
     "roleCount": 20
-  },
-  {
-    "key": "microsoft.containerregistry/registries/cacherules/read",
-    "name": "Microsoft.ContainerRegistry/registries/cacheRules/read",
-    "roleCount": 21
   },
   {
     "key": "microsoft.containerregistry/registries/cacherules/write",
@@ -11880,21 +11880,6 @@
     "roleCount": 20
   },
   {
-    "key": "microsoft.azurestackhci/devicepools/read",
-    "name": "Microsoft.AzureStackHCI/DevicePools/read",
-    "roleCount": 20
-  },
-  {
-    "key": "microsoft.azurestackhci/devicepools/claimdevices/action",
-    "name": "Microsoft.AzureStackHCI/DevicePools/ClaimDevices/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.azurestackhci/devicepools/releasedevices/action",
-    "name": "Microsoft.AzureStackHCI/DevicePools/ReleaseDevices/action",
-    "roleCount": 4
-  },
-  {
     "key": "microsoft.containerservice/managedclusters/agentpools/deletemachines/action",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/deleteMachines/action",
     "roleCount": 6
@@ -11910,8 +11895,23 @@
     "roleCount": 6
   },
   {
-    "key": "microsoft.storage/storageaccounts/tableservices/generateuserdelegationkey/action",
-    "name": "Microsoft.Storage/storageAccounts/tableServices/generateUserDelegationKey/action",
+    "key": "microsoft.azurestackhci/devicepools/read",
+    "name": "Microsoft.AzureStackHCI/DevicePools/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.azurestackhci/devicepools/claimdevices/action",
+    "name": "Microsoft.AzureStackHCI/DevicePools/ClaimDevices/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.azurestackhci/devicepools/releasedevices/action",
+    "name": "Microsoft.AzureStackHCI/DevicePools/ReleaseDevices/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/fileservices/generateuserdelegationkey/action",
+    "name": "Microsoft.Storage/storageAccounts/fileServices/generateUserDelegationKey/action",
     "roleCount": 7
   },
   {
@@ -11920,8 +11920,8 @@
     "roleCount": 7
   },
   {
-    "key": "microsoft.storage/storageaccounts/fileservices/generateuserdelegationkey/action",
-    "name": "Microsoft.Storage/storageAccounts/fileServices/generateUserDelegationKey/action",
+    "key": "microsoft.storage/storageaccounts/tableservices/generateuserdelegationkey/action",
+    "name": "Microsoft.Storage/storageAccounts/tableServices/generateUserDelegationKey/action",
     "roleCount": 7
   },
   {
@@ -12405,6 +12405,11 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.edge/sites/read",
+    "name": "Microsoft.Edge/sites/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.deviceregistry/register/action",
     "name": "Microsoft.DeviceRegistry/register/action",
     "roleCount": 3
@@ -12418,11 +12423,6 @@
     "key": "microsoft.deviceregistry/schemaregistries/write",
     "name": "Microsoft.DeviceRegistry/schemaRegistries/write",
     "roleCount": 4
-  },
-  {
-    "key": "microsoft.edge/sites/read",
-    "name": "Microsoft.Edge/sites/read",
-    "roleCount": 22
   },
   {
     "key": "microsoft.impact/connectors/write",
@@ -12532,6 +12532,161 @@
   {
     "key": "nginx.nginxplus/operations/read",
     "name": "NGINX.NGINXPLUS/operations/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/register/action",
+    "name": "NewRelic.Observability/register/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/unregister/action",
+    "name": "NewRelic.Observability/unregister/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/accounts/read",
+    "name": "NewRelic.Observability/accounts/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/plans/read",
+    "name": "NewRelic.Observability/plans/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/organizations/read",
+    "name": "NewRelic.Observability/organizations/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/locations/read",
+    "name": "NewRelic.Observability/locations/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/locations/operationstatuses/read",
+    "name": "NewRelic.Observability/locations/operationStatuses/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/locations/operationstatuses/write",
+    "name": "NewRelic.Observability/locations/operationStatuses/write",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/read",
+    "name": "NewRelic.Observability/monitors/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/monitors/write",
+    "name": "NewRelic.Observability/monitors/write",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/delete",
+    "name": "NewRelic.Observability/monitors/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/monitoredresources/action",
+    "name": "NewRelic.Observability/monitors/monitoredResources/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/vmhostpayloads/action",
+    "name": "NewRelic.Observability/monitors/vmHostPayloads/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/listappservices/action",
+    "name": "NewRelic.Observability/monitors/listAppServices/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/listhosts/action",
+    "name": "NewRelic.Observability/monitors/listHosts/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/refreshingestionkey/action",
+    "name": "NewRelic.Observability/monitors/refreshIngestionKey/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/getmetricrules/action",
+    "name": "NewRelic.Observability/monitors/getMetricRules/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/getmetricstatus/action",
+    "name": "NewRelic.Observability/monitors/getMetricStatus/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/switchbilling/action",
+    "name": "NewRelic.Observability/monitors/switchBilling/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/latestlinkedsaas/action",
+    "name": "NewRelic.Observability/monitors/latestLinkedSaaS/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/linksaas/action",
+    "name": "NewRelic.Observability/monitors/linkSaaS/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/resubscribe/action",
+    "name": "NewRelic.Observability/monitors/resubscribe/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/getbillinginfo/action",
+    "name": "NewRelic.Observability/monitors/getBillingInfo/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/listconnectedpartnerresources/action",
+    "name": "NewRelic.Observability/monitors/listConnectedPartnerResources/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/listlinkedresources/action",
+    "name": "NewRelic.Observability/monitors/listLinkedResources/action",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/monitoredsubscriptions/read",
+    "name": "NewRelic.Observability/monitors/monitoredSubscriptions/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/monitors/monitoredsubscriptions/write",
+    "name": "NewRelic.Observability/monitors/monitoredSubscriptions/write",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/monitors/tagrules/read",
+    "name": "NewRelic.Observability/monitors/tagRules/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/monitors/tagrules/write",
+    "name": "NewRelic.Observability/monitors/tagRules/write",
+    "roleCount": 3
+  },
+  {
+    "key": "newrelic.observability/registeredsubscriptions/read",
+    "name": "NewRelic.Observability/registeredSubscriptions/read",
+    "roleCount": 19
+  },
+  {
+    "key": "newrelic.observability/operations/read",
+    "name": "NewRelic.Observability/operations/read",
     "roleCount": 19
   },
   {
@@ -12723,161 +12878,6 @@
     "key": "microsoft.elastic/operations/read",
     "name": "Microsoft.Elastic/operations/read",
     "roleCount": 20
-  },
-  {
-    "key": "newrelic.observability/register/action",
-    "name": "NewRelic.Observability/register/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/unregister/action",
-    "name": "NewRelic.Observability/unregister/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/accounts/read",
-    "name": "NewRelic.Observability/accounts/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/plans/read",
-    "name": "NewRelic.Observability/plans/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/organizations/read",
-    "name": "NewRelic.Observability/organizations/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/locations/read",
-    "name": "NewRelic.Observability/locations/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/locations/operationstatuses/read",
-    "name": "NewRelic.Observability/locations/operationStatuses/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/locations/operationstatuses/write",
-    "name": "NewRelic.Observability/locations/operationStatuses/write",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/read",
-    "name": "NewRelic.Observability/monitors/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/monitors/write",
-    "name": "NewRelic.Observability/monitors/write",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/delete",
-    "name": "NewRelic.Observability/monitors/delete",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/monitoredresources/action",
-    "name": "NewRelic.Observability/monitors/monitoredResources/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/vmhostpayloads/action",
-    "name": "NewRelic.Observability/monitors/vmHostPayloads/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/listappservices/action",
-    "name": "NewRelic.Observability/monitors/listAppServices/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/listhosts/action",
-    "name": "NewRelic.Observability/monitors/listHosts/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/refreshingestionkey/action",
-    "name": "NewRelic.Observability/monitors/refreshIngestionKey/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/getmetricrules/action",
-    "name": "NewRelic.Observability/monitors/getMetricRules/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/getmetricstatus/action",
-    "name": "NewRelic.Observability/monitors/getMetricStatus/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/switchbilling/action",
-    "name": "NewRelic.Observability/monitors/switchBilling/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/latestlinkedsaas/action",
-    "name": "NewRelic.Observability/monitors/latestLinkedSaaS/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/linksaas/action",
-    "name": "NewRelic.Observability/monitors/linkSaaS/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/resubscribe/action",
-    "name": "NewRelic.Observability/monitors/resubscribe/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/getbillinginfo/action",
-    "name": "NewRelic.Observability/monitors/getBillingInfo/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/listconnectedpartnerresources/action",
-    "name": "NewRelic.Observability/monitors/listConnectedPartnerResources/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/listlinkedresources/action",
-    "name": "NewRelic.Observability/monitors/listLinkedResources/action",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/monitoredsubscriptions/read",
-    "name": "NewRelic.Observability/monitors/monitoredSubscriptions/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/monitors/monitoredsubscriptions/write",
-    "name": "NewRelic.Observability/monitors/monitoredSubscriptions/write",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/monitors/tagrules/read",
-    "name": "NewRelic.Observability/monitors/tagRules/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/monitors/tagrules/write",
-    "name": "NewRelic.Observability/monitors/tagRules/write",
-    "roleCount": 3
-  },
-  {
-    "key": "newrelic.observability/registeredsubscriptions/read",
-    "name": "NewRelic.Observability/registeredSubscriptions/read",
-    "roleCount": 19
-  },
-  {
-    "key": "newrelic.observability/operations/read",
-    "name": "NewRelic.Observability/operations/read",
-    "roleCount": 19
   },
   {
     "key": "microsoft.datadog/register/action",
@@ -13150,11 +13150,6 @@
     "roleCount": 3
   },
   {
-    "key": "microsoft.azurebusinesscontinuity/deletedunifiedprotecteditems/read",
-    "name": "Microsoft.AzureBusinessContinuity/deletedUnifiedProtectedItems/read",
-    "roleCount": 19
-  },
-  {
     "key": "microsoft.videoindexer/checknameavailability/action",
     "name": "Microsoft.VideoIndexer/checknameavailability/action",
     "roleCount": 3
@@ -13233,6 +13228,11 @@
     "key": "microsoft.videoindexer/operations/read",
     "name": "Microsoft.VideoIndexer/operations/read",
     "roleCount": 20
+  },
+  {
+    "key": "microsoft.azurebusinesscontinuity/deletedunifiedprotecteditems/read",
+    "name": "Microsoft.AzureBusinessContinuity/deletedUnifiedProtectedItems/read",
+    "roleCount": 19
   },
   {
     "key": "microsoft.edge/configurations/read",
@@ -13375,6 +13375,11 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.azurebusinesscontinuity/unifiedprotecteditems/read",
+    "name": "Microsoft.AzureBusinessContinuity/unifiedProtectedItems/read",
+    "roleCount": 19
+  },
+  {
     "key": "microsoft.machinelearningservices/workspaces/managednetworks/read",
     "name": "Microsoft.MachineLearningServices/workspaces/managedNetworks/read",
     "roleCount": 22
@@ -13405,58 +13410,53 @@
     "roleCount": 6
   },
   {
-    "key": "microsoft.azurebusinesscontinuity/unifiedprotecteditems/read",
-    "name": "Microsoft.AzureBusinessContinuity/unifiedProtectedItems/read",
+    "key": "arizeai.observabilityeval/checknameavailability/action",
+    "name": "ArizeAi.ObservabilityEval/checkNameAvailability/action",
+    "roleCount": 3
+  },
+  {
+    "key": "arizeai.observabilityeval/register/action",
+    "name": "ArizeAi.ObservabilityEval/register/action",
+    "roleCount": 3
+  },
+  {
+    "key": "arizeai.observabilityeval/unregister/action",
+    "name": "ArizeAi.ObservabilityEval/unregister/action",
+    "roleCount": 3
+  },
+  {
+    "key": "arizeai.observabilityeval/locations/operationstatuses/read",
+    "name": "ArizeAi.ObservabilityEval/locations/operationStatuses/read",
     "roleCount": 19
   },
   {
-    "key": "pinecone.vectordb/checknameavailability/action",
-    "name": "Pinecone.VectorDb/checkNameAvailability/action",
+    "key": "arizeai.observabilityeval/locations/operationstatuses/write",
+    "name": "ArizeAi.ObservabilityEval/locations/operationStatuses/write",
     "roleCount": 3
   },
   {
-    "key": "pinecone.vectordb/register/action",
-    "name": "Pinecone.VectorDb/register/action",
-    "roleCount": 3
-  },
-  {
-    "key": "pinecone.vectordb/unregister/action",
-    "name": "Pinecone.VectorDb/unregister/action",
-    "roleCount": 3
-  },
-  {
-    "key": "pinecone.vectordb/locations/operationstatuses/read",
-    "name": "Pinecone.VectorDb/locations/operationStatuses/read",
+    "key": "arizeai.observabilityeval/operations/read",
+    "name": "ArizeAi.ObservabilityEval/operations/read",
     "roleCount": 19
   },
   {
-    "key": "pinecone.vectordb/locations/operationstatuses/write",
-    "name": "Pinecone.VectorDb/locations/operationStatuses/write",
-    "roleCount": 3
-  },
-  {
-    "key": "pinecone.vectordb/operations/read",
-    "name": "Pinecone.VectorDb/operations/read",
+    "key": "arizeai.observabilityeval/organizations/read",
+    "name": "ArizeAi.ObservabilityEval/organizations/read",
     "roleCount": 19
   },
   {
-    "key": "pinecone.vectordb/organizations/read",
-    "name": "Pinecone.VectorDb/organizations/read",
-    "roleCount": 19
-  },
-  {
-    "key": "pinecone.vectordb/organizations/write",
-    "name": "Pinecone.VectorDb/organizations/write",
+    "key": "arizeai.observabilityeval/organizations/write",
+    "name": "ArizeAi.ObservabilityEval/organizations/write",
     "roleCount": 3
   },
   {
-    "key": "pinecone.vectordb/organizations/delete",
-    "name": "Pinecone.VectorDb/organizations/delete",
+    "key": "arizeai.observabilityeval/organizations/delete",
+    "name": "ArizeAi.ObservabilityEval/organizations/delete",
     "roleCount": 3
   },
   {
-    "key": "pinecone.vectordb/registeredsubscriptions/read",
-    "name": "Pinecone.VectorDb/registeredSubscriptions/read",
+    "key": "arizeai.observabilityeval/registeredsubscriptions/read",
+    "name": "ArizeAi.ObservabilityEval/registeredSubscriptions/read",
     "roleCount": 19
   },
   {
@@ -13560,53 +13560,53 @@
     "roleCount": 19
   },
   {
-    "key": "arizeai.observabilityeval/checknameavailability/action",
-    "name": "ArizeAi.ObservabilityEval/checkNameAvailability/action",
+    "key": "pinecone.vectordb/checknameavailability/action",
+    "name": "Pinecone.VectorDb/checkNameAvailability/action",
     "roleCount": 3
   },
   {
-    "key": "arizeai.observabilityeval/register/action",
-    "name": "ArizeAi.ObservabilityEval/register/action",
+    "key": "pinecone.vectordb/register/action",
+    "name": "Pinecone.VectorDb/register/action",
     "roleCount": 3
   },
   {
-    "key": "arizeai.observabilityeval/unregister/action",
-    "name": "ArizeAi.ObservabilityEval/unregister/action",
+    "key": "pinecone.vectordb/unregister/action",
+    "name": "Pinecone.VectorDb/unregister/action",
     "roleCount": 3
   },
   {
-    "key": "arizeai.observabilityeval/locations/operationstatuses/read",
-    "name": "ArizeAi.ObservabilityEval/locations/operationStatuses/read",
+    "key": "pinecone.vectordb/locations/operationstatuses/read",
+    "name": "Pinecone.VectorDb/locations/operationStatuses/read",
     "roleCount": 19
   },
   {
-    "key": "arizeai.observabilityeval/locations/operationstatuses/write",
-    "name": "ArizeAi.ObservabilityEval/locations/operationStatuses/write",
+    "key": "pinecone.vectordb/locations/operationstatuses/write",
+    "name": "Pinecone.VectorDb/locations/operationStatuses/write",
     "roleCount": 3
   },
   {
-    "key": "arizeai.observabilityeval/operations/read",
-    "name": "ArizeAi.ObservabilityEval/operations/read",
+    "key": "pinecone.vectordb/operations/read",
+    "name": "Pinecone.VectorDb/operations/read",
     "roleCount": 19
   },
   {
-    "key": "arizeai.observabilityeval/organizations/read",
-    "name": "ArizeAi.ObservabilityEval/organizations/read",
+    "key": "pinecone.vectordb/organizations/read",
+    "name": "Pinecone.VectorDb/organizations/read",
     "roleCount": 19
   },
   {
-    "key": "arizeai.observabilityeval/organizations/write",
-    "name": "ArizeAi.ObservabilityEval/organizations/write",
+    "key": "pinecone.vectordb/organizations/write",
+    "name": "Pinecone.VectorDb/organizations/write",
     "roleCount": 3
   },
   {
-    "key": "arizeai.observabilityeval/organizations/delete",
-    "name": "ArizeAi.ObservabilityEval/organizations/delete",
+    "key": "pinecone.vectordb/organizations/delete",
+    "name": "Pinecone.VectorDb/organizations/delete",
     "roleCount": 3
   },
   {
-    "key": "arizeai.observabilityeval/registeredsubscriptions/read",
-    "name": "ArizeAi.ObservabilityEval/registeredSubscriptions/read",
+    "key": "pinecone.vectordb/registeredsubscriptions/read",
+    "name": "Pinecone.VectorDb/registeredSubscriptions/read",
     "roleCount": 19
   },
   {
@@ -13775,101 +13775,6 @@
     "roleCount": 25
   },
   {
-    "key": "microsoft.documentdb/garnetclusters/acl/exists/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/exists/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/get/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/get/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/getex/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/getex/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/getrange/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/getrange/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hexists/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hexists/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hexpiretime/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hexpiretime/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hget/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hget/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hgetall/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hgetall/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/histogram/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/histogram/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hkeys/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hkeys/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hlen/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hlen/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hmget/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hmget/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hpexpiretime/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hpexpiretime/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hpttl/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hpttl/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hrandfield/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hrandfield/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hscan/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hscan/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hstrlen/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hstrlen/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/httl/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/httl/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/hvals/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/hvals/read",
-    "roleCount": 22
-  },
-  {
     "key": "microsoft.documentdb/garnetclusters/acl/info/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/info/read",
     "roleCount": 25
@@ -13880,16 +13785,6 @@
     "roleCount": 25
   },
   {
-    "key": "microsoft.documentdb/garnetclusters/acl/lcs/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/lcs/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/mget/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/mget/read",
-    "roleCount": 22
-  },
-  {
     "key": "microsoft.documentdb/garnetclusters/acl/nodes/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/nodes/read",
     "roleCount": 25
@@ -13898,171 +13793,6 @@
     "key": "microsoft.documentdb/garnetclusters/acl/ping/read",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/ping/read",
     "roleCount": 25
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/readonly/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/readonly/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/scard/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/scard/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/sdiff/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/sdiff/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/sinter/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/sinter/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/sintercard/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/sintercard/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/sismember/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/sismember/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/slots/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/slots/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/smembers/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/smembers/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/smismember/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/smismember/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/srandmember/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/srandmember/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/sscan/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/sscan/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/strlen/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/strlen/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/substr/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/substr/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/sunion/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/sunion/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zcard/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zcard/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zcount/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zcount/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zdiff/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zdiff/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zinter/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zinter/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zintercard/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zintercard/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zlexcount/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zlexcount/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zmscore/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zmscore/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrandmember/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrandmember/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrange/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrange/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrangebylex/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangebylex/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrangebyscore/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangebyscore/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrank/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrank/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrevrange/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrange/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrevrangebylex/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrangebylex/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrevrangebyscore/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrangebyscore/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zrevrank/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrank/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zscan/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zscan/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zscore/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zscore/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.documentdb/garnetclusters/acl/zunion/read",
-    "name": "Microsoft.DocumentDB/garnetClusters/acl/zunion/read",
-    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/scripteval/action",
@@ -14088,6 +13818,11 @@
     "key": "microsoft.documentdb/garnetclusters/acl/scriptload/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/scriptload/action",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/slots/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/slots/read",
+    "roleCount": 25
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/append/write",
@@ -14125,14 +13860,34 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/exists/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/exists/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/expire/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/expire/delete",
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/get/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/get/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/getdel/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/getdel/delete",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/getex/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/getex/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/getrange/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/getrange/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/getset/write",
@@ -14145,6 +13900,11 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/hexists/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hexists/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/hexpire/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hexpire/delete",
     "roleCount": 4
@@ -14155,6 +13915,21 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/hexpiretime/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hexpiretime/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hget/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hget/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hgetall/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hgetall/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/hincrby/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hincrby/write",
     "roleCount": 4
@@ -14163,6 +13938,26 @@
     "key": "microsoft.documentdb/garnetclusters/acl/hincrbyfloat/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hincrbyfloat/write",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/histogram/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/histogram/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hkeys/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hkeys/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hlen/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hlen/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hmget/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hmget/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/hmset/write",
@@ -14185,6 +13980,26 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/hpexpiretime/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hpexpiretime/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hpttl/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hpttl/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hrandfield/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hrandfield/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hscan/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hscan/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/hset/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hset/write",
     "roleCount": 4
@@ -14193,6 +14008,21 @@
     "key": "microsoft.documentdb/garnetclusters/acl/hsetnx/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/hsetnx/write",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hstrlen/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hstrlen/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/httl/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/httl/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/hvals/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/hvals/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/incr/write",
@@ -14210,6 +14040,16 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/lcs/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/lcs/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/mget/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/mget/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/mset/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/mset/write",
     "roleCount": 4
@@ -14225,6 +14065,11 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/readonly/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/readonly/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/readwrite/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/readwrite/write",
     "roleCount": 4
@@ -14233,6 +14078,16 @@
     "key": "microsoft.documentdb/garnetclusters/acl/sadd/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sadd/write",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/scard/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/scard/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/sdiff/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/sdiff/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sdiffstore/write",
@@ -14260,9 +14115,34 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/sinter/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/sinter/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/sintercard/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/sintercard/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/sinterstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/sinterstore/write",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/sismember/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/sismember/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/smembers/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/smembers/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/smismember/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/smismember/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/smove/write",
@@ -14275,9 +14155,34 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/srandmember/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/srandmember/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/srem/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/srem/delete",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/sscan/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/sscan/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/strlen/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/strlen/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/substr/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/substr/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/sunion/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/sunion/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/sunionstore/write",
@@ -14295,6 +14200,21 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/zcard/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zcard/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zcount/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zcount/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zdiff/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zdiff/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/zdiffstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zdiffstore/write",
     "roleCount": 4
@@ -14305,14 +14225,34 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/zinter/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zinter/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zintercard/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zintercard/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/zinterstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zinterstore/write",
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/zlexcount/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zlexcount/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/zmpop/delete",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zmpop/delete",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zmscore/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zmscore/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zpopmax/delete",
@@ -14325,9 +14265,34 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrandmember/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrandmember/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrange/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrange/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrangebylex/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangebylex/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrangebyscore/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangebyscore/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/zrangestore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zrangestore/write",
     "roleCount": 4
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrank/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrank/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.documentdb/garnetclusters/acl/zrem/delete",
@@ -14350,6 +14315,41 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrevrange/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrange/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrevrangebylex/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrangebylex/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrevrangebyscore/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrangebyscore/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zrevrank/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zrevrank/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zscan/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zscan/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zscore/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zscore/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/zunion/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/zunion/read",
+    "roleCount": 22
+  },
+  {
     "key": "microsoft.documentdb/garnetclusters/acl/zunionstore/write",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/zunionstore/write",
     "roleCount": 4
@@ -14365,64 +14365,29 @@
     "roleCount": 20
   },
   {
-    "key": "microsoft.resources/subscriptions/locations/read",
-    "name": "Microsoft.Resources/subscriptions/locations/read",
+    "key": "microsoft.app/agents/read",
+    "name": "Microsoft.App/agents/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.app/agents/threads/read",
+    "name": "Microsoft.App/agents/threads/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.app/agents/graph/read",
+    "name": "Microsoft.App/agents/graph/read",
     "roleCount": 21
   },
   {
-    "key": "microsoft.resources/checkresourcename/action",
-    "name": "Microsoft.Resources/checkResourceName/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.resources/deploymentscripts/write",
-    "name": "Microsoft.Resources/deploymentScripts/write",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.resources/deploymentscripts/read",
-    "name": "Microsoft.Resources/deploymentScripts/read",
+    "key": "microsoft.app/agents/memory/read",
+    "name": "Microsoft.App/agents/memory/read",
     "roleCount": 21
   },
   {
-    "key": "microsoft.resources/links/write",
-    "name": "Microsoft.Resources/links/write",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.recoveryservices/register/action",
-    "name": "Microsoft.RecoveryServices/register/action",
-    "roleCount": 5
-  },
-  {
-    "key": "microsoft.datareplication/register/action",
-    "name": "Microsoft.DataReplication/register/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.datareplication/replicationvaults/write",
-    "name": "Microsoft.DataReplication/replicationVaults/write",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.keyvault/register/action",
-    "name": "Microsoft.KeyVault/register/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.azurearcdata/register/action",
-    "name": "Microsoft.AzureArcData/register/action",
-    "roleCount": 4
-  },
-  {
-    "key": "microsoft.resources/links/read",
-    "name": "Microsoft.Resources/links/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationmigrationitems/read",
-    "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/read",
-    "roleCount": 23
+    "key": "microsoft.app/agents/incidentmanagement/read",
+    "name": "Microsoft.App/agents/incidentManagement/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.hybridconnectivity/endpoints/listingressgatewaycredentials/action",
@@ -14458,31 +14423,6 @@
     "key": "microsoft.hybridconnectivity/solutionconfigurations/write",
     "name": "Microsoft.HybridConnectivity/solutionConfigurations/write",
     "roleCount": 3
-  },
-  {
-    "key": "microsoft.app/agents/read",
-    "name": "Microsoft.App/agents/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.app/agents/threads/read",
-    "name": "Microsoft.App/agents/threads/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.app/agents/graph/read",
-    "name": "Microsoft.App/agents/graph/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.app/agents/memory/read",
-    "name": "Microsoft.App/agents/memory/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.app/agents/incidentmanagement/read",
-    "name": "Microsoft.App/agents/incidentManagement/read",
-    "roleCount": 22
   },
   {
     "key": "microsoft.awsconnector/accessanalyzeranalyzers/delete",
@@ -15730,6 +15670,61 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.resources/subscriptions/locations/read",
+    "name": "Microsoft.Resources/subscriptions/locations/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.resources/checkresourcename/action",
+    "name": "Microsoft.Resources/checkResourceName/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.resources/deploymentscripts/write",
+    "name": "Microsoft.Resources/deploymentScripts/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.resources/deploymentscripts/read",
+    "name": "Microsoft.Resources/deploymentScripts/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.resources/links/write",
+    "name": "Microsoft.Resources/links/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.recoveryservices/register/action",
+    "name": "Microsoft.RecoveryServices/register/action",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.datareplication/register/action",
+    "name": "Microsoft.DataReplication/register/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.datareplication/replicationvaults/write",
+    "name": "Microsoft.DataReplication/replicationVaults/write",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.keyvault/register/action",
+    "name": "Microsoft.KeyVault/register/action",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.azurearcdata/register/action",
+    "name": "Microsoft.AzureArcData/register/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.resources/links/read",
+    "name": "Microsoft.Resources/links/read",
+    "roleCount": 21
+  },
+  {
     "key": "microsoft.storage/storageaccounts/fileservices/takeownership/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/takeOwnership/action",
     "roleCount": 9
@@ -15738,6 +15733,11 @@
     "key": "microsoft.storage/storageaccounts/fileservices/runasbuiltinfileadministrator/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/runAsBuiltInFileAdministrator/action",
     "roleCount": 7
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationmigrationitems/read",
+    "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/read",
+    "roleCount": 23
   },
   {
     "key": "microsoft.edge/connectivitystatuses/delete",
@@ -15965,21 +15965,6 @@
     "roleCount": 19
   },
   {
-    "key": "microsoft.management/servicegroups/read",
-    "name": "Microsoft.Management/ServiceGroups/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.relationships/servicegroupmember/read",
-    "name": "Microsoft.Relationships/ServiceGroupMember/read",
-    "roleCount": 28
-  },
-  {
-    "key": "microsoft.relationships/servicegroupmember/write",
-    "name": "Microsoft.Relationships/ServiceGroupMember/write",
-    "roleCount": 6
-  },
-  {
     "key": "microsoft.healthbot/healthbots/read",
     "name": "Microsoft.HealthBot/healthBots/Read",
     "roleCount": 19
@@ -15993,6 +15978,21 @@
     "key": "microsoft.healthbot/healthbots/delete",
     "name": "Microsoft.HealthBot/healthBots/Delete",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.management/servicegroups/read",
+    "name": "Microsoft.Management/ServiceGroups/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.relationships/servicegroupmember/read",
+    "name": "Microsoft.Relationships/ServiceGroupMember/read",
+    "roleCount": 28
+  },
+  {
+    "key": "microsoft.relationships/servicegroupmember/write",
+    "name": "Microsoft.Relationships/ServiceGroupMember/write",
+    "roleCount": 6
   },
   {
     "key": "microsoft.deviceregistry/namespaces/read",
@@ -16040,16 +16040,6 @@
     "roleCount": 3
   },
   {
-    "key": "microsoft.azureresiliencemanagement/locations/operationstatuses/read",
-    "name": "Microsoft.AzureResilienceManagement/locations/operationStatuses/read",
-    "roleCount": 21
-  },
-  {
-    "key": "microsoft.azureresiliencemanagement/operations/read",
-    "name": "Microsoft.AzureResilienceManagement/operations/read",
-    "roleCount": 21
-  },
-  {
     "key": "microsoft.azureresiliencemanagement/goaltemplates/read",
     "name": "Microsoft.AzureResilienceManagement/goalTemplates/read",
     "roleCount": 21
@@ -16062,6 +16052,16 @@
   {
     "key": "microsoft.azureresiliencemanagement/goalassignments/goalresources/read",
     "name": "Microsoft.AzureResilienceManagement/goalAssignments/goalResources/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.azureresiliencemanagement/locations/operationstatuses/read",
+    "name": "Microsoft.AzureResilienceManagement/locations/operationStatuses/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.azureresiliencemanagement/operations/read",
+    "name": "Microsoft.AzureResilienceManagement/operations/read",
     "roleCount": 21
   },
   {
@@ -16105,56 +16105,6 @@
     "roleCount": 23
   },
   {
-    "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/read",
-    "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/read",
-    "roleCount": 22
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/write",
-    "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/write",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/delete",
-    "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/delete",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/discovery.k8s.io/endpointslices/read",
-    "name": "Microsoft.ContainerService/fleets/members/discovery.k8s.io/endpointslices/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/events.k8s.io/events/read",
-    "name": "Microsoft.ContainerService/fleets/members/events.k8s.io/events/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/limitranges/read",
-    "name": "Microsoft.ContainerService/fleets/members/limitranges/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/metrics.k8s.io/pods/read",
-    "name": "Microsoft.ContainerService/fleets/members/metrics.k8s.io/pods/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/metrics.k8s.io/nodes/read",
-    "name": "Microsoft.ContainerService/fleets/members/metrics.k8s.io/nodes/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/namespaces/read",
-    "name": "Microsoft.ContainerService/fleets/members/namespaces/read",
-    "roleCount": 23
-  },
-  {
-    "key": "microsoft.containerservice/fleets/members/resourcequotas/read",
-    "name": "Microsoft.ContainerService/fleets/members/resourcequotas/read",
-    "roleCount": 23
-  },
-  {
     "key": "microsoft.containerservice/fleets/members/apps/daemonsets/read",
     "name": "Microsoft.ContainerService/fleets/members/apps/daemonsets/read",
     "roleCount": 23
@@ -16195,8 +16145,18 @@
     "roleCount": 23
   },
   {
+    "key": "microsoft.containerservice/fleets/members/discovery.k8s.io/endpointslices/read",
+    "name": "Microsoft.ContainerService/fleets/members/discovery.k8s.io/endpointslices/read",
+    "roleCount": 23
+  },
+  {
     "key": "microsoft.containerservice/fleets/members/endpoints/read",
     "name": "Microsoft.ContainerService/fleets/members/endpoints/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/events.k8s.io/events/read",
+    "name": "Microsoft.ContainerService/fleets/members/events.k8s.io/events/read",
     "roleCount": 23
   },
   {
@@ -16230,6 +16190,26 @@
     "roleCount": 23
   },
   {
+    "key": "microsoft.containerservice/fleets/members/limitranges/read",
+    "name": "Microsoft.ContainerService/fleets/members/limitranges/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/metrics.k8s.io/pods/read",
+    "name": "Microsoft.ContainerService/fleets/members/metrics.k8s.io/pods/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/metrics.k8s.io/nodes/read",
+    "name": "Microsoft.ContainerService/fleets/members/metrics.k8s.io/nodes/read",
+    "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/namespaces/read",
+    "name": "Microsoft.ContainerService/fleets/members/namespaces/read",
+    "roleCount": 23
+  },
+  {
     "key": "microsoft.containerservice/fleets/members/networking.k8s.io/ingresses/read",
     "name": "Microsoft.ContainerService/fleets/members/networking.k8s.io/ingresses/read",
     "roleCount": 23
@@ -16260,6 +16240,11 @@
     "roleCount": 23
   },
   {
+    "key": "microsoft.containerservice/fleets/members/resourcequotas/read",
+    "name": "Microsoft.ContainerService/fleets/members/resourcequotas/read",
+    "roleCount": 23
+  },
+  {
     "key": "microsoft.containerservice/fleets/members/serviceaccounts/read",
     "name": "Microsoft.ContainerService/fleets/members/serviceaccounts/read",
     "roleCount": 23
@@ -16268,6 +16253,21 @@
     "key": "microsoft.containerservice/fleets/members/services/read",
     "name": "Microsoft.ContainerService/fleets/members/services/read",
     "roleCount": 23
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/read",
+    "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/write",
+    "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/write",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/coordination.k8s.io/leases/delete",
+    "name": "Microsoft.ContainerService/fleets/members/coordination.k8s.io/leases/delete",
+    "roleCount": 6
   },
   {
     "key": "microsoft.relationships/servicegroupmember/delete",
@@ -16480,6 +16480,11 @@
     "roleCount": 5
   },
   {
+    "key": "microsoft.network/virtualnetworks/read ",
+    "name": "Microsoft.Network/virtualNetworks/read ",
+    "roleCount": 6
+  },
+  {
     "key": "microsoft.automation/automationaccounts/delete",
     "name": "Microsoft.Automation/automationAccounts/delete",
     "roleCount": 5
@@ -16513,11 +16518,6 @@
     "key": "microsoft.chaos/experiments/write",
     "name": "Microsoft.Chaos/experiments/write",
     "roleCount": 5
-  },
-  {
-    "key": "microsoft.network/virtualnetworks/read ",
-    "name": "Microsoft.Network/virtualNetworks/read ",
-    "roleCount": 6
   },
   {
     "key": "microsoft.gcpconnector/bigquerydatasets/delete",
@@ -16610,21 +16610,6 @@
     "roleCount": 4
   },
   {
-    "key": "microsoft.storage/storageaccounts/datashares/read",
-    "name": "Microsoft.Storage/storageAccounts/dataShares/read",
-    "roleCount": 25
-  },
-  {
-    "key": "microsoft.storage/storageaccounts/datashares/delete",
-    "name": "Microsoft.Storage/storageAccounts/dataShares/delete",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.storage/storageaccounts/datashares/write",
-    "name": "Microsoft.Storage/storageAccounts/dataShares/write",
-    "roleCount": 9
-  },
-  {
     "key": "microsoft.storage/storageaccounts/connectors/read",
     "name": "Microsoft.Storage/storageAccounts/connectors/read",
     "roleCount": 25
@@ -16643,6 +16628,21 @@
     "key": "microsoft.storage/storageaccounts/connectors/testexistingconnection/action",
     "name": "Microsoft.Storage/storageAccounts/connectors/testExistingConnection/action",
     "roleCount": 7
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/datashares/read",
+    "name": "Microsoft.Storage/storageAccounts/dataShares/read",
+    "roleCount": 25
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/datashares/delete",
+    "name": "Microsoft.Storage/storageAccounts/dataShares/delete",
+    "roleCount": 7
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/datashares/write",
+    "name": "Microsoft.Storage/storageAccounts/dataShares/write",
+    "roleCount": 9
   },
   {
     "key": "microsoft.security/apicollections/read",
