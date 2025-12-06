@@ -28693,6 +28693,7 @@
     "permissions": [
       {
         "actions": [
+          "Microsoft.Authorization/*/read",
           "Microsoft.CognitiveServices/*/read",
           "Microsoft.CognitiveServices/accounts/listkeys/action",
           "Microsoft.Insights/alertRules/read",
@@ -28720,8 +28721,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-04-30T19:24:07.088980+00:00",
-    "permissionCount": 1676.6666666666665,
+    "updatedOn": "2025-12-05T19:59:18.394922+00:00",
+    "permissionCount": 2010,
     "dataActions": [
       "Microsoft.CognitiveServices/*"
     ],
@@ -35685,6 +35686,74 @@
     "dataActions": [
       "Microsoft.OperationalInsights/workspaces/tables/data/read"
     ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-12-05T04:53:58.278353+00:00",
+    "description": "Can read, write, or delete resources for onboarding services, policies, and device states.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/a954a0e0-f57f-4606-8421-fd7bd4e54b0f",
+    "name": "a954a0e0-f57f-4606-8421-fd7bd4e54b0f",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.DeviceOnboarding/onboardingServices/read",
+          "Microsoft.DeviceOnboarding/onboardingServices/write",
+          "Microsoft.DeviceOnboarding/onboardingServices/delete",
+          "Microsoft.DeviceOnboarding/onboardingServices/policies/read",
+          "Microsoft.DeviceOnboarding/onboardingServices/policies/write",
+          "Microsoft.DeviceOnboarding/onboardingServices/policies/delete",
+          "Microsoft.DeviceOnboarding/deviceStates/read",
+          "Microsoft.DeviceOnboarding/deviceStates/write",
+          "Microsoft.DeviceOnboarding/deviceStates/delete",
+          "Microsoft.DeviceOnboarding/deviceStates/prepareForOnboarding/action",
+          "Microsoft.DeviceOnboarding/locations/operationStatuses/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Device Onboarding Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-12-05T04:53:58.278353+00:00",
+    "permissionCount": 11,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-12-05T09:55:02.402095+00:00",
+    "description": "Service role that provides permissions for Microsoft Defender for AI Threat Protection to work with Purview service",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/cc27d9db-08f8-4bdf-81a8-d03bb8db2dd9",
+    "name": "cc27d9db-08f8-4bdf-81a8-d03bb8db2dd9",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Defender for AI Threat Protection Purview Operator",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-12-05T09:55:02.402095+00:00",
+    "permissionCount": 0,
+    "dataActions": [],
     "notDataActions": []
   }
 ]
