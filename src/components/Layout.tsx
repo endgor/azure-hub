@@ -22,12 +22,21 @@ interface ToolSchema {
   };
 }
 
+interface ArticleSchema {
+  headline: string;
+  description: string;
+  datePublished: string;
+  dateModified?: string;
+  author?: string;
+}
+
 interface LayoutProps {
   title?: string;
   description?: string;
   keywords?: string[];
   breadcrumbs?: BreadcrumbItem[];
   toolSchema?: ToolSchema;
+  articleSchema?: ArticleSchema;
   canonicalUrl?: string; // Allow pages to override canonical URL for dynamic routes
   children: ReactNode;
 }
@@ -119,6 +128,7 @@ export default function Layout({
   keywords = DEFAULT_KEYWORDS,
   breadcrumbs,
   toolSchema,
+  articleSchema,
   canonicalUrl,
   children
 }: LayoutProps) {
@@ -248,6 +258,39 @@ export default function Layout({
     };
   }, [toolSchema, meta.url, description]);
 
+  const articleStructuredData = useMemo(() => {
+    if (!articleSchema) {
+      return null;
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: articleSchema.headline,
+      description: articleSchema.description,
+      datePublished: articleSchema.datePublished,
+      dateModified: articleSchema.dateModified || articleSchema.datePublished,
+      author: {
+        '@type': 'Organization',
+        name: articleSchema.author || 'Azure Hub',
+        url: 'https://azurehub.org'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Azure Hub',
+        url: 'https://azurehub.org',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://azurehub.org/favicons/android-chrome-512x512.png'
+        }
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': meta.url
+      }
+    };
+  }, [articleSchema, meta.url]);
+
   const matchRoute = (href: string) => {
     if (!href.startsWith('/')) {
       return false;
@@ -263,8 +306,9 @@ export default function Layout({
     const schemas: Array<Record<string, unknown>> = [structuredData];
     if (breadcrumbSchema) schemas.push(breadcrumbSchema);
     if (applicationSchema) schemas.push(applicationSchema);
+    if (articleStructuredData) schemas.push(articleStructuredData);
     return schemas;
-  }, [structuredData, breadcrumbSchema, applicationSchema]);
+  }, [structuredData, breadcrumbSchema, applicationSchema, articleStructuredData]);
 
   return (
     <>

@@ -15,6 +15,12 @@ export default function GuidePage({ guide }: GuidePageProps) {
       description={guide.meta.description}
       keywords={[...guide.meta.tags, guide.meta.category]}
       canonicalUrl={`https://azurehub.org/guides/${guide.category}/${guide.slug}/`}
+      articleSchema={{
+        headline: guide.meta.title,
+        description: guide.meta.description,
+        datePublished: guide.meta.date,
+        dateModified: guide.meta.date
+      }}
     >
       <div className="space-y-6">
         {/* Breadcrumb */}
