@@ -123,8 +123,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
     try {
       const filename = generateRoleExportFilename(selectedResults.length);
       exportRolesToAzureJSON(selectedResults as LeastPrivilegeResult[], filename);
-    } catch (error) {
-      console.error('JSON export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -139,8 +138,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
       const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
       const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.csv`;
       await exportRolesToCSV(roles as any[], filename);
-    } catch (error) {
-      console.error('CSV export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -155,8 +153,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
       const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
       const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.xlsx`;
       await exportRolesToExcel(roles as any[], filename);
-    } catch (error) {
-      console.error('Excel export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -171,8 +168,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
       const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
       const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.md`;
       exportRolesToMarkdown(roles as any[], filename);
-    } catch (error) {
-      console.error('Markdown export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);

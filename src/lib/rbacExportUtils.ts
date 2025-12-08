@@ -78,7 +78,6 @@ export function exportRolesToAzureJSON(
   filename: string = 'azure-roles.json'
 ): void {
   if (results.length === 0) {
-    console.warn('No roles to export');
     return;
   }
 
@@ -106,7 +105,6 @@ export async function exportRolesToCSV(
   filename: string = 'azure-roles.csv'
 ): Promise<void> {
   if (roles.length === 0) {
-    console.warn('No roles to export');
     return;
   }
 
@@ -159,7 +157,6 @@ export async function exportRolesToExcel(
   filename: string = 'azure-roles.xlsx'
 ): Promise<void> {
   if (roles.length === 0) {
-    console.warn('No roles to export');
     return;
   }
 
@@ -223,7 +220,6 @@ export function exportRolesToJSON(
   filename: string = 'azure-roles.json'
 ): void {
   if (roles.length === 0) {
-    console.warn('No roles to export');
     return;
   }
 
@@ -242,7 +238,6 @@ export function exportRolesToMarkdown(
   filename: string = 'azure-roles.md'
 ): void {
   if (roles.length === 0) {
-    console.warn('No roles to export');
     return;
   }
 

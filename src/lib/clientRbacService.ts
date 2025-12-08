@@ -64,7 +64,6 @@ export async function loadPermissions(): Promise<Operation[]> {
     const response = await fetch('/data/permissions.json');
     if (!response.ok) {
       if (response.status === 404) {
-        console.warn('Permissions file not found - search functionality will be limited');
         return [];
       }
       throw new Error(`Failed to load permissions: ${response.statusText}`);
@@ -75,8 +74,7 @@ export async function loadPermissions(): Promise<Operation[]> {
     permissionsCacheExpiry = now + CACHE_TTL_MS;
 
     return permissions;
-  } catch (error) {
-    console.warn('Failed to load permissions:', error);
+  } catch {
     return [];
   }
 }
@@ -96,8 +94,7 @@ async function loadActionsCache(): Promise<Map<string, { name: string; roleCount
     }
 
     return cacheMap;
-  } catch (error) {
-    console.warn('Failed to load pre-computed actions cache, will compute at runtime:', error);
+  } catch {
     return null;
   }
 }
@@ -115,8 +112,6 @@ async function extractActionsFromRoles(): Promise<Map<string, { name: string; ro
     actionsMapCacheExpiry = now + CACHE_TTL_MS;
     return precomputedCache;
   }
-
-  console.warn('Pre-computed actions cache not available, computing at runtime (this may take a few seconds)...');
 
   const roles = await loadRoleDefinitions();
   const { actionCasingMap, explicitActionRoles } = collectExplicitActionMetadata(roles);
@@ -321,7 +316,7 @@ export async function classifyActions(actions: string[]): Promise<{ controlActio
 export async function preloadActionsCache(): Promise<void> {
   try {
     await extractActionsFromRoles();
-  } catch (error) {
-    console.warn('Failed to preload actions cache:', error);
+  } catch {
+    // Silently fail - cache will be computed on demand
   }
 }

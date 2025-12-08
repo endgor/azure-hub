@@ -1,11 +1,12 @@
-import { AzureIpAddress } from '@/types/azure';
-import { useState, useMemo, memo, useCallback } from 'react';
+import { AzureIpAddress, AzureCloudName } from '@/types/azure';
+import { useState, useMemo, memo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Tooltip from './Tooltip';
 import ExportMenu, { ExportOption } from './shared/ExportMenu';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import { pluralize } from '@/lib/filenameUtils';
+import { useClickOutside } from '@/hooks/useClickOutside';
 
 interface PaginationButtonsProps {
   currentPage: number;
@@ -91,6 +92,8 @@ interface ResultsProps {
   results: AzureIpAddress[];
   query: string;
   total?: number;
+  /** Hide the cloud filter dropdown (e.g., on service tag detail pages) */
+  hideCloudFilter?: boolean;
   pagination?: {
     currentPage: number;
     totalPages: number;
@@ -108,13 +111,42 @@ interface ResultsProps {
   };
 }
 
-type SortField = 'serviceTagId' | 'ipAddressPrefix' | 'region' | 'systemService' | 'networkFeatures';
+type SortField = 'serviceTagId' | 'ipAddressPrefix' | 'region' | 'systemService' | 'networkFeatures' | 'cloud';
 type SortDirection = 'asc' | 'desc';
 
-const Results = memo(function Results({ results, query, total, pagination }: ResultsProps) {
+/** Maps cloud enum to display label */
+const CLOUD_LABELS: Record<AzureCloudName, string> = {
+  [AzureCloudName.AzureCloud]: 'Public',
+  [AzureCloudName.AzureUSGovernment]: 'Gov',
+  [AzureCloudName.AzureChinaCloud]: 'China'
+};
+
+/** Maps cloud enum to badge styling */
+const CLOUD_STYLES: Record<AzureCloudName, string> = {
+  [AzureCloudName.AzureCloud]: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200',
+  [AzureCloudName.AzureUSGovernment]: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
+  [AzureCloudName.AzureChinaCloud]: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-900/30 dark:text-rose-200'
+};
+
+/** Cloud filter options */
+type CloudFilter = 'all' | AzureCloudName;
+
+const CLOUD_FILTER_OPTIONS: { value: CloudFilter; label: string }[] = [
+  { value: 'all', label: 'All Clouds' },
+  { value: AzureCloudName.AzureCloud, label: 'Public' },
+  { value: AzureCloudName.AzureUSGovernment, label: 'Government' },
+  { value: AzureCloudName.AzureChinaCloud, label: 'China' }
+];
+
+const Results = memo(function Results({ results, query, total, hideCloudFilter, pagination }: ResultsProps) {
   const [sortField, setSortField] = useState<SortField>('serviceTagId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
+  const [isCloudFilterOpen, setIsCloudFilterOpen] = useState(false);
+  const cloudFilterRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  useClickOutside(cloudFilterRef as React.RefObject<HTMLElement>, () => setIsCloudFilterOpen(false), isCloudFilterOpen);
 
   // Show total available results
   const totalDisplay = total || results.length;
@@ -153,16 +185,27 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
     setSortDirection(field === sortField && sortDirection === 'asc' ? 'desc' : 'asc');
   }, [sortField, sortDirection]);
   
-  // Sort the results - memoized to avoid unnecessary computations
-  const sortedResults = useMemo(() => {
+  // Filter and sort the results - memoized to avoid unnecessary computations
+  const filteredAndSortedResults = useMemo(() => {
     if (!results || results.length === 0) return [];
-    return [...results].sort((a, b) => {
+
+    // First filter by cloud
+    let filtered = results;
+    if (cloudFilter !== 'all') {
+      filtered = results.filter(r => r.cloud === cloudFilter);
+    }
+
+    // Then sort
+    return [...filtered].sort((a, b) => {
       const fieldA = a[sortField] || '';
       const fieldB = b[sortField] || '';
       const comparison = fieldA < fieldB ? -1 : fieldA > fieldB ? 1 : 0;
       return sortDirection === 'asc' ? comparison : -comparison;
     });
-  }, [results, sortField, sortDirection]);
+  }, [results, sortField, sortDirection, cloudFilter]);
+
+  // For display purposes
+  const sortedResults = filteredAndSortedResults;
 
   // Export options configuration
   const exportOptions = useMemo<ExportOption[]>(() => [
@@ -225,10 +268,62 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 md:text-xl">Results for {query}</h2>
             <p className="text-xs text-slate-600 dark:text-slate-300 md:text-sm">
-              Found {totalDisplay} matching Azure IP {pluralize(totalDisplay, 'range')}
+              {cloudFilter === 'all' ? (
+                <>Found {totalDisplay} matching Azure IP {pluralize(totalDisplay, 'range')}</>
+              ) : (
+                <>Showing {sortedResults.length} of {totalDisplay} {pluralize(totalDisplay, 'range')} ({CLOUD_FILTER_OPTIONS.find(o => o.value === cloudFilter)?.label})</>
+              )}
             </p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
+            {!hideCloudFilter && (
+              <div className="relative inline-block text-left" ref={cloudFilterRef}>
+                <button
+                  type="button"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-sky-500"
+                  onClick={() => setIsCloudFilterOpen(!isCloudFilterOpen)}
+                  aria-expanded={isCloudFilterOpen}
+                  aria-haspopup="true"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                  </svg>
+                  {CLOUD_FILTER_OPTIONS.find(o => o.value === cloudFilter)?.label}
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isCloudFilterOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                  </svg>
+                </button>
+
+                {isCloudFilterOpen && (
+                  <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                    <div className="py-1" role="menu" aria-orientation="vertical">
+                      {CLOUD_FILTER_OPTIONS.map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => {
+                            setCloudFilter(option.value);
+                            setIsCloudFilterOpen(false);
+                          }}
+                          className={`flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition ${
+                            cloudFilter === option.value
+                              ? 'bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400'
+                              : 'text-slate-700 hover:bg-sky-50 hover:text-sky-700 dark:text-slate-200 dark:hover:bg-sky-900/20 dark:hover:text-sky-400'
+                          }`}
+                          role="menuitem"
+                        >
+                          {cloudFilter === option.value && (
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                          <span className={cloudFilter === option.value ? '' : 'ml-7'}>{option.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
             <ExportMenu
               options={exportOptions}
               itemCount={sortedResults.length}
@@ -396,7 +491,13 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
           <thead className="bg-slate-100 dark:bg-slate-900/60">
             <tr className="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               <th
-                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="w-[8%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                onClick={() => handleSort('cloud')}
+              >
+                Cloud {renderSortIndicator('cloud')}
+              </th>
+              <th
+                className="w-[18%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
@@ -449,6 +550,13 @@ const Results = memo(function Results({ results, query, total, pagination }: Res
                 key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`}
                 className={index % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900/70'}
               >
+                <td className="px-5 py-4 text-sm">
+                  {result.cloud && (
+                    <span className={`inline-block rounded-md border px-2 py-1 text-xs font-semibold ${CLOUD_STYLES[result.cloud]}`}>
+                      {CLOUD_LABELS[result.cloud]}
+                    </span>
+                  )}
+                </td>
                 <td className="px-5 py-4 text-sm font-semibold text-slate-900 dark:text-slate-100">
                   <button
                     onClick={() => handleServiceTagClick(result.serviceTagId)}

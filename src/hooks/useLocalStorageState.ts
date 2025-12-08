@@ -87,8 +87,8 @@ function useLocalStorageState<T>(
       if (item !== null) {
         setState(deserializer(item));
       }
-    } catch (error) {
-      console.warn(`Error reading localStorage key "${key}":`, error);
+    } catch {
+      // Silently fail if localStorage is unavailable
     } finally {
       setIsInitialized(true);
     }
@@ -100,8 +100,8 @@ function useLocalStorageState<T>(
 
     try {
       localStorage.setItem(key, serializer(state));
-    } catch (error) {
-      console.warn(`Error saving to localStorage key "${key}":`, error);
+    } catch {
+      // Silently fail if localStorage is unavailable
     }
   }, [key, state, serializer, isInitialized]);
 
@@ -114,8 +114,8 @@ function useLocalStorageState<T>(
 
       try {
         setState(deserializer(event.newValue));
-      } catch (error) {
-        console.warn(`Error syncing localStorage key "${key}" from storage event:`, error);
+      } catch {
+        // Silently fail if deserialization fails
       }
     };
 

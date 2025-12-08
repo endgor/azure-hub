@@ -2,7 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
 import { AzureCloudName, AzureFileMetadata, AzureServiceTagsRoot } from '../src/types/azure';
-import { computeIpDiff } from './computeIpDiff';
+import type { IpDiffFile } from '../src/types/ipDiff';
+import { computeIpDiff, mergeDiffs } from './computeIpDiff';
 
 interface DownloadMapping {
   id: string;
@@ -361,6 +362,9 @@ async function updateAllIpData(): Promise<void> {
   // Load existing metadata
   const metadata = loadMetadata();
 
+  // Collect diffs from all clouds
+  const cloudDiffs: IpDiffFile[] = [];
+
   for (const mapping of downloadMappings) {
     console.info(`Processing ${mapping.cloud}...`);
 
@@ -377,14 +381,14 @@ async function updateAllIpData(): Promise<void> {
       const existingIndex = metadata.findIndex(m => m.cloud === mapping.cloud);
       const existingMetadata = existingIndex >= 0 ? metadata[existingIndex] : null;
 
-      // For AzureCloud, load current version BEFORE downloading new one (for diff computation)
+      // Load current version BEFORE downloading new one (for diff computation)
       let currentVersionData: AzureServiceTagsRoot | null = null;
-      if (mapping.cloud === AzureCloudName.AzureCloud && fs.existsSync(dataFilePath)) {
+      if (fs.existsSync(dataFilePath)) {
         try {
           const currentContent = fs.readFileSync(dataFilePath, 'utf8');
           currentVersionData = JSON.parse(currentContent) as AzureServiceTagsRoot;
         } catch (error) {
-          console.warn(`Could not load current version for diff: ${error}`);
+          console.warn(`Could not load current version for diff (${mapping.cloud}): ${error}`);
         }
       }
 
@@ -402,17 +406,17 @@ async function updateAllIpData(): Promise<void> {
       // Extract filename from download URL
       const filename = extractFilenameFromUrl(downloadUrl);
 
-      // Check if we need to compute a diff (only for AzureCloud)
+      // Check if we need to compute a diff
       let previousChangeNumber: number | undefined;
       let previousFilename: string | undefined;
       let diffAvailable = false;
 
-      if (mapping.cloud === AzureCloudName.AzureCloud && currentVersionData) {
+      if (currentVersionData) {
         const previousDataPath = path.join(DATA_DIR, `${mapping.cloud}-previous.json`);
 
         // If the changeNumber is different, compute diff
         if (currentVersionData.changeNumber !== data.changeNumber) {
-          console.info(`Computing diff: changeNumber ${currentVersionData.changeNumber} → ${data.changeNumber}`);
+          console.info(`[${mapping.cloud}] Computing diff: changeNumber ${currentVersionData.changeNumber} → ${data.changeNumber}`);
 
           const previousMeta = existingMetadata || { filename: 'unknown.json' };
           const diff = computeIpDiff({
@@ -420,13 +424,14 @@ async function updateAllIpData(): Promise<void> {
             currentData: data,
             previousFilename: previousMeta.filename,
             currentFilename: filename,
+            cloud: mapping.cloud,
           });
 
-          // Save diff file
-          fs.writeFileSync(DIFF_FILE, JSON.stringify(diff, null, 2), 'utf8');
-          console.info(`Saved diff to ${DIFF_FILE}`);
-          console.info(`  Summary: +${diff.meta.summary.totalPrefixesAdded} prefixes, -${diff.meta.summary.totalPrefixesRemoved} prefixes`);
-          console.info(`  ${diff.meta.summary.serviceTagsAdded} tags added, ${diff.meta.summary.serviceTagsRemoved} removed, ${diff.meta.summary.serviceTagsModified} modified`);
+          // Add to collection for later merging
+          cloudDiffs.push(diff);
+
+          console.info(`[${mapping.cloud}] Diff computed: +${diff.meta.summary.totalPrefixesAdded} prefixes, -${diff.meta.summary.totalPrefixesRemoved} prefixes`);
+          console.info(`[${mapping.cloud}] ${diff.meta.summary.serviceTagsAdded} tags added, ${diff.meta.summary.serviceTagsRemoved} removed, ${diff.meta.summary.serviceTagsModified} modified`);
 
           previousChangeNumber = currentVersionData.changeNumber;
           previousFilename = previousMeta.filename;
@@ -434,9 +439,9 @@ async function updateAllIpData(): Promise<void> {
 
           // Save the old current version as previous
           fs.writeFileSync(previousDataPath, JSON.stringify(currentVersionData, null, 2), 'utf8');
-          console.info(`Archived previous version to ${previousDataPath}`);
+          console.info(`[${mapping.cloud}] Archived previous version to ${previousDataPath}`);
         } else {
-          console.info(`No changes detected for ${mapping.cloud} (changeNumber: ${data.changeNumber})`);
+          console.info(`[${mapping.cloud}] No changes detected (changeNumber: ${data.changeNumber})`);
         }
       }
 
@@ -469,9 +474,18 @@ async function updateAllIpData(): Promise<void> {
     }
   }
 
+  // Merge all cloud diffs and save combined diff file
+  if (cloudDiffs.length > 0) {
+    const mergedDiff = mergeDiffs(cloudDiffs);
+    fs.writeFileSync(DIFF_FILE, JSON.stringify(mergedDiff, null, 2), 'utf8');
+    console.info(`Saved merged diff to ${DIFF_FILE}`);
+    console.info(`  Combined summary: +${mergedDiff.meta.summary.totalPrefixesAdded} prefixes, -${mergedDiff.meta.summary.totalPrefixesRemoved} prefixes across ${cloudDiffs.length} cloud(s)`);
+    console.info(`  ${mergedDiff.meta.summary.serviceTagsAdded} tags added, ${mergedDiff.meta.summary.serviceTagsRemoved} removed, ${mergedDiff.meta.summary.serviceTagsModified} modified`);
+  }
+
   // Save updated metadata
   saveMetadata(metadata);
-  
+
   console.info('IP data update completed.');
 }
 

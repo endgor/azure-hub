@@ -60,8 +60,7 @@ export function useSubnetShare(options: UseSubnetShareOptions): UseSubnetShareRe
         clearTimeout(shareTimerRef.current);
       }
       shareTimerRef.current = setTimeout(() => setShareStatus('idle'), 2400);
-    } catch (error) {
-      console.error('Failed to copy share link', error);
+    } catch {
       setShareStatus('error');
       if (shareTimerRef.current) {
         clearTimeout(shareTimerRef.current);

@@ -27,9 +27,7 @@ export function useRbacMode({
   const [mode, setModeInternal] = useState<RbacMode>(initialMode);
 
   const setMode = useCallback((newMode: RbacMode) => {
-    // Check if mode is supported
     if (supportedModes && !supportedModes.includes(newMode)) {
-      console.warn(`Mode "${newMode}" is not supported. Falling back to "simple".`);
       setModeInternal('simple');
       return;
     }
