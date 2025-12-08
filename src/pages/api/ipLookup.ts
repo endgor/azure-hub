@@ -42,7 +42,10 @@ function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
     (item, index, array) =>
       index ===
       array.findIndex(
-        (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
+        (t) =>
+          t.ipAddressPrefix === item.ipAddressPrefix &&
+          t.serviceTagId === item.serviceTagId &&
+          t.cloud === item.cloud
       )
   );
 }
