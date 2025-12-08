@@ -1,10 +1,12 @@
 // Generate sitemap.xml for static export
 const fs = require('fs');
 const path = require('path');
+const matter = require('gray-matter');
 
 const BASE_URL = 'https://azurehub.org';
 const OUTPUT_DIR = path.join(process.cwd(), 'public');
 const PUBLIC_DATA_DIR = path.join(process.cwd(), 'public', 'data');
+const GUIDES_DIR = path.join(process.cwd(), 'content', 'guides');
 
 /**
  * Most commonly used Azure service tags that should be included in sitemap
@@ -97,6 +99,48 @@ function shouldIncludeServiceTag(tag) {
 }
 
 /**
+ * Gets all guide pages from the content/guides directory
+ * @returns {Array<{category: string, slug: string, lastmod: string}>} Array of guide entries
+ */
+function getGuidePages() {
+  const guides = [];
+
+  if (!fs.existsSync(GUIDES_DIR)) {
+    return guides;
+  }
+
+  const categories = fs.readdirSync(GUIDES_DIR).filter(item => {
+    const fullPath = path.join(GUIDES_DIR, item);
+    return fs.statSync(fullPath).isDirectory();
+  });
+
+  for (const category of categories) {
+    const categoryPath = path.join(GUIDES_DIR, category);
+    const files = fs.readdirSync(categoryPath).filter(f => f.endsWith('.md'));
+
+    for (const file of files) {
+      const filePath = path.join(categoryPath, file);
+      const content = fs.readFileSync(filePath, 'utf8');
+      const { data } = matter(content);
+      const slug = file.replace(/\.md$/, '');
+
+      // Use the guide's date as lastmod, or fall back to file mtime
+      let lastmod;
+      if (data.date) {
+        lastmod = new Date(data.date).toISOString();
+      } else {
+        const stats = fs.statSync(filePath);
+        lastmod = stats.mtime.toISOString();
+      }
+
+      guides.push({ category, slug, lastmod });
+    }
+  }
+
+  return guides;
+}
+
+/**
  * Escapes XML special characters to prevent XML injection
  * @param {string} unsafe - String that may contain XML special characters
  * @returns {string} XML-safe string
@@ -124,6 +168,10 @@ function generateSitemap() {
   console.log('Generating sitemap.xml...');
 
   const currentDate = new Date().toISOString();
+
+  // Get all guide pages
+  const guidePages = getGuidePages();
+  console.log(`Found ${guidePages.length} guide pages`);
 
   // Read all service tags from the data files
   const serviceTags = new Set();
@@ -210,6 +258,19 @@ function generateSitemap() {
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
+  <!-- Guides Section -->
+  <url>
+    <loc>${BASE_URL}/guides/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+${guidePages.map(guide => `  <url>
+    <loc>${escapeXml(`${BASE_URL}/guides/${encodeURIComponent(guide.category)}/${encodeURIComponent(guide.slug)}/`)}</loc>
+    <lastmod>${guide.lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n')}
   <!-- Popular Service Tag Pages -->
 ${serviceTagsArray
   .filter(tag => {
@@ -243,7 +304,8 @@ ${serviceTagsArray
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    console.log(`  Total URLs: ${includedTags.length + 8} (8 core pages + ${includedTags.length} service tags)`);
+    const totalUrls = 9 + guidePages.length + includedTags.length;
+    console.log(`  Total URLs: ${totalUrls} (9 core pages + ${guidePages.length} guides + ${includedTags.length} service tags)`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);
