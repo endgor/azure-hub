@@ -52,8 +52,7 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     try {
       const results = await onSearch(trimmedLine);
       setSearchResults(results.slice(0, 10));
-    } catch (err) {
-      console.warn('Search failed:', err);
+    } catch {
       setSearchResults([]);
     }
   }, [onSearch]);

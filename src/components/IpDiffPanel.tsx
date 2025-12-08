@@ -1,9 +1,32 @@
 import { useState, useEffect } from 'react';
 import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
+import { AzureCloudName } from '@/types/azure';
 
 interface IpDiffPanelProps {
   className?: string;
+}
+
+// Cloud labels and styles (matching Results.tsx)
+const CLOUD_LABELS: Record<AzureCloudName, string> = {
+  [AzureCloudName.AzureCloud]: 'Public',
+  [AzureCloudName.AzureUSGovernment]: 'Gov',
+  [AzureCloudName.AzureChinaCloud]: 'China'
+};
+
+const CLOUD_STYLES: Record<AzureCloudName, string> = {
+  [AzureCloudName.AzureCloud]: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200',
+  [AzureCloudName.AzureUSGovernment]: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
+  [AzureCloudName.AzureChinaCloud]: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-900/30 dark:text-rose-200'
+};
+
+function CloudBadge({ cloud }: { cloud?: AzureCloudName }) {
+  if (!cloud) return null;
+  return (
+    <span className={`inline-block rounded border px-1.5 py-0.5 text-xs font-medium ${CLOUD_STYLES[cloud]}`}>
+      {CLOUD_LABELS[cloud]}
+    </span>
+  );
 }
 
 export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
@@ -13,9 +36,9 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
   const [error, setError] = useState<string | null>(null);
   const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
 
-  // Load diff data when panel is expanded
+  // Preload diff data on mount so summary badge shows immediately
   useEffect(() => {
-    if (isExpanded && !diffData && !isLoading) {
+    if (!diffData && !isLoading) {
       setIsLoading(true);
       setError(null);
 
@@ -30,7 +53,7 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
           setIsLoading(false);
         });
     }
-  }, [isExpanded, diffData, isLoading]);
+  }, [diffData, isLoading]);
 
   const toggleTag = (tagName: string) => {
     setExpandedTags((prev) => {
@@ -83,7 +106,19 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
             </span>
           )}
         </div>
-        {diffData && (
+        {diffData && diffData.meta.clouds && Object.keys(diffData.meta.clouds).length > 0 && (
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            {Object.entries(diffData.meta.clouds).map(([cloud, info]) => (
+              <span key={cloud} className="flex items-center gap-1">
+                <span className={`inline-block rounded border px-1 py-0.5 text-[10px] font-medium ${CLOUD_STYLES[cloud as AzureCloudName]}`}>
+                  {CLOUD_LABELS[cloud as AzureCloudName]}
+                </span>
+                <span>v{info.fromChangeNumber}→v{info.toChangeNumber}</span>
+              </span>
+            ))}
+          </div>
+        )}
+        {diffData && (!diffData.meta.clouds || Object.keys(diffData.meta.clouds).length === 0) && diffData.meta.fromChangeNumber && (
           <span className="text-xs text-slate-500 dark:text-slate-400">
             v{diffData.meta.fromChangeNumber} → v{diffData.meta.toChangeNumber}
           </span>
@@ -189,11 +224,12 @@ function TagSection({ title, count, tags, type, expandedTags, onToggleTag }: Tag
       </h4>
       <div className="space-y-1">
         {tags.map((tag) => {
-          const isTagExpanded = expandedTags.has(tag.name);
+          const tagKey = tag.cloud ? `${tag.cloud}:${tag.name}` : tag.name;
+          const isTagExpanded = expandedTags.has(tagKey);
           return (
-            <div key={tag.name} className="rounded-lg bg-slate-50 dark:bg-slate-800">
+            <div key={tagKey} className="rounded-lg bg-slate-50 dark:bg-slate-800">
               <button
-                onClick={() => onToggleTag(tag.name)}
+                onClick={() => onToggleTag(tagKey)}
                 className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
               >
                 <div className="flex items-center gap-2">
@@ -205,6 +241,7 @@ function TagSection({ title, count, tags, type, expandedTags, onToggleTag }: Tag
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
+                  <CloudBadge cloud={tag.cloud} />
                   <span className={`font-medium ${colorClass}`}>
                     {type === 'added' ? '+' : '-'} {tag.name}
                   </span>
@@ -220,18 +257,13 @@ function TagSection({ title, count, tags, type, expandedTags, onToggleTag }: Tag
               </button>
               {isTagExpanded && tag.prefixes.length > 0 && (
                 <div className="border-t border-slate-200 px-3 py-2 dark:border-slate-700">
-                  <div className="max-h-48 overflow-y-auto">
+                  <div className="max-h-96 overflow-y-auto">
                     <div className="grid gap-0.5">
-                      {tag.prefixes.slice(0, 100).map((prefix, idx) => (
+                      {tag.prefixes.map((prefix, idx) => (
                         <div key={idx} className={`font-mono text-xs ${colorClass}`}>
                           {type === 'added' ? '+' : '-'} {prefix}
                         </div>
                       ))}
-                      {tag.prefixes.length > 100 && (
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                          ... and {tag.prefixes.length - 100} more
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -258,13 +290,14 @@ function ModifiedTagSection({ tags, expandedTags, onToggleTag }: ModifiedTagSect
       </h4>
       <div className="space-y-1">
         {tags.map((tag) => {
-          const isTagExpanded = expandedTags.has(tag.name);
+          const tagKey = tag.cloud ? `${tag.cloud}:${tag.name}` : tag.name;
+          const isTagExpanded = expandedTags.has(tagKey);
           const totalChanges = tag.addedPrefixes.length + tag.removedPrefixes.length;
 
           return (
-            <div key={tag.name} className="rounded-lg bg-slate-50 dark:bg-slate-800">
+            <div key={tagKey} className="rounded-lg bg-slate-50 dark:bg-slate-800">
               <button
-                onClick={() => onToggleTag(tag.name)}
+                onClick={() => onToggleTag(tagKey)}
                 className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
               >
                 <div className="flex items-center gap-2">
@@ -276,6 +309,7 @@ function ModifiedTagSection({ tags, expandedTags, onToggleTag }: ModifiedTagSect
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
+                  <CloudBadge cloud={tag.cloud} />
                   <span className="font-medium text-slate-900 dark:text-slate-100">
                     {tag.name}
                   </span>
@@ -300,28 +334,18 @@ function ModifiedTagSection({ tags, expandedTags, onToggleTag }: ModifiedTagSect
               </button>
               {isTagExpanded && totalChanges > 0 && (
                 <div className="border-t border-slate-200 px-3 py-2 dark:border-slate-700">
-                  <div className="max-h-48 overflow-y-auto">
+                  <div className="max-h-96 overflow-y-auto">
                     <div className="grid gap-0.5">
-                      {tag.addedPrefixes.slice(0, 50).map((prefix, idx) => (
+                      {tag.addedPrefixes.map((prefix, idx) => (
                         <div key={`add-${idx}`} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
                           + {prefix}
                         </div>
                       ))}
-                      {tag.addedPrefixes.length > 50 && (
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                          ... and {tag.addedPrefixes.length - 50} more added
-                        </div>
-                      )}
-                      {tag.removedPrefixes.slice(0, 50).map((prefix, idx) => (
+                      {tag.removedPrefixes.map((prefix, idx) => (
                         <div key={`rem-${idx}`} className="font-mono text-xs text-rose-700 dark:text-rose-400">
                           - {prefix}
                         </div>
                       ))}
-                      {tag.removedPrefixes.length > 50 && (
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                          ... and {tag.removedPrefixes.length - 50} more removed
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>

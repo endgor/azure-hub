@@ -6,6 +6,7 @@ export interface AzureIpAddress {
   regionId: string;
   systemService: string;
   networkFeatures: string;
+  cloud?: AzureCloudName; // Which Azure cloud environment this IP belongs to
   // DNS resolution info (when hostname was resolved)
   resolvedFrom?: string; // Original hostname that was resolved
   resolvedIp?: string;   // The specific IP address this entry matched

@@ -2,356 +2,505 @@
   {
     "region": "australiacentral",
     "serviceCount": 41,
-    "prefixCount": 291
+    "prefixCount": 296,
+    "cloud": "AzureCloud"
   },
   {
     "region": "australiacentral2",
     "serviceCount": 41,
-    "prefixCount": 262
+    "prefixCount": 265,
+    "cloud": "AzureCloud"
   },
   {
     "region": "australiaeast",
     "serviceCount": 46,
-    "prefixCount": 757
+    "prefixCount": 772,
+    "cloud": "AzureCloud"
   },
   {
     "region": "australiasoutheast",
     "serviceCount": 48,
-    "prefixCount": 653
+    "prefixCount": 662,
+    "cloud": "AzureCloud"
   },
   {
     "region": "austriaeast",
-    "serviceCount": 37,
-    "prefixCount": 245
+    "serviceCount": 38,
+    "prefixCount": 264,
+    "cloud": "AzureCloud"
   },
   {
     "region": "belgiumcentral",
-    "serviceCount": 36,
-    "prefixCount": 193
+    "serviceCount": 37,
+    "prefixCount": 205,
+    "cloud": "AzureCloud"
   },
   {
     "region": "brazilne",
     "serviceCount": 1,
-    "prefixCount": 4
+    "prefixCount": 4,
+    "cloud": "AzureCloud"
   },
   {
     "region": "brazilse",
     "serviceCount": 42,
-    "prefixCount": 323
+    "prefixCount": 328,
+    "cloud": "AzureCloud"
   },
   {
     "region": "brazilsouth",
     "serviceCount": 46,
-    "prefixCount": 658
+    "prefixCount": 667,
+    "cloud": "AzureCloud"
   },
   {
     "region": "canadacentral",
     "serviceCount": 47,
-    "prefixCount": 718
+    "prefixCount": 736,
+    "cloud": "AzureCloud"
   },
   {
     "region": "canadaeast",
     "serviceCount": 45,
-    "prefixCount": 491
+    "prefixCount": 497,
+    "cloud": "AzureCloud"
   },
   {
     "region": "centralfrance",
     "serviceCount": 45,
-    "prefixCount": 675
+    "prefixCount": 699,
+    "cloud": "AzureCloud"
   },
   {
     "region": "centralindia",
     "serviceCount": 46,
-    "prefixCount": 687
+    "prefixCount": 708,
+    "cloud": "AzureCloud"
   },
   {
     "region": "centralus",
     "serviceCount": 48,
-    "prefixCount": 1511
+    "prefixCount": 1608,
+    "cloud": "AzureCloud"
   },
   {
     "region": "centraluseuap",
     "serviceCount": 43,
-    "prefixCount": 536
+    "prefixCount": 544,
+    "cloud": "AzureCloud"
   },
   {
     "region": "chilec",
-    "serviceCount": 36,
-    "prefixCount": 238
+    "serviceCount": 37,
+    "prefixCount": 254,
+    "cloud": "AzureCloud"
+  },
+  {
+    "region": "chinaeast",
+    "serviceCount": 39,
+    "prefixCount": 251,
+    "cloud": "AzureChinaCloud"
+  },
+  {
+    "region": "chinaeast2",
+    "serviceCount": 42,
+    "prefixCount": 345,
+    "cloud": "AzureChinaCloud"
+  },
+  {
+    "region": "chinaeast3",
+    "serviceCount": 41,
+    "prefixCount": 224,
+    "cloud": "AzureChinaCloud"
+  },
+  {
+    "region": "chinanorth",
+    "serviceCount": 40,
+    "prefixCount": 238,
+    "cloud": "AzureChinaCloud"
+  },
+  {
+    "region": "chinanorth2",
+    "serviceCount": 42,
+    "prefixCount": 307,
+    "cloud": "AzureChinaCloud"
+  },
+  {
+    "region": "chinanorth3",
+    "serviceCount": 40,
+    "prefixCount": 331,
+    "cloud": "AzureChinaCloud"
   },
   {
     "region": "eastasia",
     "serviceCount": 48,
-    "prefixCount": 753
+    "prefixCount": 762,
+    "cloud": "AzureCloud"
   },
   {
     "region": "eastus",
     "serviceCount": 48,
-    "prefixCount": 1708
+    "prefixCount": 1854,
+    "cloud": "AzureCloud"
   },
   {
     "region": "eastus2",
     "serviceCount": 50,
-    "prefixCount": 2005
+    "prefixCount": 2124,
+    "cloud": "AzureCloud"
   },
   {
     "region": "eastus2euap",
     "serviceCount": 44,
-    "prefixCount": 969
+    "prefixCount": 983,
+    "cloud": "AzureCloud"
+  },
+  {
+    "region": "eastus3",
+    "serviceCount": 35,
+    "prefixCount": 144,
+    "cloud": "AzureCloud"
   },
   {
     "region": "germanyn",
     "serviceCount": 43,
-    "prefixCount": 360
+    "prefixCount": 365,
+    "cloud": "AzureCloud"
   },
   {
     "region": "germanywc",
-    "serviceCount": 43,
-    "prefixCount": 552
+    "serviceCount": 44,
+    "prefixCount": 570,
+    "cloud": "AzureCloud"
   },
   {
     "region": "indonesiacentral",
-    "serviceCount": 40,
-    "prefixCount": 266
+    "serviceCount": 41,
+    "prefixCount": 277,
+    "cloud": "AzureCloud"
   },
   {
     "region": "israelcentral",
-    "serviceCount": 40,
-    "prefixCount": 356
+    "serviceCount": 41,
+    "prefixCount": 369,
+    "cloud": "AzureCloud"
   },
   {
     "region": "israelnorthwest",
     "serviceCount": 36,
-    "prefixCount": 160
+    "prefixCount": 165,
+    "cloud": "AzureCloud"
   },
   {
     "region": "italynorth",
-    "serviceCount": 40,
-    "prefixCount": 353
+    "serviceCount": 41,
+    "prefixCount": 361,
+    "cloud": "AzureCloud"
   },
   {
     "region": "japaneast",
-    "serviceCount": 45,
-    "prefixCount": 708
+    "serviceCount": 46,
+    "prefixCount": 718,
+    "cloud": "AzureCloud"
   },
   {
     "region": "japanwest",
     "serviceCount": 43,
-    "prefixCount": 590
+    "prefixCount": 595,
+    "cloud": "AzureCloud"
   },
   {
     "region": "jioindiacentral",
     "serviceCount": 41,
-    "prefixCount": 238
+    "prefixCount": 241,
+    "cloud": "AzureCloud"
   },
   {
     "region": "jioindiawest",
     "serviceCount": 40,
-    "prefixCount": 335
+    "prefixCount": 340,
+    "cloud": "AzureCloud"
   },
   {
     "region": "koreacentral",
     "serviceCount": 43,
-    "prefixCount": 577
+    "prefixCount": 582,
+    "cloud": "AzureCloud"
   },
   {
     "region": "koreasouth",
     "serviceCount": 43,
-    "prefixCount": 387
+    "prefixCount": 392,
+    "cloud": "AzureCloud"
   },
   {
     "region": "malaysiasouth",
     "serviceCount": 37,
-    "prefixCount": 240
+    "prefixCount": 245,
+    "cloud": "AzureCloud"
   },
   {
     "region": "malaysiawest",
-    "serviceCount": 38,
-    "prefixCount": 259
+    "serviceCount": 39,
+    "prefixCount": 267,
+    "cloud": "AzureCloud"
   },
   {
     "region": "mexicocentral",
-    "serviceCount": 38,
-    "prefixCount": 299
+    "serviceCount": 39,
+    "prefixCount": 312,
+    "cloud": "AzureCloud"
   },
   {
     "region": "newzealandnorth",
-    "serviceCount": 40,
-    "prefixCount": 293
+    "serviceCount": 41,
+    "prefixCount": 305,
+    "cloud": "AzureCloud"
   },
   {
     "region": "northcentralus",
     "serviceCount": 44,
-    "prefixCount": 822
+    "prefixCount": 832,
+    "cloud": "AzureCloud"
   },
   {
     "region": "northeurope",
     "serviceCount": 49,
-    "prefixCount": 1356
+    "prefixCount": 1488,
+    "cloud": "AzureCloud"
   },
   {
     "region": "northeurope2",
     "serviceCount": 1,
-    "prefixCount": 10
+    "prefixCount": 10,
+    "cloud": "AzureCloud"
   },
   {
     "region": "norwaye",
     "serviceCount": 43,
-    "prefixCount": 487
+    "prefixCount": 503,
+    "cloud": "AzureCloud"
   },
   {
     "region": "norwayw",
     "serviceCount": 43,
-    "prefixCount": 339
+    "prefixCount": 343,
+    "cloud": "AzureCloud"
   },
   {
     "region": "polandcentral",
-    "serviceCount": 40,
-    "prefixCount": 346
+    "serviceCount": 41,
+    "prefixCount": 358,
+    "cloud": "AzureCloud"
   },
   {
     "region": "qatarcentral",
-    "serviceCount": 40,
-    "prefixCount": 355
+    "serviceCount": 41,
+    "prefixCount": 365,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southafricanorth",
     "serviceCount": 44,
-    "prefixCount": 535
+    "prefixCount": 540,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southafricawest",
     "serviceCount": 43,
-    "prefixCount": 338
+    "prefixCount": 343,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southcentralus",
     "serviceCount": 47,
-    "prefixCount": 1357
+    "prefixCount": 1368,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southcentralus2",
     "serviceCount": 35,
-    "prefixCount": 151
+    "prefixCount": 158,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southeastasia",
     "serviceCount": 47,
-    "prefixCount": 930
+    "prefixCount": 942,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southeastus",
     "serviceCount": 36,
-    "prefixCount": 159
+    "prefixCount": 162,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southeastus3",
     "serviceCount": 35,
-    "prefixCount": 143
+    "prefixCount": 150,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southfrance",
     "serviceCount": 44,
-    "prefixCount": 385
+    "prefixCount": 389,
+    "cloud": "AzureCloud"
   },
   {
     "region": "southindia",
     "serviceCount": 44,
-    "prefixCount": 458
+    "prefixCount": 464,
+    "cloud": "AzureCloud"
   },
   {
     "region": "spaincentral",
-    "serviceCount": 40,
-    "prefixCount": 321
+    "serviceCount": 41,
+    "prefixCount": 336,
+    "cloud": "AzureCloud"
   },
   {
     "region": "swedencentral",
     "serviceCount": 44,
-    "prefixCount": 540
+    "prefixCount": 548,
+    "cloud": "AzureCloud"
   },
   {
     "region": "swedensouth",
     "serviceCount": 41,
-    "prefixCount": 279
+    "prefixCount": 283,
+    "cloud": "AzureCloud"
   },
   {
     "region": "switzerlandn",
     "serviceCount": 44,
-    "prefixCount": 515
+    "prefixCount": 524,
+    "cloud": "AzureCloud"
   },
   {
     "region": "switzerlandw",
     "serviceCount": 43,
-    "prefixCount": 376
+    "prefixCount": 382,
+    "cloud": "AzureCloud"
   },
   {
     "region": "taiwannorth",
     "serviceCount": 38,
-    "prefixCount": 295
+    "prefixCount": 299,
+    "cloud": "AzureCloud"
   },
   {
     "region": "taiwannorthwest",
     "serviceCount": 37,
-    "prefixCount": 252
+    "prefixCount": 256,
+    "cloud": "AzureCloud"
   },
   {
     "region": "uaecentral",
     "serviceCount": 43,
-    "prefixCount": 383
+    "prefixCount": 388,
+    "cloud": "AzureCloud"
   },
   {
     "region": "uaenorth",
     "serviceCount": 45,
-    "prefixCount": 536
+    "prefixCount": 541,
+    "cloud": "AzureCloud"
   },
   {
     "region": "uksouth",
     "serviceCount": 47,
-    "prefixCount": 816
+    "prefixCount": 945,
+    "cloud": "AzureCloud"
   },
   {
     "region": "ukwest",
     "serviceCount": 44,
-    "prefixCount": 534
+    "prefixCount": 630,
+    "cloud": "AzureCloud"
+  },
+  {
+    "region": "usdodcentral",
+    "serviceCount": 42,
+    "prefixCount": 298,
+    "cloud": "AzureUSGovernment"
+  },
+  {
+    "region": "usdodeast",
+    "serviceCount": 42,
+    "prefixCount": 301,
+    "cloud": "AzureUSGovernment"
+  },
+  {
+    "region": "usgovarizona",
+    "serviceCount": 41,
+    "prefixCount": 585,
+    "cloud": "AzureUSGovernment"
+  },
+  {
+    "region": "usgoviowa",
+    "serviceCount": 32,
+    "prefixCount": 117,
+    "cloud": "AzureUSGovernment"
+  },
+  {
+    "region": "usgovtexas",
+    "serviceCount": 42,
+    "prefixCount": 464,
+    "cloud": "AzureUSGovernment"
+  },
+  {
+    "region": "usgovvirginia",
+    "serviceCount": 42,
+    "prefixCount": 820,
+    "cloud": "AzureUSGovernment"
   },
   {
     "region": "usstagec",
     "serviceCount": 38,
-    "prefixCount": 177
+    "prefixCount": 176,
+    "cloud": "AzureCloud"
   },
   {
     "region": "usstagee",
     "serviceCount": 41,
-    "prefixCount": 305
+    "prefixCount": 301,
+    "cloud": "AzureCloud"
   },
   {
     "region": "westcentralus",
     "serviceCount": 46,
-    "prefixCount": 625
+    "prefixCount": 686,
+    "cloud": "AzureCloud"
   },
   {
     "region": "westeurope",
     "serviceCount": 48,
-    "prefixCount": 1629
+    "prefixCount": 1777,
+    "cloud": "AzureCloud"
   },
   {
     "region": "westindia",
     "serviceCount": 41,
-    "prefixCount": 348
+    "prefixCount": 350,
+    "cloud": "AzureCloud"
   },
   {
     "region": "westus",
     "serviceCount": 46,
-    "prefixCount": 1341
+    "prefixCount": 1503,
+    "cloud": "AzureCloud"
   },
   {
     "region": "westus2",
     "serviceCount": 47,
-    "prefixCount": 1077
+    "prefixCount": 1163,
+    "cloud": "AzureCloud"
   },
   {
     "region": "westus3",
     "serviceCount": 43,
-    "prefixCount": 697
+    "prefixCount": 709,
+    "cloud": "AzureCloud"
   }
 ]

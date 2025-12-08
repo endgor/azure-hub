@@ -46,9 +46,7 @@ export async function loadIpDiff(): Promise<IpDiffFile | null> {
     diffCacheExpiry = now + CACHE_TTL_MS;
 
     return data;
-  } catch (error) {
-    // Log warning but don't throw - diff is optional
-    console.warn('Failed to load IP diff:', error instanceof Error ? error.message : 'Unknown error');
+  } catch {
     diffCacheExpiry = now + CACHE_TTL_MS; // Prevent rapid retries
     return null;
   }
@@ -74,6 +72,7 @@ export async function isDiffAvailable(): Promise<boolean> {
 
 /**
  * Gets the version transition info (from -> to changeNumbers).
+ * For multi-cloud diffs, returns info from the first available cloud.
  */
 export async function getVersionInfo(): Promise<{
   fromChangeNumber: number;
@@ -83,11 +82,28 @@ export async function getVersionInfo(): Promise<{
   const diff = await loadIpDiff();
   if (!diff) return null;
 
-  return {
-    fromChangeNumber: diff.meta.fromChangeNumber,
-    toChangeNumber: diff.meta.toChangeNumber,
-    generatedAt: diff.meta.generatedAt,
-  };
+  // Try to get version info from clouds map first (new multi-cloud format)
+  if (diff.meta.clouds && Object.keys(diff.meta.clouds).length > 0) {
+    const firstCloud = Object.values(diff.meta.clouds)[0];
+    if (firstCloud) {
+      return {
+        fromChangeNumber: firstCloud.fromChangeNumber,
+        toChangeNumber: firstCloud.toChangeNumber,
+        generatedAt: diff.meta.generatedAt,
+      };
+    }
+  }
+
+  // Fall back to legacy single-cloud format
+  if (diff.meta.fromChangeNumber !== undefined && diff.meta.toChangeNumber !== undefined) {
+    return {
+      fromChangeNumber: diff.meta.fromChangeNumber,
+      toChangeNumber: diff.meta.toChangeNumber,
+      generatedAt: diff.meta.generatedAt,
+    };
+  }
+
+  return null;
 }
 
 /**

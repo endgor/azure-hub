@@ -1,4 +1,4 @@
-import { AzureIpAddress } from '@/types/azure';
+import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import type { WorkSheet } from 'xlsx';
 import { downloadFile, downloadExcel, downloadMarkdown } from './downloadUtils';
 import { generateQueryFilename } from './filenameUtils';
@@ -8,11 +8,19 @@ export type ExportRow = Record<string, string | number | boolean | null | undefi
 
 /** Specific export format for Azure IP address data */
 export type ExportData = ExportRow & {
+  'Cloud': string;
   'Service Tag': string;
   'IP Range': string;
   'Region': string;
   'System Service': string;
   'Network Features': string;
+};
+
+/** Maps cloud enum to display label for exports */
+const CLOUD_EXPORT_LABELS: Record<AzureCloudName, string> = {
+  [AzureCloudName.AzureCloud]: 'Public',
+  [AzureCloudName.AzureUSGovernment]: 'Government',
+  [AzureCloudName.AzureChinaCloud]: 'China'
 };
 
 /** Options for Excel export, including row background colors */
@@ -23,6 +31,7 @@ interface ExcelExportOptions {
 /** Transforms Azure IP data into export-ready format */
 export function prepareDataForExport(results: AzureIpAddress[]): ExportData[] {
   return results.map((result) => ({
+    'Cloud': result.cloud ? CLOUD_EXPORT_LABELS[result.cloud] : '',
     'Service Tag': result.serviceTagId || '',
     'IP Range': result.ipAddressPrefix || '',
     'Region': result.region || '',

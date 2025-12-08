@@ -51,8 +51,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
     setIsExporting(true);
     try {
       exportEntraIdRolesToJSON(roles, generateFilename('json'));
-    } catch (error) {
-      console.error('JSON export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -63,8 +62,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
     setIsExporting(true);
     try {
       await exportEntraIdRolesToCSV(roles, generateFilename('csv'));
-    } catch (error) {
-      console.error('CSV export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -75,8 +73,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
     setIsExporting(true);
     try {
       await exportEntraIdRolesToExcel(roles, generateFilename('xlsx'));
-    } catch (error) {
-      console.error('Excel export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -87,8 +84,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
     setIsExporting(true);
     try {
       exportEntraIdRolesToMarkdown(roles, generateFilename('md'));
-    } catch (error) {
-      console.error('Markdown export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);

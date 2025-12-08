@@ -61,7 +61,6 @@ export async function fetchTenantInformation(
   }
 
   if (!response.ok) {
-    console.error(`Graph request failed with status ${response.status}`);
     throw new Error('Microsoft Graph request failed.');
   }
 

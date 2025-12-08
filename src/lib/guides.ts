@@ -62,8 +62,8 @@ function loadCategoryInfo(): Record<string, { name: string; description: string 
       const content = fs.readFileSync(categoriesFile, 'utf8');
       categoryInfoCache = JSON.parse(content);
       return categoryInfoCache!;
-    } catch (error) {
-      console.warn('Failed to load categories file:', error);
+    } catch {
+      // Fall through to default
     }
   }
 
@@ -201,8 +201,7 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
       meta: validatedMeta,
       content: contentHtml
     };
-  } catch (error) {
-    console.error(`Error loading guide ${category}/${slug}:`, error);
+  } catch {
     return null;
   }
 }

@@ -39,8 +39,6 @@ export async function loadEntraIDRoles(): Promise<EntraIDRole[]> {
     const response = await fetch('/data/entraid-roles.json');
     if (!response.ok) {
       if (response.status === 404) {
-        // File doesn't exist yet - user needs to run npm run fetch-entraid-roles
-        console.warn('Entra ID roles data not found. Run: npm run fetch-entraid-roles');
         entraIdRolesDataStatus = 'missing';
         return [];
       }
@@ -175,7 +173,7 @@ export async function searchEntraIDActions(query: string): Promise<string[]> {
 export async function preloadEntraIDActionsCache(): Promise<void> {
   try {
     await extractActionsFromEntraIDRoles();
-  } catch (error) {
-    console.warn('Failed to preload Entra ID actions cache:', error);
+  } catch {
+    // Silently fail - cache will be computed on demand
   }
 }

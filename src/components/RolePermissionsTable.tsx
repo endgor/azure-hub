@@ -39,8 +39,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     setIsExporting(true);
     try {
       exportRolesToJSON(roles, generateFilename('json'));
-    } catch (error) {
-      console.error('JSON export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -51,8 +50,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     setIsExporting(true);
     try {
       await exportRolesToCSV(roles, generateFilename('csv'));
-    } catch (error) {
-      console.error('CSV export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -63,8 +61,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     setIsExporting(true);
     try {
       await exportRolesToExcel(roles, generateFilename('xlsx'));
-    } catch (error) {
-      console.error('Excel export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
@@ -75,8 +72,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     setIsExporting(true);
     try {
       exportRolesToMarkdown(roles, generateFilename('md'));
-    } catch (error) {
-      console.error('Markdown export failed:', error);
+    } catch {
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);

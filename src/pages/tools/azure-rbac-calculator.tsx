@@ -135,8 +135,7 @@ export default function AzureRbacCalculatorPage() {
           const builtInRoles = roles.filter(role => role.roleType === 'BuiltInRole');
           setAvailableRoles(builtInRoles);
           setIsLoading(false);
-        } catch (err) {
-          console.error('Failed to load roles:', err);
+        } catch {
           setError('Failed to load role definitions. Please try again.');
           setIsLoading(false);
         }
@@ -198,9 +197,8 @@ export default function AzureRbacCalculatorPage() {
       if (leastPrivilegedRoles.length === 0) {
         setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
       }
-    } catch (err) {
+    } catch {
       setError('Failed to calculate least privileged roles. Please try again.');
-      console.error('Error calculating roles:', err);
     } finally {
       setIsLoading(false);
     }
