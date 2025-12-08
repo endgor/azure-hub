@@ -2,6 +2,8 @@
  * Types for Azure IP data versioning and diff tracking
  */
 
+import type { AzureCloudName } from './azure';
+
 export interface IpDiffSummary {
   serviceTagsAdded: number;
   serviceTagsRemoved: number;
@@ -10,13 +12,27 @@ export interface IpDiffSummary {
   totalPrefixesRemoved: number;
 }
 
-export interface IpDiffMeta {
+/** Per-cloud version transition info */
+export interface CloudVersionInfo {
   fromChangeNumber: number;
   toChangeNumber: number;
   fromFilename: string;
   toFilename: string;
+}
+
+export interface IpDiffMeta {
+  /** @deprecated Use clouds map instead for multi-cloud support */
+  fromChangeNumber?: number;
+  /** @deprecated Use clouds map instead for multi-cloud support */
+  toChangeNumber?: number;
+  /** @deprecated Use clouds map instead for multi-cloud support */
+  fromFilename?: string;
+  /** @deprecated Use clouds map instead for multi-cloud support */
+  toFilename?: string;
   generatedAt: string;
   summary: IpDiffSummary;
+  /** Per-cloud version transition info */
+  clouds?: Partial<Record<AzureCloudName, CloudVersionInfo>>;
 }
 
 export interface AddedTag {
@@ -25,6 +41,7 @@ export interface AddedTag {
   region: string;
   prefixCount: number;
   prefixes: string[];
+  cloud?: AzureCloudName;
 }
 
 export interface RemovedTag {
@@ -33,6 +50,7 @@ export interface RemovedTag {
   region: string;
   prefixCount: number;
   prefixes: string[];
+  cloud?: AzureCloudName;
 }
 
 export interface ModifiedTag {
@@ -43,6 +61,7 @@ export interface ModifiedTag {
   currentChangeNumber: number;
   addedPrefixes: string[];
   removedPrefixes: string[];
+  cloud?: AzureCloudName;
 }
 
 export interface IpDiffFile {

@@ -31,12 +31,10 @@ export async function fetchTenantMetadata(tenantIdOrDomain: string): Promise<Ten
   try {
     const response = await fetch(metadataUrl);
     if (!response.ok) {
-      console.warn(`Metadata fetch returned status ${response.status}`);
       return null;
     }
     return (await response.json()) as TenantMetadata;
   } catch {
-    console.warn('Failed to fetch OpenID metadata');
     return null;
   }
 }

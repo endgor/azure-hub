@@ -1,15 +1,17 @@
 import IPCIDR from 'ip-cidr';
-import { AzureIpAddress } from '../types/azure';
+import { AzureIpAddress, AzureCloudName } from '../types/azure';
 import { matchesSearchTerm } from './utils/searchMatcher';
 import { CACHE_TTL_MS } from '@/config/constants';
 
-/**
- * In-memory cache for Azure IP data and versions.
- * Reduces API calls and improves performance on repeated lookups.
- * Cache expires after 6 hours to balance freshness with performance.
- */
-let azureIpAddressCache: AzureIpAddress[] | null = null;
-let ipCacheExpiry = 0;
+/** Per-cloud cache for Azure IP data */
+const cloudCache: Map<AzureCloudName, { data: AzureIpAddress[]; expiry: number }> = new Map();
+
+/** All Azure cloud environments to load */
+const ALL_CLOUDS: AzureCloudName[] = [
+  AzureCloudName.AzureCloud,
+  AzureCloudName.AzureChinaCloud,
+  AzureCloudName.AzureUSGovernment
+];
 
 export interface SearchOptions {
   region?: string; // Region name (e.g., "westeurope", "East US")
@@ -17,27 +19,26 @@ export interface SearchOptions {
 }
 
 /**
- * Loads and caches Azure Public Cloud IP ranges from static JSON file.
+ * Loads and caches Azure IP ranges for a specific cloud from static JSON file.
  * Data structure: Service tags containing IP address prefixes.
  * Flattens nested structure into searchable flat list of IP ranges.
  *
  * Cache behavior:
  * - Returns cached data if available and not expired (< 6 hours old)
- * - Otherwise fetches from /data/AzureCloud.json and caches result
- *
- * Data source is updated periodically by build scripts (see scripts/updateIpData.ts).
+ * - Otherwise fetches from /data/{cloud}.json and caches result
  */
-async function loadAzureIpData(): Promise<AzureIpAddress[]> {
+async function loadAzureIpData(cloud: AzureCloudName): Promise<AzureIpAddress[]> {
   const now = Date.now();
+  const cached = cloudCache.get(cloud);
 
-  if (azureIpAddressCache && ipCacheExpiry > now) {
-    return azureIpAddressCache; // Return cached data
+  if (cached && cached.expiry > now) {
+    return cached.data;
   }
 
   try {
-    const response = await fetch('/data/AzureCloud.json');
+    const response = await fetch(`/data/${cloud}.json`);
     if (!response.ok) {
-      throw new Error(`Failed to load Azure IP data: ${response.statusText}`);
+      throw new Error(`Failed to load Azure IP data for ${cloud}: ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -57,45 +58,49 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
             region: region || '',
             regionId: properties.regionId?.toString() || '',
             systemService: systemService || '',
-            networkFeatures: properties.networkFeatures?.join(', ') || ''
+            networkFeatures: properties.networkFeatures?.join(', ') || '',
+            cloud
           });
         }
       }
     }
 
     // Update cache
-    azureIpAddressCache = ipRanges;
-    ipCacheExpiry = now + CACHE_TTL_MS;
+    cloudCache.set(cloud, { data: ipRanges, expiry: now + CACHE_TTL_MS });
 
     return ipRanges;
   } catch (error) {
-    throw new Error(`Failed to load Azure IP data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to load Azure IP data for ${cloud}: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 /**
- * Checks if an IP address belongs to Azure by testing against all CIDR ranges.
- * Uses ip-cidr library for accurate CIDR containment checking.
- * Returns all matching service tags (an IP may belong to multiple tags).
+ * Loads IP data from all Azure clouds (Public, China, Government).
+ * Each cloud is loaded in parallel for performance.
+ */
+async function loadAllCloudsIpData(): Promise<AzureIpAddress[]> {
+  const results = await Promise.all(ALL_CLOUDS.map(loadAzureIpData));
+  return results.flat();
+}
+
+/**
+ * Checks if an IP address belongs to Azure by testing against all CIDR ranges
+ * across all Azure clouds (Public, China, Government).
+ * Returns all matching service tags with their cloud environment.
  *
- * Example: "13.107.42.14" might match both "AzureFrontDoor.Frontend" and "AzureFrontDoor.FirstParty"
- *
- * IMPORTANT: Returns cloned objects to prevent cache pollution when callers
- * mutate results (e.g., adding DNS resolution metadata).
+ * IMPORTANT: Returns cloned objects to prevent cache pollution.
  */
 export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[]> {
-  const azureIpRanges = await loadAzureIpData();
+  const azureIpRanges = await loadAllCloudsIpData();
   const matches: AzureIpAddress[] = [];
 
   for (const azureIpRange of azureIpRanges) {
     try {
       const cidr = new IPCIDR(azureIpRange.ipAddressPrefix);
       if (cidr.contains(ipAddress)) {
-        // Clone the object to prevent mutations from affecting the cache
         matches.push({ ...azureIpRange });
       }
     } catch {
-      // Skip invalid CIDR ranges (malformed data)
       continue;
     }
   }
@@ -104,15 +109,8 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
 }
 
 /**
- * Searches Azure IP ranges by region and/or service name.
- * Filters are cumulative (AND logic): results must match all specified filters.
- *
- * Search behavior:
- * - Region: matches against the 'region' field
- * - Service: matches against both 'systemService' and 'serviceTagId'
- * - Uses fuzzy matching (handles camelCase variations, substring matches)
- *
- * Returns empty array if no filters specified.
+ * Searches Azure IP ranges by region and/or service name
+ * across all Azure clouds (Public, China, Government).
  *
  * IMPORTANT: Returns cloned objects to prevent cache pollution.
  */
@@ -123,55 +121,52 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
   const hasServiceFilter = Boolean(serviceFilter);
 
   if (!hasRegionFilter && !hasServiceFilter) {
-    return []; // Require at least one filter
+    return [];
   }
 
-  const azureIpAddressList = await loadAzureIpData();
+  const azureIpAddressList = await loadAllCloudsIpData();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
     return [];
   }
 
   let results = azureIpAddressList;
 
-  // Filter by region (if specified)
   if (hasRegionFilter && regionFilter) {
     results = results.filter(ip => matchesSearchTerm(ip.region, regionFilter));
   }
 
-  // Filter by service (if specified)
   if (hasServiceFilter && serviceFilter) {
     results = results.filter(ip => {
-      // Check systemService first (e.g., "AzureStorage")
       if (ip.systemService && matchesSearchTerm(ip.systemService, serviceFilter)) {
         return true;
       }
-      // Then check serviceTagId (e.g., "Storage.WestEurope")
       return matchesSearchTerm(ip.serviceTagId, serviceFilter);
     });
   }
 
-  // Clone all results to prevent cache pollution
   return results.map(ip => ({ ...ip }));
 }
 
 /**
- * Returns sorted list of all unique service tag names.
- * Used for populating dropdown/autocomplete UI elements.
+ * Returns sorted list of all unique service tag names from all clouds.
  */
 export async function getAllServiceTags(): Promise<string[]> {
-  const azureIpData = await loadAzureIpData();
+  const azureIpData = await loadAllCloudsIpData();
   const serviceTags = new Set(azureIpData.map(ip => ip.serviceTagId));
   return Array.from(serviceTags).sort();
 }
 
 /**
- * Retrieves all IP ranges for a specific service tag (case-insensitive).
- * Example: "Storage.WestEurope" returns all IP prefixes for that tag.
+ * Retrieves all IP ranges for a specific service tag.
+ * Optionally filters by cloud environment.
  */
-export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpAddress[]> {
-  const azureIpData = await loadAzureIpData();
-  return azureIpData.filter(ip =>
-    ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase()
-  );
+export async function getServiceTagDetails(serviceTag: string, cloud?: AzureCloudName): Promise<AzureIpAddress[]> {
+  const azureIpData = await loadAllCloudsIpData();
+  return azureIpData.filter(ip => {
+    const matchesTag = ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase();
+    if (!matchesTag) return false;
+    if (cloud) return ip.cloud === cloud;
+    return true;
+  });
 }
 

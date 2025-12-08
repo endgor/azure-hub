@@ -63,8 +63,8 @@ export default function SubnetExportButton({
         // Markdown - colors are ignored as markdown doesn't support styling
         exportToMarkdown(exportData, filename);
       }
-    } catch (error) {
-      console.error('Failed to export subnet plan', error);
+    } catch {
+      // Export failed - silently continue
     } finally {
       setIsExporting(false);
       setIsOpen(false);

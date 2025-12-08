@@ -1,7 +1,7 @@
 import IPCIDR from 'ip-cidr';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { AzureIpAddress } from '../types/azure';
+import { AzureIpAddress, AzureCloudName } from '../types/azure';
 import { matchesSearchTerm } from './utils/searchMatcher';
 import { CACHE_TTL_MS } from '@/config/constants';
 
@@ -16,8 +16,15 @@ import { CACHE_TTL_MS } from '@/config/constants';
  * - Reduced mobile data usage
  */
 
-let azureIpAddressCache: AzureIpAddress[] | null = null;
-let ipCacheExpiry = 0;
+/** Per-cloud cache for Azure IP data */
+const cloudCache: Map<AzureCloudName, { data: AzureIpAddress[]; expiry: number }> = new Map();
+
+/** All Azure cloud environments to search */
+const ALL_CLOUDS: AzureCloudName[] = [
+  AzureCloudName.AzureCloud,
+  AzureCloudName.AzureChinaCloud,
+  AzureCloudName.AzureUSGovernment
+];
 
 export interface SearchOptions {
   region?: string;
@@ -25,18 +32,19 @@ export interface SearchOptions {
 }
 
 /**
- * Loads Azure IP data from the filesystem (server-side only).
+ * Loads Azure IP data for a specific cloud from the filesystem.
  * Caches in memory for 6 hours to avoid repeated file reads.
  */
-async function loadAzureIpData(): Promise<AzureIpAddress[]> {
+async function loadAzureIpData(cloud: AzureCloudName): Promise<AzureIpAddress[]> {
   const now = Date.now();
+  const cached = cloudCache.get(cloud);
 
-  if (azureIpAddressCache && ipCacheExpiry > now) {
-    return azureIpAddressCache;
+  if (cached && cached.expiry > now) {
+    return cached.data;
   }
 
   try {
-    const dataPath = path.join(process.cwd(), 'public', 'data', 'AzureCloud.json');
+    const dataPath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
     const fileContent = await fs.readFile(dataPath, 'utf-8');
     const data = JSON.parse(fileContent);
     const ipRanges: AzureIpAddress[] = [];
@@ -53,27 +61,37 @@ async function loadAzureIpData(): Promise<AzureIpAddress[]> {
             region: region || '',
             regionId: properties.regionId?.toString() || '',
             systemService: systemService || '',
-            networkFeatures: properties.networkFeatures?.join(', ') || ''
+            networkFeatures: properties.networkFeatures?.join(', ') || '',
+            cloud
           });
         }
       }
     }
 
-    azureIpAddressCache = ipRanges;
-    ipCacheExpiry = now + CACHE_TTL_MS;
+    cloudCache.set(cloud, { data: ipRanges, expiry: now + CACHE_TTL_MS });
 
     return ipRanges;
   } catch (error) {
-    throw new Error(`Failed to load Azure IP data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    throw new Error(`Failed to load Azure IP data for ${cloud}: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
 /**
- * Checks if an IP address belongs to Azure by testing against all CIDR ranges.
- * Returns all matching service tags.
+ * Loads IP data from all Azure clouds (Public, China, Government).
+ * Each cloud is loaded in parallel for performance.
+ */
+async function loadAllCloudsIpData(): Promise<AzureIpAddress[]> {
+  const results = await Promise.all(ALL_CLOUDS.map(loadAzureIpData));
+  return results.flat();
+}
+
+/**
+ * Checks if an IP address belongs to Azure by testing against all CIDR ranges
+ * across all Azure clouds (Public, China, Government).
+ * Returns all matching service tags with their cloud environment.
  */
 export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[]> {
-  const azureIpRanges = await loadAzureIpData();
+  const azureIpRanges = await loadAllCloudsIpData();
   const matches: AzureIpAddress[] = [];
 
   for (const azureIpRange of azureIpRanges) {
@@ -92,7 +110,8 @@ export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[
 }
 
 /**
- * Searches Azure IP ranges by region and/or service name.
+ * Searches Azure IP ranges by region and/or service name
+ * across all Azure clouds (Public, China, Government).
  */
 export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
   const regionFilter = options.region?.trim();
@@ -104,7 +123,7 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
     return [];
   }
 
-  const azureIpAddressList = await loadAzureIpData();
+  const azureIpAddressList = await loadAllCloudsIpData();
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
     return [];
   }
@@ -128,19 +147,19 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
 }
 
 /**
- * Returns sorted list of all unique service tag names.
+ * Returns sorted list of all unique service tag names from all clouds.
  */
 export async function getAllServiceTags(): Promise<string[]> {
-  const azureIpData = await loadAzureIpData();
+  const azureIpData = await loadAllCloudsIpData();
   const serviceTags = new Set(azureIpData.map(ip => ip.serviceTagId));
   return Array.from(serviceTags).sort();
 }
 
 /**
- * Retrieves all IP ranges for a specific service tag.
+ * Retrieves all IP ranges for a specific service tag from all clouds.
  */
 export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpAddress[]> {
-  const azureIpData = await loadAzureIpData();
+  const azureIpData = await loadAllCloudsIpData();
   return azureIpData.filter(ip =>
     ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase()
   );

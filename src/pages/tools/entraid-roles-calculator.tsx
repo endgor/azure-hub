@@ -147,8 +147,7 @@ export default function EntraIdRolesCalculatorPage() {
           const builtInRoles = roles.filter(role => role.isBuiltIn);
           setAvailableRoles(builtInRoles);
           setIsLoading(false);
-        } catch (err) {
-          console.error('Failed to load Entra ID roles:', err);
+        } catch {
           setError('Failed to load Entra ID role definitions. Please try again.');
           setIsLoading(false);
         }
@@ -215,7 +214,6 @@ export default function EntraIdRolesCalculatorPage() {
       } else {
         setError('Failed to calculate least privileged roles. Please try again.');
       }
-      console.error('Error calculating roles:', err);
     } finally {
       setIsLoading(false);
     }

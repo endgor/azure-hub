@@ -4,12 +4,19 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import Results from '@/components/Results';
-import { AzureIpAddress } from '@/types/azure';
+import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import { getServiceTagDetails } from '@/lib/clientIpService';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
-const clientServiceTagFetcher = async (serviceTagKey: string): Promise<ServiceTagDetailResponse> => {
+/** Validates and parses cloud parameter from query string */
+function parseCloudParam(cloud: string | string[] | undefined): AzureCloudName | undefined {
+  if (!cloud || Array.isArray(cloud)) return undefined;
+  const validClouds = Object.values(AzureCloudName) as string[];
+  return validClouds.includes(cloud) ? (cloud as AzureCloudName) : undefined;
+}
+
+const clientServiceTagFetcher = async (serviceTagKey: string, cloud?: AzureCloudName): Promise<ServiceTagDetailResponse> => {
   if (!serviceTagKey) {
     return {
       serviceTag: '',
@@ -18,19 +25,19 @@ const clientServiceTagFetcher = async (serviceTagKey: string): Promise<ServiceTa
       message: 'No service tag provided'
     };
   }
-  
+
   try {
-    const ipRanges = await getServiceTagDetails(serviceTagKey);
-    
+    const ipRanges = await getServiceTagDetails(serviceTagKey, cloud);
+
     if (ipRanges.length === 0) {
-      return { 
-        notFound: true, 
+      return {
+        notFound: true,
         message: `No data found for service tag "${serviceTagKey}"`,
         serviceTag: serviceTagKey,
-        ipRanges: [] 
+        ipRanges: []
       };
     }
-    
+
     return {
       serviceTag: serviceTagKey,
       ipRanges
@@ -51,15 +58,16 @@ const DEFAULT_PAGE_SIZE = 100;
 
 export default function ServiceTagDetail() {
   const router = useRouter();
-  const { serviceTag } = router.query;
+  const { serviceTag, cloud: cloudParam } = router.query;
+  const cloud = parseCloudParam(cloudParam);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
   const [data, setData] = useState<ServiceTagDetailResponse | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  
-  // Fetch service tag details when serviceTag changes
+
+  // Fetch service tag details when serviceTag or cloud changes
   useEffect(() => {
     if (!serviceTag) {
       setData(null);
@@ -70,9 +78,9 @@ export default function ServiceTagDetail() {
     const fetchServiceTagDetails = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
-        const result = await clientServiceTagFetcher(serviceTag as string);
+        const result = await clientServiceTagFetcher(serviceTag as string, cloud);
         setData(result);
       } catch (err) {
         setError(err as Error);
@@ -83,7 +91,7 @@ export default function ServiceTagDetail() {
     };
 
     fetchServiceTagDetails();
-  }, [serviceTag]);
+  }, [serviceTag, cloud]);
 
   // Paginate results
   const paginatedResults = useMemo(() => {
@@ -226,6 +234,7 @@ export default function ServiceTagDetail() {
               results={paginatedResults}
               query={serviceTag as string}
               total={data.ipRanges.length}
+              hideCloudFilter
               pagination={totalPages > 1 ? {
                 currentPage,
                 totalPages,

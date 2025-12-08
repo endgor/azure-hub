@@ -1,4 +1,5 @@
 import { CACHE_TTL_MS } from '@/config/constants';
+import { AzureCloudName } from '@/types/azure';
 
 /**
  * Lightweight service for loading IP data indexes.
@@ -6,17 +7,19 @@ import { CACHE_TTL_MS } from '@/config/constants';
  * Perfect for dropdowns, autocomplete, and pages that don't need actual IP addresses.
  */
 
-interface ServiceTagIndex {
+export interface ServiceTagIndex {
   id: string;
   systemService: string;
   region: string;
   prefixCount: number;
+  cloud: AzureCloudName;
 }
 
 interface RegionIndex {
   region: string;
   serviceCount: number;
   prefixCount: number;
+  cloud: AzureCloudName;
 }
 
 // In-memory caches
@@ -88,6 +91,14 @@ export async function loadRegionsIndex(): Promise<RegionIndex[]> {
 export async function getAllServiceTagIds(): Promise<string[]> {
   const index = await loadServiceTagsIndex();
   return index.map(tag => tag.id).sort();
+}
+
+/**
+ * Gets full service tag index with cloud information.
+ * Use this when you need to display which cloud each service tag belongs to.
+ */
+export async function getAllServiceTagsWithCloud(): Promise<ServiceTagIndex[]> {
+  return loadServiceTagsIndex();
 }
 
 /**

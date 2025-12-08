@@ -51,8 +51,8 @@ export default function GuideContent({ html }: GuideContentProps) {
           setTimeout(() => {
             copyButton.innerHTML = COPY_ICON;
           }, 2000);
-        } catch (err) {
-          console.error('Failed to copy code:', err);
+        } catch {
+          // Silently fail if clipboard is unavailable
         }
       });
 

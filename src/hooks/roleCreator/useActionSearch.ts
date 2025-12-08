@@ -37,8 +37,7 @@ export function useActionSearch({ onSearch }: UseActionSearchProps): UseActionSe
     try {
       const results = await onSearch(query);
       setActionSearchResults(results.slice(0, 10));
-    } catch (err) {
-      console.error('Action search failed:', err);
+    } catch {
       setActionSearchResults([]);
     }
   }, [onSearch]);

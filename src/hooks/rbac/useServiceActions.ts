@@ -48,8 +48,8 @@ export function useServiceActions({
         setIsLoadingServices(true);
         const services = await loadServices();
         setAvailableServices(services);
-      } catch (err) {
-        console.error('Failed to load services:', err);
+      } catch {
+        // Services failed to load - UI will show empty list
       } finally {
         setIsLoadingServices(false);
       }
@@ -89,8 +89,7 @@ export function useServiceActions({
         });
 
         setAvailableActions(normalizedActions);
-      } catch (err) {
-        console.error('Failed to load actions:', err);
+      } catch {
         setAvailableActions([]);
       } finally {
         setIsLoadingActions(false);
