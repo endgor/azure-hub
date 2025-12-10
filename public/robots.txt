@@ -7,15 +7,5 @@ Disallow: /api/
 # Block crawling of data files (they're for the application, not search engines)
 Disallow: /data/
 
-# Allow all main content pages
-Allow: /about
-Allow: /tools/ip-lookup
-Allow: /tools/service-tags
-Allow: /tools/service-tags/*
-Allow: /tools/tenant-lookup
-Allow: /tools/subnet-calculator
-Allow: /tools/azure-rbac-calculator
-Allow: /tools/entraid-roles-calculator
-
-# Sitemaps
+# Sitemap
 Sitemap: https://azurehub.org/sitemap.xml
