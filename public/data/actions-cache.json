@@ -1340,6 +1340,11 @@
     "roleCount": 7
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/jobs/export/action",
+    "name": "Microsoft.OperationalInsights/workspaces/jobs/export/action",
+    "roleCount": 4
+  },
+  {
     "key": "microsoft.hybridcompute/machines/extensions/write",
     "name": "Microsoft.HybridCompute/machines/extensions/write",
     "roleCount": 15
@@ -16782,6 +16787,56 @@
   {
     "key": "microsoft.computelimit/locations/sharedlimits/delete",
     "name": "Microsoft.ComputeLimit/locations/sharedLimits/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "mongodb.atlas/checknameavailability/action",
+    "name": "MongoDB.Atlas/checkNameAvailability/action",
+    "roleCount": 3
+  },
+  {
+    "key": "mongodb.atlas/register/action",
+    "name": "MongoDB.Atlas/register/action",
+    "roleCount": 3
+  },
+  {
+    "key": "mongodb.atlas/unregister/action",
+    "name": "MongoDB.Atlas/unregister/action",
+    "roleCount": 3
+  },
+  {
+    "key": "mongodb.atlas/operations/read",
+    "name": "MongoDB.Atlas/operations/read",
+    "roleCount": 19
+  },
+  {
+    "key": "mongodb.atlas/locations/operationstatuses/read",
+    "name": "MongoDB.Atlas/locations/operationStatuses/read",
+    "roleCount": 19
+  },
+  {
+    "key": "mongodb.atlas/locations/operationstatuses/write",
+    "name": "MongoDB.Atlas/locations/operationStatuses/write",
+    "roleCount": 3
+  },
+  {
+    "key": "mongodb.atlas/registeredsubscriptions/read",
+    "name": "MongoDB.Atlas/registeredSubscriptions/read",
+    "roleCount": 19
+  },
+  {
+    "key": "mongodb.atlas/organizations/read",
+    "name": "MongoDB.Atlas/organizations/read",
+    "roleCount": 19
+  },
+  {
+    "key": "mongodb.atlas/organizations/write",
+    "name": "MongoDB.Atlas/organizations/write",
+    "roleCount": 3
+  },
+  {
+    "key": "mongodb.atlas/organizations/delete",
+    "name": "MongoDB.Atlas/organizations/delete",
     "roleCount": 3
   }
 ]
