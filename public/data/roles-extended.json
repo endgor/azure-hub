@@ -2544,7 +2544,9 @@
         ],
         "condition": null,
         "conditionVersion": null,
-        "dataActions": [],
+        "dataActions": [
+          "Microsoft.OperationalInsights/workspaces/jobs/export/action"
+        ],
         "notActions": [
           "Microsoft.OperationalInsights/workspaces/sharedKeys/read"
         ],
@@ -2555,9 +2557,11 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-06-18T12:11:19.229791+00:00",
-    "permissionCount": 1001.5,
-    "dataActions": [],
+    "updatedOn": "2025-12-10T10:13:53.549775+00:00",
+    "permissionCount": 1002.5,
+    "dataActions": [
+      "Microsoft.OperationalInsights/workspaces/jobs/export/action"
+    ],
     "notDataActions": []
   },
   {
@@ -2588,7 +2592,9 @@
         ],
         "condition": null,
         "conditionVersion": null,
-        "dataActions": [],
+        "dataActions": [
+          "Microsoft.OperationalInsights/workspaces/jobs/export/action"
+        ],
         "notActions": [],
         "notDataActions": []
       }
@@ -2597,9 +2603,11 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-06-18T13:12:20.576798+00:00",
-    "permissionCount": 3703,
-    "dataActions": [],
+    "updatedOn": "2025-12-10T09:59:24.669706+00:00",
+    "permissionCount": 3704,
+    "dataActions": [
+      "Microsoft.OperationalInsights/workspaces/jobs/export/action"
+    ],
     "notDataActions": []
   },
   {
@@ -35809,6 +35817,45 @@
     "updatedBy": null,
     "updatedOn": "2025-12-08T16:10:15.500912+00:00",
     "permissionCount": 673.6666666666666,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-12-10T18:03:52.257288+00:00",
+    "description": "Provides access to MongoDB.Atlas Control Plane Operations",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/045b6ee5-0c68-42c4-9be0-7389794309f5",
+    "name": "045b6ee5-0c68-42c4-9be0-7389794309f5",
+    "permissions": [
+      {
+        "actions": [
+          "MongoDB.Atlas/checkNameAvailability/action",
+          "MongoDB.Atlas/register/action",
+          "MongoDB.Atlas/unregister/action",
+          "MongoDB.Atlas/operations/read",
+          "MongoDB.Atlas/locations/operationStatuses/read",
+          "MongoDB.Atlas/locations/operationStatuses/write",
+          "MongoDB.Atlas/registeredSubscriptions/read",
+          "MongoDB.Atlas/organizations/read",
+          "MongoDB.Atlas/organizations/write",
+          "MongoDB.Atlas/organizations/delete"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "MongoDB Atlas Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-12-10T18:03:52.257288+00:00",
+    "permissionCount": 10,
     "dataActions": [],
     "notDataActions": []
   }
