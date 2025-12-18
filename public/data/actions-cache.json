@@ -1255,11 +1255,6 @@
     "roleCount": 7
   },
   {
-    "key": "microsoft.operationalinsights/workspaces/jobs/export/action",
-    "name": "Microsoft.OperationalInsights/workspaces/jobs/export/action",
-    "roleCount": 4
-  },
-  {
     "key": "microsoft.hybridcompute/machines/extensions/write",
     "name": "Microsoft.HybridCompute/machines/extensions/write",
     "roleCount": 15
@@ -11600,6 +11595,11 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.web/sites/sitecontainers/read",
+    "name": "Microsoft.Web/sites/sitecontainers/read",
+    "roleCount": 24
+  },
+  {
     "key": "microsoft.containerservice/managedclusters/agentpools/read",
     "name": "Microsoft.ContainerService/managedClusters/agentPools/read",
     "roleCount": 22
@@ -16837,6 +16837,61 @@
   {
     "key": "mongodb.atlas/organizations/delete",
     "name": "MongoDB.Atlas/organizations/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgestorageconfigurations/read",
+    "name": "Microsoft.ArcContainerStorage/edgeStorageConfigurations/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgestorageconfigurations/write",
+    "name": "Microsoft.ArcContainerStorage/edgeStorageConfigurations/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgestorageconfigurations/delete",
+    "name": "Microsoft.ArcContainerStorage/edgeStorageConfigurations/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgevolumes/read",
+    "name": "Microsoft.ArcContainerStorage/edgeVolumes/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgevolumes/write",
+    "name": "Microsoft.ArcContainerStorage/edgeVolumes/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgevolumes/delete",
+    "name": "Microsoft.ArcContainerStorage/edgeVolumes/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgevolumes/ingestsubvolumes/read",
+    "name": "Microsoft.ArcContainerStorage/edgeVolumes/ingestSubvolumes/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgevolumes/ingestsubvolumes/write",
+    "name": "Microsoft.ArcContainerStorage/edgeVolumes/ingestSubvolumes/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/edgevolumes/ingestsubvolumes/delete",
+    "name": "Microsoft.ArcContainerStorage/edgeVolumes/ingestSubvolumes/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.arccontainerstorage/locations/operationstatuses/read",
+    "name": "Microsoft.ArcContainerStorage/locations/operationStatuses/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.arccontainerstorage/locations/operationstatuses/write",
+    "name": "Microsoft.ArcContainerStorage/locations/operationStatuses/write",
     "roleCount": 3
   }
 ]

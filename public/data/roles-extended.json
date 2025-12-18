@@ -2374,9 +2374,7 @@
         ],
         "condition": null,
         "conditionVersion": null,
-        "dataActions": [
-          "Microsoft.OperationalInsights/workspaces/jobs/export/action"
-        ],
+        "dataActions": [],
         "notActions": [
           "Microsoft.OperationalInsights/workspaces/sharedKeys/read"
         ],
@@ -2387,11 +2385,9 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-12-15T16:11:32.276714+00:00",
-    "permissionCount": 1002.5,
-    "dataActions": [
-      "Microsoft.OperationalInsights/workspaces/jobs/export/action"
-    ],
+    "updatedOn": "2025-12-17T09:58:10.031650+00:00",
+    "permissionCount": 1001.5,
+    "dataActions": [],
     "notDataActions": []
   },
   {
@@ -2422,9 +2418,7 @@
         ],
         "condition": null,
         "conditionVersion": null,
-        "dataActions": [
-          "Microsoft.OperationalInsights/workspaces/jobs/export/action"
-        ],
+        "dataActions": [],
         "notActions": [],
         "notDataActions": []
       }
@@ -2433,11 +2427,9 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-12-12T15:31:38.320219+00:00",
-    "permissionCount": 3704,
-    "dataActions": [
-      "Microsoft.OperationalInsights/workspaces/jobs/export/action"
-    ],
+    "updatedOn": "2025-12-17T10:01:12.941787+00:00",
+    "permissionCount": 3703,
+    "dataActions": [],
     "notDataActions": []
   },
   {
@@ -27725,6 +27717,7 @@
       {
         "actions": [
           "microsoft.web/sites/publish/action",
+          "Microsoft.Web/sites/sitecontainers/read",
           "microsoft.web/sites/slots/publish/action",
           "microsoft.web/sites/config/list/action",
           "microsoft.web/sites/slots/config/list/action"
@@ -27740,8 +27733,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-08-27T15:22:15.862040+00:00",
-    "permissionCount": 4,
+    "updatedOn": "2025-12-17T16:31:26.536405+00:00",
+    "permissionCount": 5,
     "dataActions": [],
     "notDataActions": []
   },
@@ -35759,34 +35752,6 @@
       "/"
     ],
     "createdBy": null,
-    "createdOn": "2025-12-10T16:32:47.990088+00:00",
-    "description": "Service role that provides permissions for Microsoft Defender for AI Threat Protection to work with Purview service",
-    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/cc27d9db-08f8-4bdf-81a8-d03bb8db2dd9",
-    "name": "cc27d9db-08f8-4bdf-81a8-d03bb8db2dd9",
-    "permissions": [
-      {
-        "actions": [],
-        "condition": null,
-        "conditionVersion": null,
-        "dataActions": [],
-        "notActions": [],
-        "notDataActions": []
-      }
-    ],
-    "roleName": "Defender for AI Threat Protection Purview Operator",
-    "roleType": "BuiltInRole",
-    "type": "Microsoft.Authorization/roleDefinitions",
-    "updatedBy": null,
-    "updatedOn": "2025-12-10T16:32:47.990088+00:00",
-    "permissionCount": 0,
-    "dataActions": [],
-    "notDataActions": []
-  },
-  {
-    "assignableScopes": [
-      "/"
-    ],
-    "createdBy": null,
     "createdOn": "2025-12-11T16:42:41.838370+00:00",
     "description": "Read and manage compute limits using compute limit operations.",
     "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/980cf6f7-edec-4fd1-8e9e-28f70b1d5258",
@@ -35855,6 +35820,49 @@
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
     "updatedOn": "2025-12-15T16:11:32.272714+00:00",
+    "permissionCount": 10,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-12-17T16:31:26.987078+00:00",
+    "description": "Create, read, modify, and delete Arc Container Storage resources on connected clusters. This role is in preview and subject to change.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/ee99642a-225b-4fe8-a771-9d9036053e87",
+    "name": "ee99642a-225b-4fe8-a771-9d9036053e87",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.ArcContainerStorage/edgeStorageConfigurations/read",
+          "Microsoft.ArcContainerStorage/edgeStorageConfigurations/write",
+          "Microsoft.ArcContainerStorage/edgeStorageConfigurations/delete",
+          "Microsoft.ArcContainerStorage/edgeVolumes/read",
+          "Microsoft.ArcContainerStorage/edgeVolumes/write",
+          "Microsoft.ArcContainerStorage/edgeVolumes/delete",
+          "Microsoft.ArcContainerStorage/edgeVolumes/ingestSubvolumes/read",
+          "Microsoft.ArcContainerStorage/edgeVolumes/ingestSubvolumes/write",
+          "Microsoft.ArcContainerStorage/edgeVolumes/ingestSubvolumes/delete",
+          "Microsoft.ArcContainerStorage/locations/operationStatuses/read",
+          "Microsoft.ArcContainerStorage/locations/operationStatuses/write"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [
+          "Microsoft.ArcContainerStorage/register/action",
+          "Microsoft.ArcContainerStorage/unregister/action"
+        ],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Arc Container Storage Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-12-17T16:31:26.987078+00:00",
     "permissionCount": 10,
     "dataActions": [],
     "notDataActions": []
