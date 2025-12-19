@@ -19215,6 +19215,8 @@
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.AzureStackHCI/StorageContainers/Write",
           "Microsoft.AzureStackHCI/StorageContainers/Read",
+          "Microsoft.AzureStackHCI/LogicalNetworks/Read",
+          "Microsoft.AzureStackHCI/LogicalNetworks/Write",
           "Microsoft.AzureStackHCI/Register/Action",
           "Microsoft.GuestConfiguration/guestConfigurationAssignments/read",
           "Microsoft.KubernetesConfiguration/extensions/write",
@@ -19249,8 +19251,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-02-13T16:18:50.493861+00:00",
-    "permissionCount": 1198.6666666666665,
+    "updatedOn": "2025-12-18T16:39:08.071963+00:00",
+    "permissionCount": 1200.6666666666665,
     "dataActions": [],
     "notDataActions": []
   },
@@ -35864,6 +35866,89 @@
     "updatedBy": null,
     "updatedOn": "2025-12-17T16:31:26.987078+00:00",
     "permissionCount": 10,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-12-18T16:39:08.071963+00:00",
+    "description": "Grants full to manage AI project and accounts. Grants reader access to AI projects, reader access to AI accounts, and data actions for an AI project.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/c883944f-8b7b-4483-af10-35834be79c4a",
+    "name": "c883944f-8b7b-4483-af10-35834be79c4a",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.CognitiveServices/*",
+          "Microsoft.ResourceHealth/availabilityStatuses/read",
+          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/operations/read",
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourcegroups/deployments/*",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.Support/*"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.CognitiveServices/*"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure AI Owner",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-12-18T16:39:08.071963+00:00",
+    "permissionCount": 2371.6666666666665,
+    "dataActions": [
+      "Microsoft.CognitiveServices/*"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2025-12-18T16:39:08.071963+00:00",
+    "description": "Grant ARO Classic First Party Service Principal or managed identity required network permissions.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/42f3c60f-e7b1-46d7-ba56-6de681664342",
+    "name": "42f3c60f-e7b1-46d7-ba56-6de681664342",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Network/virtualNetworks/read",
+          "Microsoft.Network/virtualNetworks/subnets/join/action",
+          "Microsoft.Network/virtualNetworks/subnets/read",
+          "Microsoft.Network/virtualNetworks/subnets/write",
+          "Microsoft.Network/routeTables/join/action",
+          "Microsoft.Network/routeTables/read",
+          "Microsoft.Network/natGateways/join/action",
+          "Microsoft.Network/networkSecurityGroups/join/action",
+          "Microsoft.Network/networkSecurityGroups/read",
+          "Microsoft.Network/serviceEndpointPolicies/join/action",
+          "Microsoft.Network/networkIntentPolicies/join/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Red Hat OpenShift First Party Network",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2025-12-18T16:39:08.071963+00:00",
+    "permissionCount": 11,
     "dataActions": [],
     "notDataActions": []
   }
