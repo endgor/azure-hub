@@ -8825,6 +8825,11 @@
     "roleCount": 6
   },
   {
+    "key": "microsoft.documentdb/databaseaccounts/privateendpointconnections/operationresults/read",
+    "name": "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections/operationResults/read",
+    "roleCount": 23
+  },
+  {
     "key": "microsoft.documentdb/databaseaccounts/privateendpointconnections/read",
     "name": "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections/read",
     "roleCount": 23
@@ -16918,5 +16923,65 @@
     "key": "microsoft.elasticsan/elasticsans/volumegroups/volumes/data/write",
     "name": "Microsoft.ElasticSan/elasticsans/volumeGroups/volumes/data/write",
     "roleCount": 7
+  },
+  {
+    "key": "microsoft.approvals/approvalsettings/read",
+    "name": "Microsoft.Approvals/approvalSettings/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowdefinitions/read",
+    "name": "Microsoft.Approvals/approvalWorkflowDefinitions/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowdefinitions/write",
+    "name": "Microsoft.Approvals/approvalWorkflowDefinitions/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowdefinitions/delete",
+    "name": "Microsoft.Approvals/approvalWorkflowDefinitions/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowdefinitions/approvalworkflowinstances/read",
+    "name": "Microsoft.Approvals/approvalWorkflowDefinitions/approvalWorkflowInstances/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowdefinitions/approvalworkflowinstances/write",
+    "name": "Microsoft.Approvals/approvalWorkflowDefinitions/approvalWorkflowInstances/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowassignments/read",
+    "name": "Microsoft.Approvals/approvalWorkflowAssignments/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowassignments/write",
+    "name": "Microsoft.Approvals/approvalWorkflowAssignments/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.approvals/approvalworkflowassignments/delete",
+    "name": "Microsoft.Approvals/approvalWorkflowAssignments/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.approvals/invokeandfetchapprovalrequest/action",
+    "name": "Microsoft.Approvals/invokeAndFetchApprovalRequest/action",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.approvals/approvalsettings/write",
+    "name": "Microsoft.Approvals/approvalSettings/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.approvals/approvalsettings/delete",
+    "name": "Microsoft.Approvals/approvalSettings/delete",
+    "roleCount": 3
   }
 ]

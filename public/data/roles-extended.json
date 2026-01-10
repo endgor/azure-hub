@@ -21816,6 +21816,7 @@
           "Microsoft.DBforMySQL/flexibleServers/privateLinkResources/read",
           "Microsoft.DBforMySQL/flexibleServers/read",
           "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnectionsApproval/action",
+          "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections/operationResults/read",
           "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections/read",
           "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections/write",
           "Microsoft.DocumentDB/databaseAccounts/privateLinkResources/read",
@@ -21880,8 +21881,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-01-31T21:27:48.315357+00:00",
-    "permissionCount": 88,
+    "updatedOn": "2026-01-09T20:51:42.556227+00:00",
+    "permissionCount": 89,
     "dataActions": [],
     "notDataActions": []
   },
@@ -35994,6 +35995,114 @@
       "Microsoft.ElasticSan/elasticsans/volumeGroups/volumes/data/read",
       "Microsoft.ElasticSan/elasticsans/volumeGroups/volumes/data/write"
     ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-01-09T22:52:03.390249+00:00",
+    "description": "Performs approval workflow management operations including workflow creation, execution and deletion.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/92318126-08be-45d0-a1b2-532e6c7d52ce",
+    "name": "92318126-08be-45d0-a1b2-532e6c7d52ce",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Approvals/approvalSettings/read",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/read",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/write",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/delete",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/approvalWorkflowInstances/read",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/approvalWorkflowInstances/write",
+          "Microsoft.Approvals/approvalWorkflowAssignments/read",
+          "Microsoft.Approvals/approvalWorkflowAssignments/write",
+          "Microsoft.Approvals/approvalWorkflowAssignments/delete",
+          "Microsoft.Approvals/invokeAndFetchApprovalRequest/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Microsoft Approvals Workflow Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-01-09T22:52:03.390249+00:00",
+    "permissionCount": 10,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-01-09T23:07:08.829578+00:00",
+    "description": "Performs Approvals service-level management operations including service onboarding and configuration.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/98d40527-c073-4096-943a-dd593105ca9c",
+    "name": "98d40527-c073-4096-943a-dd593105ca9c",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Approvals/approvalSettings/read",
+          "Microsoft.Approvals/approvalSettings/write",
+          "Microsoft.Approvals/approvalSettings/delete",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/read",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/approvalWorkflowInstances/read",
+          "Microsoft.Approvals/approvalWorkflowAssignments/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Microsoft Approvals Service Operator",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-01-09T23:07:08.829578+00:00",
+    "permissionCount": 6,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-01-09T23:37:13.674426+00:00",
+    "description": "Requests approval workflow execution for resource changes.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/0343f3e8-01ac-4bb8-8f93-78b1d31ba64b",
+    "name": "0343f3e8-01ac-4bb8-8f93-78b1d31ba64b",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Approvals/invokeAndFetchApprovalRequest/action",
+          "Microsoft.Approvals/approvalSettings/read",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/read",
+          "Microsoft.Approvals/approvalWorkflowDefinitions/approvalWorkflowInstances/read",
+          "Microsoft.Approvals/approvalWorkflowAssignments/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Microsoft Approvals Request User",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-01-09T23:37:13.674426+00:00",
+    "permissionCount": 5,
+    "dataActions": [],
     "notDataActions": []
   }
 ]
