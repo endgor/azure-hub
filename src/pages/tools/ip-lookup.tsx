@@ -319,7 +319,7 @@ const SAMPLE_QUERIES = [
   {
     label: 'CIDR Range',
     example: '74.7.51.32/29',
-    description: 'Find Azure IP ranges within a CIDR block.'
+    description: 'Find Azure service tags covering a CIDR block.'
   },
   {
     label: 'Hostname (DNS)',
