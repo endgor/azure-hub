@@ -16795,6 +16795,16 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.security/settings/read",
+    "name": "microsoft.security/settings/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.security/settings/write",
+    "name": "microsoft.security/settings/write",
+    "roleCount": 5
+  },
+  {
     "key": "microsoft.deviceonboarding/onboardingservices/read",
     "name": "Microsoft.DeviceOnboarding/onboardingServices/read",
     "roleCount": 19
