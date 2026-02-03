@@ -71,9 +71,22 @@ const nextConfig = {
     ];
   },
 
-  // Redirects for backward compatibility
+  // Redirects for backward compatibility and SEO
   async redirects() {
     return [
+      // Redirect www to non-www (canonical domain)
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.azurehub.org',
+          },
+        ],
+        destination: 'https://azurehub.org/:path*',
+        permanent: true,
+      },
+      // Legacy URL redirects
       {
         source: '/tools/rbac-calculator',
         destination: '/tools/azure-rbac-calculator',
