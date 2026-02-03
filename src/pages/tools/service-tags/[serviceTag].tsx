@@ -1,12 +1,11 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
+import type { GetServerSideProps } from 'next';
 import Layout from '@/components/Layout';
 import Results from '@/components/Results';
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
-import { getServiceTagDetails } from '@/lib/clientIpService';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import { getServiceTagDetails } from '@/lib/serverIpService';
 import ErrorBox from '@/components/shared/ErrorBox';
 
 /** Validates and parses cloud parameter from query string */
@@ -16,95 +15,32 @@ function parseCloudParam(cloud: string | string[] | undefined): AzureCloudName |
   return validClouds.includes(cloud) ? (cloud as AzureCloudName) : undefined;
 }
 
-const clientServiceTagFetcher = async (serviceTagKey: string, cloud?: AzureCloudName): Promise<ServiceTagDetailResponse> => {
-  if (!serviceTagKey) {
-    return {
-      serviceTag: '',
-      ipRanges: [],
-      notFound: true,
-      message: 'No service tag provided'
-    };
-  }
-
-  try {
-    const ipRanges = await getServiceTagDetails(serviceTagKey, cloud);
-
-    if (ipRanges.length === 0) {
-      return {
-        notFound: true,
-        message: `No data found for service tag "${serviceTagKey}"`,
-        serviceTag: serviceTagKey,
-        ipRanges: []
-      };
-    }
-
-    return {
-      serviceTag: serviceTagKey,
-      ipRanges
-    };
-  } catch (error) {
-    throw error;
-  }
-};
-
-interface ServiceTagDetailResponse {
+interface ServiceTagDetailProps {
   serviceTag: string;
   ipRanges: AzureIpAddress[];
-  notFound?: boolean;
+  notFound: boolean;
   message?: string;
 }
 
 const DEFAULT_PAGE_SIZE = 100;
 
-export default function ServiceTagDetail() {
-  const router = useRouter();
-  const { serviceTag, cloud: cloudParam } = router.query;
-  const cloud = parseCloudParam(cloudParam);
+export default function ServiceTagDetail({ serviceTag, ipRanges, notFound, message }: ServiceTagDetailProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
-  const [data, setData] = useState<ServiceTagDetailResponse | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Fetch service tag details when serviceTag or cloud changes
-  useEffect(() => {
-    if (!serviceTag) {
-      setData(null);
-      setIsLoading(false);
-      return;
-    }
-
-    const fetchServiceTagDetails = async () => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const result = await clientServiceTagFetcher(serviceTag as string, cloud);
-        setData(result);
-      } catch (err) {
-        setError(err as Error);
-        setData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchServiceTagDetails();
-  }, [serviceTag, cloud]);
 
   // Paginate results
   const paginatedResults = useMemo(() => {
-    if (!data?.ipRanges) return [];
-    if (isAll) return data.ipRanges;
+    if (!ipRanges || ipRanges.length === 0) return [];
+    if (isAll) return ipRanges;
 
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
-    return data.ipRanges.slice(startIndex, endIndex);
-  }, [data?.ipRanges, currentPage, pageSize, isAll]);
+    return ipRanges.slice(startIndex, endIndex);
+  }, [ipRanges, currentPage, pageSize, isAll]);
 
-  const totalPages = Math.ceil((data?.ipRanges?.length || 0) / pageSize);
-  
+  const totalPages = Math.ceil((ipRanges?.length || 0) / pageSize);
+
   // Handle page size change
   const handlePageSizeChange = (newPageSize: number | 'all') => {
     if (newPageSize === 'all') {
@@ -117,27 +53,6 @@ export default function ServiceTagDetail() {
       setCurrentPage(1);
     }
   };
-
-  if (!serviceTag) {
-    return (
-      <Layout title="Service Tag Not Found">
-        <section className="space-y-6">
-          <div className="space-y-3">
-            <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">Service tag not found</h1>
-            <p className="max-w-xl text-sm text-slate-600 dark:text-slate-300">
-              Select a tag from the catalogue to view its address ranges or try searching for a different name.
-            </p>
-          </div>
-          <Link
-            href="/tools/service-tags"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
-          >
-            <span aria-hidden="true">←</span> Back to Service Tags
-          </Link>
-        </section>
-      </Layout>
-    );
-  }
 
   // Generate breadcrumb structured data
   const breadcrumbSchema = {
@@ -159,8 +74,8 @@ export default function ServiceTagDetail() {
       {
         "@type": "ListItem",
         "position": 3,
-        "name": serviceTag as string,
-        "item": `https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag as string)}/`
+        "name": serviceTag,
+        "item": `https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag)}/`
       }
     ]
   };
@@ -168,8 +83,8 @@ export default function ServiceTagDetail() {
   return (
     <Layout
       title={`Azure Service Tag: ${serviceTag}`}
-      description={`Explore the Azure IP ranges associated with the ${serviceTag as string} service tag.`}
-      canonicalUrl={`https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag as string)}/`}
+      description={`Explore the Azure IP ranges associated with the ${serviceTag} service tag.`}
+      canonicalUrl={`https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag)}/`}
     >
       <Head>
         <script
@@ -195,29 +110,10 @@ export default function ServiceTagDetail() {
           </div>
         </div>
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 text-sm text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
-            <LoadingSpinner size="lg" label="Loading service tag details..." />
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <ErrorBox title="Error loading service tag details">
-            <p>{error.message}</p>
-            <div className="mt-4">
-              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
-                ← Back to Service Tags
-              </Link>
-            </div>
-          </ErrorBox>
-        )}
-
         {/* Not Found State */}
-        {data?.notFound && (
+        {notFound && (
           <ErrorBox variant="warning" title="Service tag not found">
-            <p>{data.message || `No data found for service tag "${serviceTag}"`}</p>
+            <p>{message || `No data found for service tag "${serviceTag}"`}</p>
             <div className="mt-4">
               <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
                 ← Back to Service Tags
@@ -227,33 +123,30 @@ export default function ServiceTagDetail() {
         )}
 
         {/* Results */}
-        {data && data.ipRanges && data.ipRanges.length > 0 && (
-          <>
-            {/* Results Table with integrated pagination */}
-            <Results
-              results={paginatedResults}
-              query={serviceTag as string}
-              total={data.ipRanges.length}
-              hideCloudFilter
-              pagination={totalPages > 1 ? {
-                currentPage,
-                totalPages,
-                totalItems: data.ipRanges.length,
-                pageSize,
-                isAll,
-                onPageChange: (page) => {
-                  if (page === 'all') {
-                    setIsAll(true);
-                    setCurrentPage(1);
-                  } else {
-                    setIsAll(false);
-                    setCurrentPage(page);
-                  }
-                },
-                onPageSizeChange: handlePageSizeChange
-              } : undefined}
-            />
-          </>
+        {!notFound && ipRanges && ipRanges.length > 0 && (
+          <Results
+            results={paginatedResults}
+            query={serviceTag}
+            total={ipRanges.length}
+            hideCloudFilter
+            pagination={totalPages > 1 ? {
+              currentPage,
+              totalPages,
+              totalItems: ipRanges.length,
+              pageSize,
+              isAll,
+              onPageChange: (page) => {
+                if (page === 'all') {
+                  setIsAll(true);
+                  setCurrentPage(1);
+                } else {
+                  setIsAll(false);
+                  setCurrentPage(page);
+                }
+              },
+              onPageSizeChange: handlePageSizeChange
+            } : undefined}
+          />
         )}
 
         {/* Back Link */}
@@ -269,3 +162,62 @@ export default function ServiceTagDetail() {
     </Layout>
   );
 }
+
+/**
+ * Server-side data fetching for service tag detail pages.
+ * This ensures Google sees actual content on first render instead of a loading spinner,
+ * which fixes the "Soft 404" issue in Google Search Console.
+ */
+export const getServerSideProps: GetServerSideProps<ServiceTagDetailProps> = async (context) => {
+  const { serviceTag: serviceTagParam, cloud: cloudParam } = context.query;
+
+  // Handle missing or invalid serviceTag parameter
+  if (!serviceTagParam || Array.isArray(serviceTagParam)) {
+    return {
+      notFound: true
+    };
+  }
+
+  const serviceTag = decodeURIComponent(serviceTagParam);
+  const cloud = parseCloudParam(cloudParam);
+
+  try {
+    // Fetch service tag details server-side
+    let ipRanges = await getServiceTagDetails(serviceTag);
+
+    // Filter by cloud if specified
+    if (cloud) {
+      ipRanges = ipRanges.filter(ip => ip.cloud === cloud);
+    }
+
+    // If no results found, return notFound state (but still render the page)
+    if (ipRanges.length === 0) {
+      return {
+        props: {
+          serviceTag,
+          ipRanges: [],
+          notFound: true,
+          message: `No data found for service tag "${serviceTag}"`
+        }
+      };
+    }
+
+    return {
+      props: {
+        serviceTag,
+        ipRanges,
+        notFound: false
+      }
+    };
+  } catch {
+    // On error, return notFound state
+    return {
+      props: {
+        serviceTag,
+        ipRanges: [],
+        notFound: true,
+        message: `Error loading service tag "${serviceTag}"`
+      }
+    };
+  }
+};
