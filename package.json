@@ -37,7 +37,7 @@
     "remark-html": "^16.0.1",
     "remark-rehype": "^11.1.2",
     "xlsx": "^0.18.5",
-    "zod": "^4.1.12"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.5.6",
