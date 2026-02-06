@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
+import { useSwipeDrawer } from '@/hooks/useSwipeDrawer';
 import { SEOHead } from './layout/SEOHead';
 import { Sidebar, type NavSection } from './layout/Sidebar';
 
@@ -134,6 +135,15 @@ export default function Layout({
 }: LayoutProps) {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleSwipeOpen = useCallback(() => setIsMobileMenuOpen(true), []);
+  const handleSwipeClose = useCallback(() => setIsMobileMenuOpen(false), []);
+
+  useSwipeDrawer({
+    isOpen: isMobileMenuOpen,
+    onOpen: handleSwipeOpen,
+    onClose: handleSwipeClose,
+  });
 
   // Initialize dark mode - always start with false during SSR to avoid hydration mismatch
   // The actual preference will be applied after mount via useEffect
