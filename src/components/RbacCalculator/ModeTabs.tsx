@@ -1,4 +1,4 @@
-type InputMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
+type InputMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCompare' | 'roleCreator';
 
 interface ModeTabsProps {
   activeMode: InputMode;
@@ -15,6 +15,7 @@ export default function ModeTabs({ activeMode, onModeChange }: ModeTabsProps) {
     { value: 'simple', label: 'Simple' },
     { value: 'advanced', label: 'Advanced' },
     { value: 'roleExplorer', label: 'Role Explorer' },
+    { value: 'roleCompare', label: 'Role Compare' },
     { value: 'roleCreator', label: 'Role Creator' },
   ];
 

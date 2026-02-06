@@ -23,7 +23,7 @@ export const azureRbacConfig: RoleSystemConfig = {
   },
 
   modes: {
-    available: ['simple', 'advanced', 'roleExplorer', 'roleCreator'],
+    available: ['simple', 'advanced', 'roleExplorer', 'roleCompare', 'roleCreator'],
     default: 'simple',
   },
 
@@ -34,6 +34,8 @@ export const azureRbacConfig: RoleSystemConfig = {
       'Find the least privileged Azure RBAC roles for your required permissions. Enter Azure resource provider actions and discover which built-in roles grant those permissions without excessive access.',
     roleExplorer:
       'Search and explore Azure built-in RBAC roles by name. View detailed permissions, compare multiple roles side-by-side, and export role definitions for documentation or analysis.',
+    roleCompare:
+      'Compare two Azure RBAC roles side-by-side. View permissions in ascending order and easily identify differences between roles to understand their scope and overlap.',
     roleCreator:
       'Build custom Azure RBAC roles tailored to your security requirements. Select specific permissions from built-in roles, define assignable scopes, and export role definitions ready for deployment.',
   },
@@ -123,11 +125,6 @@ export const azureRbacConfig: RoleSystemConfig = {
       },
     ],
     toolSchemaName: 'Azure RBAC Calculator & Role Generator',
-  },
-
-  crossLink: {
-    text: 'Need to manage directory objects like users, groups, or applications? Try the Entra ID Roles Calculator',
-    url: '/tools/entraid-roles-calculator',
   },
 
   disclaimer: {

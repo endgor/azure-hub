@@ -131,11 +131,6 @@ export const entraIdConfig: RoleSystemConfig = {
     toolSchemaName: 'Entra ID Roles Calculator',
   },
 
-  crossLink: {
-    text: 'Need to manage Azure resources like VMs, storage, or networking? Try the Azure RBAC Calculator',
-    url: '/tools/azure-rbac-calculator',
-  },
-
   disclaimer: {
     description:
       'This tool helps you find built-in roles in Microsoft Entra ID that provide the least privilege for a specific set of directory permissions. It searches through Entra ID\'s built-in role definitions and ranks them by relevance to your required permissions.',

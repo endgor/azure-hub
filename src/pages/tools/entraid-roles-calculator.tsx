@@ -17,7 +17,6 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import Button from '@/components/shared/Button';
-import Link from 'next/link';
 import RoleResultsTable from '@/components/RoleResultsTable';
 import EntraIdRolePermissionsTable from '@/components/EntraIdRolePermissionsTable';
 
@@ -93,7 +92,6 @@ export default function EntraIdRolesCalculatorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('entraid-roles-disclaimer-dismissed', false);
-  const [crossLinkDismissed, setCrossLinkDismissed] = useLocalStorageBoolean('entraid-crosslink-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<EntraIDRole[]>([]);
@@ -381,28 +379,6 @@ export default function EntraIdRolesCalculatorPage() {
         {/* Disclaimer Banner */}
         {!disclaimerDismissed && (
           <DisclaimerBanner config={entraIdConfig} onDismiss={handleDismissDisclaimer} />
-        )}
-
-        {/* Cross-link to Azure RBAC */}
-        {entraIdConfig.crossLink && !crossLinkDismissed && (
-          <div className="relative rounded-lg border border-slate-200 bg-slate-50 p-4 pr-10 dark:border-slate-700 dark:bg-slate-800/50">
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              <strong>Looking for Azure resource roles?</strong>{' '}
-              <Link href={entraIdConfig.crossLink.url} className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline">
-                {entraIdConfig.crossLink.text}
-              </Link>
-            </p>
-            <button
-              type="button"
-              onClick={() => setCrossLinkDismissed(true)}
-              className="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
-              aria-label="Dismiss"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
         )}
 
         {/* Mode Tabs (Simple, Advanced, Role Explorer only) */}

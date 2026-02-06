@@ -11,7 +11,6 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import Button from '@/components/shared/Button';
-import Link from 'next/link';
 
 // Import config
 import { azureRbacConfig } from '@/lib/rbacConfig';
@@ -33,14 +32,16 @@ import { useRbacMode } from '@/hooks/rbac/useRbacMode';
 const RoleCreator = lazy(() => import('@/components/RoleCreator'));
 const SimpleMode = lazy(() => import('@/components/shared/RbacCalculator/SimpleMode'));
 const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/RoleExplorerMode'));
+const RoleCompareMode = lazy(() => import('@/components/shared/RbacCalculator/RoleCompareMode'));
+import RoleComparisonTable from '@/components/RoleComparisonTable';
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
 import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
 export default function AzureRbacCalculatorPage() {
   // Mode management
-  const { mode: inputMode, setMode: setInputMode, isSimpleMode, isRoleExplorerMode, isRoleCreatorMode } = useRbacMode({
+  const { mode: inputMode, setMode: setInputMode, isSimpleMode, isRoleExplorerMode, isRoleCompareMode, isRoleCreatorMode } = useRbacMode({
     initialMode: 'simple',
-    supportedModes: ['simple', 'advanced', 'roleExplorer', 'roleCreator'],
+    supportedModes: ['simple', 'advanced', 'roleExplorer', 'roleCompare', 'roleCreator'],
   });
 
   // Advanced search management
@@ -81,7 +82,6 @@ export default function AzureRbacCalculatorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('azure-rbac-disclaimer-dismissed', false);
-  const [crossLinkDismissed, setCrossLinkDismissed] = useLocalStorageBoolean('azure-rbac-crosslink-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<AzureRole[]>([]);
@@ -90,9 +90,16 @@ export default function AzureRbacCalculatorPage() {
   const [roleSearchResults, setRoleSearchResults] = useState<AzureRole[]>([]);
   const [showRoleResults, setShowRoleResults] = useState(false);
 
+  // Role Compare mode state
+  const [compareRoleSearchQuery, setCompareRoleSearchQuery] = useState('');
+  const [selectedCompareRoles, setSelectedCompareRoles] = useState<AzureRole[]>([]);
+  const [compareRoleSearchResults, setCompareRoleSearchResults] = useState<AzureRole[]>([]);
+  const [showCompareResults, setShowCompareResults] = useState(false);
+
   // Refs for click-outside detection
   const serviceDropdownRef = useRef<HTMLDivElement>(null);
   const roleSearchDropdownRef = useRef<HTMLDivElement>(null);
+  const compareRoleSearchDropdownRef = useRef<HTMLDivElement>(null);
   const advancedSearchDropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns when clicking outside
@@ -101,6 +108,9 @@ export default function AzureRbacCalculatorPage() {
     setRoleSearchResults([]);
     setShowRoleResults(false);
   }, roleSearchResults.length > 0);
+  useClickOutside(compareRoleSearchDropdownRef as React.RefObject<HTMLElement>, () => {
+    setCompareRoleSearchResults([]);
+  }, compareRoleSearchResults.length > 0);
   useClickOutside(advancedSearchDropdownRef as React.RefObject<HTMLElement>, () => {
     // Only hide the suggestions dropdown, don't clear the input
     clearResults();
@@ -124,9 +134,9 @@ export default function AzureRbacCalculatorPage() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Load roles for Role Explorer and Role Creator modes
+  // Load roles for Role Explorer, Role Compare, and Role Creator modes
   useEffect(() => {
-    if (isRoleExplorerMode || isRoleCreatorMode) {
+    if (isRoleExplorerMode || isRoleCompareMode || isRoleCreatorMode) {
       const loadRoles = async () => {
         try {
           setIsLoading(true);
@@ -142,15 +152,15 @@ export default function AzureRbacCalculatorPage() {
       };
       loadRoles();
     }
-  }, [isRoleExplorerMode, isRoleCreatorMode]);
+  }, [isRoleExplorerMode, isRoleCompareMode, isRoleCreatorMode]);
 
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
     setResults([]);
 
-    // Role Explorer mode doesn't use form submission
-    if (isRoleExplorerMode) {
+    // Role Explorer and Role Compare modes don't use form submission
+    if (isRoleExplorerMode || isRoleCompareMode) {
       return;
     }
 
@@ -202,7 +212,7 @@ export default function AzureRbacCalculatorPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [isSimpleMode, isRoleExplorerMode, selectedActions, actionsInput]);
+  }, [isSimpleMode, isRoleExplorerMode, isRoleCompareMode, selectedActions, actionsInput]);
 
   const handleAddActionSimple = useCallback((action: SelectedAction | string) => {
     // Handle both SelectedAction objects (Azure) and strings (Entra ID compatibility)
@@ -249,6 +259,11 @@ export default function AzureRbacCalculatorPage() {
     setSelectedRoles([]);
     setRoleSearchResults([]);
     setShowRoleResults(false);
+    // Clear compare state
+    setCompareRoleSearchQuery('');
+    setSelectedCompareRoles([]);
+    setCompareRoleSearchResults([]);
+    setShowCompareResults(false);
   }, [clearSearch, clearServices]);
 
   const handleRoleSearch = useCallback((query: string) => {
@@ -295,6 +310,56 @@ export default function AzureRbacCalculatorPage() {
 
     setShowRoleResults(true);
   }, [selectedRoles]);
+
+  // Role Compare mode handlers
+  const handleCompareRoleSearch = useCallback((query: string) => {
+    setCompareRoleSearchQuery(query);
+
+    if (!query.trim() || query.length < 2) {
+      setCompareRoleSearchResults([]);
+      return;
+    }
+
+    // Filter out already selected roles (max 2)
+    const filteredRoles = availableRoles.filter(role =>
+      !selectedCompareRoles.some(selected => selected.id === role.id)
+    );
+
+    // Use intelligent sorting: exact matches first, then starts with, then alphabetical
+    const sortedResults = filterAndSortByQuery(
+      filteredRoles,
+      query,
+      (role) => role.roleName,
+      10
+    );
+
+    setCompareRoleSearchResults(sortedResults);
+  }, [availableRoles, selectedCompareRoles]);
+
+  const handleAddCompareRole = useCallback((role: AzureRole) => {
+    if (selectedCompareRoles.length >= 2) {
+      return; // Max 2 roles for comparison
+    }
+    setSelectedCompareRoles(prev => [...prev, role]);
+    setCompareRoleSearchQuery('');
+    setCompareRoleSearchResults([]);
+  }, [selectedCompareRoles.length]);
+
+  const handleRemoveCompareRole = useCallback((roleId: string) => {
+    setSelectedCompareRoles(prev => prev.filter(r => r.id !== roleId));
+    setShowCompareResults(false); // Hide results when a role is removed
+  }, []);
+
+  const handleCompareRoles = useCallback(() => {
+    setError(null);
+
+    if (selectedCompareRoles.length !== 2) {
+      setError('Please select exactly 2 roles to compare');
+      return;
+    }
+
+    setShowCompareResults(true);
+  }, [selectedCompareRoles.length]);
 
   const handleSelectServiceWrapper = useCallback((service: string) => {
     handleSelectService(service);
@@ -347,6 +412,27 @@ export default function AzureRbacCalculatorPage() {
     [selectedRoles]
   );
 
+  const selectedCompareRoleChips = useMemo(
+    () =>
+      selectedCompareRoles.map((role, index) => ({
+        id: role.id,
+        content: (
+          <span className="flex items-center gap-1.5">
+            <span className={`inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold ${
+              index === 0
+                ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+                : 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300'
+            }`}>
+              {index + 1}
+            </span>
+            <span className="text-sm">{role.roleName}</span>
+          </span>
+        ),
+        removeAriaLabel: `Remove ${role.roleName}`
+      })),
+    [selectedCompareRoles]
+  );
+
   // Get mode-specific description from config
   const getDescription = () => {
     switch (inputMode) {
@@ -356,6 +442,8 @@ export default function AzureRbacCalculatorPage() {
         return azureRbacConfig.descriptions.advanced;
       case 'roleExplorer':
         return azureRbacConfig.descriptions.roleExplorer;
+      case 'roleCompare':
+        return azureRbacConfig.descriptions.roleCompare || azureRbacConfig.descriptions.simple;
       case 'roleCreator':
         return azureRbacConfig.descriptions.roleCreator || azureRbacConfig.descriptions.simple;
       default:
@@ -391,28 +479,6 @@ export default function AzureRbacCalculatorPage() {
         {/* Disclaimer Banner */}
         {!disclaimerDismissed && (
           <DisclaimerBanner config={azureRbacConfig} onDismiss={handleDismissDisclaimer} />
-        )}
-
-        {/* Cross-link to Entra ID */}
-        {azureRbacConfig.crossLink && !crossLinkDismissed && (
-          <div className="relative rounded-lg border border-slate-200 bg-slate-50 p-4 pr-10 dark:border-slate-700 dark:bg-slate-800/50">
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              <strong>Looking for directory roles?</strong>{' '}
-              <Link href={azureRbacConfig.crossLink.url} className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline">
-                {azureRbacConfig.crossLink.text}
-              </Link>
-            </p>
-            <button
-              type="button"
-              onClick={() => setCrossLinkDismissed(true)}
-              className="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
-              aria-label="Dismiss"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
         )}
 
         {/* Mode Tabs */}
@@ -491,8 +557,28 @@ export default function AzureRbacCalculatorPage() {
               </Suspense>
             )}
 
+            {/* Role Compare Mode */}
+            {isRoleCompareMode && (
+              <Suspense fallback={<div className="animate-pulse h-64 rounded-xl bg-slate-200 dark:bg-slate-800" />}>
+                <RoleCompareMode
+                  config={azureRbacConfig}
+                  roleSearchQuery={compareRoleSearchQuery}
+                  onRoleSearchChange={handleCompareRoleSearch}
+                  roleSearchResults={compareRoleSearchResults}
+                  roleSearchDropdownRef={compareRoleSearchDropdownRef}
+                  onAddRole={handleAddCompareRole as (role: GenericRole) => void}
+                  selectedRoleChips={selectedCompareRoleChips}
+                  onRemoveRole={handleRemoveCompareRole}
+                  isLoading={isLoading}
+                  onCompare={handleCompareRoles}
+                  onClear={handleClear}
+                  maxRoles={2}
+                />
+              </Suspense>
+            )}
+
             {/* Submit Buttons (Simple & Advanced modes only) */}
-            {!isRoleExplorerMode && (
+            {!isRoleExplorerMode && !isRoleCompareMode && (
               <div className="flex gap-3">
                 <Button
                   type="submit"
@@ -528,7 +614,7 @@ export default function AzureRbacCalculatorPage() {
         )}
 
         {/* Results for Simple & Advanced modes */}
-        {!isLoading && !error && results.length > 0 && !isRoleExplorerMode && !isRoleCreatorMode && (
+        {!isLoading && !error && results.length > 0 && !isRoleExplorerMode && !isRoleCompareMode && !isRoleCreatorMode && (
           <RoleResultsTable results={results} roleSystem="azure" />
         )}
 
@@ -537,8 +623,13 @@ export default function AzureRbacCalculatorPage() {
           <RolePermissionsTable roles={selectedRoles} />
         )}
 
+        {/* Results for Role Compare mode */}
+        {isRoleCompareMode && showCompareResults && selectedCompareRoles.length === 2 && !isLoading && (
+          <RoleComparisonTable roles={selectedCompareRoles as [AzureRole, AzureRole]} />
+        )}
+
         {/* Example Scenarios (Simple & Advanced modes only, when no results) */}
-        {results.length === 0 && !isLoading && !isRoleExplorerMode && !isRoleCreatorMode && (
+        {results.length === 0 && !isLoading && !isRoleExplorerMode && !isRoleCompareMode && !isRoleCreatorMode && (
           <ExampleScenarios config={azureRbacConfig} onLoadExample={handleLoadExample} />
         )}
       </section>
