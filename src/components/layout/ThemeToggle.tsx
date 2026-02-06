@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { SunIcon, MoonIcon } from './icons';
+
+const emptySubscribe = () => () => {};
 
 interface ThemeToggleProps {
   isDarkMode: boolean;
@@ -7,12 +9,8 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ isDarkMode, onToggle }: ThemeToggleProps) {
-  const [mounted, setMounted] = useState(false);
-
-  // Only render theme-specific content after mounting to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Returns false during SSR, true on client — avoids hydration mismatch without useEffect
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   // During SSR and initial render, use a neutral state to avoid hydration mismatch
   if (!mounted) {

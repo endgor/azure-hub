@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
@@ -73,28 +73,27 @@ function CopyButton({ getText }: { getText: () => string }) {
 export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [diffData, setDiffData] = useState<IpDiffFile | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
+  const fetchedRef = useRef(false);
 
   // Preload diff data on mount so summary badge shows immediately
   useEffect(() => {
-    if (!diffData && !isLoading) {
-      setIsLoading(true);
-      setError(null);
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
 
-      loadIpDiff()
-        .then((data) => {
-          setDiffData(data);
-        })
-        .catch((err) => {
-          setError(err.message || 'Failed to load diff data');
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [diffData, isLoading]);
+    loadIpDiff()
+      .then((data) => {
+        setDiffData(data);
+      })
+      .catch((err) => {
+        setError(err.message || 'Failed to load diff data');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   const toggleTag = (tagName: string) => {
     setExpandedTags((prev) => {

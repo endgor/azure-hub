@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 /**
  * Merges properties from child nodes to their parent during join operations.
@@ -93,9 +93,11 @@ export function useSubnetMetadata(
   const [rowComments, setRowComments] = useState<Record<string, string>>({});
   const [activeCommentRow, setActiveCommentRow] = useState<string | null>(null);
   const [commentDraft, setCommentDraft] = useState('');
+  const [prevVisibleRowIds, setPrevVisibleRowIds] = useState(visibleRowIds);
 
-  // Clean up metadata for removed leaves
-  useEffect(() => {
+  // Clean up metadata for removed leaves (render-time state adjustment)
+  if (visibleRowIds !== prevVisibleRowIds) {
+    setPrevVisibleRowIds(visibleRowIds);
     setRowColors((current) => cleanupRemovedLeaves(current, visibleRowIds));
     setRowComments((current) => cleanupRemovedLeaves(current, visibleRowIds));
 
@@ -103,7 +105,7 @@ export function useSubnetMetadata(
       setActiveCommentRow(null);
       setCommentDraft('');
     }
-  }, [visibleRowIds, activeCommentRow]);
+  }
 
   const openCommentEditor = useCallback((leafId: string) => {
     setActiveCommentRow(leafId);

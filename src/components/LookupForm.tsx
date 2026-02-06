@@ -9,25 +9,31 @@ interface LookupFormProps {
   initialService?: string;
 }
 
-const LookupForm = memo(function LookupForm({ 
-  initialValue = '', 
+const LookupForm = memo(function LookupForm({
+  initialValue = '',
   initialRegion = '',
   initialService = ''
 }: LookupFormProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const derivedInitial = initialValue || initialService || initialRegion;
+  const [searchQuery, setSearchQuery] = useState(derivedInitial);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  
-  // Set initial query on component load
+  const [prevDerivedInitial, setPrevDerivedInitial] = useState(derivedInitial);
+
+  // Update search query when initial values change (render-time state adjustment)
+  if (derivedInitial !== prevDerivedInitial) {
+    setPrevDerivedInitial(derivedInitial);
+    setSearchQuery(derivedInitial);
+  }
+
+  // Reset loading state when route change completes
   useEffect(() => {
-    // Prioritize showing a simple value in this order: IP/domain -> service -> region
-    setSearchQuery(initialValue || initialService || initialRegion);
-  }, [initialValue, initialRegion, initialService]);
-  
-  // Reset loading state when query parameters change
-  useEffect(() => {
-    setIsLoading(false);
-  }, [router.query]);
+    const handleRouteChangeComplete = () => setIsLoading(false);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router.events]);
 
   const performSearch = useCallback(async () => {
     if (!searchQuery.trim()) return;

@@ -172,6 +172,8 @@ export default function SubnetCalculatorPage(): ReactElement {
       basePrefix: reconstructed.basePrefix
     });
 
+    // URL restoration requires synchronous state updates on mount — this is a one-time initialization
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormFields({
       network: inetNtoa(reconstructed.baseNetwork),
       prefix: reconstructed.basePrefix.toString()
