@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
@@ -26,6 +26,47 @@ function CloudBadge({ cloud }: { cloud?: AzureCloudName }) {
     <span className={`inline-block rounded border px-1.5 py-0.5 text-xs font-medium ${CLOUD_STYLES[cloud]}`}>
       {CLOUD_LABELS[cloud]}
     </span>
+  );
+}
+
+function CopyButton({ getText }: { getText: () => string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(getText());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = getText();
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [getText]);
+
+  return (
+    <button
+      onClick={handleCopy}
+      title={copied ? 'Copied!' : 'Copy prefixes'}
+      className="rounded p-1 text-slate-400 transition-colors hover:bg-slate-200 hover:text-slate-600 dark:hover:bg-slate-600 dark:hover:text-slate-300"
+    >
+      {copied ? (
+        <svg className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+      ) : (
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      )}
+    </button>
   );
 }
 
@@ -228,33 +269,38 @@ function TagSection({ title, count, tags, type, expandedTags, onToggleTag }: Tag
           const isTagExpanded = expandedTags.has(tagKey);
           return (
             <div key={tagKey} className="rounded-lg bg-slate-50 dark:bg-slate-800">
-              <button
-                onClick={() => onToggleTag(tagKey)}
-                className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
-              >
-                <div className="flex items-center gap-2">
-                  <svg
-                    className={`h-4 w-4 transition-transform ${isTagExpanded ? 'rotate-180' : ''}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                  <CloudBadge cloud={tag.cloud} />
-                  <span className={`font-medium ${colorClass}`}>
-                    {type === 'added' ? '+' : '-'} {tag.name}
-                  </span>
-                  {tag.region && (
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      ({tag.region})
+              <div className="flex items-center">
+                <button
+                  onClick={() => onToggleTag(tagKey)}
+                  className="flex flex-1 items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className={`h-4 w-4 transition-transform ${isTagExpanded ? 'rotate-180' : ''}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                    <CloudBadge cloud={tag.cloud} />
+                    <span className={`font-medium ${colorClass}`}>
+                      {type === 'added' ? '+' : '-'} {tag.name}
                     </span>
-                  )}
+                    {tag.region && (
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
+                        ({tag.region})
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {tag.prefixCount} prefixes
+                  </span>
+                </button>
+                <div className="pr-2">
+                  <CopyButton getText={() => tag.prefixes.join('\n')} />
                 </div>
-                <span className="text-xs text-slate-500 dark:text-slate-400">
-                  {tag.prefixCount} prefixes
-                </span>
-              </button>
+              </div>
               {isTagExpanded && tag.prefixes.length > 0 && (
                 <div className="border-t border-slate-200 px-3 py-2 dark:border-slate-700">
                   <div className="max-h-96 overflow-y-auto">
@@ -296,42 +342,50 @@ function ModifiedTagSection({ tags, expandedTags, onToggleTag }: ModifiedTagSect
 
           return (
             <div key={tagKey} className="rounded-lg bg-slate-50 dark:bg-slate-800">
-              <button
-                onClick={() => onToggleTag(tagKey)}
-                className="flex w-full items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
-              >
-                <div className="flex items-center gap-2">
-                  <svg
-                    className={`h-4 w-4 transition-transform ${isTagExpanded ? 'rotate-180' : ''}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                  <CloudBadge cloud={tag.cloud} />
-                  <span className="font-medium text-slate-900 dark:text-slate-100">
-                    {tag.name}
-                  </span>
-                  {tag.region && (
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      ({tag.region})
+              <div className="flex items-center">
+                <button
+                  onClick={() => onToggleTag(tagKey)}
+                  className="flex flex-1 items-center justify-between px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
+                >
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className={`h-4 w-4 transition-transform ${isTagExpanded ? 'rotate-180' : ''}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                    <CloudBadge cloud={tag.cloud} />
+                    <span className="font-medium text-slate-900 dark:text-slate-100">
+                      {tag.name}
                     </span>
-                  )}
+                    {tag.region && (
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
+                        ({tag.region})
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs">
+                    {tag.addedPrefixes.length > 0 && (
+                      <span className="text-emerald-600 dark:text-emerald-400">
+                        +{tag.addedPrefixes.length}
+                      </span>
+                    )}
+                    {tag.removedPrefixes.length > 0 && (
+                      <span className="text-rose-600 dark:text-rose-400">
+                        -{tag.removedPrefixes.length}
+                      </span>
+                    )}
+                  </div>
+                </button>
+                <div className="pr-2">
+                  <CopyButton getText={() => [
+                    ...tag.addedPrefixes.map(p => `+ ${p}`),
+                    ...tag.removedPrefixes.map(p => `- ${p}`)
+                  ].join('\n')} />
                 </div>
-                <div className="flex items-center gap-2 text-xs">
-                  {tag.addedPrefixes.length > 0 && (
-                    <span className="text-emerald-600 dark:text-emerald-400">
-                      +{tag.addedPrefixes.length}
-                    </span>
-                  )}
-                  {tag.removedPrefixes.length > 0 && (
-                    <span className="text-rose-600 dark:text-rose-400">
-                      -{tag.removedPrefixes.length}
-                    </span>
-                  )}
-                </div>
-              </button>
+              </div>
               {isTagExpanded && totalChanges > 0 && (
                 <div className="border-t border-slate-200 px-3 py-2 dark:border-slate-700">
                   <div className="max-h-96 overflow-y-auto">
