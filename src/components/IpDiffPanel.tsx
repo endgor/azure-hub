@@ -76,12 +76,14 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
-  const fetchedRef = useRef(false);
+  const fetchingRef = useRef(false);
 
-  // Preload diff data on mount so summary badge shows immediately
-  useEffect(() => {
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
+  const fetchDiffData = useCallback(() => {
+    if (fetchingRef.current) return;
+    fetchingRef.current = true;
+
+    setError(null);
+    setIsLoading(true);
 
     loadIpDiff()
       .then((data) => {
@@ -92,8 +94,15 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
       })
       .finally(() => {
         setIsLoading(false);
+        fetchingRef.current = false;
       });
   }, []);
+
+  // Preload diff data on mount so summary badge shows immediately
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time data fetch on mount
+    fetchDiffData();
+  }, [fetchDiffData]);
 
   const toggleTag = (tagName: string) => {
     setExpandedTags((prev) => {
@@ -179,8 +188,14 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
           )}
 
           {error && (
-            <div className="text-sm text-rose-600 dark:text-rose-400">
-              {error}
+            <div className="flex items-center gap-2 text-sm text-rose-600 dark:text-rose-400">
+              <span>{error}</span>
+              <button
+                onClick={fetchDiffData}
+                className="rounded px-2 py-0.5 text-xs font-medium text-slate-600 underline hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+              >
+                Retry
+              </button>
             </div>
           )}
 

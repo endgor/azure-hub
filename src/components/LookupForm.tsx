@@ -14,17 +14,15 @@ const LookupForm = memo(function LookupForm({
   initialRegion = '',
   initialService = ''
 }: LookupFormProps) {
-  const derivedInitial = initialValue || initialService || initialRegion;
-  const [searchQuery, setSearchQuery] = useState(derivedInitial);
+  const [searchQuery, setSearchQuery] = useState(initialValue || initialService || initialRegion);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const [prevDerivedInitial, setPrevDerivedInitial] = useState(derivedInitial);
 
-  // Update search query when initial values change (render-time state adjustment)
-  if (derivedInitial !== prevDerivedInitial) {
-    setPrevDerivedInitial(derivedInitial);
-    setSearchQuery(derivedInitial);
-  }
+  // Sync search query when initial values change (e.g. URL query params)
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync local state with prop-derived values
+    setSearchQuery(initialValue || initialService || initialRegion);
+  }, [initialValue, initialRegion, initialService]);
 
   // Reset loading state when route change completes
   useEffect(() => {
