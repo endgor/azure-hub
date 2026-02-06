@@ -140,19 +140,11 @@ export default function Layout({
   const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', false);
   const [hasInitializedTheme, setHasInitializedTheme] = useState(false);
 
-  // On mount, check for user preference (localStorage or system preference)
+  // On mount, mark theme as initialized (localStorage value or default light is already applied)
   useEffect(() => {
     if (typeof window === 'undefined' || hasInitializedTheme) return;
-
-    const stored = localStorage.getItem('theme-dark');
-    if (stored === null) {
-      // No stored preference, use system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDarkMode(prefersDark);
-    }
-    // If stored is not null, useLocalStorageBoolean will handle it
     setHasInitializedTheme(true);
-  }, [hasInitializedTheme, setIsDarkMode]);
+  }, [hasInitializedTheme]);
 
   // Toggle dark class and theme-color meta tag when theme changes
   useEffect(() => {

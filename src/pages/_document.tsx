@@ -37,8 +37,7 @@ export default function Document() {
               (function() {
                 try {
                   var stored = localStorage.getItem('theme-dark');
-                  var isDark = stored === 'true' ||
-                    (stored === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  var isDark = stored === 'true';
 
                   if (isDark) {
                     document.documentElement.classList.add('dark');
