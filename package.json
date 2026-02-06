@@ -19,7 +19,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "gray-matter": "^4.0.3",
-    "ip-cidr": "^3.1.0",
+    "ip-cidr": "^4.0.2",
     "js-base64": "^3.7.8",
     "next": "^15.5.7",
     "papaparse": "^5.5.3",
