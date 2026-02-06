@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { AzureRole } from '@/types/rbac';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { isPrivilegedRole } from '@/config/privilegedRoles';
@@ -17,17 +17,15 @@ interface PermissionComparison {
 /**
  * RoleComparisonTable - Side-by-side comparison of two Azure RBAC roles
  *
- * Displays permissions from both roles in ascending order with visual indicators
- * showing which permissions are unique to each role and which are shared.
+ * Displays a split view with shared permissions (collapsible) and
+ * unique permissions in a two-column layout for easy scanning.
  */
 export default function RoleComparisonTable({ roles }: RoleComparisonTableProps) {
   const [role1, role2] = roles;
 
-  // Get flattened permissions for both roles
   const role1Permissions = useMemo(() => getFlattenedPermissions(role1), [role1]);
   const role2Permissions = useMemo(() => getFlattenedPermissions(role2), [role2]);
 
-  // Compare actions (control plane)
   const actionsComparison = useMemo((): PermissionComparison[] => {
     const role1Actions = new Set(role1Permissions.actions);
     const role2Actions = new Set(role2Permissions.actions);
@@ -43,7 +41,6 @@ export default function RoleComparisonTable({ roles }: RoleComparisonTableProps)
       }));
   }, [role1Permissions.actions, role2Permissions.actions]);
 
-  // Compare data actions
   const dataActionsComparison = useMemo((): PermissionComparison[] => {
     const role1DataActions = new Set(role1Permissions.dataActions);
     const role2DataActions = new Set(role2Permissions.dataActions);
@@ -59,54 +56,56 @@ export default function RoleComparisonTable({ roles }: RoleComparisonTableProps)
       }));
   }, [role1Permissions.dataActions, role2Permissions.dataActions]);
 
-  // Calculate stats
-  const stats = useMemo(() => {
-    const sharedActions = actionsComparison.filter(a => a.isShared).length;
-    const role1OnlyActions = actionsComparison.filter(a => a.inRole1 && !a.inRole2).length;
-    const role2OnlyActions = actionsComparison.filter(a => a.inRole2 && !a.inRole1).length;
+  // Separate shared vs unique for each section
+  const actionsSplit = useMemo(() => ({
+    shared: actionsComparison.filter(a => a.isShared),
+    role1Only: actionsComparison.filter(a => a.inRole1 && !a.inRole2),
+    role2Only: actionsComparison.filter(a => !a.inRole1 && a.inRole2),
+  }), [actionsComparison]);
 
-    const sharedDataActions = dataActionsComparison.filter(a => a.isShared).length;
-    const role1OnlyDataActions = dataActionsComparison.filter(a => a.inRole1 && !a.inRole2).length;
-    const role2OnlyDataActions = dataActionsComparison.filter(a => a.inRole2 && !a.inRole1).length;
+  const dataActionsSplit = useMemo(() => ({
+    shared: dataActionsComparison.filter(a => a.isShared),
+    role1Only: dataActionsComparison.filter(a => a.inRole1 && !a.inRole2),
+    role2Only: dataActionsComparison.filter(a => !a.inRole1 && a.inRole2),
+  }), [dataActionsComparison]);
 
-    return {
-      sharedActions,
-      role1OnlyActions,
-      role2OnlyActions,
-      sharedDataActions,
-      role1OnlyDataActions,
-      role2OnlyDataActions,
-      totalActions: actionsComparison.length,
-      totalDataActions: dataActionsComparison.length,
-    };
-  }, [actionsComparison, dataActionsComparison]);
+  const stats = useMemo(() => ({
+    sharedActions: actionsSplit.shared.length,
+    role1OnlyActions: actionsSplit.role1Only.length,
+    role2OnlyActions: actionsSplit.role2Only.length,
+    sharedDataActions: dataActionsSplit.shared.length,
+    role1OnlyDataActions: dataActionsSplit.role1Only.length,
+    role2OnlyDataActions: dataActionsSplit.role2Only.length,
+    totalActions: actionsComparison.length,
+    totalDataActions: dataActionsComparison.length,
+  }), [actionsComparison.length, dataActionsComparison.length, actionsSplit, dataActionsSplit]);
 
   const isRole1Privileged = isPrivilegedRole(role1.roleName);
   const isRole2Privileged = isPrivilegedRole(role2.roleName);
 
-  // Check for wildcard permissions
   const role1HasWildcard = role1Permissions.actions.includes('*');
   const role2HasWildcard = role2Permissions.actions.includes('*');
   const hasWildcardPermissions = role1HasWildcard || role2HasWildcard;
 
+  const hasDifferences = actionsSplit.role1Only.length > 0 || actionsSplit.role2Only.length > 0
+    || dataActionsSplit.role1Only.length > 0 || dataActionsSplit.role2Only.length > 0;
+
   return (
     <div className="space-y-6">
-      {/* Header with role names */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-            Role Comparison
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300">
-            Comparing permissions between two roles
-          </p>
-        </div>
+      {/* Header */}
+      <div>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          Role Comparison
+        </h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          Comparing permissions between two roles
+        </p>
       </div>
 
       {/* Role headers */}
-      <div className="grid grid-cols-2 gap-4">
-        <RoleHeader role={role1} isPrivileged={isRole1Privileged} />
-        <RoleHeader role={role2} isPrivileged={isRole2Privileged} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <RoleHeader role={role1} isPrivileged={isRole1Privileged} colorClass="border-sky-300 dark:border-sky-500/40" />
+        <RoleHeader role={role2} isPrivileged={isRole2Privileged} colorClass="border-violet-300 dark:border-violet-500/40" />
       </div>
 
       {/* Statistics Summary */}
@@ -161,25 +160,46 @@ export default function RoleComparisonTable({ roles }: RoleComparisonTableProps)
         </div>
       )}
 
-      {/* Actions (Control Plane) Comparison */}
+      {/* Identical roles notice */}
+      {!hasDifferences && stats.totalActions + stats.totalDataActions > 0 && (
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-400/30 dark:bg-emerald-500/10">
+          <div className="flex gap-3">
+            <svg className="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">
+                Identical Permissions
+              </h3>
+              <p className="text-sm text-emerald-800 dark:text-emerald-200">
+                Both roles have exactly the same permissions. All {stats.totalActions + stats.totalDataActions} permissions are shared.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Actions (Control Plane) */}
       {stats.totalActions > 0 && (
-        <PermissionSection
+        <ComparisonSection
           title="Actions (Control Plane)"
-          subtitle={`${stats.totalActions} total permissions`}
-          comparisons={actionsComparison}
           role1Name={role1.roleName}
           role2Name={role2.roleName}
+          shared={actionsSplit.shared}
+          role1Only={actionsSplit.role1Only}
+          role2Only={actionsSplit.role2Only}
         />
       )}
 
-      {/* Data Actions Comparison */}
+      {/* Data Actions */}
       {stats.totalDataActions > 0 && (
-        <PermissionSection
+        <ComparisonSection
           title="Data Actions"
-          subtitle={`${stats.totalDataActions} total permissions`}
-          comparisons={dataActionsComparison}
           role1Name={role1.roleName}
           role2Name={role2.roleName}
+          shared={dataActionsSplit.shared}
+          role1Only={dataActionsSplit.role1Only}
+          role2Only={dataActionsSplit.role2Only}
         />
       )}
 
@@ -195,12 +215,9 @@ export default function RoleComparisonTable({ roles }: RoleComparisonTableProps)
   );
 }
 
-/**
- * Role header card showing role name, description, and badges
- */
-function RoleHeader({ role, isPrivileged }: { role: AzureRole; isPrivileged: boolean }) {
+function RoleHeader({ role, isPrivileged, colorClass }: { role: AzureRole; isPrivileged: boolean; colorClass: string }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+    <div className={`rounded-xl border-2 bg-white p-4 dark:bg-slate-900 ${colorClass}`}>
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-slate-900 dark:text-slate-100">
           {role.roleName}
@@ -230,86 +247,180 @@ function RoleHeader({ role, isPrivileged }: { role: AzureRole; isPrivileged: boo
 }
 
 /**
- * Permission section showing a list of permissions with comparison indicators
+ * A full comparison section (e.g., "Actions" or "Data Actions") with:
+ * - Split view for differences (role 1 unique on left, role 2 unique on right)
+ * - Collapsible shared permissions section
  */
-function PermissionSection({
+function ComparisonSection({
   title,
-  subtitle,
-  comparisons,
   role1Name,
   role2Name,
+  shared,
+  role1Only,
+  role2Only,
 }: {
   title: string;
-  subtitle: string;
-  comparisons: PermissionComparison[];
   role1Name: string;
   role2Name: string;
+  shared: PermissionComparison[];
+  role1Only: PermissionComparison[];
+  role2Only: PermissionComparison[];
 }) {
+  const [sharedExpanded, setSharedExpanded] = useState(false);
+  const hasDifferences = role1Only.length > 0 || role2Only.length > 0;
+
   return (
-    <div className="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
-      <div className="border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800">
+    <div className="space-y-3">
+      {/* Section header */}
+      <div>
         <h3 className="font-medium text-slate-900 dark:text-slate-100">{title}</h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          {shared.length + role1Only.length + role2Only.length} total permissions
+        </p>
       </div>
-      <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-96 overflow-y-auto">
-        {comparisons.map((item) => (
-          <PermissionRow
-            key={item.permission}
-            item={item}
-            role1Name={role1Name}
-            role2Name={role2Name}
+
+      {/* Differences split view */}
+      {hasDifferences && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <UniquePermissionColumn
+            roleName={role1Name}
+            permissions={role1Only}
+            colorScheme="sky"
           />
-        ))}
-      </div>
+          <UniquePermissionColumn
+            roleName={role2Name}
+            permissions={role2Only}
+            colorScheme="violet"
+          />
+        </div>
+      )}
+
+      {/* No differences notice */}
+      {!hasDifferences && shared.length > 0 && (
+        <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+          No differences — all {shared.length} permissions are shared between both roles.
+        </div>
+      )}
+
+      {/* Shared permissions (collapsible) */}
+      {shared.length > 0 && hasDifferences && (
+        <div className="rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+          <button
+            onClick={() => setSharedExpanded(!sharedExpanded)}
+            className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors"
+            aria-expanded={sharedExpanded}
+          >
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Shared Permissions
+              </span>
+              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
+                {shared.length}
+              </span>
+            </div>
+            <ChevronIcon expanded={sharedExpanded} />
+          </button>
+          {sharedExpanded && (
+            <div className="border-t border-slate-200 dark:border-slate-700">
+              <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-72 overflow-y-auto">
+                {shared.map(item => (
+                  <div
+                    key={item.permission}
+                    className="flex items-center gap-3 px-4 py-2 bg-emerald-50/50 dark:bg-emerald-500/5"
+                    aria-label={`Shared by both ${role1Name} and ${role2Name}`}
+                  >
+                    <span className="flex-shrink-0 w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <code className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
+                      {item.permission}
+                    </code>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 /**
- * Individual permission row with visual indicators
+ * A column showing permissions unique to one role
  */
-function PermissionRow({
-  item,
-  role1Name,
-  role2Name,
+function UniquePermissionColumn({
+  roleName,
+  permissions,
+  colorScheme,
 }: {
-  item: PermissionComparison;
-  role1Name: string;
-  role2Name: string;
+  roleName: string;
+  permissions: PermissionComparison[];
+  colorScheme: 'sky' | 'violet';
 }) {
-  // Determine the row styling based on comparison
-  let bgClass = '';
-  let indicatorClass = '';
-  let ariaLabel = '';
-
-  if (item.isShared) {
-    bgClass = 'bg-emerald-50/50 dark:bg-emerald-500/5';
-    indicatorClass = 'bg-emerald-500';
-    ariaLabel = `Shared by both ${role1Name} and ${role2Name}`;
-  } else if (item.inRole1) {
-    bgClass = 'bg-sky-50/50 dark:bg-sky-500/5';
-    indicatorClass = 'bg-sky-500';
-    ariaLabel = `Only in ${role1Name}`;
-  } else {
-    bgClass = 'bg-violet-50/50 dark:bg-violet-500/5';
-    indicatorClass = 'bg-violet-500';
-    ariaLabel = `Only in ${role2Name}`;
-  }
+  const styles = colorScheme === 'sky' ? {
+    border: 'border-sky-200 dark:border-sky-500/30',
+    headerBg: 'bg-sky-50 dark:bg-sky-500/10',
+    headerText: 'text-sky-900 dark:text-sky-200',
+    headerBadgeBg: 'bg-sky-200 text-sky-800 dark:bg-sky-500/30 dark:text-sky-200',
+    dot: 'bg-sky-500',
+    rowBg: 'bg-sky-50/30 dark:bg-sky-500/5',
+  } : {
+    border: 'border-violet-200 dark:border-violet-500/30',
+    headerBg: 'bg-violet-50 dark:bg-violet-500/10',
+    headerText: 'text-violet-900 dark:text-violet-200',
+    headerBadgeBg: 'bg-violet-200 text-violet-800 dark:bg-violet-500/30 dark:text-violet-200',
+    dot: 'bg-violet-500',
+    rowBg: 'bg-violet-50/30 dark:bg-violet-500/5',
+  };
 
   return (
-    <div
-      className={`flex items-center gap-3 px-4 py-2 ${bgClass}`}
-      aria-label={ariaLabel}
-    >
-      <span
-        className={`flex-shrink-0 w-2.5 h-2.5 rounded-full ${indicatorClass}`}
-        title={ariaLabel}
-      ></span>
-      <div className="flex-1 min-w-0">
-        <code className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
-          {item.permission}
-        </code>
+    <div className={`rounded-xl border ${styles.border} bg-white dark:bg-slate-900 overflow-hidden`}>
+      {/* Column header */}
+      <div className={`px-4 py-3 ${styles.headerBg} border-b ${styles.border}`}>
+        <div className="flex items-center justify-between gap-2">
+          <h4 className={`text-sm font-semibold ${styles.headerText} truncate`}>
+            {roleName} only
+          </h4>
+          <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${styles.headerBadgeBg} whitespace-nowrap`}>
+            {permissions.length}
+          </span>
+        </div>
       </div>
+      {/* Permission list */}
+      {permissions.length > 0 ? (
+        <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-80 overflow-y-auto">
+          {permissions.map(item => (
+            <div
+              key={item.permission}
+              className={`flex items-center gap-3 px-4 py-2 ${styles.rowBg}`}
+            >
+              <span className={`flex-shrink-0 w-2 h-2 rounded-full ${styles.dot}`}></span>
+              <code className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
+                {item.permission}
+              </code>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="px-4 py-6 text-center">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            No unique permissions
+          </p>
+        </div>
+      )}
     </div>
+  );
+}
+
+function ChevronIcon({ expanded }: { expanded: boolean }) {
+  return (
+    <svg
+      className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
   );
 }
