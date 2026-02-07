@@ -350,7 +350,6 @@ export default function SubnetCalculatorPage(): ReactElement {
                 onChange={handleFieldChange('network')}
                 className="h-10 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
                 placeholder="10.0.0.0"
-                inputMode="decimal"
                 autoComplete="off"
               />
             </label>
