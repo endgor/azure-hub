@@ -25,7 +25,8 @@ export {
   inetAtov,
   inetNtoa,
   prefixToMask,
-  normaliseNetwork
+  normaliseNetwork,
+  isRfc1918Cidr
 } from './ipUtils';
 
 // Subnet math operations

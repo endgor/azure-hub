@@ -12,6 +12,7 @@ import {
   createInitialTree,
   inetAtov,
   inetNtoa,
+  isRfc1918Cidr,
   normaliseNetwork
 } from '@/lib/subnetCalculator';
 import {
@@ -210,6 +211,13 @@ export default function SubnetCalculatorPage(): ReactElement {
     }
 
     const normalisedNetwork = normaliseNetwork(ipValue, parsedPrefix);
+
+    if (!isRfc1918Cidr(normalisedNetwork, parsedPrefix)) {
+      setFormError(
+        'Only RFC 1918 private ranges are supported: 10.0.0.0/8, 172.16.0.0/12, or 192.168.0.0/16.'
+      );
+      return;
+    }
     const { rootId, tree } = createInitialTree(normalisedNetwork, parsedPrefix);
 
     setState({

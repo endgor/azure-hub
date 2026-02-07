@@ -69,3 +69,33 @@ export function normaliseNetwork(address: number, prefix: number): number {
   const mask = prefixToMask(prefix);
   return address & mask;
 }
+
+/**
+ * Checks whether a CIDR block falls entirely within an RFC 1918 private range.
+ *
+ * RFC 1918 defines three private address ranges:
+ *   - 10.0.0.0/8     (10.0.0.0 – 10.255.255.255)
+ *   - 172.16.0.0/12   (172.16.0.0 – 172.31.255.255)
+ *   - 192.168.0.0/16  (192.168.0.0 – 192.168.255.255)
+ *
+ * The prefix must be at least as specific as the containing range so that
+ * the block cannot extend beyond the private range boundary.
+ * For example, 10.0.0.0/7 would be rejected because it spans outside 10.0.0.0/8.
+ *
+ * @param network - Normalised 32-bit unsigned network address
+ * @param prefix  - CIDR prefix length (0-32)
+ */
+export function isRfc1918Cidr(network: number, prefix: number): boolean {
+  const n = network >>> 0;
+
+  // 10.0.0.0/8 — first octet must be 10, prefix >= 8
+  if ((n >>> 24) === 10 && prefix >= 8) return true;
+
+  // 172.16.0.0/12 — first 12 bits must be 0xAC1 (172.16-172.31), prefix >= 12
+  if ((n >>> 20) === 0xac1 && prefix >= 12) return true;
+
+  // 192.168.0.0/16 — first 16 bits must be 0xC0A8 (192.168), prefix >= 16
+  if ((n >>> 16) === 0xc0a8 && prefix >= 16) return true;
+
+  return false;
+}
