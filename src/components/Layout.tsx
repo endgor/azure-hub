@@ -148,13 +148,6 @@ export default function Layout({
   // Initialize dark mode - always start with false during SSR to avoid hydration mismatch
   // The actual preference will be applied after mount via useEffect
   const [isDarkMode, setIsDarkMode] = useLocalStorageBoolean('theme-dark', false);
-  const [hasInitializedTheme, setHasInitializedTheme] = useState(false);
-
-  // On mount, mark theme as initialized (localStorage value or default light is already applied)
-  useEffect(() => {
-    if (typeof window === 'undefined' || hasInitializedTheme) return;
-    setHasInitializedTheme(true);
-  }, [hasInitializedTheme]);
 
   // Toggle dark class and theme-color meta tag when theme changes
   useEffect(() => {
@@ -172,8 +165,12 @@ export default function Layout({
 
   // Close mobile menu when route changes
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [router.asPath]);
+    const handleRouteChange = () => setIsMobileMenuOpen(false);
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   const meta = useMemo(() => {
     const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;

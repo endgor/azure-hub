@@ -9,25 +9,29 @@ interface LookupFormProps {
   initialService?: string;
 }
 
-const LookupForm = memo(function LookupForm({ 
-  initialValue = '', 
+const LookupForm = memo(function LookupForm({
+  initialValue = '',
   initialRegion = '',
   initialService = ''
 }: LookupFormProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(initialValue || initialService || initialRegion);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  
-  // Set initial query on component load
+
+  // Sync search query when initial values change (e.g. URL query params)
   useEffect(() => {
-    // Prioritize showing a simple value in this order: IP/domain -> service -> region
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync local state with prop-derived values
     setSearchQuery(initialValue || initialService || initialRegion);
   }, [initialValue, initialRegion, initialService]);
-  
-  // Reset loading state when query parameters change
+
+  // Reset loading state when route change completes
   useEffect(() => {
-    setIsLoading(false);
-  }, [router.query]);
+    const handleRouteChangeComplete = () => setIsLoading(false);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router.events]);
 
   const performSearch = useCallback(async () => {
     if (!searchQuery.trim()) return;

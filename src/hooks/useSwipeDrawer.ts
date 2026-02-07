@@ -25,19 +25,18 @@ export function useSwipeDrawer({
   threshold = 60,
 }: UseSwipeDrawerOptions) {
   const isOpenRef = useRef(isOpen);
-  isOpenRef.current = isOpen;
-
   const onOpenRef = useRef(onOpen);
-  onOpenRef.current = onOpen;
-
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
-
   const edgeWidthRef = useRef(edgeWidth);
-  edgeWidthRef.current = edgeWidth;
-
   const thresholdRef = useRef(threshold);
-  thresholdRef.current = threshold;
+
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+    onOpenRef.current = onOpen;
+    onCloseRef.current = onClose;
+    edgeWidthRef.current = edgeWidth;
+    thresholdRef.current = threshold;
+  });
 
   useEffect(() => {
     let startX = 0;

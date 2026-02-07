@@ -94,8 +94,9 @@ export function useSubnetMetadata(
   const [activeCommentRow, setActiveCommentRow] = useState<string | null>(null);
   const [commentDraft, setCommentDraft] = useState('');
 
-  // Clean up metadata for removed leaves
+  // Clean up metadata for removed leaves when visible rows change
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reactive cleanup when tree structure changes
     setRowColors((current) => cleanupRemovedLeaves(current, visibleRowIds));
     setRowComments((current) => cleanupRemovedLeaves(current, visibleRowIds));
 

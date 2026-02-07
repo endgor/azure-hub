@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
@@ -73,28 +73,36 @@ function CopyButton({ getText }: { getText: () => string }) {
 export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [diffData, setDiffData] = useState<IpDiffFile | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedTags, setExpandedTags] = useState<Set<string>>(new Set());
+  const fetchingRef = useRef(false);
+
+  const fetchDiffData = useCallback(() => {
+    if (fetchingRef.current) return;
+    fetchingRef.current = true;
+
+    setError(null);
+    setIsLoading(true);
+
+    loadIpDiff()
+      .then((data) => {
+        setDiffData(data);
+      })
+      .catch((err) => {
+        setError(err.message || 'Failed to load diff data');
+      })
+      .finally(() => {
+        setIsLoading(false);
+        fetchingRef.current = false;
+      });
+  }, []);
 
   // Preload diff data on mount so summary badge shows immediately
   useEffect(() => {
-    if (!diffData && !isLoading) {
-      setIsLoading(true);
-      setError(null);
-
-      loadIpDiff()
-        .then((data) => {
-          setDiffData(data);
-        })
-        .catch((err) => {
-          setError(err.message || 'Failed to load diff data');
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [diffData, isLoading]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time data fetch on mount
+    fetchDiffData();
+  }, [fetchDiffData]);
 
   const toggleTag = (tagName: string) => {
     setExpandedTags((prev) => {
@@ -180,8 +188,14 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
           )}
 
           {error && (
-            <div className="text-sm text-rose-600 dark:text-rose-400">
-              {error}
+            <div className="flex items-center gap-2 text-sm text-rose-600 dark:text-rose-400">
+              <span>{error}</span>
+              <button
+                onClick={fetchDiffData}
+                className="rounded px-2 py-0.5 text-xs font-medium text-slate-600 underline hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+              >
+                Retry
+              </button>
             </div>
           )}
 

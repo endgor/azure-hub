@@ -11,6 +11,7 @@ export function ThemeToggle({ isDarkMode, onToggle }: ThemeToggleProps) {
 
   // Only render theme-specific content after mounting to avoid hydration mismatch
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time SSR hydration gate
     setMounted(true);
   }, []);
 
