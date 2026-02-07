@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import Layout from '@/components/Layout';
-import ErrorBox from '@/components/shared/ErrorBox';
 import Button from '@/components/shared/Button';
 import {
   DEFAULT_NETWORK,
@@ -12,6 +11,7 @@ import {
   createInitialTree,
   inetAtov,
   inetNtoa,
+  isRfc1918Cidr,
   normaliseNetwork
 } from '@/lib/subnetCalculator';
 import {
@@ -81,7 +81,8 @@ export default function SubnetCalculatorPage(): ReactElement {
     network: DEFAULT_NETWORK,
     prefix: DEFAULT_PREFIX.toString()
   });
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<{ message: string; field: 'network' | 'prefix' } | null>(null);
+  const [shaking, setShaking] = useState(false);
 
   // Tree state
   const initialNetwork = useMemo(() => inetAtov(DEFAULT_NETWORK) ?? 0, []);
@@ -158,6 +159,13 @@ export default function SubnetCalculatorPage(): ReactElement {
     };
   }, []);
 
+  // Clear shake animation class after it plays so it can retrigger
+  useEffect(() => {
+    if (!shaking) return;
+    const timer = setTimeout(() => setShaking(false), 400);
+    return () => clearTimeout(timer);
+  }, [shaking]);
+
   // Restore state from URL on mount
   useEffect(() => {
     const reconstructed = restoreFromUrl();
@@ -191,6 +199,7 @@ export default function SubnetCalculatorPage(): ReactElement {
       ...current,
       [field]: value
     }));
+    if (formError) setFormError(null);
   };
 
   const handleApplyNetwork = (event: FormEvent<HTMLFormElement>) => {
@@ -199,17 +208,28 @@ export default function SubnetCalculatorPage(): ReactElement {
 
     const ipValue = inetAtov(formFields.network);
     if (ipValue === null) {
-      setFormError('Please provide a valid IPv4 network address.');
+      setFormError({ message: 'Please provide a valid IPv4 network address.', field: 'network' });
+      setShaking(true);
       return;
     }
 
     const parsedPrefix = Number(formFields.prefix);
     if (!Number.isInteger(parsedPrefix) || parsedPrefix < 0 || parsedPrefix > 32) {
-      setFormError('Mask bits must be a number between 0 and 32.');
+      setFormError({ message: 'Mask bits must be a number between 0 and 32.', field: 'prefix' });
+      setShaking(true);
       return;
     }
 
     const normalisedNetwork = normaliseNetwork(ipValue, parsedPrefix);
+
+    if (!isRfc1918Cidr(normalisedNetwork, parsedPrefix)) {
+      setFormError({
+        message: 'Only RFC 1918 private ranges are supported: 10.0.0.0/8, 172.16.0.0/12, or 192.168.0.0/16.',
+        field: 'network'
+      });
+      setShaking(true);
+      return;
+    }
     const { rootId, tree } = createInitialTree(normalisedNetwork, parsedPrefix);
 
     setState({
@@ -345,18 +365,40 @@ export default function SubnetCalculatorPage(): ReactElement {
           >
             <label className="flex flex-col gap-2 text-sm text-slate-700 dark:text-slate-200">
               <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Network Address</span>
-              <input
-                value={formFields.network}
-                onChange={handleFieldChange('network')}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-4 text-sm text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 dark:focus:border-sky-400"
-                placeholder="10.0.0.0"
-                autoComplete="off"
-              />
+              <div className="relative">
+                <input
+                  value={formFields.network}
+                  onChange={handleFieldChange('network')}
+                  className={`h-10 w-full rounded-lg border bg-white text-sm text-slate-900 shadow-sm transition focus:outline-none focus:ring-2 placeholder:text-slate-400 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 ${
+                    formError?.field === 'network'
+                      ? 'border-rose-400 pl-4 pr-9 focus:border-rose-500 focus:ring-rose-500/20 dark:border-rose-400'
+                      : 'border-slate-300 px-4 focus:border-sky-500 focus:ring-sky-500/20 dark:border-slate-600 dark:focus:border-sky-400'
+                  } ${shaking && formError?.field === 'network' ? 'animate-shake' : ''}`}
+                  placeholder="10.0.0.0"
+                  autoComplete="off"
+                />
+                {formError?.field === 'network' && (
+                  <div className="group absolute right-3 top-1/2 -translate-y-1/2 cursor-help">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-rose-500 dark:text-rose-400">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
+                    </svg>
+                    <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-72 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100">
+                      <div className="rounded-lg bg-slate-800 px-3 py-2 text-xs leading-relaxed text-white shadow-lg dark:bg-slate-700">
+                        {formError.message}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </label>
 
             <label className="flex flex-col gap-2 text-sm text-slate-700 dark:text-slate-200 sm:w-auto">
               <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Network Size</span>
-              <div className="flex h-10 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 shadow-sm transition focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800">
+              <div className={`flex h-10 items-center gap-1.5 rounded-lg border bg-white px-3 shadow-sm transition dark:bg-slate-800 ${
+                formError?.field === 'prefix'
+                  ? 'border-rose-400 focus-within:border-rose-500 focus-within:ring-2 focus-within:ring-rose-500/20 dark:border-rose-400'
+                  : 'border-slate-300 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20 dark:border-slate-600'
+              } ${shaking && formError?.field === 'prefix' ? 'animate-shake' : ''}`}>
                 <span className="text-xs font-medium text-slate-400 dark:text-slate-500">/</span>
                 <input
                   value={formFields.prefix}
@@ -365,6 +407,18 @@ export default function SubnetCalculatorPage(): ReactElement {
                   placeholder="16"
                   inputMode="numeric"
                 />
+                {formError?.field === 'prefix' && (
+                  <div className="group relative cursor-help">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-rose-500 dark:text-rose-400">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clipRule="evenodd" />
+                    </svg>
+                    <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 w-64 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100">
+                      <div className="rounded-lg bg-slate-800 px-3 py-2 text-xs leading-relaxed text-white shadow-lg dark:bg-slate-700">
+                        {formError.message}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </label>
 
@@ -376,8 +430,6 @@ export default function SubnetCalculatorPage(): ReactElement {
                 Reset
               </Button>
             </div>
-
-            {formError && <ErrorBox className="ml-auto max-w-xs">{formError}</ErrorBox>}
           </form>
         </div>
 

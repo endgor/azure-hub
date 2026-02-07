@@ -1,5 +1,6 @@
 import { Base64 } from 'js-base64';
 import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
+import { isRfc1918Cidr, normaliseNetwork } from '@/lib/subnetCalculator';
 
 /**
  * Compressed leaf subnet representation for sharing.
@@ -137,6 +138,12 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
     const { v, net, pre, az, leaves } = parsed as ShareableSubnetPlan;
     if (v !== 1 || typeof net !== 'number' || typeof pre !== 'number' || !Array.isArray(leaves)) {
       return null; // Invalid structure or version
+    }
+
+    // Reject plans whose base network is outside RFC 1918 private ranges
+    const normalisedBase = normaliseNetwork(net >>> 0, pre);
+    if (!isRfc1918Cidr(normalisedBase, pre)) {
+      return null;
     }
 
     const cleanedLeaves: ShareableLeaf[] = [];
