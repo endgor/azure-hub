@@ -119,7 +119,7 @@ export async function getServiceTagMetadata(serviceTagId: string): Promise<Servi
 
 /**
  * Search service tags by query (lightweight, metadata only).
- * For actual IP address lookup, use the full clientIpService.
+ * For full CIDR/IP lookup, use the server-backed /api/ipLookup endpoint.
  */
 export async function searchServiceTags(query: string): Promise<ServiceTagIndex[]> {
   if (!query || query.trim().length < 2) {
