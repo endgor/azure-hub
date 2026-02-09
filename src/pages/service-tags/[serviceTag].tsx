@@ -6,7 +6,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     redirect: {
-      destination: encoded ? `/tools/service-tags/${encodeURIComponent(encoded)}` : '/tools/service-tags',
+      destination: encoded ? `/tools/service-tags/${encodeURIComponent(encoded)}/` : '/tools/service-tags/',
       permanent: true
     }
   };

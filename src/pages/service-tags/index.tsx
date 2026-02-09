@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
-      destination: '/tools/service-tags',
+      destination: '/tools/service-tags/',
       permanent: true
     }
   };
