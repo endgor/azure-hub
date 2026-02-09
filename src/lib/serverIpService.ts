@@ -56,6 +56,7 @@ interface IpLookupIndex {
   ipv4Cidrs: string[];
   ipv4MaxSpan: number;
   ipv6: IPv6Entry[];
+  ipv6MinPrefix: number; // smallest prefix length across all IPv6 CIDRs
 }
 
 // --- Lookup Index Cache ---
@@ -186,39 +187,45 @@ function upperBoundIpv6(entries: IPv6Entry[], target: string): number {
 }
 
 function lookupIpv6Single(index: IpLookupIndex, ipHex: string): AzureIpAddress[] {
-  const { ipv6, meta } = index;
+  const { ipv6, meta, ipv6MinPrefix } = index;
   const matches: AzureIpAddress[] = [];
 
   const rightmost = upperBoundIpv6(ipv6, ipHex);
   if (rightmost < 0) return matches;
 
-  // Scan backward — IPv6 ranges are generally smaller, scan is bounded
+  // Early termination: compare the first N hex chars that are guaranteed
+  // fixed within any range, derived from the broadest prefix in the dataset.
+  // For a /N prefix, the first floor(N/4) hex chars of start are invariant.
+  const safeChars = Math.floor(ipv6MinPrefix / 4);
+  const ipPrefix = safeChars > 0 ? ipHex.substring(0, safeChars) : '';
+
   for (let i = rightmost; i >= 0; i--) {
     const entry = ipv6[i];
     if (entry.e >= ipHex) {
       matches.push(metaToAzureIpAddress(meta[entry.m], entry.c));
     }
-    // Heuristic early termination: if we've moved far enough back, stop
-    // For IPv6 we check if the first 8 hex chars (top 32 bits) differ significantly
-    if (ipHex.substring(0, 8) > entry.s.substring(0, 8)) break;
+    if (safeChars > 0 && ipPrefix > entry.s.substring(0, safeChars)) break;
   }
 
   return matches;
 }
 
 function lookupIpv6Cidr(index: IpLookupIndex, qStartHex: string, qEndHex: string): AzureIpAddress[] {
-  const { ipv6, meta } = index;
+  const { ipv6, meta, ipv6MinPrefix } = index;
   const matches: AzureIpAddress[] = [];
 
   const rightmost = upperBoundIpv6(ipv6, qStartHex);
   if (rightmost < 0) return matches;
+
+  const safeChars = Math.floor(ipv6MinPrefix / 4);
+  const qPrefix = safeChars > 0 ? qStartHex.substring(0, safeChars) : '';
 
   for (let i = rightmost; i >= 0; i--) {
     const entry = ipv6[i];
     if (entry.s <= qStartHex && entry.e >= qEndHex) {
       matches.push(metaToAzureIpAddress(meta[entry.m], entry.c));
     }
-    if (qStartHex.substring(0, 8) > entry.s.substring(0, 8)) break;
+    if (safeChars > 0 && qPrefix > entry.s.substring(0, safeChars)) break;
   }
 
   return matches;

@@ -49,6 +49,7 @@ interface IpLookupIndex {
   ipv4Cidrs: string[]; // parallel CIDR strings
   ipv4MaxSpan: number;
   ipv6: IPv6Entry[];
+  ipv6MinPrefix: number; // smallest prefix length across all IPv6 CIDRs
 }
 
 // File paths
@@ -81,6 +82,7 @@ export async function generateIpLookupIndex(): Promise<void> {
   let ipv4Count = 0;
   let ipv6Count = 0;
   let skipped = 0;
+  let ipv6MinPrefix = 128;
 
   for (const { cloud, file } of CLOUD_FILES) {
     console.log(`Processing ${cloud}...`);
@@ -116,6 +118,8 @@ export async function generateIpLookupIndex(): Promise<void> {
         try {
           const range = cidrToRange(cidr);
           if (range.isV6) {
+            const prefixLen = parseInt(cidr.split('/')[1], 10);
+            if (prefixLen < ipv6MinPrefix) ipv6MinPrefix = prefixLen;
             ipv6Entries.push({
               s: range.start as string,
               e: range.end as string,
@@ -174,6 +178,11 @@ export async function generateIpLookupIndex(): Promise<void> {
     return a.e < b.e ? -1 : a.e > b.e ? 1 : 0;
   });
 
+  // Warn if any IPv6 prefix is unusually broad (would weaken early termination)
+  if (ipv6MinPrefix <= 32) {
+    console.warn(`  ⚠ IPv6 min prefix is /${ipv6MinPrefix} — early termination will scan more entries`);
+  }
+
   const index: IpLookupIndex = {
     version: 1,
     meta,
@@ -181,6 +190,7 @@ export async function generateIpLookupIndex(): Promise<void> {
     ipv4Cidrs: sortedIpv4Cidrs,
     ipv4MaxSpan,
     ipv6: ipv6Entries,
+    ipv6MinPrefix: ipv6Count > 0 ? ipv6MinPrefix : 128,
   };
 
   console.log('Writing index file...');
@@ -194,6 +204,7 @@ export async function generateIpLookupIndex(): Promise<void> {
   console.log(`  IPv4 ranges: ${ipv4Count}`);
   console.log(`  IPv6 ranges: ${ipv6Count}`);
   console.log(`  Max IPv4 span: ${ipv4MaxSpan}`);
+  console.log(`  Min IPv6 prefix: /${ipv6Count > 0 ? ipv6MinPrefix : 'N/A'}`);
   console.log(`  Skipped (invalid): ${skipped}`);
   console.log(`  Output: ${OUTPUT_FILE}`);
   console.log(`  Size: ${(fileSize / 1024 / 1024).toFixed(2)} MB`);
