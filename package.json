@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && next build && node scripts/generateSitemap.js",
+    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && next build && node scripts/generateSitemap.js",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "eslint .",
@@ -12,7 +12,8 @@
     "update-rbac-data": "ts-node -r tsconfig-paths/register scripts/updateRbacData.ts",
     "fetch-entraid-roles": "ts-node --project tsconfig.node.json scripts/fetchEntraIdRoles.ts",
     "generate-actions-cache": "ts-node -r tsconfig-paths/register scripts/generateActionsCache.ts",
-    "generate-ip-indexes": "ts-node -r tsconfig-paths/register scripts/generateIpIndexes.ts"
+    "generate-ip-indexes": "ts-node -r tsconfig-paths/register scripts/generateIpIndexes.ts",
+    "generate-ip-lookup-index": "ts-node -r tsconfig-paths/register scripts/generateIpLookupIndex.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",

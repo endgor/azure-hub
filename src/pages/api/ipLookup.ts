@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import net from 'net';
 import dns from 'dns';
 import { promisify } from 'util';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/serverIpService';
@@ -22,15 +23,23 @@ interface IpLookupResponse {
 }
 
 /**
+ * Check if a string is an IP address or CIDR notation.
+ * Uses net.isIP() for reliable IPv4/IPv6 detection.
+ */
+function isIpOrCidr(input: string): boolean {
+  if (input.includes('/')) {
+    const ip = input.split('/')[0];
+    return net.isIP(ip) !== 0;
+  }
+  return net.isIP(input) !== 0;
+}
+
+/**
  * Check if a string is a hostname (not an IP or CIDR)
  */
 function isHostname(input: string): boolean {
-  if (!input.includes('.') || input.includes('/')) {
-    return false;
-  }
-  if (/^\d+\.\d+/.test(input)) {
-    return false;
-  }
+  if (!input.includes('.')) return false;
+  if (isIpOrCidr(input)) return false;
   return true;
 }
 
@@ -96,7 +105,7 @@ export default async function handler(
 
     if (ipOrDomain && typeof ipOrDomain === 'string') {
       // Check if it's an IP address or CIDR
-      if (/^\d+\.\d+/.test(ipOrDomain) || ipOrDomain.includes('/')) {
+      if (isIpOrCidr(ipOrDomain)) {
         results = await checkIpAddress(ipOrDomain);
       }
       // Check if it's a hostname that needs DNS resolution
