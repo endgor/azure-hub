@@ -182,22 +182,33 @@ export const getServerSideProps: GetServerSideProps<ServiceTagDetailProps> = asy
   const cloud = parseCloudParam(cloudParam);
 
   try {
-    // Fetch service tag details server-side
-    let ipRanges = await getServiceTagDetails(serviceTag);
+    // Fetch all results for this tag (unfiltered) to check if the tag exists at all
+    const allIpRanges = await getServiceTagDetails(serviceTag);
 
-    // Filter by cloud if specified
-    if (cloud) {
-      ipRanges = ipRanges.filter(ip => ip.cloud === cloud);
+    // If tag has 0 results across ALL clouds → proper HTTP 404
+    if (allIpRanges.length === 0) {
+      return { notFound: true };
     }
 
-    // If no results found, return notFound state (but still render the page)
+    // Tag exists — set CDN cache headers (24h cache + 12h stale-while-revalidate)
+    context.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=86400, stale-while-revalidate=43200'
+    );
+
+    // Apply cloud filter if specified
+    let ipRanges = cloud
+      ? allIpRanges.filter(ip => ip.cloud === cloud)
+      : allIpRanges;
+
+    // Tag exists but cloud filter yields 0 results — soft 404 UI (HTTP 200)
     if (ipRanges.length === 0) {
       return {
         props: {
           serviceTag,
           ipRanges: [],
           notFound: true,
-          message: `No data found for service tag "${serviceTag}"`
+          message: `No data found for service tag "${serviceTag}" in the selected cloud`
         }
       };
     }
@@ -210,14 +221,7 @@ export const getServerSideProps: GetServerSideProps<ServiceTagDetailProps> = asy
       }
     };
   } catch {
-    // On error, return notFound state
-    return {
-      props: {
-        serviceTag,
-        ipRanges: [],
-        notFound: true,
-        message: `Error loading service tag "${serviceTag}"`
-      }
-    };
+    // On error, return proper HTTP 404
+    return { notFound: true };
   }
 };
