@@ -1,33 +1,52 @@
-import { AzureRole, Operation, LeastPrivilegeInput, LeastPrivilegeResult, ActionPlaneType } from '@/types/rbac';
-import { calculateLeastPrivilegedRoles, extractServiceNamespaces } from './rbacService';
+import { AzureRole, Operation, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
 import { CACHE_TTL_MS, SEARCH } from '@/config/constants';
-import { collectExplicitActionMetadata, collectWildcardPatterns, buildActionsMap } from './rbacAggregation';
 
 let rolesCache: AzureRole[] | null = null;
-let permissionsCache: Operation[] | null = null;
-let actionsMapCache: Map<string, { name: string; roleCount: number }> | null = null;
 let rolesCacheExpiry = 0;
-let permissionsCacheExpiry = 0;
-let actionsMapCacheExpiry = 0;
 
-function createOperationFromAction(
-  actionName: string,
-  roleCount: number,
-  planeType: ActionPlaneType = 'control'
-): Operation {
-  const parts = actionName.split('/');
-  const provider = parts[0] || '';
-  const resource = parts.slice(1, -1).join('/') || '';
-  const operation = parts[parts.length - 1] || '';
+let actionSetsCache: {
+  controlActions: Set<string>;
+  dataActions: Set<string>;
+  dataActionPrefixes: Set<string>;
+  expiry: number;
+} | null = null;
 
-  return {
-    name: actionName,
-    displayName: `${operation} ${resource}`.trim() || actionName,
-    description: `Used by ${roleCount} role${roleCount > 1 ? 's' : ''}`,
-    provider,
-    roleCount,
-    planeType
-  };
+interface ApiResponseBase {
+  error?: string;
+}
+
+interface SearchOperationsResponse extends ApiResponseBase {
+  operations: Operation[];
+}
+
+interface CalculateLeastPrivilegeResponse extends ApiResponseBase {
+  results: LeastPrivilegeResult[];
+}
+
+interface ServiceNamespacesResponse extends ApiResponseBase {
+  namespaces: string[];
+}
+
+interface ActionsByServiceResponse extends ApiResponseBase {
+  operations: Operation[];
+}
+
+async function fetchApiJson<T extends ApiResponseBase>(url: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(url, init);
+
+  let payload: T | null = null;
+  try {
+    payload = await response.json() as T;
+  } catch {
+    payload = null;
+  }
+
+  if (!response.ok) {
+    const message = payload?.error || `Request failed with status ${response.status}`;
+    throw new Error(message);
+  }
+
+  return (payload || {}) as T;
 }
 
 export async function loadRoleDefinitions(): Promise<AzureRole[]> {
@@ -37,91 +56,16 @@ export async function loadRoleDefinitions(): Promise<AzureRole[]> {
     return rolesCache;
   }
 
-  try {
-    const response = await fetch('/data/roles-extended.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load role definitions: ${response.statusText}`);
-    }
-
-    const roles = await response.json() as AzureRole[];
-    rolesCache = roles;
-    rolesCacheExpiry = now + CACHE_TTL_MS;
-
-    return roles;
-  } catch (error) {
-    throw new Error(`Failed to load role definitions: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
-}
-
-export async function loadPermissions(): Promise<Operation[]> {
-  const now = Date.now();
-
-  if (permissionsCache && permissionsCacheExpiry > now) {
-    return permissionsCache;
+  const response = await fetch('/data/roles-extended.json');
+  if (!response.ok) {
+    throw new Error(`Failed to load role definitions: ${response.statusText}`);
   }
 
-  try {
-    const response = await fetch('/data/permissions.json');
-    if (!response.ok) {
-      if (response.status === 404) {
-        return [];
-      }
-      throw new Error(`Failed to load permissions: ${response.statusText}`);
-    }
+  const roles = await response.json() as AzureRole[];
+  rolesCache = roles;
+  rolesCacheExpiry = now + CACHE_TTL_MS;
 
-    const permissions = await response.json() as Operation[];
-    permissionsCache = permissions;
-    permissionsCacheExpiry = now + CACHE_TTL_MS;
-
-    return permissions;
-  } catch {
-    return [];
-  }
-}
-
-async function loadActionsCache(): Promise<Map<string, { name: string; roleCount: number }> | null> {
-  try {
-    const response = await fetch('/data/actions-cache.json');
-    if (!response.ok) {
-      return null;
-    }
-
-    const cacheArray = await response.json() as Array<{ key: string; name: string; roleCount: number }>;
-    const cacheMap = new Map<string, { name: string; roleCount: number }>();
-
-    for (const entry of cacheArray) {
-      cacheMap.set(entry.key, { name: entry.name, roleCount: entry.roleCount });
-    }
-
-    return cacheMap;
-  } catch {
-    return null;
-  }
-}
-
-async function extractActionsFromRoles(): Promise<Map<string, { name: string; roleCount: number }>> {
-  const now = Date.now();
-
-  if (actionsMapCache && actionsMapCacheExpiry > now) {
-    return actionsMapCache;
-  }
-
-  const precomputedCache = await loadActionsCache();
-  if (precomputedCache) {
-    actionsMapCache = precomputedCache;
-    actionsMapCacheExpiry = now + CACHE_TTL_MS;
-    return precomputedCache;
-  }
-
-  const roles = await loadRoleDefinitions();
-  const { actionCasingMap, explicitActionRoles } = collectExplicitActionMetadata(roles);
-  const wildcardPatterns = collectWildcardPatterns(roles);
-  const actionsMap = buildActionsMap(actionCasingMap, explicitActionRoles, wildcardPatterns);
-
-  actionsMapCache = actionsMap;
-  actionsMapCacheExpiry = now + CACHE_TTL_MS;
-
-  return actionsMap;
+  return roles;
 }
 
 export async function searchOperations(query: string): Promise<Operation[]> {
@@ -129,185 +73,126 @@ export async function searchOperations(query: string): Promise<Operation[]> {
     return [];
   }
 
-  const roles = await loadRoleDefinitions();
-  const queryLower = query.toLowerCase();
+  const encodedQuery = encodeURIComponent(query.trim());
+  const payload = await fetchApiJson<SearchOperationsResponse>(
+    `/api/rbac/searchOperations?query=${encodedQuery}&limit=100`
+  );
 
-  const controlActions = new Map<string, { name: string; roleCount: number }>();
-  const dataActions = new Map<string, { name: string; roleCount: number }>();
-
-  for (const role of roles) {
-    for (const permission of role.permissions) {
-      for (const action of permission.actions) {
-        if (action.includes('*')) continue;
-        const lowerAction = action.toLowerCase();
-        if (lowerAction.includes(queryLower)) {
-          const existing = controlActions.get(lowerAction);
-          if (existing) {
-            existing.roleCount++;
-          } else {
-            controlActions.set(lowerAction, { name: action, roleCount: 1 });
-          }
-        }
-      }
-
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          if (dataAction.includes('*')) continue;
-          const lowerAction = dataAction.toLowerCase();
-          if (lowerAction.includes(queryLower)) {
-            const existing = dataActions.get(lowerAction);
-            if (existing) {
-              existing.roleCount++;
-            } else {
-              dataActions.set(lowerAction, { name: dataAction, roleCount: 1 });
-            }
-          }
-        }
-      }
-    }
-  }
-
-  const results: Operation[] = [];
-
-  for (const [, actionData] of Array.from(controlActions.entries())) {
-    results.push(createOperationFromAction(actionData.name, actionData.roleCount, 'control'));
-  }
-
-  for (const [, actionData] of Array.from(dataActions.entries())) {
-    results.push(createOperationFromAction(actionData.name, actionData.roleCount, 'data'));
-  }
-
-  return results.sort((a, b) => {
-    const aCount = a.roleCount ?? 0;
-    const bCount = b.roleCount ?? 0;
-    return bCount - aCount;
-  });
+  return payload.operations || [];
 }
 
 export async function getServiceNamespaces(): Promise<string[]> {
-  const roles = await loadRoleDefinitions();
-  return extractServiceNamespaces(roles);
+  const payload = await fetchApiJson<ServiceNamespacesResponse>('/api/rbac/namespaces');
+  return payload.namespaces || [];
 }
 
 export async function getActionsByService(serviceNamespace: string): Promise<Operation[]> {
-  if (!serviceNamespace) {
+  if (!serviceNamespace.trim()) {
     return [];
   }
 
-  const roles = await loadRoleDefinitions();
-  const namespaceLower = serviceNamespace.toLowerCase();
+  const encodedService = encodeURIComponent(serviceNamespace.trim());
+  const payload = await fetchApiJson<ActionsByServiceResponse>(
+    `/api/rbac/actionsByService?service=${encodedService}`
+  );
 
-  const controlActions = new Map<string, { name: string; roleCount: number }>();
-  const dataActions = new Map<string, { name: string; roleCount: number }>();
-
-  for (const role of roles) {
-    for (const permission of role.permissions) {
-      for (const action of permission.actions) {
-        if (action.includes('*')) continue;
-        const lowerAction = action.toLowerCase();
-        if (lowerAction.startsWith(namespaceLower + '/')) {
-          const existing = controlActions.get(lowerAction);
-          if (existing) {
-            existing.roleCount++;
-          } else {
-            controlActions.set(lowerAction, { name: action, roleCount: 1 });
-          }
-        }
-      }
-
-      if (permission.dataActions) {
-        for (const dataAction of permission.dataActions) {
-          if (dataAction.includes('*')) continue;
-          const lowerAction = dataAction.toLowerCase();
-          if (lowerAction.startsWith(namespaceLower + '/')) {
-            const existing = dataActions.get(lowerAction);
-            if (existing) {
-              existing.roleCount++;
-            } else {
-              dataActions.set(lowerAction, { name: dataAction, roleCount: 1 });
-            }
-          }
-        }
-      }
-    }
-  }
-
-  const results: Operation[] = [];
-
-  for (const [, actionData] of Array.from(controlActions.entries())) {
-    results.push(createOperationFromAction(actionData.name, actionData.roleCount, 'control'));
-  }
-
-  for (const [, actionData] of Array.from(dataActions.entries())) {
-    results.push(createOperationFromAction(actionData.name, actionData.roleCount, 'data'));
-  }
-
-  return results.sort((a, b) => {
-    if (a.planeType !== b.planeType) {
-      return a.planeType === 'control' ? -1 : 1;
-    }
-    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-  });
+  return payload.operations || [];
 }
 
 export async function calculateLeastPrivilege(input: LeastPrivilegeInput): Promise<LeastPrivilegeResult[]> {
-  const roles = await loadRoleDefinitions();
-  return calculateLeastPrivilegedRoles(roles, input);
+  const payload = await fetchApiJson<CalculateLeastPrivilegeResponse>('/api/rbac/calculate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      requiredActions: input.requiredActions,
+      requiredDataActions: input.requiredDataActions || []
+    }),
+  });
+
+  return payload.results || [];
 }
 
-export async function classifyActions(actions: string[]): Promise<{ controlActions: string[]; dataActions: string[] }> {
-  const roles = await loadRoleDefinitions();
+async function getKnownActionSets(): Promise<{
+  controlActions: Set<string>;
+  dataActions: Set<string>;
+  dataActionPrefixes: Set<string>;
+}> {
+  const now = Date.now();
+  if (actionSetsCache && actionSetsCache.expiry > now) {
+    return actionSetsCache;
+  }
 
-  const allControlActions = new Set<string>();
-  const allDataActions = new Set<string>();
+  const roles = await loadRoleDefinitions();
+  const controlActions = new Set<string>();
+  const dataActions = new Set<string>();
 
   for (const role of roles) {
     for (const permission of role.permissions) {
       for (const action of permission.actions) {
         if (!action.includes('*')) {
-          allControlActions.add(action.toLowerCase());
+          controlActions.add(action.toLowerCase());
         }
       }
       if (permission.dataActions) {
         for (const dataAction of permission.dataActions) {
           if (!dataAction.includes('*')) {
-            allDataActions.add(dataAction.toLowerCase());
+            dataActions.add(dataAction.toLowerCase());
           }
         }
       }
     }
   }
 
-  // Build prefix sets from known data actions for wildcard matching
   const dataActionPrefixes = new Set<string>();
-  for (const dataAction of allDataActions) {
+  for (const dataAction of dataActions) {
     const lastSlash = dataAction.lastIndexOf('/');
     if (lastSlash > 0) {
       dataActionPrefixes.add(dataAction.substring(0, lastSlash + 1));
     }
   }
 
+  actionSetsCache = {
+    controlActions,
+    dataActions,
+    dataActionPrefixes,
+    expiry: now + CACHE_TTL_MS,
+  };
+
+  return actionSetsCache;
+}
+
+export async function classifyActions(actions: string[]): Promise<{ controlActions: string[]; dataActions: string[] }> {
+  const { dataActions: knownDataActions, dataActionPrefixes } = await getKnownActionSets();
+
   const controlActions: string[] = [];
   const dataActions: string[] = [];
 
   for (const action of actions) {
     const actionLower = action.toLowerCase();
-    if (allDataActions.has(actionLower)) {
+
+    if (knownDataActions.has(actionLower)) {
       dataActions.push(action);
-    } else if (action.includes('*')) {
-      // Check if wildcard matches a data action pattern
-      const prefix = actionLower.replace(/\*.*$/, ''); // Get prefix before wildcard
-      const isDataAction = [...dataActionPrefixes].some(dp =>
-        dp.startsWith(prefix) || prefix.startsWith(dp)
+      continue;
+    }
+
+    if (action.includes('*')) {
+      const prefix = actionLower.replace(/\*.*$/, '');
+      const isDataAction = [...dataActionPrefixes].some((dataPrefix) =>
+        dataPrefix.startsWith(prefix) || prefix.startsWith(dataPrefix)
       );
+
       if (isDataAction) {
         dataActions.push(action);
       } else {
         controlActions.push(action);
       }
-    } else {
-      controlActions.push(action);
+
+      continue;
     }
+
+    controlActions.push(action);
   }
 
   return { controlActions, dataActions };
@@ -315,8 +200,8 @@ export async function classifyActions(actions: string[]): Promise<{ controlActio
 
 export async function preloadActionsCache(): Promise<void> {
   try {
-    await extractActionsFromRoles();
+    await getServiceNamespaces();
   } catch {
-    // Silently fail - cache will be computed on demand
+    // Silently fail - on-demand requests will retry.
   }
 }
