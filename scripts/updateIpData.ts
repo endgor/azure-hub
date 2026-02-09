@@ -4,6 +4,7 @@ import * as https from 'https';
 import { AzureCloudName, AzureFileMetadata, AzureServiceTagsRoot } from '../src/types/azure';
 import type { IpDiffFile } from '../src/types/ipDiff';
 import { computeIpDiff, mergeDiffs } from './computeIpDiff';
+import { generateIpLookupIndex } from './generateIpLookupIndex';
 
 interface DownloadMapping {
   id: string;
@@ -485,6 +486,10 @@ async function updateAllIpData(): Promise<void> {
 
   // Save updated metadata
   saveMetadata(metadata);
+
+  // Regenerate the IP lookup index for binary search
+  console.info('\nRegenerating IP lookup index...');
+  await generateIpLookupIndex();
 
   console.info('IP data update completed.');
 }
