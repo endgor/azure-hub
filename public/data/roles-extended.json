@@ -29847,6 +29847,8 @@
           "Microsoft.Discovery/bookshelves/read",
           "Microsoft.Discovery/dataContainers/*",
           "Microsoft.Discovery/dataContainers/dataAssets/*",
+          "Microsoft.Discovery/storageContainers/*",
+          "Microsoft.Discovery/storageContainers/storageAssets/*",
           "Microsoft.Discovery/models/*",
           "Microsoft.Discovery/supercomputers/nodePools/read",
           "Microsoft.Discovery/tools/*",
@@ -29885,8 +29887,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-07-14T15:01:12.539466+00:00",
-    "permissionCount": 3920.666666666667,
+    "updatedOn": "2026-02-09T16:09:09.865743+00:00",
+    "permissionCount": 4504,
     "dataActions": [
       "Microsoft.Discovery/*"
     ],
