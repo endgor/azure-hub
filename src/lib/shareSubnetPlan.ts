@@ -5,7 +5,7 @@ import { isRfc1918Cidr, normaliseNetwork } from '@/lib/subnetCalculator';
 /**
  * Compressed leaf subnet representation for sharing.
  * Uses abbreviated field names to reduce URL length.
- * n = network address, p = prefix, c = color, m = memo/comment, t = type
+ * n = network address, p = prefix, c = color, m = memo/comment, t = type, f = full/single subnet
  */
 interface ShareableLeaf {
   n: number; // Network address (32-bit unsigned int)
@@ -13,6 +13,7 @@ interface ShareableLeaf {
   c?: string; // Row background color (hex)
   m?: string; // User comment/memo
   t?: 'v' | 's'; // Network type: 'v' = VNet, 's' = Subnet (omit for unassigned)
+  f?: 1; // Single/full subnet flag: 1 = VNet leaf uses entire range as subnet
 }
 
 /**
@@ -74,6 +75,10 @@ export function buildShareableSubnetPlan({
       // Serialize network type (omit UNASSIGNED to save space)
       if (networkType === 'vnet') {
         entry.t = 'v';
+        // Serialize singleSubnet flag for VNet leaves
+        if (node?.singleSubnet) {
+          entry.f = 1;
+        }
       } else if (networkType === 'subnet') {
         entry.t = 's';
       }
@@ -151,7 +156,7 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
       if (!leaf || typeof leaf !== 'object') {
         return; // Skip invalid leaf
       }
-      const { n, p, c, m, t } = leaf as ShareableLeaf;
+      const { n, p, c, m, t, f } = leaf as ShareableLeaf;
       if (typeof n !== 'number' || typeof p !== 'number') {
         return; // Skip if network or prefix missing
       }
@@ -170,6 +175,10 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
       // Validate network type
       if (t === 'v' || t === 's') {
         entry.t = t;
+      }
+      // Validate singleSubnet flag (only valid for VNet leaves)
+      if (f === 1 && t === 'v') {
+        entry.f = 1;
       }
       cleanedLeaves.push(entry);
     });

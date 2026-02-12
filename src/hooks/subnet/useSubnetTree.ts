@@ -67,8 +67,20 @@ export function useSubnetTree(
           return current;
         }
 
-        let updatedTree = splitSubnet(current.tree, nodeId);
-        if (updatedTree === current.tree) {
+        // Clear singleSubnet flag before splitting (VNet becomes a normal parent)
+        let treeBeforeSplit = current.tree;
+        if (nodeToSplit.singleSubnet) {
+          treeBeforeSplit = {
+            ...current.tree,
+            [nodeId]: {
+              ...nodeToSplit,
+              singleSubnet: undefined
+            }
+          };
+        }
+
+        let updatedTree = splitSubnet(treeBeforeSplit, nodeId);
+        if (updatedTree === treeBeforeSplit) {
           return current;
         }
 
@@ -153,19 +165,36 @@ export function useSubnetTree(
         };
       }
 
+      const isLeaf = !node.children;
+
       let newType: NetworkType;
-      if (currentType === NetworkType.UNASSIGNED || currentType === NetworkType.SUBNET) {
+      let newSingleSubnet: boolean | undefined;
+
+      if (currentType === NetworkType.UNASSIGNED) {
+        // UNASSIGNED → VNET
         newType = NetworkType.VNET;
-      } else {
+        newSingleSubnet = undefined;
+      } else if (currentType === NetworkType.VNET && isLeaf && !node.singleSubnet) {
+        // VNET (leaf, no singleSubnet) → VNET + singleSubnet
+        newType = NetworkType.VNET;
+        newSingleSubnet = true;
+      } else if (currentType === NetworkType.VNET) {
+        // VNET (with singleSubnet or non-leaf) → SUBNET
         newType = NetworkType.SUBNET;
+        newSingleSubnet = undefined;
+      } else {
+        // SUBNET → UNASSIGNED
+        newType = NetworkType.UNASSIGNED;
+        newSingleSubnet = undefined;
       }
 
-      // Update the node's network type
+      // Update the node's network type and singleSubnet flag
       const updatedTree = {
         ...current.tree,
         [nodeId]: {
           ...node,
-          networkType: newType
+          networkType: newType,
+          singleSubnet: newSingleSubnet
         }
       };
 

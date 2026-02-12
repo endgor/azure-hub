@@ -17,6 +17,7 @@ export interface SubnetNode {
   parentId?: string;
   children?: [string, string]; // [leftId, rightId] for binary tree
   networkType?: NetworkType; // VNet vs Subnet classification
+  singleSubnet?: boolean; // When true on a VNet leaf, the entire range also serves as a single subnet
 }
 
 /** Dictionary mapping node IDs to subnet nodes */

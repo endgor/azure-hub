@@ -121,13 +121,17 @@ export default function SubnetTable({
             const isUnderVnet = isUnderVNet(tree, row.id);
             const lastAddress = subnetLastAddress(row.network, row.prefix);
             const isLockedVNetParent = row.isLockedVNetParent;
+            const isSingleSubnet = Boolean(node?.singleSubnet) && networkType === NetworkType.VNET && !node?.children;
+
+            // When VNet has singleSubnet enabled, use SUBNET type for IP calculations
+            const effectiveType = isSingleSubnet ? NetworkType.SUBNET : networkType;
 
             // Use network type to calculate usable IPs
             const usable = useAzureReservations
-              ? usableRangeByType(row.network, row.prefix, networkType)
+              ? usableRangeByType(row.network, row.prefix, effectiveType)
               : usableRange(row.network, row.prefix);
             const hostCount = useAzureReservations
-              ? hostCapacityByType(row.prefix, networkType)
+              ? hostCapacityByType(row.prefix, effectiveType)
               : hostCapacity(row.prefix);
 
             const path = getNodePath(tree, row.id);
@@ -151,15 +155,19 @@ export default function SubnetTable({
             const toggleLocked = isUnderVnet;
             const toggleTitle = toggleLocked
               ? 'Subnets within a VNet share its address space and cannot be promoted to VNet.'
-              : `Toggle network type (current: ${networkType})`;
+              : isSingleSubnet
+                ? 'Toggle network type (current: VNet + Full Subnet)'
+                : `Toggle network type (current: ${networkType})`;
             const toggleClasses = [
               'inline-flex items-center justify-center rounded px-2 py-1 text-[10px] font-semibold uppercase tracking-wide transition focus:outline-none focus:ring-2 focus:ring-sky-300',
               toggleLocked ? 'cursor-not-allowed opacity-70' : '',
-              isVNet
-                ? 'bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-sky-900/40 dark:text-sky-300 dark:hover:bg-sky-900/60'
-                : isSubnet
-                  ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300 dark:hover:bg-emerald-900/60'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
+              isSingleSubnet
+                ? 'bg-violet-100 text-violet-700 hover:bg-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60'
+                : isVNet
+                  ? 'bg-sky-100 text-sky-700 hover:bg-sky-200 dark:bg-sky-900/40 dark:text-sky-300 dark:hover:bg-sky-900/60'
+                  : isSubnet
+                    ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300 dark:hover:bg-emerald-900/60'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600'
             ]
               .filter(Boolean)
               .join(' ');
@@ -172,6 +180,16 @@ export default function SubnetTable({
                   className="border border-slate-200 bg-sky-50 px-2.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.15em] text-sky-700 dark:border-slate-700 dark:bg-sky-900/10 dark:text-sky-300"
                 >
                   Locked VNet – manage splits via child subnets
+                </td>
+              );
+            } else if (isSingleSubnet) {
+              joinCells.push(
+                <td
+                  key={`${row.id}-locked-single`}
+                  colSpan={joinColumnCount}
+                  className="border border-slate-200 bg-violet-50 px-2.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.15em] text-violet-700 dark:border-slate-700 dark:bg-violet-900/10 dark:text-violet-300"
+                >
+                  Locked VNet – entire range used as subnet
                 </td>
               );
             } else {
@@ -324,7 +342,12 @@ export default function SubnetTable({
                     className={toggleClasses}
                     title={toggleTitle}
                   >
-                    {isVNet ? 'VNet' : isSubnet ? 'Subnet' : 'Click'}
+                    {isSingleSubnet ? (
+                      <span className="flex flex-col items-center gap-0.5 leading-none">
+                        <span>VNet</span>
+                        <span className="text-[8px] opacity-75">+ Subnet</span>
+                      </span>
+                    ) : isVNet ? 'VNet' : isSubnet ? 'Subnet' : 'Click'}
                   </button>
                 </td>
                 <td

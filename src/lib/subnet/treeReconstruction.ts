@@ -41,6 +41,7 @@ export function reconstructTreeFromSharePlan(
   const colorByKey = new Map<string, string>();
   const commentByKey = new Map<string, string>();
   const typeByKey = new Map<string, NetworkType>();
+  const singleSubnetByKey = new Set<string>();
 
   shareLeaves.forEach((leaf) => {
     const key = `${leaf.n}/${leaf.p}`;
@@ -52,6 +53,9 @@ export function reconstructTreeFromSharePlan(
     }
     if (leaf.t === 'v') {
       typeByKey.set(key, 'vnet' as NetworkType);
+      if (leaf.f === 1) {
+        singleSubnetByKey.add(key);
+      }
     } else if (leaf.t === 's') {
       typeByKey.set(key, 'subnet' as NetworkType);
     }
@@ -79,11 +83,13 @@ export function reconstructTreeFromSharePlan(
 
     const mappedType = typeByKey.get(mapKey);
     if (mappedType) {
+      const hasSingleSubnet = singleSubnetByKey.has(mapKey) && !updatedTree[node.id]?.children;
       updatedTree = {
         ...updatedTree,
         [node.id]: {
           ...updatedTree[node.id],
-          networkType: mappedType
+          networkType: mappedType,
+          ...(hasSingleSubnet ? { singleSubnet: true } : {})
         }
       };
     }
