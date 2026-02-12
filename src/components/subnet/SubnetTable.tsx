@@ -182,6 +182,16 @@ export default function SubnetTable({
                   Locked VNet – manage splits via child subnets
                 </td>
               );
+            } else if (isSingleSubnet) {
+              joinCells.push(
+                <td
+                  key={`${row.id}-locked-single`}
+                  colSpan={joinColumnCount}
+                  className="border border-slate-200 bg-violet-50 px-2.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.15em] text-violet-700 dark:border-slate-700 dark:bg-violet-900/10 dark:text-violet-300"
+                >
+                  Locked VNet – entire range used as subnet
+                </td>
+              );
             } else {
               segments.forEach((segment, index) => {
                 const isLeafSegment = index === 0;
