@@ -9,7 +9,6 @@ interface ScopesManagerProps {
 
 export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManagerProps) {
   const [input, setInput] = useState('');
-  const [showWarning, setShowWarning] = useState(true);
 
   const handleAdd = () => {
     if (input.trim()) {
@@ -22,33 +21,41 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
 
   return (
     <div>
-      <label htmlFor="assignable-scopes" className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">
-        Assignable Scopes <span className="text-rose-500">*</span>
-      </label>
-
-      {/* Info Banner */}
-      {showWarning && hasPlaceholder && (
-        <div className="relative mb-3 rounded-lg border border-blue-200 bg-blue-50 p-3 pr-10 text-xs text-blue-800 dark:border-blue-400/30 dark:bg-blue-500/10 dark:text-blue-300">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowWarning(false)}
-            className="absolute right-2 top-2 rounded-lg p-1 text-blue-600 hover:bg-blue-100 dark:text-blue-300 dark:hover:bg-blue-900/30"
-            aria-label="Dismiss warning"
+      <div className="mb-1 flex items-center gap-2">
+        <label htmlFor="assignable-scopes" className="block text-sm font-medium text-slate-700 dark:text-slate-200">
+          Assignable Scopes <span className="text-rose-500">*</span>
+        </label>
+        <div className="group relative inline-flex">
+          <button
+            type="button"
+            aria-label="Scope format help"
+            className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-300 text-xs font-semibold text-slate-600 hover:border-sky-300 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/30 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-400 dark:hover:text-sky-300"
           >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </Button>
-          <p className="font-semibold mb-1">⚠️ Required: Replace the placeholder subscription ID</p>
-          <p className="mb-2">Azure Portal requires valid assignable scopes to save your custom role. Update the placeholder with your actual subscription ID(s).</p>
-          <div className="space-y-1 font-mono text-xs">
-            <p className="text-blue-700 dark:text-blue-300">Valid scope formats:</p>
-            <p>• /subscriptions/{'{subscriptionId}'}</p>
-            <p>• /subscriptions/{'{subscriptionId}'}/resourceGroups/{'{resourceGroup}'}</p>
-            <p>• /providers/Microsoft.Management/managementGroups/{'{groupId}'}</p>
+            i
+          </button>
+          <div
+            role="tooltip"
+            className="pointer-events-none invisible absolute left-0 top-full z-20 mt-2 w-80 rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-700 opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+          >
+            <p className="font-semibold text-slate-800 dark:text-slate-100">
+              Valid scope formats
+            </p>
+            <ul className="mt-2 space-y-1 font-mono">
+              <li>/subscriptions/{'{subscriptionId}'}</li>
+              <li>/subscriptions/{'{subscriptionId}'}/resourceGroups/{'{resourceGroup}'}</li>
+              <li>/providers/Microsoft.Management/managementGroups/{'{groupId}'}</li>
+            </ul>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">
+              Use real IDs. Placeholder values cannot be saved in Azure Portal.
+            </p>
           </div>
         </div>
+      </div>
+
+      {hasPlaceholder && (
+        <p className="mb-2 text-xs font-medium text-amber-700 dark:text-amber-300">
+          ⚠️ Replace the placeholder subscription ID before exporting or assigning this role.
+        </p>
       )}
 
       <div className="flex gap-2">
