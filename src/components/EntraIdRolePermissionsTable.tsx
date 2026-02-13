@@ -12,22 +12,9 @@ interface EntraIdRolePermissionsTableProps {
 export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermissionsTableProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(new Set());
-  const [expandedPermissions, setExpandedPermissions] = useState<Set<string>>(new Set());
 
   const toggleDescription = (roleId: string) => {
     setExpandedDescriptions(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(roleId)) {
-        newSet.delete(roleId);
-      } else {
-        newSet.add(roleId);
-      }
-      return newSet;
-    });
-  };
-
-  const togglePermissions = (roleId: string) => {
-    setExpandedPermissions(prev => {
       const newSet = new Set(prev);
       if (newSet.has(roleId)) {
         newSet.delete(roleId);
@@ -252,24 +239,15 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
 
                   {/* Permissions Column */}
                   <td className="px-4 py-3 align-top">
-                    <div className="space-y-2">
-                      {/* Permissions count */}
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => togglePermissions(role.id)}
-                          className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 text-sm font-medium"
-                        >
-                          {expandedPermissions.has(role.id) ? '▼' : '▶'} {allPermissions.length} {pluralize(allPermissions.length, 'permission')}
-                        </button>
-                      </div>
-
-                      {/* Expanded permissions list */}
-                      {expandedPermissions.has(role.id) && (
-                        <ul className="space-y-1 text-xs font-mono text-slate-600 dark:text-slate-400 pl-4 max-h-96 overflow-y-auto">
-                          {allPermissions.map((action, idx) => (
-                            <li key={`${action}-${idx}`} className="list-disc break-all">{action}</li>
-                          ))}
-                        </ul>
+                    <div className="space-y-1 max-h-60 overflow-y-auto">
+                      {allPermissions.length === 0 ? (
+                        <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
+                      ) : (
+                        allPermissions.map((permission, idx) => (
+                          <div key={`${permission}-${idx}`} className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
+                            {permission}
+                          </div>
+                        ))
                       )}
                     </div>
                   </td>
