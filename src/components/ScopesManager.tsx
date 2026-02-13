@@ -41,9 +41,9 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
               Valid scope formats
             </p>
             <ul className="mt-2 space-y-1 font-mono">
-              <li>/subscriptions/{'{subscriptionId}'}</li>
-              <li>/subscriptions/{'{subscriptionId}'}/resourceGroups/{'{resourceGroup}'}</li>
-              <li>/providers/Microsoft.Management/managementGroups/{'{groupId}'}</li>
+              <li className="break-all">/subscriptions/{'{subscriptionId}'}</li>
+              <li className="break-all">/subscriptions/{'{subscriptionId}'}/resourceGroups/{'{resourceGroup}'}</li>
+              <li className="break-all">/providers/Microsoft.Management/managementGroups/{'{groupId}'}</li>
             </ul>
             <p className="mt-2 text-slate-600 dark:text-slate-400">
               Use real IDs. Placeholder values cannot be saved in Azure Portal.
