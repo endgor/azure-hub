@@ -85,6 +85,17 @@ function isRegionalVariant(tag) {
   return tag.includes('.');
 }
 
+/**
+ * Align sitemap URLs with Next.js trailing-slash behavior.
+ * Dotted segments are normalized without trailing slash.
+ */
+function getServiceTagPath(tag) {
+  const encoded = encodeURIComponent(tag);
+  return tag.includes('.')
+    ? `/tools/service-tags/${encoded}`
+    : `/tools/service-tags/${encoded}/`;
+}
+
 function generateSitemap() {
   console.log('Generating sitemap.xml...');
 
@@ -201,8 +212,7 @@ ${guidePages.map(guide => `  <url>
   <!-- Service Tag Pages -->
 ${serviceTagsArray
   .map((tag) => {
-    const urlEncodedTag = encodeURIComponent(tag);
-    const xmlSafeUrl = escapeXml(`${BASE_URL}/tools/service-tags/${urlEncodedTag}/`);
+    const xmlSafeUrl = escapeXml(`${BASE_URL}${getServiceTagPath(tag)}`);
     // Base tags get higher priority than regional variants
     const priority = isRegionalVariant(tag) ? '0.5' : '0.7';
     return `  <url>

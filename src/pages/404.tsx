@@ -3,7 +3,7 @@ import Layout from '@/components/Layout';
 
 export default function Custom404() {
   return (
-    <Layout title="Page Not Found · Azure Hub">
+    <Layout title="Page Not Found" noIndex>
       <div className="mx-auto max-w-3xl text-center">
         <div className="rounded-3xl border border-slate-800/80 bg-slate-900/60 px-10 py-12 shadow-xl shadow-slate-950/30">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Error</p>

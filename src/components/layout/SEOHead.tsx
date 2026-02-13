@@ -5,17 +5,22 @@ interface SEOHeadProps {
   description: string;
   url: string;
   keywords?: string[];
+  noIndex?: boolean;
   jsonLd?: Array<Record<string, unknown>>;
 }
 
-export function SEOHead({ title, description, url, keywords, jsonLd }: SEOHeadProps) {
+export function SEOHead({ title, description, url, keywords, noIndex = false, jsonLd }: SEOHeadProps) {
+  const robotsContent = noIndex
+    ? 'noindex, nofollow, noarchive'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
       {keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+      <meta name="robots" content={robotsContent} />
       <link rel="canonical" href={url} />
 
       {/* Favicons */}

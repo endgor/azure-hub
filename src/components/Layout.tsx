@@ -35,6 +35,7 @@ interface LayoutProps {
   title?: string;
   description?: string;
   keywords?: string[];
+  noIndex?: boolean;
   breadcrumbs?: BreadcrumbItem[];
   toolSchema?: ToolSchema;
   articleSchema?: ArticleSchema;
@@ -127,6 +128,7 @@ export default function Layout({
   title = DEFAULT_TITLE,
   description = DEFAULT_DESCRIPTION,
   keywords = DEFAULT_KEYWORDS,
+  noIndex = false,
   breadcrumbs,
   toolSchema,
   articleSchema,
@@ -316,6 +318,7 @@ export default function Layout({
         description={meta.description}
         url={meta.url}
         keywords={meta.keywords}
+        noIndex={noIndex}
         jsonLd={jsonLd}
       />
 

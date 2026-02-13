@@ -8,6 +8,7 @@ import SearchInput from '@/components/shared/SearchInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { getServiceTagPath } from '@/lib/serviceTagUrl';
 
 /** Cloud filter options */
 type CloudFilter = 'all' | AzureCloudName;
@@ -209,7 +210,7 @@ export default function ServiceTags() {
                 {filteredServiceTags.map((serviceTag) => (
                   <Link
                     key={`${serviceTag.id}-${serviceTag.cloud}`}
-                    href={`/tools/service-tags/${encodeURIComponent(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
+                    href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
                     className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-800/60 dark:hover:shadow-lg"
                   >
                     <div className="flex items-center justify-between gap-2">
