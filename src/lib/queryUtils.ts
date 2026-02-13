@@ -46,5 +46,6 @@ export function buildQueryString(params: QueryParams): string {
  */
 export function buildUrlWithQuery(basePath: string, params: QueryParams): string {
   const queryString = buildQueryString(params);
-  return queryString ? `${basePath}?${queryString}` : basePath;
+  const normalizedPath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+  return queryString ? `${normalizedPath}?${queryString}` : normalizedPath;
 }

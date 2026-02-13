@@ -6,7 +6,7 @@ import Layout from '@/components/Layout';
 import Results from '@/components/Results';
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import { getServiceTagDetails } from '@/lib/serverIpService';
-import ErrorBox from '@/components/shared/ErrorBox';
+import { getServiceTagCanonicalUrl } from '@/lib/serviceTagUrl';
 
 /** Validates and parses cloud parameter from query string */
 function parseCloudParam(cloud: string | string[] | undefined): AzureCloudName | undefined {
@@ -18,13 +18,11 @@ function parseCloudParam(cloud: string | string[] | undefined): AzureCloudName |
 interface ServiceTagDetailProps {
   serviceTag: string;
   ipRanges: AzureIpAddress[];
-  notFound: boolean;
-  message?: string;
 }
 
 const DEFAULT_PAGE_SIZE = 100;
 
-export default function ServiceTagDetail({ serviceTag, ipRanges, notFound, message }: ServiceTagDetailProps) {
+export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDetailProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
@@ -54,6 +52,8 @@ export default function ServiceTagDetail({ serviceTag, ipRanges, notFound, messa
     }
   };
 
+  const canonicalUrl = getServiceTagCanonicalUrl(serviceTag);
+
   // Generate breadcrumb structured data
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -75,7 +75,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges, notFound, messa
         "@type": "ListItem",
         "position": 3,
         "name": serviceTag,
-        "item": `https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag)}/`
+        "item": canonicalUrl
       }
     ]
   };
@@ -84,7 +84,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges, notFound, messa
     <Layout
       title={`Azure Service Tag: ${serviceTag}`}
       description={`Explore the Azure IP ranges associated with the ${serviceTag} service tag.`}
-      canonicalUrl={`https://azurehub.org/tools/service-tags/${encodeURIComponent(serviceTag)}/`}
+      canonicalUrl={canonicalUrl}
     >
       <Head>
         <script
@@ -110,20 +110,8 @@ export default function ServiceTagDetail({ serviceTag, ipRanges, notFound, messa
           </div>
         </div>
 
-        {/* Not Found State */}
-        {notFound && (
-          <ErrorBox variant="warning" title="Service tag not found">
-            <p>{message || `No data found for service tag "${serviceTag}"`}</p>
-            <div className="mt-4">
-              <Link href="/tools/service-tags" className="font-semibold text-sky-600 underline-offset-4 hover:underline dark:text-sky-300 dark:hover:text-sky-200">
-                ← Back to Service Tags
-              </Link>
-            </div>
-          </ErrorBox>
-        )}
-
         {/* Results */}
-        {!notFound && ipRanges && ipRanges.length > 0 && (
+        {ipRanges && ipRanges.length > 0 && (
           <Results
             results={paginatedResults}
             query={serviceTag}
@@ -182,42 +170,38 @@ export const getServerSideProps: GetServerSideProps<ServiceTagDetailProps> = asy
   const cloud = parseCloudParam(cloudParam);
 
   try {
-    // Fetch service tag details server-side
-    let ipRanges = await getServiceTagDetails(serviceTag);
+    // Fetch all results for this tag (unfiltered) to check if the tag exists at all
+    const allIpRanges = await getServiceTagDetails(serviceTag);
 
-    // Filter by cloud if specified
-    if (cloud) {
-      ipRanges = ipRanges.filter(ip => ip.cloud === cloud);
+    // If tag has 0 results across ALL clouds → proper HTTP 404
+    if (allIpRanges.length === 0) {
+      return { notFound: true };
     }
 
-    // If no results found, return notFound state (but still render the page)
+    // Tag exists — set CDN cache headers (24h cache + 12h stale-while-revalidate)
+    context.res.setHeader(
+      'Cache-Control',
+      'public, s-maxage=86400, stale-while-revalidate=43200'
+    );
+
+    // Apply cloud filter if specified
+    let ipRanges = cloud
+      ? allIpRanges.filter(ip => ip.cloud === cloud)
+      : allIpRanges;
+
+    // Tag exists but cloud filter yields 0 results: return real 404 to avoid soft-404 signals.
     if (ipRanges.length === 0) {
-      return {
-        props: {
-          serviceTag,
-          ipRanges: [],
-          notFound: true,
-          message: `No data found for service tag "${serviceTag}"`
-        }
-      };
+      return { notFound: true };
     }
 
     return {
       props: {
         serviceTag,
-        ipRanges,
-        notFound: false
+        ipRanges
       }
     };
   } catch {
-    // On error, return notFound state
-    return {
-      props: {
-        serviceTag,
-        ipRanges: [],
-        notFound: true,
-        message: `Error loading service tag "${serviceTag}"`
-      }
-    };
+    // On error, return proper HTTP 404
+    return { notFound: true };
   }
 };

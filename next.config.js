@@ -5,7 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   trailingSlash: true,
-  skipTrailingSlashRedirect: true,
   reactStrictMode: true,
   // Performance optimizations
   compiler: {

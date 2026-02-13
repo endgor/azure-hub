@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from 'next';
+import { getServiceTagPath } from '@/lib/serviceTagUrl';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { serviceTag } = context.params ?? {};
@@ -6,7 +7,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     redirect: {
-      destination: encoded ? `/tools/service-tags/${encodeURIComponent(encoded)}` : '/tools/service-tags',
+      destination: encoded ? getServiceTagPath(encoded) : '/tools/service-tags/',
       permanent: true
     }
   };

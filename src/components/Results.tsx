@@ -7,6 +7,7 @@ import ExportMenu, { ExportOption } from './shared/ExportMenu';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import { pluralize } from '@/lib/filenameUtils';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { getServiceTagPath } from '@/lib/serviceTagUrl';
 
 interface PaginationButtonsProps {
   currentPage: number;
@@ -176,7 +177,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
 
   // Handle service tag click - memoized to prevent re-renders
   const handleServiceTagClick = useCallback((serviceTagId: string) => {
-    router.push(`/tools/service-tags/${encodeURIComponent(serviceTagId)}`);
+    router.push(getServiceTagPath(serviceTagId));
   }, [router]);
   
   // Handle column sort - memoized to prevent re-renders
