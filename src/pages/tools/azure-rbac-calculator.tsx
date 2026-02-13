@@ -166,6 +166,7 @@ export default function AzureRbacCalculatorPage() {
 
     let controlActions: string[] = [];
     let dataActions: string[] = [];
+    let advancedLines: string[] = [];
 
     if (isSimpleMode) {
       if (selectedActions.length === 0) {
@@ -179,24 +180,26 @@ export default function AzureRbacCalculatorPage() {
         setError('Please enter at least one action');
         return;
       }
-      const lines = actionsInput
+      advancedLines = actionsInput
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0 && !line.startsWith('#'));
 
-      if (lines.length === 0) {
+      if (advancedLines.length === 0) {
         setError('Please enter at least one action');
         return;
       }
-
-      const classified = await classifyActions(lines);
-      controlActions = classified.controlActions;
-      dataActions = classified.dataActions;
     }
 
     setIsLoading(true);
 
     try {
+      if (!isSimpleMode) {
+        const classified = await classifyActions(advancedLines);
+        controlActions = classified.controlActions;
+        dataActions = classified.dataActions;
+      }
+
       const leastPrivilegedRoles = await calculateLeastPrivilege({
         requiredActions: controlActions,
         requiredDataActions: dataActions
@@ -207,8 +210,9 @@ export default function AzureRbacCalculatorPage() {
       if (leastPrivilegedRoles.length === 0) {
         setError('No roles found that grant all the specified permissions. Try fewer or more general actions.');
       }
-    } catch {
-      setError('Failed to calculate least privileged roles. Please try again.');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : '';
+      setError(errorMessage || 'Failed to calculate least privileged roles. Please try again.');
     } finally {
       setIsLoading(false);
     }

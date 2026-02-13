@@ -23,7 +23,7 @@ export default async function handler(
   }
 
   const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(clientId);
+  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:namespaces`);
 
   if (!rateLimitResult.success) {
     res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());

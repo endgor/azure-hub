@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Operation } from '@/types/rbac';
 
 export interface UseAdvancedSearchProps {
@@ -9,20 +9,35 @@ export interface UseAdvancedSearchReturn {
   actionsInput: string;
   searchResults: Operation[];
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
-  handleSearch: (query: string) => Promise<void>;
+  handleSearch: (query: string) => void;
   handleAddAction: (action: string) => void;
   setActionsInputDirect: (value: string) => void;
   clearSearch: () => void;
   clearResults: () => void;
 }
 
+const ADVANCED_SEARCH_DEBOUNCE_MS = 250;
+
 export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdvancedSearchReturn {
   const [actionsInput, setActionsInput] = useState('');
   const [searchResults, setSearchResults] = useState<Operation[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const latestSearchRequestRef = useRef(0);
 
-  const handleSearch = useCallback(async (query: string) => {
+  const cancelPendingSearch = useCallback(() => {
+    latestSearchRequestRef.current += 1;
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => cancelPendingSearch(), [cancelPendingSearch]);
+
+  const handleSearch = useCallback((query: string) => {
     setActionsInput(query);
+    cancelPendingSearch();
 
     const textarea = textareaRef.current;
     if (!textarea) {
@@ -49,13 +64,23 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
       return;
     }
 
-    try {
-      const results = await onSearch(trimmedLine);
-      setSearchResults(results.slice(0, 10));
-    } catch {
-      setSearchResults([]);
-    }
-  }, [onSearch]);
+    const requestId = latestSearchRequestRef.current;
+    const timeoutId = setTimeout(async () => {
+      try {
+        const results = await onSearch(trimmedLine);
+        if (latestSearchRequestRef.current !== requestId) return;
+        setSearchResults(results.slice(0, 10));
+      } catch {
+        if (latestSearchRequestRef.current !== requestId) return;
+        setSearchResults([]);
+      } finally {
+        if (searchTimeoutRef.current === timeoutId) {
+          searchTimeoutRef.current = null;
+        }
+      }
+    }, ADVANCED_SEARCH_DEBOUNCE_MS);
+    searchTimeoutRef.current = timeoutId;
+  }, [cancelPendingSearch, onSearch]);
 
   const handleAddAction = useCallback((action: string) => {
     const textarea = textareaRef.current;
@@ -77,6 +102,7 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
     const newLines = [...lines];
     newLines[currentLineIndex] = action;
     const newText = newLines.join('\n');
+    cancelPendingSearch();
     setActionsInput(newText);
     setSearchResults([]);
 
@@ -89,21 +115,24 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
         textarea.setSelectionRange(newCursorPosition, newCursorPosition);
       }
     }, 0);
-  }, [actionsInput]);
+  }, [actionsInput, cancelPendingSearch]);
 
   const setActionsInputDirect = useCallback((value: string) => {
+    cancelPendingSearch();
     setActionsInput(value);
     setSearchResults([]);
-  }, []);
+  }, [cancelPendingSearch]);
 
   const clearSearch = useCallback(() => {
+    cancelPendingSearch();
     setActionsInput('');
     setSearchResults([]);
-  }, []);
+  }, [cancelPendingSearch]);
 
   const clearResults = useCallback(() => {
+    cancelPendingSearch();
     setSearchResults([]);
-  }, []);
+  }, [cancelPendingSearch]);
 
   return {
     actionsInput,
