@@ -25,7 +25,7 @@ export default async function handler(
 
   // Apply rate limiting
   const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(clientId);
+  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:roles`);
 
   if (!rateLimitResult.success) {
     res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
