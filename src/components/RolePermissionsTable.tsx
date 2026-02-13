@@ -194,16 +194,33 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                       </div>
                       {role.description && (
                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                          <div className={expandedDescriptions.has(role.id) ? '' : 'line-clamp-2'}>
-                            {role.description}
-                          </div>
-                          {role.description.length > 100 && (
-                            <button
-                              onClick={() => toggleDescription(role.id)}
-                              className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium mt-1 text-xs"
-                            >
-                              {expandedDescriptions.has(role.id) ? 'Show less' : 'Show more'}
-                            </button>
+                          {expandedDescriptions.has(role.id) ? (
+                            <>
+                              {role.description}
+                              {role.description.length > 80 && (
+                                <button
+                                  onClick={() => toggleDescription(role.id)}
+                                  className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
+                                >
+                                  Show less
+                                </button>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {role.description.slice(0, 80)}
+                              {role.description.length > 80 && (
+                                <>
+                                  ...
+                                  <button
+                                    onClick={() => toggleDescription(role.id)}
+                                    className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
+                                  >
+                                    Show more
+                                  </button>
+                                </>
+                              )}
+                            </>
                           )}
                         </div>
                       )}
