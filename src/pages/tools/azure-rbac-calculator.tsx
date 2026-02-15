@@ -20,8 +20,8 @@ import DisclaimerBanner from '@/components/shared/RbacCalculator/DisclaimerBanne
 import ExampleScenarios from '@/components/shared/RbacCalculator/ExampleScenarios';
 import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
 
-// Import Azure-specific components
-import ModeTabs from '@/components/RbacCalculator/ModeTabs';
+// Import shared tab navigation
+import ModeTabs from '@/components/shared/RbacCalculator/ModeTabs';
 
 // Import shared hooks
 import { useAdvancedSearch } from '@/hooks/rbac/useAdvancedSearch';
@@ -486,7 +486,17 @@ export default function AzureRbacCalculatorPage() {
         )}
 
         {/* Mode Tabs */}
-        <ModeTabs activeMode={inputMode} onModeChange={setInputMode} />
+        <ModeTabs
+          activeMode={inputMode}
+          onModeChange={setInputMode}
+          tabs={[
+            { value: 'simple', label: 'Simple Mode' },
+            { value: 'advanced', label: 'Advanced Mode' },
+            { value: 'roleExplorer', label: 'Role Explorer' },
+            { value: 'roleCompare', label: 'Role Compare' },
+            { value: 'roleCreator', label: 'Role Creator' },
+          ]}
+        />
 
         {/* Role Creator Mode */}
         {inputMode === 'roleCreator' ? (
