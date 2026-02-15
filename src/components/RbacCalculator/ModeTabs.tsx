@@ -20,21 +20,23 @@ export default function ModeTabs({ activeMode, onModeChange }: ModeTabsProps) {
   ];
 
   return (
-    <div className="flex gap-2 rounded-lg border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-900 w-fit">
-      {modes.map((mode) => (
-        <button
-          key={mode.value}
-          type="button"
-          onClick={() => onModeChange(mode.value)}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition ${
-            activeMode === mode.value
-              ? 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300'
-              : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100'
-          }`}
-        >
-          {mode.label}
-        </button>
-      ))}
+    <div className="border-b border-slate-200 dark:border-slate-700">
+      <nav className="-mb-px flex gap-6" aria-label="Tabs">
+        {modes.map((mode) => (
+          <button
+            key={mode.value}
+            type="button"
+            onClick={() => onModeChange(mode.value)}
+            className={`whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition ${
+              activeMode === mode.value
+                ? 'border-sky-500 text-sky-600 dark:border-sky-400 dark:text-sky-400'
+                : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-300'
+            }`}
+          >
+            {mode.label}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
