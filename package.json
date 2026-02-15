@@ -50,12 +50,11 @@
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.24",
     "eslint": "^10.0.0",
-    "eslint-config-next": "^16.1.6",
     "eslint-plugin-unused-imports": "^4.4.1",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
-    "tsconfig-paths": "^4.2.0",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   }
 }
