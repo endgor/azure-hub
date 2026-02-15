@@ -1,9 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import nextPlugin from "eslint-config-next/core-web-vitals";
 import unusedImports from "eslint-plugin-unused-imports";
 
 const eslintConfig = defineConfig([
-  ...nextPlugin,
   globalIgnores([
     ".next/**",
     "out/**",
@@ -12,8 +10,11 @@ const eslintConfig = defineConfig([
     "node_modules/**",
     "public/**",
     "scripts/**",
+    "**/*.ts",
+    "**/*.tsx",
   ]),
   {
+    files: ["**/*.{js,mjs,cjs}"],
     plugins: {
       "unused-imports": unusedImports,
     },
