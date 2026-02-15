@@ -27,6 +27,7 @@ import { entraIdConfig } from '@/lib/rbacConfig';
 import DisclaimerBanner from '@/components/shared/RbacCalculator/DisclaimerBanner';
 import ExampleScenarios from '@/components/shared/RbacCalculator/ExampleScenarios';
 import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
+import ModeTabs from '@/components/shared/RbacCalculator/ModeTabs';
 
 // Import shared hooks
 import { useAdvancedSearch } from '@/hooks/rbac/useAdvancedSearch';
@@ -382,26 +383,15 @@ export default function EntraIdRolesCalculatorPage() {
         )}
 
         {/* Mode Tabs (Simple, Advanced, Role Explorer only) */}
-        <div className="border-b border-slate-200 dark:border-slate-700">
-          <nav className="-mb-px flex gap-6" aria-label="Tabs">
-            {(['simple', 'advanced', 'roleExplorer'] as const).map((mode) => (
-              <button
-                key={mode}
-                type="button"
-                onClick={() => setInputMode(mode)}
-                className={`whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition ${
-                  inputMode === mode
-                    ? 'border-sky-500 text-sky-600 dark:border-sky-400 dark:text-sky-400'
-                    : 'border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-700 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-300'
-                }`}
-              >
-                {mode === 'simple' && 'Simple Mode'}
-                {mode === 'advanced' && 'Advanced Mode'}
-                {mode === 'roleExplorer' && 'Role Explorer'}
-              </button>
-            ))}
-          </nav>
-        </div>
+        <ModeTabs
+          activeMode={inputMode}
+          onModeChange={setInputMode}
+          tabs={[
+            { value: 'simple', label: 'Simple Mode' },
+            { value: 'advanced', label: 'Advanced Mode' },
+            { value: 'roleExplorer', label: 'Role Explorer' },
+          ]}
+        />
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Simple Mode */}
