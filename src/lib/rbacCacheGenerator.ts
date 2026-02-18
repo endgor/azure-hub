@@ -1,4 +1,4 @@
-import type { AzureRole } from '@/types/rbac';
+import type { AzureRole, Operation } from '@/types/rbac';
 import {
   buildActionsMap,
   collectExplicitActionMetadata,
@@ -8,6 +8,8 @@ import {
 export interface GenerateActionsCacheOptions {
   verboseLogging?: boolean;
   showProgress?: boolean;
+  /** Provider operations to merge into the cache. Actions not already present get roleCount: 0. */
+  operations?: Operation[];
 }
 
 /**
@@ -18,7 +20,7 @@ export function generateActionsCache(
   roles: AzureRole[],
   options: GenerateActionsCacheOptions = {}
 ): Array<{ key: string; name: string; roleCount: number }> {
-  const { verboseLogging = false, showProgress = false } = options;
+  const { verboseLogging = false, showProgress = false, operations } = options;
   const log = (...args: unknown[]): void => {
     if (verboseLogging) {
       console.log(...args);
@@ -34,6 +36,19 @@ export function generateActionsCache(
   log(`  Found ${wildcardPatterns.length} wildcard patterns`);
 
   const actionsMap = buildActionsMap(actionCasingMap, explicitActionRoles, wildcardPatterns);
+
+  // Merge provider operations that aren't already in the map (e.g. actions only reachable via wildcards)
+  if (operations && operations.length > 0) {
+    let mergedCount = 0;
+    for (const op of operations) {
+      const key = op.name.toLowerCase();
+      if (!actionsMap.has(key)) {
+        actionsMap.set(key, { name: op.name, roleCount: 0 });
+        mergedCount++;
+      }
+    }
+    log(`  Merged ${mergedCount} additional actions from provider operations`);
+  }
 
   const totalActions = actionsMap.size;
   let processedActions = 0;

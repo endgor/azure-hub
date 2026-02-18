@@ -10,7 +10,6 @@ const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
 // Output file paths
 const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
-const PERMISSIONS_FILE = path.join(DATA_DIR, 'permissions.json');
 const ACTIONS_CACHE_FILE = path.join(DATA_DIR, 'actions-cache.json');
 const ENTRAID_ROLES_FILE = path.join(DATA_DIR, 'entraid-roles.json');
 
@@ -312,28 +311,23 @@ async function updateRbacData(): Promise<void> {
     fs.writeFileSync(ROLES_FILE, JSON.stringify(extendedRoles, null, 2), 'utf8');
     console.info(`✓ Roles data saved\n`);
 
-    // Generate and save pre-computed actions cache
+    // Fetch provider operations (used to enrich the actions cache)
+    let operations: Operation[] = [];
+    try {
+      operations = fetchResourceProviderOperations();
+      operations = transformOperations(operations);
+    } catch (error: any) {
+      console.warn('Warning: Could not fetch provider operations. The cache will still work with role data only.');
+    }
+
+    // Generate and save pre-computed actions cache (enriched with provider operations)
     const actionsCache = generateActionsCache(extendedRoles, {
-      verboseLogging: false
+      verboseLogging: false,
+      operations,
     });
     console.info(`Writing ${actionsCache.length} actions to ${ACTIONS_CACHE_FILE}...`);
     fs.writeFileSync(ACTIONS_CACHE_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
     console.info(`✓ Actions cache saved\n`);
-
-    // Fetch and save operations (permissions)
-    let operations: Operation[] = [];
-    try {
-      operations = fetchResourceProviderOperations();
-      const transformedOperations = transformOperations(operations);
-
-      console.info(`Writing ${transformedOperations.length} operations to ${PERMISSIONS_FILE}...`);
-      fs.writeFileSync(PERMISSIONS_FILE, JSON.stringify(transformedOperations, null, 2), 'utf8');
-      console.info(`✓ Permissions data saved\n`);
-    } catch (error: any) {
-      console.warn('Warning: Could not fetch operations. The calculator will still work with role data only.');
-      console.warn('You can manually create an empty permissions file:');
-      console.warn(`  echo '[]' > ${PERMISSIONS_FILE}`);
-    }
 
     // Fetch and save Entra ID roles
     let entraIdRolesSuccess = false;
@@ -356,9 +350,6 @@ async function updateRbacData(): Promise<void> {
     console.info('\nGenerated files:');
     console.info(`  - ${ROLES_FILE}`);
     console.info(`  - ${ACTIONS_CACHE_FILE}`);
-    if (operations.length > 0) {
-      console.info(`  - ${PERMISSIONS_FILE}`);
-    }
     if (entraIdRolesSuccess) {
       console.info(`  - ${ENTRAID_ROLES_FILE}`);
     }

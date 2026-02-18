@@ -69,7 +69,7 @@ export function useAdvancedSearch({ onSearch }: UseAdvancedSearchProps): UseAdva
       try {
         const results = await onSearch(trimmedLine);
         if (latestSearchRequestRef.current !== requestId) return;
-        setSearchResults(results.slice(0, 10));
+        setSearchResults(results.slice(0, 50));
       } catch {
         if (latestSearchRequestRef.current !== requestId) return;
         setSearchResults([]);
