@@ -49,7 +49,7 @@ export async function loadActionsCache(): Promise<Map<string, { name: string; ro
   }
 
   try {
-    const dataPath = path.join(process.cwd(), 'public', 'data', 'actions-cache.json');
+    const dataPath = path.join(process.cwd(), 'public', 'data', 'actions-index.json');
     const fileContent = await fs.readFile(dataPath, 'utf-8');
     const data = JSON.parse(fileContent) as Array<{ key: string; name: string; roleCount: number }>;
 

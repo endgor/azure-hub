@@ -10,7 +10,7 @@ const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 
 // Output file paths
 const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
-const ACTIONS_CACHE_FILE = path.join(DATA_DIR, 'actions-cache.json');
+const ACTIONS_INDEX_FILE = path.join(DATA_DIR, 'actions-index.json');
 const ENTRAID_ROLES_FILE = path.join(DATA_DIR, 'entraid-roles.json');
 
 const debugEnv = process.env.DEBUG_UPDATE_RBAC_DATA ?? '';
@@ -378,8 +378,8 @@ async function updateRbacData(): Promise<void> {
       verboseLogging: false,
       operations,
     });
-    console.info(`Writing ${actionsCache.length} actions to ${ACTIONS_CACHE_FILE}...`);
-    fs.writeFileSync(ACTIONS_CACHE_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
+    console.info(`Writing ${actionsCache.length} actions to ${ACTIONS_INDEX_FILE}...`);
+    fs.writeFileSync(ACTIONS_INDEX_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
     console.info(`✓ Actions cache saved\n`);
 
     // Fetch and save Entra ID roles
@@ -402,7 +402,7 @@ async function updateRbacData(): Promise<void> {
     console.info('RBAC data update completed successfully!');
     console.info('\nGenerated files:');
     console.info(`  - ${ROLES_FILE}`);
-    console.info(`  - ${ACTIONS_CACHE_FILE}`);
+    console.info(`  - ${ACTIONS_INDEX_FILE}`);
     if (entraIdRolesSuccess) {
       console.info(`  - ${ENTRAID_ROLES_FILE}`);
     }
