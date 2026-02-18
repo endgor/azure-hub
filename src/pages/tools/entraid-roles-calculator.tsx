@@ -60,7 +60,7 @@ export default function EntraIdRolesCalculatorPage() {
   } = useAdvancedSearch({
     onSearch: async (query) => {
       const actionNames = await searchEntraIDActions(query);
-      return actionNames.slice(0, 10).map(name => ({
+      return actionNames.slice(0, 50).map(name => ({
         name,
         displayName: name.split('/').pop() || name,
         description: '',
