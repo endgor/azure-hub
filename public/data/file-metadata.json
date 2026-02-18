@@ -8,16 +8,16 @@
   },
   {
     "cloud": "AzureChinaCloud",
-    "changeNumber": 384,
-    "filename": "ServiceTags_China_20260216.json",
-    "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20260216.json",
+    "changeNumber": 383,
+    "filename": "ServiceTags_China_20260209.json",
+    "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20260209.json",
     "lastRetrieved": "2026-02-18"
   },
   {
     "cloud": "AzureUSGovernment",
-    "changeNumber": 385,
-    "filename": "ServiceTags_AzureGovernment_20260216.json",
-    "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20260216.json",
+    "changeNumber": 384,
+    "filename": "ServiceTags_AzureGovernment_20260209.json",
+    "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20260209.json",
     "lastRetrieved": "2026-02-18"
   }
 ]
