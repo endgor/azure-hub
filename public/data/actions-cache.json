@@ -17,7 +17,7 @@
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/read",
     "name": "Microsoft.Resources/subscriptions/resourceGroups/read",
-    "roleCount": 376
+    "roleCount": 381
   },
   {
     "key": "microsoft.containerregistry/registries/sign/write",
@@ -852,7 +852,7 @@
   {
     "key": "microsoft.insights/alertrules/read",
     "name": "Microsoft.Insights/AlertRules/Read",
-    "roleCount": 264
+    "roleCount": 265
   },
   {
     "key": "microsoft.insights/diagnosticsettings/read",
@@ -877,17 +877,17 @@
   {
     "key": "microsoft.resources/deployments/operations/read",
     "name": "Microsoft.Resources/deployments/operations/read",
-    "roleCount": 304
+    "roleCount": 305
   },
   {
     "key": "microsoft.resources/subscriptions/operationresults/read",
     "name": "Microsoft.Resources/subscriptions/operationresults/read",
-    "roleCount": 78
+    "roleCount": 82
   },
   {
     "key": "microsoft.resources/subscriptions/read",
     "name": "Microsoft.Resources/subscriptions/read",
-    "roleCount": 93
+    "roleCount": 97
   },
   {
     "key": "microsoft.features/features/read",
@@ -1082,7 +1082,7 @@
   {
     "key": "microsoft.resources/deployments/read",
     "name": "Microsoft.Resources/deployments/read",
-    "roleCount": 307
+    "roleCount": 308
   },
   {
     "key": "microsoft.storage/storageaccounts/listkeys/action",
@@ -2062,22 +2062,22 @@
   {
     "key": "microsoft.authorization/policyassignments/read",
     "name": "Microsoft.Authorization/policyassignments/read",
-    "roleCount": 376
+    "roleCount": 377
   },
   {
     "key": "microsoft.authorization/policydefinitions/read",
     "name": "Microsoft.Authorization/policydefinitions/read",
-    "roleCount": 376
+    "roleCount": 377
   },
   {
     "key": "microsoft.authorization/policyexemptions/read",
     "name": "Microsoft.Authorization/policyexemptions/read",
-    "roleCount": 376
+    "roleCount": 377
   },
   {
     "key": "microsoft.authorization/policysetdefinitions/read",
     "name": "Microsoft.Authorization/policysetdefinitions/read",
-    "roleCount": 376
+    "roleCount": 377
   },
   {
     "key": "microsoft.policyinsights/checkdatapolicycompliance/action",
@@ -2157,7 +2157,7 @@
   {
     "key": "microsoft.resources/deployments/write",
     "name": "Microsoft.Resources/deployments/write",
-    "roleCount": 295
+    "roleCount": 296
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
@@ -2232,12 +2232,12 @@
   {
     "key": "microsoft.authorization/roleassignments/read",
     "name": "Microsoft.Authorization/roleAssignments/read",
-    "roleCount": 400
+    "roleCount": 401
   },
   {
     "key": "microsoft.authorization/roledefinitions/read",
     "name": "Microsoft.Authorization/roleDefinitions/read",
-    "roleCount": 392
+    "roleCount": 393
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/read",
@@ -3277,7 +3277,7 @@
   {
     "key": "microsoft.authorization/locks/read",
     "name": "Microsoft.Authorization/locks/read",
-    "roleCount": 376
+    "roleCount": 377
   },
   {
     "key": "microsoft.authorization/locks/write",
@@ -3832,62 +3832,62 @@
   {
     "key": "microsoft.insights/alertrules/write",
     "name": "Microsoft.Insights/AlertRules/Write",
-    "roleCount": 234
+    "roleCount": 235
   },
   {
     "key": "microsoft.insights/alertrules/delete",
     "name": "Microsoft.Insights/AlertRules/Delete",
-    "roleCount": 234
+    "roleCount": 235
   },
   {
     "key": "microsoft.insights/alertrules/activated/action",
     "name": "Microsoft.Insights/AlertRules/Activated/Action",
-    "roleCount": 234
+    "roleCount": 235
   },
   {
     "key": "microsoft.insights/alertrules/resolved/action",
     "name": "Microsoft.Insights/AlertRules/Resolved/Action",
-    "roleCount": 234
+    "roleCount": 235
   },
   {
     "key": "microsoft.insights/alertrules/throttled/action",
     "name": "Microsoft.Insights/AlertRules/Throttled/Action",
-    "roleCount": 234
+    "roleCount": 235
   },
   {
     "key": "microsoft.insights/alertrules/incidents/read",
     "name": "Microsoft.Insights/AlertRules/Incidents/Read",
-    "roleCount": 249
+    "roleCount": 250
   },
   {
     "key": "microsoft.resources/deployments/delete",
     "name": "Microsoft.Resources/deployments/delete",
-    "roleCount": 279
+    "roleCount": 280
   },
   {
     "key": "microsoft.resources/deployments/cancel/action",
     "name": "Microsoft.Resources/deployments/cancel/action",
-    "roleCount": 277
+    "roleCount": 278
   },
   {
     "key": "microsoft.resources/deployments/validate/action",
     "name": "Microsoft.Resources/deployments/validate/action",
-    "roleCount": 280
+    "roleCount": 281
   },
   {
     "key": "microsoft.resources/deployments/whatif/action",
     "name": "Microsoft.Resources/deployments/whatIf/action",
-    "roleCount": 277
+    "roleCount": 278
   },
   {
     "key": "microsoft.resources/deployments/exporttemplate/action",
     "name": "Microsoft.Resources/deployments/exportTemplate/action",
-    "roleCount": 280
+    "roleCount": 281
   },
   {
     "key": "microsoft.resources/deployments/operationstatuses/read",
     "name": "Microsoft.Resources/deployments/operationstatuses/read",
-    "roleCount": 294
+    "roleCount": 295
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/deployments/read",
@@ -5787,12 +5787,12 @@
   {
     "key": "microsoft.containerservice/fleets/read",
     "name": "Microsoft.ContainerService/fleets/read",
-    "roleCount": 26
+    "roleCount": 28
   },
   {
     "key": "microsoft.containerservice/fleets/listcredentials/action",
     "name": "Microsoft.ContainerService/fleets/listCredentials/action",
-    "roleCount": 10
+    "roleCount": 12
   },
   {
     "key": "microsoft.containerservice/fleets/apps/controllerrevisions/read",
@@ -7457,6 +7457,26 @@
   {
     "key": "microsoft.softwareplan/validatesoftwaresubscriptioncreate/action",
     "name": "Microsoft.SoftwarePlan/validateSoftwareSubscriptionCreate/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.hardware/register/action",
+    "name": "Microsoft.Hardware/register/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.hardware/orderpreview/action",
+    "name": "Microsoft.Hardware/orderPreview/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.hardware/orders/read",
+    "name": "Microsoft.Hardware/orders/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.hardware/orders/write",
+    "name": "Microsoft.Hardware/orders/write",
     "roleCount": 3
   },
   {
@@ -9587,102 +9607,102 @@
   {
     "key": "microsoft.authorization/classicadministrators/operationstatuses/read",
     "name": "Microsoft.Authorization/classicAdministrators/operationstatuses/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/classicadministrators/read",
     "name": "Microsoft.Authorization/classicAdministrators/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/denyassignments/read",
     "name": "Microsoft.Authorization/denyAssignments/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/diagnosticsettings/read",
     "name": "Microsoft.Authorization/diagnosticSettings/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/diagnosticsettingscategories/read",
     "name": "Microsoft.Authorization/diagnosticSettingsCategories/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/operations/read",
     "name": "Microsoft.Authorization/operations/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/permissions/read",
     "name": "Microsoft.Authorization/permissions/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/policyassignments/privatelinkassociations/read",
     "name": "Microsoft.Authorization/policyAssignments/privateLinkAssociations/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/policyassignments/resourcemanagementprivatelinks/read",
     "name": "Microsoft.Authorization/policyAssignments/resourceManagementPrivateLinks/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/policyassignments/resourcemanagementprivatelinks/privateendpointconnectionproxies/read",
     "name": "Microsoft.Authorization/policyAssignments/resourceManagementPrivateLinks/privateEndpointConnectionProxies/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/policyassignments/resourcemanagementprivatelinks/privateendpointconnections/read",
     "name": "Microsoft.Authorization/policyAssignments/resourceManagementPrivateLinks/privateEndpointConnections/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/provideroperations/read",
     "name": "Microsoft.Authorization/providerOperations/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/roleassignmentscheduleinstances/read",
     "name": "Microsoft.Authorization/roleAssignmentScheduleInstances/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/roleassignmentschedulerequests/read",
     "name": "Microsoft.Authorization/roleAssignmentScheduleRequests/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/roleassignmentschedules/read",
     "name": "Microsoft.Authorization/roleAssignmentSchedules/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/roleeligibilityscheduleinstances/read",
     "name": "Microsoft.Authorization/roleEligibilityScheduleInstances/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/roleeligibilityschedulerequests/read",
     "name": "Microsoft.Authorization/roleEligibilityScheduleRequests/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/roleeligibilityschedules/read",
     "name": "Microsoft.Authorization/roleEligibilitySchedules/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/rolemanagementpolicies/read",
     "name": "Microsoft.Authorization/roleManagementPolicies/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.authorization/rolemanagementpolicyassignments/read",
     "name": "Microsoft.Authorization/roleManagementPolicyAssignments/read",
-    "roleCount": 375
+    "roleCount": 376
   },
   {
     "key": "microsoft.managednetworkfabric/networkfabriccontrollers/join/action",
@@ -13697,7 +13717,7 @@
   {
     "key": "microsoft.insights/alertrules/",
     "name": "Microsoft.Insights/alertRules/",
-    "roleCount": 221
+    "roleCount": 222
   },
   {
     "key": "microsoft.monitor/accounts/read",
@@ -17288,5 +17308,80 @@
     "key": "microsoft.dbforpostgresql/flexibleservers/advancedthreatprotectionsettings/write",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/advancedThreatProtectionSettings/write",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/read",
+    "name": "Microsoft.DeviceUpdate/accounts/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/write",
+    "name": "Microsoft.DeviceUpdate/accounts/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/delete",
+    "name": "Microsoft.DeviceUpdate/accounts/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/instances/read",
+    "name": "Microsoft.DeviceUpdate/accounts/instances/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/instances/write",
+    "name": "Microsoft.DeviceUpdate/accounts/instances/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/instances/delete",
+    "name": "Microsoft.DeviceUpdate/accounts/instances/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/privateendpointconnections/read",
+    "name": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/privateendpointconnections/write",
+    "name": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.deviceupdate/accounts/privateendpointconnections/delete",
+    "name": "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/delete",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/customresources/write",
+    "name": "Microsoft.ContainerService/fleets/members/customresources/write",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/customresources/delete",
+    "name": "Microsoft.ContainerService/fleets/members/customresources/delete",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.containerservice/fleets/members/customresources/read",
+    "name": "Microsoft.ContainerService/fleets/members/customresources/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.containerservice/fleets/customresources/write",
+    "name": "Microsoft.ContainerService/fleets/customresources/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.containerservice/fleets/customresources/delete",
+    "name": "Microsoft.ContainerService/fleets/customresources/delete",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.containerservice/fleets/customresources/read",
+    "name": "Microsoft.ContainerService/fleets/customresources/read",
+    "roleCount": 21
   }
 ]

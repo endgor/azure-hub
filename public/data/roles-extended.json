@@ -17977,7 +17977,11 @@
           "Microsoft.SoftwarePlan/softwareSubscriptions/productKeys/showFullKey/action",
           "Microsoft.SoftwarePlan/softwareSubscriptions/productDownloadOptions/read",
           "Microsoft.SoftwarePlan/softwareSubscriptions/productDownloadOptions/generateDownloadLinks/action",
-          "Microsoft.SoftwarePlan/validateSoftwareSubscriptionCreate/action"
+          "Microsoft.SoftwarePlan/validateSoftwareSubscriptionCreate/action",
+          "Microsoft.Hardware/register/action",
+          "Microsoft.Hardware/orderPreview/action",
+          "Microsoft.Hardware/orders/read",
+          "Microsoft.Hardware/orders/write"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -17990,8 +17994,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-02-05T00:44:39.864985+00:00",
-    "permissionCount": 52,
+    "updatedOn": "2026-02-17T16:13:17.312485+00:00",
+    "permissionCount": 56,
     "dataActions": [],
     "notDataActions": []
   },
@@ -36513,6 +36517,200 @@
     "updatedOn": "2026-02-12T07:52:01.877985+00:00",
     "permissionCount": 5,
     "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-02-16T16:03:36.382438+00:00",
+    "description": "Gives you full access to manage Device Update accounts, instances, and private endpoint connections",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/f82fbe13-0f98-4809-af81-b82c343db82f",
+    "name": "f82fbe13-0f98-4809-af81-b82c343db82f",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.Insights/alertRules/*",
+          "Microsoft.DeviceUpdate/accounts/read",
+          "Microsoft.DeviceUpdate/accounts/write",
+          "Microsoft.DeviceUpdate/accounts/delete",
+          "Microsoft.DeviceUpdate/accounts/instances/read",
+          "Microsoft.DeviceUpdate/accounts/instances/write",
+          "Microsoft.DeviceUpdate/accounts/instances/delete",
+          "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/read",
+          "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/write",
+          "Microsoft.DeviceUpdate/accounts/privateEndpointConnections/delete"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Device Update Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-02-16T16:03:36.382438+00:00",
+    "permissionCount": 1010,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-02-16T16:03:36.384437+00:00",
+    "description": "Allows write and delete access to manage Kubernetes custom resources on Azure Kubernetes Fleet Manager member clusters. This role enables creating, modifying, and deleting custom resources. Applying this role at cluster scope will give access to custom resources across all namespaces. More information on supported attributes for Attribute-Based Access Control (ABAC) conditions can be found under documentation at aka.ms/aks/abac/custom-resources/docs",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/673366d4-9664-4020-b03b-b0093366bff9",
+    "name": "673366d4-9664-4020-b03b-b0093366bff9",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.ContainerService/fleets/members/customresources/write",
+          "Microsoft.ContainerService/fleets/members/customresources/delete"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Fleet Manager ABAC Custom Resources Writer for Member Clusters",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-02-16T16:03:36.384437+00:00",
+    "permissionCount": 5,
+    "dataActions": [
+      "Microsoft.ContainerService/fleets/members/customresources/write",
+      "Microsoft.ContainerService/fleets/members/customresources/delete"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-02-16T16:03:36.383439+00:00",
+    "description": "Allows read-only access to view Kubernetes custom resources on Azure Kubernetes Fleet Manager member clusters. This role enables viewing custom resources without the ability to create, modify, or delete them. Applying this role at cluster scope will give read access to custom resources across all namespaces. More information on supported attributes for Attribute-Based Access Control (ABAC) conditions can be found under documentation at aka.ms/aks/abac/custom-resources/docs",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/e1663658-d5f7-4383-9afb-af9fdc9c5eae",
+    "name": "e1663658-d5f7-4383-9afb-af9fdc9c5eae",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.ContainerService/fleets/members/customresources/read"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Fleet Manager ABAC Custom Resources Reader for Member Clusters",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-02-16T16:03:36.383439+00:00",
+    "permissionCount": 4,
+    "dataActions": [
+      "Microsoft.ContainerService/fleets/members/customresources/read"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-02-16T16:03:36.382438+00:00",
+    "description": "Allows write and delete access to manage Kubernetes custom resources on Azure Kubernetes Fleet Manager fleets. This role enables creating, modifying, and deleting custom resources. Applying this role at cluster scope will give access to custom resources across all namespaces. More information on supported attributes for Attribute-Based Access Control (ABAC) conditions can be found under documentation at aka.ms/aks/abac/custom-resources/docs",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/ff8eb232-5069-437e-94e5-31112ef30539",
+    "name": "ff8eb232-5069-437e-94e5-31112ef30539",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.ContainerService/fleets/read",
+          "Microsoft.ContainerService/fleets/listCredentials/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.ContainerService/fleets/customresources/write",
+          "Microsoft.ContainerService/fleets/customresources/delete"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Fleet Manager ABAC Custom Resources Writer",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-02-16T16:03:36.382438+00:00",
+    "permissionCount": 7,
+    "dataActions": [
+      "Microsoft.ContainerService/fleets/customresources/write",
+      "Microsoft.ContainerService/fleets/customresources/delete"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-02-16T16:03:36.384437+00:00",
+    "description": "Allows read-only access to view Kubernetes custom resources on Azure Kubernetes Fleet Manager fleets. This role enables viewing custom resources without the ability to create, modify, or delete them. Applying this role at cluster scope will give read access to custom resources across all namespaces. More information on supported attributes for Attribute-Based Access Control (ABAC) conditions can be found under documentation at aka.ms/aks/abac/custom-resources/docs",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/20cf746c-c765-402a-885e-c389c64478ce",
+    "name": "20cf746c-c765-402a-885e-c389c64478ce",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.ContainerService/fleets/read",
+          "Microsoft.ContainerService/fleets/listCredentials/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.ContainerService/fleets/customresources/read"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Fleet Manager ABAC Custom Resources Reader",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-02-16T16:03:36.384437+00:00",
+    "permissionCount": 6,
+    "dataActions": [
+      "Microsoft.ContainerService/fleets/customresources/read"
+    ],
     "notDataActions": []
   }
 ]
