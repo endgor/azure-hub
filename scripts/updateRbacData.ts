@@ -79,24 +79,76 @@ function fetchRoleDefinitions(): AzureRole[] {
 }
 
 /**
- * Fetch all resource provider operations
- * This provides the full list of available Azure permissions
+ * Extract a flat list of operations from the nested `az provider operation show` response.
+ * The response is a single object with top-level `operations` and `resourceTypes[].operations`.
+ */
+function flattenProviderOperations(providerData: Record<string, unknown>): Operation[] {
+  const ops: Operation[] = [];
+  const namespace = (providerData.name as string) ?? '';
+
+  // Top-level operations (e.g. register/unregister)
+  const topOps = providerData.operations as Array<Record<string, unknown>> | undefined;
+  if (Array.isArray(topOps)) {
+    for (const op of topOps) {
+      if (op.name) {
+        ops.push({
+          name: op.name as string,
+          displayName: (op.displayName as string) ?? '',
+          description: (op.description as string) ?? '',
+          origin: (op.origin as string) ?? undefined,
+          provider: namespace,
+        });
+      }
+    }
+  }
+
+  // Operations nested under resourceTypes
+  const resourceTypes = providerData.resourceTypes as Array<Record<string, unknown>> | undefined;
+  if (Array.isArray(resourceTypes)) {
+    for (const rt of resourceTypes) {
+      const rtOps = rt.operations as Array<Record<string, unknown>> | undefined;
+      if (Array.isArray(rtOps)) {
+        for (const op of rtOps) {
+          if (op.name) {
+            ops.push({
+              name: op.name as string,
+              displayName: (op.displayName as string) ?? '',
+              description: (op.description as string) ?? '',
+              origin: (op.origin as string) ?? undefined,
+              provider: namespace,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  return ops;
+}
+
+/**
+ * Fetch all resource provider operations.
+ * Uses `az provider operation list` to get all providers at once.
  */
 function fetchResourceProviderOperations(): Operation[] {
   console.info('Fetching resource provider operations...');
 
   try {
-    const output = execSync('az provider operation show --namespace * --output json', {
+    const output = execSync('az provider operation list --output json', {
       encoding: 'utf8',
-      maxBuffer: 50 * 1024 * 1024 // 50MB buffer
+      maxBuffer: 100 * 1024 * 1024 // 100MB buffer — full list is large
     });
 
-    const operations = JSON.parse(output) as Operation[];
-    console.info(`Fetched ${operations.length} operations`);
-    return operations;
-  } catch (error: any) {
-    // If the wildcard doesn't work, fall back to fetching all known providers
-    console.warn('Wildcard fetch failed, attempting to fetch individual providers...');
+    const providers = JSON.parse(output) as Array<Record<string, unknown>>;
+    const allOps: Operation[] = [];
+    for (const provider of providers) {
+      allOps.push(...flattenProviderOperations(provider));
+    }
+    console.info(`Fetched ${allOps.length} operations from ${providers.length} providers`);
+    return allOps;
+  } catch (error: unknown) {
+    console.warn('az provider operation list failed, falling back to individual providers...');
+    logDebug('  Error:', error instanceof Error ? error.message : error);
     return fetchOperationsByProvider();
   }
 }
@@ -107,7 +159,7 @@ function fetchResourceProviderOperations(): Operation[] {
 function fetchOperationsByProvider(): Operation[] {
   const allOperations: Operation[] = [];
 
-  // Common Azure resource providers
+  // Common Azure resource providers — hardcoded list as fallback
   const providers = [
     'Microsoft.Compute',
     'Microsoft.Storage',
@@ -140,11 +192,12 @@ function fetchOperationsByProvider(): Operation[] {
         maxBuffer: 10 * 1024 * 1024
       });
 
-      const operations = JSON.parse(output) as Operation[];
-      allOperations.push(...operations);
-      logDebug(`  Fetched ${operations.length} operations`);
-    } catch (error: any) {
-      console.warn(`  Warning: Failed to fetch operations for ${provider}`);
+      const providerData = JSON.parse(output) as Record<string, unknown>;
+      const ops = flattenProviderOperations(providerData);
+      allOperations.push(...ops);
+      logDebug(`  Fetched ${ops.length} operations`);
+    } catch (error: unknown) {
+      console.warn(`  Warning: Failed to fetch operations for ${provider}: ${error instanceof Error ? error.message : error}`);
     }
   }
 
