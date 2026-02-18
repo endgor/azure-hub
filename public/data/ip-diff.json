@@ -1,29 +1,2988 @@
 {
   "meta": {
-    "generatedAt": "2026-02-18T16:11:32.192Z",
+    "generatedAt": "2026-02-18T16:41:04.599Z",
     "summary": {
       "serviceTagsAdded": 0,
       "serviceTagsRemoved": 0,
-      "serviceTagsModified": 0,
-      "totalPrefixesAdded": 0,
-      "totalPrefixesRemoved": 0
+      "serviceTagsModified": 177,
+      "totalPrefixesAdded": 642,
+      "totalPrefixesRemoved": 333
     },
     "clouds": {
+      "AzureCloud": {
+        "fromChangeNumber": 386,
+        "toChangeNumber": 387,
+        "fromFilename": "unknown.json",
+        "toFilename": "ServiceTags_Public_20260209.json"
+      },
       "AzureChinaCloud": {
         "fromChangeNumber": 383,
         "toChangeNumber": 384,
-        "fromFilename": "ServiceTags_China_20260209.json",
+        "fromFilename": "unknown.json",
         "toFilename": "ServiceTags_China_20260216.json"
       },
       "AzureUSGovernment": {
         "fromChangeNumber": 384,
         "toChangeNumber": 385,
-        "fromFilename": "ServiceTags_AzureGovernment_20260209.json",
+        "fromFilename": "unknown.json",
         "toFilename": "ServiceTags_AzureGovernment_20260216.json"
       }
     }
   },
   "addedTags": [],
   "removedTags": [],
-  "modifiedTags": []
+  "modifiedTags": [
+    {
+      "name": "AzureArcInfrastructure",
+      "systemService": "AzureArcInfrastructure",
+      "region": "",
+      "previousChangeNumber": 46,
+      "currentChangeNumber": 47,
+      "addedPrefixes": [
+        "4.145.20.102/32",
+        "4.161.12.132/32",
+        "4.176.33.182/32",
+        "4.191.86.255/32",
+        "4.208.114.163/32",
+        "4.216.4.121/32",
+        "4.219.23.169/32",
+        "4.221.233.2/32",
+        "4.223.187.21/32",
+        "4.226.254.162/32",
+        "4.230.126.26/32",
+        "4.243.159.243/32",
+        "4.248.114.63/32",
+        "9.235.172.75/32",
+        "20.45.151.53/32",
+        "20.49.101.9/32",
+        "20.51.45.36/32",
+        "20.173.62.144/32",
+        "20.216.93.140/32",
+        "20.244.209.210/32",
+        "48.192.212.50/32",
+        "48.193.54.104/31",
+        "48.199.213.228/32",
+        "48.201.165.111/32",
+        "48.202.189.175/32",
+        "48.204.56.231/32",
+        "48.215.89.121/32",
+        "48.223.58.80/32",
+        "51.58.59.246/32",
+        "57.159.92.207/32",
+        "74.163.252.230/32",
+        "74.177.105.18/32",
+        "74.225.45.147/32",
+        "74.242.152.101/32",
+        "85.211.237.44/32",
+        "134.112.168.132/32",
+        "134.138.220.80/32",
+        "145.191.108.225/32",
+        "158.158.133.70/32",
+        "172.192.187.112/32",
+        "2603:1000:104:b::dc/128",
+        "2603:1010:6:e::686/128",
+        "2603:1010:207:4::4d4/128",
+        "2603:1020:5:1b::5f4/128",
+        "2603:1020:206:22::3b5/128",
+        "2603:1020:705:15::547/128",
+        "2603:1020:805:e::a7/128",
+        "2603:1020:a04:b::81/128",
+        "2603:1020:b04:8::74d/128",
+        "2603:1020:c04:b::1e8/128",
+        "2603:1020:e04:c::27e/128",
+        "2603:1020:1004:d::285/128",
+        "2603:1020:1204:7::751/128",
+        "2603:1020:1302:8::398/128",
+        "2603:1020:1403:7::4dc/128",
+        "2603:1030:f:f::604/127",
+        "2603:1030:210:2e::2a7/128",
+        "2603:1030:40b:10::755/128",
+        "2603:1030:40c:23::1a0/128",
+        "2603:1030:807:16::347/128",
+        "2603:1030:b04:f::3db/128",
+        "2603:1030:c06:21::481/128",
+        "2603:1030:f05:d::6f5/128",
+        "2603:1030:1005:c::2d1/128",
+        "2603:1040:5:16::42e/128",
+        "2603:1040:207:11::356/128",
+        "2603:1040:407:e::63c/128",
+        "2603:1040:606:b::637/128",
+        "2603:1040:904:8::743/128",
+        "2603:1040:a06:c::2bf/128",
+        "2603:1040:b04:8::4f6/128",
+        "2603:1040:c06:b::2fa/128",
+        "2603:1040:d04:7::2a8/128",
+        "2603:1040:e05:9::733/128",
+        "2603:1040:f05:c::414/128",
+        "2603:1040:1002:8::4c3/128",
+        "2603:1040:1402:8::5e5/128",
+        "2603:1040:1602:5::54/128",
+        "2603:1040:1802:7::164/128",
+        "2603:1050:6:c::61/128"
+      ],
+      "removedPrefixes": [
+        "48.193.54.104/32"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.AustraliaEast",
+      "systemService": "AzureArcInfrastructure",
+      "region": "australiaeast",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "48.215.89.121/32",
+        "2603:1010:6:e::686/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.AustraliaSoutheast",
+      "systemService": "AzureArcInfrastructure",
+      "region": "australiasoutheast",
+      "previousChangeNumber": 6,
+      "currentChangeNumber": 7,
+      "addedPrefixes": [
+        "20.45.151.53/32",
+        "2603:1010:207:4::4d4/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.BrazilSouth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "brazilsouth",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "74.163.252.230/32",
+        "2603:1050:6:c::61/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.CanadaCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "canadacentral",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "145.191.108.225/32",
+        "2603:1030:f05:d::6f5/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.CanadaEast",
+      "systemService": "AzureArcInfrastructure",
+      "region": "canadaeast",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "4.248.114.63/32",
+        "2603:1030:1005:c::2d1/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.CentralIndia",
+      "systemService": "AzureArcInfrastructure",
+      "region": "centralindia",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "57.159.92.207/32",
+        "2603:1040:a06:c::2bf/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.CentralUSEUAP",
+      "systemService": "AzureArcInfrastructure",
+      "region": "centraluseuap",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "134.138.220.80/32",
+        "2603:1030:f:f::604/127"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.EastAsia",
+      "systemService": "AzureArcInfrastructure",
+      "region": "eastasia",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.191.86.255/32",
+        "2603:1040:207:11::356/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.EastUS",
+      "systemService": "AzureArcInfrastructure",
+      "region": "eastus",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.202.189.175/32",
+        "2603:1030:210:2e::2a7/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.EastUS2",
+      "systemService": "AzureArcInfrastructure",
+      "region": "eastus2",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "20.49.101.9/32",
+        "2603:1030:40c:23::1a0/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.EastUS2EUAP",
+      "systemService": "AzureArcInfrastructure",
+      "region": "eastus2euap",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.223.58.80/32",
+        "2603:1030:40b:10::755/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.FranceCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "centralfrance",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.176.33.182/32",
+        "2603:1020:805:e::a7/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.GermanyWestCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "germanywc",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.201.165.111/32",
+        "2603:1020:c04:b::1e8/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.IndonesiaCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "indonesiacentral",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "48.193.54.104/31",
+        "2603:1040:1802:7::164/128"
+      ],
+      "removedPrefixes": [
+        "48.193.54.104/32"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.IsraelCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "israelcentral",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [
+        "51.58.59.246/32",
+        "2603:1040:1402:8::5e5/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.ItalyNorth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "italynorth",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [
+        "9.235.172.75/32",
+        "2603:1020:1204:7::751/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.JapanEast",
+      "systemService": "AzureArcInfrastructure",
+      "region": "japaneast",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "4.216.4.121/32",
+        "2603:1040:407:e::63c/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.JapanWest",
+      "systemService": "AzureArcInfrastructure",
+      "region": "japanwest",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "172.192.187.112/32",
+        "2603:1040:606:b::637/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.JioIndiaWest",
+      "systemService": "AzureArcInfrastructure",
+      "region": "jioindiawest",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "20.244.209.210/32",
+        "2603:1040:d04:7::2a8/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.KoreaCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "koreacentral",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.230.126.26/32",
+        "2603:1040:f05:c::414/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.KoreaSouth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "koreasouth",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "4.243.159.243/32",
+        "2603:1040:e05:9::733/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.MalaysiaWest",
+      "systemService": "AzureArcInfrastructure",
+      "region": "malaysiawest",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [
+        "85.211.237.44/32",
+        "2603:1040:1602:5::54/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.NorthEurope",
+      "systemService": "AzureArcInfrastructure",
+      "region": "northeurope",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.208.114.163/32",
+        "2603:1020:5:1b::5f4/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.NorwayEast",
+      "systemService": "AzureArcInfrastructure",
+      "region": "norwaye",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.219.23.169/32",
+        "2603:1020:e04:c::27e/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.PolandCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "polandcentral",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "134.112.168.132/32",
+        "2603:1020:1302:8::398/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.QatarCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "qatarcentral",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "20.173.62.144/32",
+        "2603:1040:1002:8::4c3/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SouthAfricaNorth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "southafricanorth",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.221.233.2/32",
+        "2603:1000:104:b::dc/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SouthCentralUS",
+      "systemService": "AzureArcInfrastructure",
+      "region": "southcentralus",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.192.212.50/32",
+        "2603:1030:807:16::347/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SoutheastAsia",
+      "systemService": "AzureArcInfrastructure",
+      "region": "southeastasia",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "4.145.20.102/32",
+        "2603:1040:5:16::42e/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SouthIndia",
+      "systemService": "AzureArcInfrastructure",
+      "region": "southindia",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "74.225.45.147/32",
+        "2603:1040:c06:b::2fa/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SpainCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "spaincentral",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [
+        "158.158.133.70/32",
+        "2603:1020:1403:7::4dc/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SwedenCentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "swedencentral",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "4.223.187.21/32",
+        "2603:1020:1004:d::285/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SwitzerlandNorth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "switzerlandn",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "74.242.152.101/32",
+        "2603:1020:a04:b::81/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.SwitzerlandWest",
+      "systemService": "AzureArcInfrastructure",
+      "region": "switzerlandw",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "4.226.254.162/32",
+        "2603:1020:b04:8::74d/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.UAECentral",
+      "systemService": "AzureArcInfrastructure",
+      "region": "uaecentral",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "20.216.93.140/32",
+        "2603:1040:b04:8::4f6/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.UAENorth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "uaenorth",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "4.161.12.132/32",
+        "2603:1040:904:8::743/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.UKSouth",
+      "systemService": "AzureArcInfrastructure",
+      "region": "uksouth",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "74.177.105.18/32",
+        "2603:1020:705:15::547/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.WestCentralUS",
+      "systemService": "AzureArcInfrastructure",
+      "region": "westcentralus",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "20.51.45.36/32",
+        "2603:1030:b04:f::3db/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.WestEurope",
+      "systemService": "AzureArcInfrastructure",
+      "region": "westeurope",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.199.213.228/32",
+        "2603:1020:206:22::3b5/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureArcInfrastructure.WestUS2",
+      "systemService": "AzureArcInfrastructure",
+      "region": "westus2",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.204.56.231/32",
+        "2603:1030:c06:21::481/128"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud",
+      "systemService": "",
+      "region": "",
+      "previousChangeNumber": 282,
+      "currentChangeNumber": 283,
+      "addedPrefixes": [
+        "20.20.65.64/27",
+        "20.20.65.96/31",
+        "20.20.81.32/28",
+        "20.20.81.48/29",
+        "20.20.81.56/30",
+        "20.20.94.0/24",
+        "20.20.95.0/27",
+        "20.20.95.32/31",
+        "20.20.97.64/27",
+        "20.20.103.128/26",
+        "20.20.103.192/29",
+        "20.20.104.128/26",
+        "20.20.104.192/29",
+        "20.20.104.200/31",
+        "20.20.124.192/28",
+        "20.20.124.208/29",
+        "20.95.127.0/24",
+        "20.201.240.0/24",
+        "40.120.141.88/30",
+        "40.120.141.92/31",
+        "40.120.145.192/27",
+        "40.120.145.224/29",
+        "40.120.169.0/26",
+        "40.120.169.64/27",
+        "40.120.172.0/23",
+        "40.120.174.0/29",
+        "40.120.174.8/30",
+        "40.120.183.0/26",
+        "40.120.183.64/28",
+        "40.120.183.80/29",
+        "40.120.183.88/30",
+        "40.120.183.92/31",
+        "40.120.186.0/27",
+        "40.120.186.32/29",
+        "40.120.186.40/30",
+        "40.120.186.44/31",
+        "40.120.191.128/28",
+        "40.120.191.144/29",
+        "40.123.138.16/30",
+        "48.207.0.0/17",
+        "52.113.111.0/24",
+        "52.123.95.0/24",
+        "52.123.125.0/24",
+        "52.123.126.0/24",
+        "52.123.127.0/24",
+        "57.157.16.224/29",
+        "57.157.16.232/31",
+        "57.157.29.200/31",
+        "57.157.33.160/28",
+        "57.157.33.176/29",
+        "57.157.37.0/27",
+        "57.157.37.32/29",
+        "57.157.37.40/30",
+        "57.157.40.64/29",
+        "57.157.40.72/30",
+        "57.157.40.76/31",
+        "57.157.44.128/27",
+        "57.157.44.160/28",
+        "57.157.44.176/30",
+        "57.157.44.180/30",
+        "57.157.44.184/30",
+        "57.157.44.188/31",
+        "57.157.44.190/31",
+        "57.157.44.192/29",
+        "57.157.44.200/31",
+        "57.157.49.96/27",
+        "57.157.49.128/31",
+        "57.157.56.0/26",
+        "57.157.56.64/29",
+        "57.157.56.72/31",
+        "57.157.60.176/29",
+        "57.157.68.192/28",
+        "57.157.68.208/29",
+        "57.157.68.216/30",
+        "57.157.68.220/31",
+        "57.157.80.0/26",
+        "57.157.80.64/30",
+        "57.157.96.64/27",
+        "57.157.96.96/29",
+        "57.157.128.208/29",
+        "57.160.0.0/17",
+        "74.243.144.0/20",
+        "135.130.247.0/24",
+        "135.130.250.0/23",
+        "135.130.252.0/25",
+        "135.130.254.0/23",
+        "145.190.149.0/24",
+        "151.206.143.0/24",
+        "151.206.144.0/24",
+        "151.206.145.0/24",
+        "151.206.146.0/24",
+        "151.206.147.0/24",
+        "151.206.148.0/24",
+        "151.206.149.0/24",
+        "151.206.150.0/24",
+        "151.206.151.0/24",
+        "151.206.152.0/24",
+        "151.206.153.0/24",
+        "151.206.154.0/24",
+        "151.206.155.0/24",
+        "151.206.156.0/24",
+        "151.206.157.0/24",
+        "151.206.158.0/24",
+        "151.206.159.0/24",
+        "151.206.160.0/24",
+        "151.206.161.0/24",
+        "151.206.162.0/24",
+        "151.206.163.0/24",
+        "151.206.164.0/24",
+        "151.206.165.0/24",
+        "151.206.166.0/24",
+        "151.206.167.0/24",
+        "151.206.168.0/24",
+        "172.197.128.0/17",
+        "2603:1030:9:840::/59",
+        "2603:1030:9:860::/61",
+        "2603:1030:9:868::/62",
+        "2603:1030:9:86c::/63",
+        "2603:1030:9:86e::/63",
+        "2603:1030:9:870::/62",
+        "2603:1030:9:874::/64",
+        "2603:1030:9:875::/64",
+        "2603:1030:9:876::/63",
+        "2603:1030:9:878::/63",
+        "2603:1030:9:87a::/64",
+        "2603:1030:401:a98::/61",
+        "2603:1030:401:aa0::/61",
+        "2603:1030:401:aa8::/64",
+        "2603:1030:804:5c0::/60",
+        "2603:1030:804:5d0::/62",
+        "2603:1030:804:5d4::/64",
+        "2603:1030:e01::/64",
+        "2603:1061:1006:100::/63",
+        "2603:1061:1007:d0::/61",
+        "2603:1061:1007:d8::/62",
+        "2603:1061:1007:dc::/64",
+        "2603:1061:1008:e0::/61",
+        "2603:1061:1008:e8::/62",
+        "2603:1061:1009::/58",
+        "2603:1061:100c:a4::/63",
+        "2603:1061:100c:a6::/64",
+        "2603:1061:100d:80::/59",
+        "2603:1061:100d:a0::/61",
+        "2603:1061:100e:e0::/60",
+        "2603:1061:100e:f0::/61",
+        "2603:1061:100e:f8::/62",
+        "2603:1061:100e:fc::/63",
+        "2603:1061:1010:a0::/61",
+        "2603:1061:1010:a8::/64",
+        "2603:1061:1017:40::/59",
+        "2603:1061:1017:60::/62",
+        "2603:1061:1017:64::/63",
+        "2603:1061:1018:68::/62",
+        "2603:1061:1018:6c::/64",
+        "2603:1061:101c:20::/61",
+        "2603:1061:101c:28::/62",
+        "2603:1061:101c:2c::/63"
+      ],
+      "removedPrefixes": [
+        "20.20.65.64/28",
+        "20.20.65.80/29",
+        "20.20.65.88/30",
+        "20.20.81.32/29",
+        "20.20.94.0/25",
+        "20.20.94.128/26",
+        "20.20.94.192/27",
+        "20.20.94.224/28",
+        "20.20.94.240/30",
+        "20.20.94.244/31",
+        "20.20.97.64/28",
+        "20.20.97.80/29",
+        "20.20.103.128/27",
+        "20.20.103.160/29",
+        "20.20.103.168/30",
+        "20.20.104.128/27",
+        "20.20.104.160/28",
+        "20.20.104.176/30",
+        "20.20.104.180/31",
+        "20.20.124.192/30",
+        "40.81.96.2/32",
+        "40.120.141.88/31",
+        "40.120.145.192/28",
+        "40.120.145.208/30",
+        "40.120.169.0/27",
+        "40.120.169.32/28",
+        "40.120.169.48/29",
+        "40.120.172.0/24",
+        "40.120.173.0/25",
+        "40.120.173.128/26",
+        "40.120.173.192/27",
+        "40.120.183.0/28",
+        "40.120.183.16/29",
+        "40.120.183.24/31",
+        "40.120.186.0/28",
+        "40.120.186.16/29",
+        "40.120.186.24/31",
+        "40.120.191.128/30",
+        "52.112.40.0/21",
+        "52.112.88.0/22",
+        "52.113.105.0/24",
+        "52.113.109.0/24",
+        "52.113.110.0/23",
+        "52.113.131.0/24",
+        "52.115.32.0/22",
+        "57.157.33.160/31",
+        "57.157.37.0/28",
+        "57.157.37.16/29",
+        "57.157.40.64/30",
+        "57.157.40.68/31",
+        "57.157.49.96/29",
+        "57.157.49.104/30",
+        "57.157.56.0/27",
+        "57.157.56.32/28",
+        "57.157.60.176/30",
+        "57.157.68.192/29",
+        "57.157.68.200/31",
+        "57.157.80.0/28",
+        "57.157.80.16/31",
+        "57.157.96.64/29",
+        "57.157.96.72/30",
+        "2603:1030:9:840::/60",
+        "2603:1030:9:850::/62",
+        "2603:1030:9:854::/63",
+        "2603:1030:401:a98::/62",
+        "2603:1030:401:a9c::/63",
+        "2603:1030:804:5c0::/62",
+        "2603:1030:804:5c4::/63",
+        "2603:1030:804:5c6::/64",
+        "2603:1061:1007:d0::/63",
+        "2603:1061:1007:d2::/64",
+        "2603:1061:1008:e0::/63",
+        "2603:1061:1009::/59",
+        "2603:1061:1009:20::/60",
+        "2603:1061:1009:30::/61",
+        "2603:1061:1009:38::/62",
+        "2603:1061:1009:3c::/63",
+        "2603:1061:1009:3e::/64",
+        "2603:1061:100c:a4::/64",
+        "2603:1061:100d:80::/60",
+        "2603:1061:100d:90::/62",
+        "2603:1061:100e:e0::/61",
+        "2603:1061:1010:a0::/62",
+        "2603:1061:1010:a4::/63",
+        "2603:1061:1017:40::/60",
+        "2603:1061:1017:50::/61",
+        "2603:1061:1017:58::/62"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.australiasoutheast",
+      "systemService": "",
+      "region": "australiasoutheast",
+      "previousChangeNumber": 68,
+      "currentChangeNumber": 69,
+      "addedPrefixes": [
+        "151.206.165.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.austriaeast",
+      "systemService": "",
+      "region": "austriaeast",
+      "previousChangeNumber": 10,
+      "currentChangeNumber": 11,
+      "addedPrefixes": [
+        "151.206.153.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.brazilsouth",
+      "systemService": "",
+      "region": "brazilsouth",
+      "previousChangeNumber": 89,
+      "currentChangeNumber": 90,
+      "addedPrefixes": [
+        "20.20.97.64/27",
+        "145.190.149.0/24",
+        "151.206.151.0/24"
+      ],
+      "removedPrefixes": [
+        "20.20.97.64/28",
+        "20.20.97.80/29"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.canadacentral",
+      "systemService": "",
+      "region": "canadacentral",
+      "previousChangeNumber": 96,
+      "currentChangeNumber": 97,
+      "addedPrefixes": [
+        "40.120.186.0/27",
+        "40.120.186.32/29",
+        "40.120.186.40/30",
+        "40.120.186.44/31",
+        "135.130.250.0/23",
+        "151.206.150.0/24"
+      ],
+      "removedPrefixes": [
+        "40.120.186.0/28",
+        "40.120.186.16/29",
+        "40.120.186.24/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.centralfrance",
+      "systemService": "",
+      "region": "centralfrance",
+      "previousChangeNumber": 93,
+      "currentChangeNumber": 94,
+      "addedPrefixes": [
+        "57.157.37.0/27",
+        "57.157.37.32/29",
+        "57.157.37.40/30"
+      ],
+      "removedPrefixes": [
+        "57.157.37.0/28",
+        "57.157.37.16/29"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.centralindia",
+      "systemService": "",
+      "region": "centralindia",
+      "previousChangeNumber": 118,
+      "currentChangeNumber": 119,
+      "addedPrefixes": [
+        "52.123.127.0/24",
+        "151.206.148.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.centralus",
+      "systemService": "",
+      "region": "centralus",
+      "previousChangeNumber": 187,
+      "currentChangeNumber": 188,
+      "addedPrefixes": [
+        "57.157.44.128/27",
+        "57.157.44.160/28",
+        "57.157.44.180/30",
+        "57.157.44.184/30",
+        "57.157.44.188/31",
+        "57.157.44.192/29",
+        "57.157.44.200/31",
+        "151.206.161.0/24",
+        "2603:1030:9:840::/59",
+        "2603:1030:9:860::/61",
+        "2603:1030:9:868::/62",
+        "2603:1030:9:86c::/63",
+        "2603:1030:9:870::/62",
+        "2603:1030:9:874::/64",
+        "2603:1030:9:876::/63",
+        "2603:1030:9:878::/63",
+        "2603:1030:9:87a::/64"
+      ],
+      "removedPrefixes": [
+        "2603:1030:9:840::/60",
+        "2603:1030:9:850::/62",
+        "2603:1030:9:854::/63"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.centraluseuap",
+      "systemService": "",
+      "region": "centraluseuap",
+      "previousChangeNumber": 83,
+      "currentChangeNumber": 84,
+      "addedPrefixes": [
+        "57.157.44.176/30",
+        "57.157.44.190/31",
+        "135.130.247.0/24",
+        "135.130.252.0/25",
+        "135.130.254.0/23",
+        "2603:1030:9:86e::/63",
+        "2603:1030:9:875::/64"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.denmarkeast",
+      "systemService": "",
+      "region": "denmarkeast",
+      "previousChangeNumber": 1,
+      "currentChangeNumber": 2,
+      "addedPrefixes": [
+        "20.20.124.192/28",
+        "20.20.124.208/29",
+        "2603:1061:1017:40::/59",
+        "2603:1061:1017:60::/62",
+        "2603:1061:1017:64::/63"
+      ],
+      "removedPrefixes": [
+        "20.20.124.192/30",
+        "2603:1061:1017:40::/60",
+        "2603:1061:1017:50::/61",
+        "2603:1061:1017:58::/62"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.eastasia",
+      "systemService": "",
+      "region": "eastasia",
+      "previousChangeNumber": 79,
+      "currentChangeNumber": 80,
+      "addedPrefixes": [
+        "20.20.81.32/28",
+        "20.20.81.48/29",
+        "20.20.81.56/30",
+        "151.206.143.0/24"
+      ],
+      "removedPrefixes": [
+        "20.20.81.32/29"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.eastus",
+      "systemService": "",
+      "region": "eastus",
+      "previousChangeNumber": 194,
+      "currentChangeNumber": 195,
+      "addedPrefixes": [
+        "57.157.33.160/28",
+        "57.157.33.176/29"
+      ],
+      "removedPrefixes": [
+        "40.81.96.2/32",
+        "57.157.33.160/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.eastus2",
+      "systemService": "",
+      "region": "eastus2",
+      "previousChangeNumber": 209,
+      "currentChangeNumber": 210,
+      "addedPrefixes": [
+        "57.157.49.96/27",
+        "57.157.49.128/31",
+        "2603:1030:401:a98::/61",
+        "2603:1030:401:aa0::/61",
+        "2603:1030:401:aa8::/64"
+      ],
+      "removedPrefixes": [
+        "57.157.49.96/29",
+        "57.157.49.104/30",
+        "2603:1030:401:a98::/62",
+        "2603:1030:401:a9c::/63"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.germanywc",
+      "systemService": "",
+      "region": "germanywc",
+      "previousChangeNumber": 86,
+      "currentChangeNumber": 87,
+      "addedPrefixes": [
+        "57.157.60.176/29"
+      ],
+      "removedPrefixes": [
+        "57.157.60.176/30"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.indonesiacentral",
+      "systemService": "",
+      "region": "indonesiacentral",
+      "previousChangeNumber": 16,
+      "currentChangeNumber": 17,
+      "addedPrefixes": [
+        "20.20.65.64/27",
+        "20.20.65.96/31",
+        "2603:1061:1010:a0::/61",
+        "2603:1061:1010:a8::/64"
+      ],
+      "removedPrefixes": [
+        "20.20.65.64/28",
+        "20.20.65.80/29",
+        "20.20.65.88/30",
+        "2603:1061:1010:a0::/62",
+        "2603:1061:1010:a4::/63"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.israelcentral",
+      "systemService": "",
+      "region": "israelcentral",
+      "previousChangeNumber": 40,
+      "currentChangeNumber": 41,
+      "addedPrefixes": [
+        "20.20.104.128/26",
+        "20.20.104.192/29",
+        "20.20.104.200/31",
+        "151.206.152.0/24",
+        "2603:1061:1007:d0::/61",
+        "2603:1061:1007:d8::/62",
+        "2603:1061:1007:dc::/64"
+      ],
+      "removedPrefixes": [
+        "20.20.104.128/27",
+        "20.20.104.160/28",
+        "20.20.104.176/30",
+        "20.20.104.180/31",
+        "2603:1061:1007:d0::/63",
+        "2603:1061:1007:d2::/64"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.italynorth",
+      "systemService": "",
+      "region": "italynorth",
+      "previousChangeNumber": 61,
+      "currentChangeNumber": 62,
+      "addedPrefixes": [
+        "151.206.157.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.japaneast",
+      "systemService": "",
+      "region": "japaneast",
+      "previousChangeNumber": 115,
+      "currentChangeNumber": 116,
+      "addedPrefixes": [
+        "40.120.183.0/26",
+        "40.120.183.64/28",
+        "40.120.183.80/29",
+        "40.120.183.88/30",
+        "40.120.183.92/31",
+        "52.123.95.0/24"
+      ],
+      "removedPrefixes": [
+        "40.120.183.0/28",
+        "40.120.183.16/29",
+        "40.120.183.24/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.japanwest",
+      "systemService": "",
+      "region": "japanwest",
+      "previousChangeNumber": 78,
+      "currentChangeNumber": 79,
+      "addedPrefixes": [
+        "151.206.163.0/24"
+      ],
+      "removedPrefixes": [
+        "52.112.88.0/22"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.koreacentral",
+      "systemService": "",
+      "region": "koreacentral",
+      "previousChangeNumber": 75,
+      "currentChangeNumber": 76,
+      "addedPrefixes": [
+        "151.206.159.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.koreasouth",
+      "systemService": "",
+      "region": "koreasouth",
+      "previousChangeNumber": 46,
+      "currentChangeNumber": 47,
+      "addedPrefixes": [
+        "52.113.111.0/24",
+        "151.206.164.0/24"
+      ],
+      "removedPrefixes": [
+        "52.113.110.0/23"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.malaysiawest",
+      "systemService": "",
+      "region": "malaysiawest",
+      "previousChangeNumber": 12,
+      "currentChangeNumber": 13,
+      "addedPrefixes": [
+        "40.120.169.0/26",
+        "40.120.169.64/27",
+        "151.206.144.0/24",
+        "172.197.128.0/17",
+        "2603:1061:100d:80::/59",
+        "2603:1061:100d:a0::/61"
+      ],
+      "removedPrefixes": [
+        "40.120.169.0/27",
+        "40.120.169.32/28",
+        "40.120.169.48/29",
+        "2603:1061:100d:80::/60",
+        "2603:1061:100d:90::/62"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.mexicocentral",
+      "systemService": "",
+      "region": "mexicocentral",
+      "previousChangeNumber": 35,
+      "currentChangeNumber": 36,
+      "addedPrefixes": [
+        "40.120.141.88/30",
+        "40.120.141.92/31",
+        "151.206.158.0/24",
+        "2603:1061:100c:a4::/63",
+        "2603:1061:100c:a6::/64"
+      ],
+      "removedPrefixes": [
+        "40.120.141.88/31",
+        "2603:1061:100c:a4::/64"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.newzealandnorth",
+      "systemService": "",
+      "region": "newzealandnorth",
+      "previousChangeNumber": 26,
+      "currentChangeNumber": 27,
+      "addedPrefixes": [
+        "40.120.172.0/23",
+        "40.120.174.0/29",
+        "40.120.174.8/30",
+        "151.206.154.0/24",
+        "2603:1061:100e:e0::/60",
+        "2603:1061:100e:f0::/61",
+        "2603:1061:100e:f8::/62",
+        "2603:1061:100e:fc::/63"
+      ],
+      "removedPrefixes": [
+        "40.120.172.0/24",
+        "40.120.173.0/25",
+        "40.120.173.128/26",
+        "40.120.173.192/27",
+        "2603:1061:100e:e0::/61"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.northcentralus",
+      "systemService": "",
+      "region": "northcentralus",
+      "previousChangeNumber": 107,
+      "currentChangeNumber": 108,
+      "addedPrefixes": [
+        "40.120.191.128/28",
+        "40.120.191.144/29"
+      ],
+      "removedPrefixes": [
+        "40.120.191.128/30"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.northeurope",
+      "systemService": "",
+      "region": "northeurope",
+      "previousChangeNumber": 138,
+      "currentChangeNumber": 139,
+      "addedPrefixes": [
+        "57.157.29.200/31",
+        "151.206.156.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.polandcentral",
+      "systemService": "",
+      "region": "polandcentral",
+      "previousChangeNumber": 50,
+      "currentChangeNumber": 51,
+      "addedPrefixes": [
+        "40.123.138.16/30",
+        "151.206.155.0/24",
+        "2603:1061:1006:100::/63"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southafricanorth",
+      "systemService": "",
+      "region": "southafricanorth",
+      "previousChangeNumber": 63,
+      "currentChangeNumber": 64,
+      "addedPrefixes": [
+        "151.206.145.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southafricawest",
+      "systemService": "",
+      "region": "southafricawest",
+      "previousChangeNumber": 39,
+      "currentChangeNumber": 40,
+      "addedPrefixes": [
+        "151.206.166.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southcentralus",
+      "systemService": "",
+      "region": "southcentralus",
+      "previousChangeNumber": 181,
+      "currentChangeNumber": 182,
+      "addedPrefixes": [
+        "20.20.103.128/26",
+        "20.20.103.192/29",
+        "2603:1030:804:5c0::/60",
+        "2603:1030:804:5d0::/62",
+        "2603:1030:804:5d4::/64"
+      ],
+      "removedPrefixes": [
+        "20.20.103.128/27",
+        "20.20.103.160/29",
+        "20.20.103.168/30",
+        "2603:1030:804:5c0::/62",
+        "2603:1030:804:5c4::/63",
+        "2603:1030:804:5c6::/64"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southeastasia",
+      "systemService": "",
+      "region": "southeastasia",
+      "previousChangeNumber": 99,
+      "currentChangeNumber": 100,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "52.112.40.0/21",
+        "52.113.105.0/24",
+        "52.113.109.0/24",
+        "52.113.131.0/24",
+        "52.115.32.0/22"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southeastus3",
+      "systemService": "",
+      "region": "southeastus3",
+      "previousChangeNumber": 7,
+      "currentChangeNumber": 8,
+      "addedPrefixes": [
+        "57.157.16.224/29",
+        "57.157.16.232/31",
+        "2603:1061:1018:68::/62",
+        "2603:1061:1018:6c::/64"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southfrance",
+      "systemService": "",
+      "region": "southfrance",
+      "previousChangeNumber": 36,
+      "currentChangeNumber": 37,
+      "addedPrefixes": [
+        "151.206.168.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.southindia",
+      "systemService": "",
+      "region": "southindia",
+      "previousChangeNumber": 54,
+      "currentChangeNumber": 55,
+      "addedPrefixes": [
+        "151.206.147.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.spaincentral",
+      "systemService": "",
+      "region": "spaincentral",
+      "previousChangeNumber": 42,
+      "currentChangeNumber": 43,
+      "addedPrefixes": [
+        "40.120.145.192/27",
+        "40.120.145.224/29",
+        "151.206.167.0/24",
+        "2603:1061:1008:e0::/61",
+        "2603:1061:1008:e8::/62"
+      ],
+      "removedPrefixes": [
+        "40.120.145.192/28",
+        "40.120.145.208/30",
+        "2603:1061:1008:e0::/63"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.swedencentral",
+      "systemService": "",
+      "region": "swedencentral",
+      "previousChangeNumber": 66,
+      "currentChangeNumber": 67,
+      "addedPrefixes": [
+        "57.157.68.192/28",
+        "57.157.68.208/29",
+        "57.157.68.216/30",
+        "57.157.68.220/31"
+      ],
+      "removedPrefixes": [
+        "57.157.68.192/29",
+        "57.157.68.200/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.switzerlandn",
+      "systemService": "",
+      "region": "switzerlandn",
+      "previousChangeNumber": 66,
+      "currentChangeNumber": 67,
+      "addedPrefixes": [
+        "20.95.127.0/24",
+        "20.201.240.0/24",
+        "151.206.149.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.switzerlandw",
+      "systemService": "",
+      "region": "switzerlandw",
+      "previousChangeNumber": 37,
+      "currentChangeNumber": 38,
+      "addedPrefixes": [
+        "57.160.0.0/17"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.taiwannorthwest",
+      "systemService": "",
+      "region": "taiwannorthwest",
+      "previousChangeNumber": 20,
+      "currentChangeNumber": 21,
+      "addedPrefixes": [
+        "2603:1061:1009::/58"
+      ],
+      "removedPrefixes": [
+        "2603:1061:1009::/59",
+        "2603:1061:1009:20::/60",
+        "2603:1061:1009:30::/61",
+        "2603:1061:1009:38::/62",
+        "2603:1061:1009:3c::/63",
+        "2603:1061:1009:3e::/64"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.uaecentral",
+      "systemService": "",
+      "region": "uaecentral",
+      "previousChangeNumber": 41,
+      "currentChangeNumber": 42,
+      "addedPrefixes": [
+        "74.243.144.0/20"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.uaenorth",
+      "systemService": "",
+      "region": "uaenorth",
+      "previousChangeNumber": 70,
+      "currentChangeNumber": 71,
+      "addedPrefixes": [
+        "151.206.146.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.uksouth",
+      "systemService": "",
+      "region": "uksouth",
+      "previousChangeNumber": 104,
+      "currentChangeNumber": 105,
+      "addedPrefixes": [
+        "57.157.40.64/29",
+        "57.157.40.72/30",
+        "57.157.40.76/31"
+      ],
+      "removedPrefixes": [
+        "57.157.40.64/30",
+        "57.157.40.68/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.westcentralus",
+      "systemService": "",
+      "region": "westcentralus",
+      "previousChangeNumber": 72,
+      "currentChangeNumber": 73,
+      "addedPrefixes": [
+        "57.157.80.0/26",
+        "57.157.80.64/30"
+      ],
+      "removedPrefixes": [
+        "57.157.80.0/28",
+        "57.157.80.16/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.westeurope",
+      "systemService": "",
+      "region": "westeurope",
+      "previousChangeNumber": 177,
+      "currentChangeNumber": 178,
+      "addedPrefixes": [
+        "48.207.0.0/17",
+        "52.123.126.0/24",
+        "57.157.56.0/26",
+        "57.157.56.64/29",
+        "57.157.56.72/31"
+      ],
+      "removedPrefixes": [
+        "57.157.56.0/27",
+        "57.157.56.32/28"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.westindia",
+      "systemService": "",
+      "region": "westindia",
+      "previousChangeNumber": 42,
+      "currentChangeNumber": 43,
+      "addedPrefixes": [
+        "151.206.162.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.westus",
+      "systemService": "",
+      "region": "westus",
+      "previousChangeNumber": 132,
+      "currentChangeNumber": 133,
+      "addedPrefixes": [
+        "20.20.94.0/24",
+        "20.20.95.0/27",
+        "20.20.95.32/31"
+      ],
+      "removedPrefixes": [
+        "20.20.94.0/25",
+        "20.20.94.128/26",
+        "20.20.94.192/27",
+        "20.20.94.224/28",
+        "20.20.94.240/30",
+        "20.20.94.244/31"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.westus2",
+      "systemService": "",
+      "region": "westus2",
+      "previousChangeNumber": 128,
+      "currentChangeNumber": 129,
+      "addedPrefixes": [
+        "52.123.125.0/24",
+        "2603:1030:e01::/64"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCloud.westus3",
+      "systemService": "",
+      "region": "westus3",
+      "previousChangeNumber": 90,
+      "currentChangeNumber": 91,
+      "addedPrefixes": [
+        "57.157.128.208/29",
+        "151.206.160.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCosmosDB",
+      "systemService": "AzureCosmosDB",
+      "region": "",
+      "previousChangeNumber": 83,
+      "currentChangeNumber": 84,
+      "addedPrefixes": [
+        "48.215.169.48/29",
+        "74.225.47.8/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCosmosDB.AustraliaSoutheast",
+      "systemService": "AzureCosmosDB",
+      "region": "australiasoutheast",
+      "previousChangeNumber": 12,
+      "currentChangeNumber": 13,
+      "addedPrefixes": [
+        "48.215.169.48/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureCosmosDB.SouthIndia",
+      "systemService": "AzureCosmosDB",
+      "region": "southindia",
+      "previousChangeNumber": 9,
+      "currentChangeNumber": 10,
+      "addedPrefixes": [
+        "74.225.47.8/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureFrontDoor.Backend",
+      "systemService": "",
+      "region": "",
+      "previousChangeNumber": 22,
+      "currentChangeNumber": 23,
+      "addedPrefixes": [
+        "4.188.12.0/28",
+        "4.188.12.16/30",
+        "4.191.90.16/28",
+        "4.196.135.200/29",
+        "4.196.135.208/28",
+        "4.208.117.112/28",
+        "48.223.58.96/28",
+        "51.57.123.64/28",
+        "145.191.109.48/28"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureFrontDoor.Frontend",
+      "systemService": "",
+      "region": "",
+      "previousChangeNumber": 37,
+      "currentChangeNumber": 38,
+      "addedPrefixes": [
+        "4.188.12.24/29",
+        "48.204.185.120/29",
+        "51.57.122.168/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureHealthcareAPIs",
+      "systemService": "AzureAPIForFHIR",
+      "region": "",
+      "previousChangeNumber": 29,
+      "currentChangeNumber": 30,
+      "addedPrefixes": [
+        "4.145.19.64/28",
+        "4.145.19.80/31",
+        "4.145.19.82/32",
+        "4.160.68.49/32",
+        "4.161.11.250/31",
+        "4.161.11.252/30",
+        "4.161.12.0/29",
+        "4.176.32.85/32",
+        "4.176.32.88/31",
+        "4.176.32.96/28",
+        "4.199.138.146/31",
+        "4.199.152.32/29",
+        "4.199.152.40/30",
+        "4.208.114.144/28",
+        "4.208.114.160/31",
+        "4.208.114.162/32",
+        "4.216.4.118/31",
+        "4.216.4.120/32",
+        "4.216.4.160/28",
+        "4.220.241.36/30",
+        "4.220.241.40/32",
+        "4.221.232.62/31",
+        "4.221.232.64/28",
+        "4.226.253.83/32",
+        "4.226.253.192/30",
+        "4.237.97.156/31",
+        "4.243.159.242/32",
+        "4.243.159.244/30",
+        "4.248.139.152/32",
+        "4.248.140.224/28",
+        "20.51.44.226/31",
+        "20.51.44.228/30",
+        "20.51.44.240/28",
+        "20.66.129.28/30",
+        "20.66.129.32/28",
+        "20.66.129.48/31",
+        "20.167.163.1/32",
+        "20.167.163.16/30",
+        "20.173.62.4/30",
+        "20.200.15.213/32",
+        "20.200.15.240/28",
+        "40.80.104.225/32",
+        "40.80.104.240/28",
+        "48.192.210.14/31",
+        "48.192.210.16/28",
+        "48.192.210.32/30",
+        "48.192.210.36/32",
+        "48.195.61.192/28",
+        "48.195.61.208/32",
+        "48.199.208.159/32",
+        "48.199.209.130/31",
+        "48.199.209.144/28",
+        "48.201.165.112/28",
+        "48.201.165.128/30",
+        "48.202.188.132/30",
+        "48.202.188.144/28",
+        "48.202.188.160/31",
+        "48.204.5.164/30",
+        "48.204.5.192/28",
+        "48.204.170.122/31",
+        "48.204.170.124/30",
+        "48.204.171.0/28",
+        "48.215.89.120/32",
+        "48.215.92.176/28",
+        "57.159.169.79/32",
+        "57.159.169.184/30",
+        "72.152.23.184/30",
+        "72.152.23.188/31",
+        "74.163.50.4/31",
+        "74.163.72.32/28",
+        "74.177.85.109/32",
+        "74.177.107.0/28",
+        "74.225.45.99/32",
+        "74.225.45.148/30",
+        "108.140.32.215/32",
+        "108.140.45.244/30",
+        "145.191.108.6/31",
+        "172.166.4.134/31",
+        "172.170.23.64/28",
+        "172.186.105.151/32",
+        "172.186.105.174/31",
+        "172.186.105.176/28",
+        "172.209.113.245/32",
+        "172.209.114.76/30"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureInformationProtection",
+      "systemService": "AzureInformationProtection",
+      "region": "",
+      "previousChangeNumber": 9,
+      "currentChangeNumber": 10,
+      "addedPrefixes": [
+        "4.145.20.116/30",
+        "4.145.20.120/31",
+        "4.191.90.6/31",
+        "4.191.90.12/30",
+        "4.208.117.100/30",
+        "4.208.117.104/31",
+        "20.51.45.37/32",
+        "20.51.47.40/31",
+        "20.66.130.246/31",
+        "20.66.132.64/30",
+        "48.195.64.56/30",
+        "48.195.64.60/31",
+        "48.199.213.230/31",
+        "48.199.214.60/30",
+        "48.204.185.106/31",
+        "48.204.185.160/30",
+        "72.152.228.172/30",
+        "72.152.228.176/29",
+        "172.170.25.76/30",
+        "172.170.25.104/31",
+        "2603:1020:5:1b::5f6/127",
+        "2603:1020:5:1b::5f8/126",
+        "2603:1020:206:10::44/126",
+        "2603:1020:206:10::48/127",
+        "2603:1030:10:1e::284/126",
+        "2603:1030:10:1e::288/127",
+        "2603:1030:210:2c::50c/126",
+        "2603:1030:210:2c::510/125",
+        "2603:1030:40c:23::1a2/127",
+        "2603:1030:40c:23::1a4/126",
+        "2603:1030:608:14::61a/127",
+        "2603:1030:608:14::68c/126",
+        "2603:1030:a07:22::46c/126",
+        "2603:1030:a07:22::4b0/127",
+        "2603:1030:b04:f::530/127",
+        "2603:1030:b04:f::532/128",
+        "2603:1040:5:16::4c4/126",
+        "2603:1040:5:16::4c8/127",
+        "2603:1040:207:11::4c4/126",
+        "2603:1040:207:11::4c8/127"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor",
+      "systemService": "AzureMonitor",
+      "region": "",
+      "previousChangeNumber": 174,
+      "currentChangeNumber": 175,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "4.241.51.16/28",
+        "20.37.59.32/28",
+        "51.59.56.160/28",
+        "52.238.33.128/27",
+        "68.211.31.144/28",
+        "70.153.90.160/28",
+        "72.152.228.128/26",
+        "72.153.208.8/29",
+        "72.153.208.16/28",
+        "74.243.172.240/28",
+        "172.178.163.16/29",
+        "172.178.163.24/30",
+        "172.178.163.32/27",
+        "2603:1000:4:7::e0/124",
+        "2603:1000:104:9::540/124",
+        "2603:1010:6:c::7f0/124",
+        "2603:1010:207:3::210/124",
+        "2603:1010:304:9::500/124",
+        "2603:1010:404:7::450/124",
+        "2603:1010:502:5::310/124",
+        "2603:1020:5:1a::240/122",
+        "2603:1020:104:6::4e0/124",
+        "2603:1020:206:10::40/122",
+        "2603:1020:206:21::380/122",
+        "2603:1020:605:a::5d0/124",
+        "2603:1020:705:14::280/124",
+        "2603:1020:805:d::130/124",
+        "2603:1020:905:9::1f0/124",
+        "2603:1020:a04:8::590/124",
+        "2603:1020:b04:7::360/124",
+        "2603:1020:c04:a::160/124",
+        "2603:1020:d04:9::2a0/124",
+        "2603:1020:e04:b::a0/124",
+        "2603:1020:f04:9::220/124",
+        "2603:1020:1004:c::110/124",
+        "2603:1020:1104:6::6e0/124",
+        "2603:1020:1204:7::130/124",
+        "2603:1020:1302:5::3e0/124",
+        "2603:1020:1403:7::110/124",
+        "2603:1020:1502:3::670/124",
+        "2603:1020:1602:4::3d0/124",
+        "2603:1030:f:e::3d0/124",
+        "2603:1030:10:1e::280/122",
+        "2603:1030:210:2c::500/122",
+        "2603:1030:40b:f::4c0/124",
+        "2603:1030:40c:23::1a0/123",
+        "2603:1030:40c:23::300/124",
+        "2603:1030:504:14::130/124",
+        "2603:1030:608:13::400/122",
+        "2603:1030:702:6::6e0/124",
+        "2603:1030:807:15::280/122",
+        "2603:1030:a07:20::440/122",
+        "2603:1030:a07:20::480/123",
+        "2603:1030:b04:e::/122",
+        "2603:1030:c06:20::240/122",
+        "2603:1030:f05:c::40/124",
+        "2603:1030:1005:b::80/124",
+        "2603:1040:5:15::3f0/124",
+        "2603:1040:207:f::6e0/124",
+        "2603:1040:407:b::5c0/124",
+        "2603:1040:606:9::7d0/124",
+        "2603:1040:904:7::7b0/124",
+        "2603:1040:a06:c::280/124",
+        "2603:1040:b04:8::110/124",
+        "2603:1040:c06:a::5a0/124",
+        "2603:1040:d04:7::150/124",
+        "2603:1040:e05:9::d0/124",
+        "2603:1040:f05:b::700/124",
+        "2603:1040:1002:7::6c0/124",
+        "2603:1040:1104:6::4b0/124",
+        "2603:1040:1202:5::1d0/124",
+        "2603:1040:1302:6::2e0/124",
+        "2603:1040:1402:5::420/124",
+        "2603:1040:1602:4::560/124",
+        "2603:1040:1702:4::530/124",
+        "2603:1040:1802:4::590/124",
+        "2603:1050:6:a::460/124",
+        "2603:1050:301:4::390/124",
+        "2603:1050:403:7::2e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.AustraliaCentral",
+      "systemService": "AzureMonitor",
+      "region": "australiacentral",
+      "previousChangeNumber": 18,
+      "currentChangeNumber": 19,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "20.37.59.32/28",
+        "2603:1010:304:9::500/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.AustraliaCentral2",
+      "systemService": "AzureMonitor",
+      "region": "australiacentral2",
+      "previousChangeNumber": 13,
+      "currentChangeNumber": 14,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1010:404:7::450/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.AustraliaEast",
+      "systemService": "AzureMonitor",
+      "region": "australiaeast",
+      "previousChangeNumber": 22,
+      "currentChangeNumber": 23,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1010:6:c::7f0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.AustraliaSoutheast",
+      "systemService": "AzureMonitor",
+      "region": "australiasoutheast",
+      "previousChangeNumber": 19,
+      "currentChangeNumber": 20,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1010:207:3::210/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.AustriaEast",
+      "systemService": "AzureMonitor",
+      "region": "austriaeast",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:104:6::4e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.BelgiumCentral",
+      "systemService": "AzureMonitor",
+      "region": "belgiumcentral",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1502:3::670/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.BrazilSouth",
+      "systemService": "AzureMonitor",
+      "region": "brazilsouth",
+      "previousChangeNumber": 21,
+      "currentChangeNumber": 22,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "51.59.56.160/28",
+        "2603:1050:6:a::460/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.BrazilSoutheast",
+      "systemService": "AzureMonitor",
+      "region": "brazilse",
+      "previousChangeNumber": 12,
+      "currentChangeNumber": 13,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1050:403:7::2e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.CanadaCentral",
+      "systemService": "AzureMonitor",
+      "region": "canadacentral",
+      "previousChangeNumber": 17,
+      "currentChangeNumber": 18,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:f05:c::40/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.CanadaEast",
+      "systemService": "AzureMonitor",
+      "region": "canadaeast",
+      "previousChangeNumber": 15,
+      "currentChangeNumber": 16,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:1005:b::80/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.CentralIndia",
+      "systemService": "AzureMonitor",
+      "region": "centralindia",
+      "previousChangeNumber": 19,
+      "currentChangeNumber": 20,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:a06:c::280/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.CentralUS",
+      "systemService": "AzureMonitor",
+      "region": "centralus",
+      "previousChangeNumber": 40,
+      "currentChangeNumber": 41,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:10:1e::280/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.CentralUSEUAP",
+      "systemService": "AzureMonitor",
+      "region": "centraluseuap",
+      "previousChangeNumber": 12,
+      "currentChangeNumber": 13,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:f:e::3d0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.ChileCentral",
+      "systemService": "AzureMonitor",
+      "region": "chilec",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "68.211.31.144/28",
+        "2603:1050:301:4::390/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.DenmarkEast",
+      "systemService": "AzureMonitor",
+      "region": "denmarkeast",
+      "previousChangeNumber": 1,
+      "currentChangeNumber": 2,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1602:4::3d0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.EastAsia",
+      "systemService": "AzureMonitor",
+      "region": "eastasia",
+      "previousChangeNumber": 26,
+      "currentChangeNumber": 27,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:207:f::6e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.EastUS",
+      "systemService": "AzureMonitor",
+      "region": "eastus",
+      "previousChangeNumber": 62,
+      "currentChangeNumber": 63,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "72.152.228.128/26",
+        "2603:1030:210:2c::500/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.EastUS2",
+      "systemService": "AzureMonitor",
+      "region": "eastus2",
+      "previousChangeNumber": 42,
+      "currentChangeNumber": 43,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:40c:23::1a0/123",
+        "2603:1030:40c:23::300/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.EastUS2EUAP",
+      "systemService": "AzureMonitor",
+      "region": "eastus2euap",
+      "previousChangeNumber": 23,
+      "currentChangeNumber": 24,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:40b:f::4c0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.FranceCentral",
+      "systemService": "AzureMonitor",
+      "region": "centralfrance",
+      "previousChangeNumber": 24,
+      "currentChangeNumber": 25,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:805:d::130/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.FranceSouth",
+      "systemService": "AzureMonitor",
+      "region": "southfrance",
+      "previousChangeNumber": 13,
+      "currentChangeNumber": 14,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:905:9::1f0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.GermanyNorth",
+      "systemService": "AzureMonitor",
+      "region": "germanyn",
+      "previousChangeNumber": 15,
+      "currentChangeNumber": 16,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:d04:9::2a0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.GermanyWestCentral",
+      "systemService": "AzureMonitor",
+      "region": "germanywc",
+      "previousChangeNumber": 18,
+      "currentChangeNumber": 19,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:c04:a::160/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.IndonesiaCentral",
+      "systemService": "AzureMonitor",
+      "region": "indonesiacentral",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "70.153.90.160/28",
+        "2603:1040:1802:4::590/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.IsraelCentral",
+      "systemService": "AzureMonitor",
+      "region": "israelcentral",
+      "previousChangeNumber": 7,
+      "currentChangeNumber": 8,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1402:5::420/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.IsraelNorthwest",
+      "systemService": "AzureMonitor",
+      "region": "israelnorthwest",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1702:4::530/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.ItalyNorth",
+      "systemService": "AzureMonitor",
+      "region": "italynorth",
+      "previousChangeNumber": 7,
+      "currentChangeNumber": 8,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1204:7::130/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.JapanEast",
+      "systemService": "AzureMonitor",
+      "region": "japaneast",
+      "previousChangeNumber": 18,
+      "currentChangeNumber": 19,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "4.241.51.16/28",
+        "2603:1040:407:b::5c0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.JapanWest",
+      "systemService": "AzureMonitor",
+      "region": "japanwest",
+      "previousChangeNumber": 16,
+      "currentChangeNumber": 17,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:606:9::7d0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.JioIndiaCentral",
+      "systemService": "AzureMonitor",
+      "region": "jioindiacentral",
+      "previousChangeNumber": 7,
+      "currentChangeNumber": 8,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1104:6::4b0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.JioIndiaWest",
+      "systemService": "AzureMonitor",
+      "region": "jioindiawest",
+      "previousChangeNumber": 13,
+      "currentChangeNumber": 14,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:d04:7::150/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.KoreaCentral",
+      "systemService": "AzureMonitor",
+      "region": "koreacentral",
+      "previousChangeNumber": 18,
+      "currentChangeNumber": 19,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:f05:b::700/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.KoreaSouth",
+      "systemService": "AzureMonitor",
+      "region": "koreasouth",
+      "previousChangeNumber": 12,
+      "currentChangeNumber": 13,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:e05:9::d0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.MalaysiaWest",
+      "systemService": "AzureMonitor",
+      "region": "malaysiawest",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1602:4::560/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.MexicoCentral",
+      "systemService": "AzureMonitor",
+      "region": "mexicocentral",
+      "previousChangeNumber": 8,
+      "currentChangeNumber": 9,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:702:6::6e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.NewZealandNorth",
+      "systemService": "AzureMonitor",
+      "region": "newzealandnorth",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1010:502:5::310/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.NorthCentralUS",
+      "systemService": "AzureMonitor",
+      "region": "northcentralus",
+      "previousChangeNumber": 34,
+      "currentChangeNumber": 35,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:608:13::400/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.NorthEurope",
+      "systemService": "AzureMonitor",
+      "region": "northeurope",
+      "previousChangeNumber": 29,
+      "currentChangeNumber": 30,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:5:1a::240/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.NorwayEast",
+      "systemService": "AzureMonitor",
+      "region": "norwaye",
+      "previousChangeNumber": 18,
+      "currentChangeNumber": 19,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:e04:b::a0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.NorwayWest",
+      "systemService": "AzureMonitor",
+      "region": "norwayw",
+      "previousChangeNumber": 13,
+      "currentChangeNumber": 14,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:f04:9::220/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.PolandCentral",
+      "systemService": "AzureMonitor",
+      "region": "polandcentral",
+      "previousChangeNumber": 6,
+      "currentChangeNumber": 7,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1302:5::3e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.QatarCentral",
+      "systemService": "AzureMonitor",
+      "region": "qatarcentral",
+      "previousChangeNumber": 14,
+      "currentChangeNumber": 15,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1002:7::6c0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SouthAfricaNorth",
+      "systemService": "AzureMonitor",
+      "region": "southafricanorth",
+      "previousChangeNumber": 16,
+      "currentChangeNumber": 17,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1000:104:9::540/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SouthAfricaWest",
+      "systemService": "AzureMonitor",
+      "region": "southafricawest",
+      "previousChangeNumber": 15,
+      "currentChangeNumber": 16,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1000:4:7::e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SouthCentralUS",
+      "systemService": "AzureMonitor",
+      "region": "southcentralus",
+      "previousChangeNumber": 28,
+      "currentChangeNumber": 29,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:807:15::280/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SoutheastAsia",
+      "systemService": "AzureMonitor",
+      "region": "southeastasia",
+      "previousChangeNumber": 20,
+      "currentChangeNumber": 21,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:5:15::3f0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SouthIndia",
+      "systemService": "AzureMonitor",
+      "region": "southindia",
+      "previousChangeNumber": 14,
+      "currentChangeNumber": 15,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:c06:a::5a0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SpainCentral",
+      "systemService": "AzureMonitor",
+      "region": "spaincentral",
+      "previousChangeNumber": 8,
+      "currentChangeNumber": 9,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1403:7::110/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SwedenCentral",
+      "systemService": "AzureMonitor",
+      "region": "swedencentral",
+      "previousChangeNumber": 17,
+      "currentChangeNumber": 18,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1004:c::110/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SwedenSouth",
+      "systemService": "AzureMonitor",
+      "region": "swedensouth",
+      "previousChangeNumber": 11,
+      "currentChangeNumber": 12,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:1104:6::6e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SwitzerlandNorth",
+      "systemService": "AzureMonitor",
+      "region": "switzerlandn",
+      "previousChangeNumber": 25,
+      "currentChangeNumber": 26,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:a04:8::590/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.SwitzerlandWest",
+      "systemService": "AzureMonitor",
+      "region": "switzerlandw",
+      "previousChangeNumber": 16,
+      "currentChangeNumber": 17,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:b04:7::360/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.TaiwanNorth",
+      "systemService": "AzureMonitor",
+      "region": "taiwannorth",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1302:6::2e0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.TaiwanNorthwest",
+      "systemService": "AzureMonitor",
+      "region": "taiwannorthwest",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:1202:5::1d0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.UAECentral",
+      "systemService": "AzureMonitor",
+      "region": "uaecentral",
+      "previousChangeNumber": 15,
+      "currentChangeNumber": 16,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "74.243.172.240/28",
+        "2603:1040:b04:8::110/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.UAENorth",
+      "systemService": "AzureMonitor",
+      "region": "uaenorth",
+      "previousChangeNumber": 23,
+      "currentChangeNumber": 24,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1040:904:7::7b0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.UKSouth",
+      "systemService": "AzureMonitor",
+      "region": "uksouth",
+      "previousChangeNumber": 18,
+      "currentChangeNumber": 19,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:705:14::280/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.UKWest",
+      "systemService": "AzureMonitor",
+      "region": "ukwest",
+      "previousChangeNumber": 17,
+      "currentChangeNumber": 18,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:605:a::5d0/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.WestCentralUS",
+      "systemService": "AzureMonitor",
+      "region": "westcentralus",
+      "previousChangeNumber": 27,
+      "currentChangeNumber": 28,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:b04:e::/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.WestEurope",
+      "systemService": "AzureMonitor",
+      "region": "westeurope",
+      "previousChangeNumber": 30,
+      "currentChangeNumber": 31,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1020:206:10::40/122",
+        "2603:1020:206:21::380/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.WestUS",
+      "systemService": "AzureMonitor",
+      "region": "westus",
+      "previousChangeNumber": 49,
+      "currentChangeNumber": 50,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "52.238.33.128/27",
+        "72.153.208.8/29",
+        "72.153.208.16/28",
+        "172.178.163.16/29",
+        "172.178.163.24/30",
+        "172.178.163.32/27",
+        "2603:1030:a07:20::440/122",
+        "2603:1030:a07:20::480/123"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.WestUS2",
+      "systemService": "AzureMonitor",
+      "region": "westus2",
+      "previousChangeNumber": 32,
+      "currentChangeNumber": 33,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:c06:20::240/122"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "AzureMonitor.WestUS3",
+      "systemService": "AzureMonitor",
+      "region": "westus3",
+      "previousChangeNumber": 22,
+      "currentChangeNumber": 23,
+      "addedPrefixes": [],
+      "removedPrefixes": [
+        "2603:1030:504:14::130/124"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "Marketplace",
+      "systemService": "Marketplace",
+      "region": "",
+      "previousChangeNumber": 7,
+      "currentChangeNumber": 8,
+      "addedPrefixes": [
+        "20.51.45.4/31",
+        "20.51.45.8/29",
+        "20.51.45.16/28"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI",
+      "systemService": "PowerBI",
+      "region": "",
+      "previousChangeNumber": 91,
+      "currentChangeNumber": 92,
+      "addedPrefixes": [
+        "4.191.89.64/26",
+        "4.208.118.128/26",
+        "20.66.132.0/26",
+        "20.170.251.112/28",
+        "20.170.251.128/28",
+        "48.195.64.64/26",
+        "48.204.184.0/26",
+        "134.112.169.96/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.EastAsia",
+      "systemService": "PowerBI",
+      "region": "eastasia",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [
+        "4.191.89.64/26"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.EastUS2",
+      "systemService": "PowerBI",
+      "region": "eastus2",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.204.184.0/26"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.GermanyNorth",
+      "systemService": "PowerBI",
+      "region": "germanyn",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [
+        "20.170.251.112/28",
+        "20.170.251.128/28"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.NorthCentralUS",
+      "systemService": "PowerBI",
+      "region": "northcentralus",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "20.66.132.0/26"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.NorthEurope",
+      "systemService": "PowerBI",
+      "region": "northeurope",
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
+      "addedPrefixes": [
+        "4.208.118.128/26"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.PolandCentral",
+      "systemService": "PowerBI",
+      "region": "polandcentral",
+      "previousChangeNumber": 1,
+      "currentChangeNumber": 2,
+      "addedPrefixes": [
+        "134.112.169.96/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "PowerBI.WestUS",
+      "systemService": "PowerBI",
+      "region": "westus",
+      "previousChangeNumber": 4,
+      "currentChangeNumber": 5,
+      "addedPrefixes": [
+        "48.195.64.64/26"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "Storage.BrazilSouth",
+      "systemService": "AzureStorage",
+      "region": "brazilsouth",
+      "previousChangeNumber": 13,
+      "currentChangeNumber": 14,
+      "addedPrefixes": [
+        "145.190.149.0/24"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "Storage.CanadaCentral",
+      "systemService": "AzureStorage",
+      "region": "canadacentral",
+      "previousChangeNumber": 15,
+      "currentChangeNumber": 16,
+      "addedPrefixes": [
+        "135.130.250.0/23"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "Storage.CentralUSEUAP",
+      "systemService": "AzureStorage",
+      "region": "centraluseuap",
+      "previousChangeNumber": 11,
+      "currentChangeNumber": 12,
+      "addedPrefixes": [
+        "135.130.247.0/24",
+        "135.130.252.0/25",
+        "135.130.254.0/23",
+        "2603:1030:12:8000::/64"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "Storage.EastAsia",
+      "systemService": "AzureStorage",
+      "region": "eastasia",
+      "previousChangeNumber": 14,
+      "currentChangeNumber": 15,
+      "addedPrefixes": [
+        "2603:1040:208::/49",
+        "2603:1040:208:8000::/63"
+      ],
+      "removedPrefixes": [
+        "2603:1040:208::/48"
+      ],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "StorageSyncService",
+      "systemService": "StorageSyncService",
+      "region": "",
+      "previousChangeNumber": 57,
+      "currentChangeNumber": 58,
+      "addedPrefixes": [
+        "57.156.75.168/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "StorageSyncService.ChileCentral",
+      "systemService": "StorageSyncService",
+      "region": "chilec",
+      "previousChangeNumber": 1,
+      "currentChangeNumber": 2,
+      "addedPrefixes": [
+        "57.156.75.168/29"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "WindowsVirtualDesktop",
+      "systemService": "WVDRelays",
+      "region": "",
+      "previousChangeNumber": 34,
+      "currentChangeNumber": 35,
+      "addedPrefixes": [
+        "57.156.5.248/29",
+        "57.156.73.192/28"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    },
+    {
+      "name": "WindowsVirtualDesktop.ChileCentral",
+      "systemService": "WindowsVirtualDesktop",
+      "region": "chilec",
+      "previousChangeNumber": 3,
+      "currentChangeNumber": 4,
+      "addedPrefixes": [
+        "57.156.5.248/29",
+        "57.156.73.192/28"
+      ],
+      "removedPrefixes": [],
+      "cloud": "AzureCloud"
+    }
+  ]
 }
