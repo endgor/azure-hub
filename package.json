@@ -11,7 +11,7 @@
     "update-ip-data": "ts-node -r tsconfig-paths/register scripts/updateIpData.ts",
     "update-rbac-data": "ts-node -r tsconfig-paths/register scripts/updateRbacData.ts",
     "fetch-entraid-roles": "ts-node --project tsconfig.node.json scripts/fetchEntraIdRoles.ts",
-    "generate-actions-cache": "ts-node -r tsconfig-paths/register scripts/generateActionsCache.ts",
+    "generate-actions-index": "ts-node -r tsconfig-paths/register scripts/generateActionsIndex.ts",
     "generate-ip-indexes": "ts-node -r tsconfig-paths/register scripts/generateIpIndexes.ts",
     "generate-ip-lookup-index": "ts-node -r tsconfig-paths/register scripts/generateIpLookupIndex.ts"
   },

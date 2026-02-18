@@ -6,7 +6,7 @@ import { generateActionsCache } from '../src/lib/rbacCacheGenerator';
 // File paths
 const DATA_DIR = path.join(process.cwd(), 'public', 'data');
 const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
-const ACTIONS_CACHE_FILE = path.join(DATA_DIR, 'actions-cache.json');
+const ACTIONS_INDEX_FILE = path.join(DATA_DIR, 'actions-index.json');
 
 /**
  * Main function
@@ -37,13 +37,13 @@ async function main(): Promise<void> {
     const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
 
     // Save to file
-    console.log(`\nWriting ${actionsCache.length} actions to ${ACTIONS_CACHE_FILE}...`);
-    fs.writeFileSync(ACTIONS_CACHE_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
+    console.log(`\nWriting ${actionsCache.length} actions to ${ACTIONS_INDEX_FILE}...`);
+    fs.writeFileSync(ACTIONS_INDEX_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
     console.log(`✓ Actions cache saved\n`);
 
     console.log(`Actions cache generation completed in ${elapsedTime}s!`);
     console.log('\nGenerated file:');
-    console.log(`  - ${ACTIONS_CACHE_FILE}`);
+    console.log(`  - ${ACTIONS_INDEX_FILE}`);
     console.log('\nThis file will be loaded by the RBAC calculator to avoid expensive runtime computation.');
 
   } catch (error: any) {
