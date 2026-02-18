@@ -53,6 +53,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
   };
 
   const canonicalUrl = getServiceTagCanonicalUrl(serviceTag);
+  const isRegionalVariant = serviceTag.includes('.');
 
   // Generate breadcrumb structured data
   const breadcrumbSchema = {
@@ -85,6 +86,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
       title={`Azure Service Tag: ${serviceTag}`}
       description={`Explore the Azure IP ranges associated with the ${serviceTag} service tag.`}
       canonicalUrl={canonicalUrl}
+      noIndex={isRegionalVariant}
     >
       <Head>
         <script

@@ -209,17 +209,16 @@ ${guidePages.map(guide => `  <url>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`).join('\n')}
-  <!-- Service Tag Pages -->
+  <!-- Service Tag Pages (base tags only, regional variants are noindexed) -->
 ${serviceTagsArray
+  .filter((tag) => !isRegionalVariant(tag))
   .map((tag) => {
     const xmlSafeUrl = escapeXml(`${BASE_URL}${getServiceTagPath(tag)}`);
-    // Base tags get higher priority than regional variants
-    const priority = isRegionalVariant(tag) ? '0.5' : '0.7';
     return `  <url>
     <loc>${xmlSafeUrl}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>${priority}</priority>
+    <priority>0.7</priority>
   </url>`;
   })
   .join('\n')}
@@ -234,8 +233,10 @@ ${serviceTagsArray
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    const totalUrls = 9 + guidePages.length + serviceTagsArray.length;
-    console.log(`  Total URLs: ${totalUrls} (9 core pages + ${guidePages.length} guides + ${serviceTagsArray.length} service tags)`);
+    const baseTagCount = serviceTagsArray.filter((tag) => !isRegionalVariant(tag)).length;
+    const totalUrls = 9 + guidePages.length + baseTagCount;
+    console.log(`  Total URLs: ${totalUrls} (9 core pages + ${guidePages.length} guides + ${baseTagCount} base service tags)`);
+    console.log(`  Excluded: ${serviceTagsArray.length - baseTagCount} regional variants (noindexed)`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);
