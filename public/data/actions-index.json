@@ -6712,7 +6712,7 @@
   {
     "key": "microsoft.security/securityoperators/read",
     "name": "Microsoft.Security/securityOperators/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.usagebilling/accounts/inputs/send/action",
@@ -27477,6 +27477,26 @@
   {
     "key": "microsoft.azurestackhci/registeredsubscriptions/read",
     "name": "Microsoft.AzureStackHCI/RegisteredSubscriptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/snapshots/delete",
+    "name": "Microsoft.AzureStackHCI/Snapshots/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/snapshots/join/action",
+    "name": "Microsoft.AzureStackHCI/Snapshots/join/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/snapshots/read",
+    "name": "Microsoft.AzureStackHCI/Snapshots/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/snapshots/write",
+    "name": "Microsoft.AzureStackHCI/Snapshots/Write",
     "roleCount": 0
   },
   {
@@ -74150,6 +74170,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.marketplace/privatestores/collections/offers/contextsview/action",
+    "name": "Microsoft.Marketplace/privateStores/collections/offers/contextsView/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.marketplace/privatestores/collections/queryrules/action",
     "name": "Microsoft.Marketplace/privateStores/collections/queryRules/action",
     "roleCount": 0
@@ -74925,63 +74950,63 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessmentoptions/read",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessmentOptions/read",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessmentoptions/read",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessmentOptions/read",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/assessedinstances/read",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/assessedInstances/read",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/assessedinstances/read",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/assessedInstances/read",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/assessedinstances/write",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/assessedInstances/write",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/assessedinstances/write",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/assessedInstances/write",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/delete",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/delete",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/delete",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/delete",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/downloadurl/action",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/downloadurl/action",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/downloadurl/action",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/downloadurl/action",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/read",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/read",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/read",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/read",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/recalculatesummaries/action",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/recalculateSummaries/action",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/recalculatesummaries/action",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/recalculateSummaries/action",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/summaries/read",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/summaries/read",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/summaries/read",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/summaries/read",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbassessments/write",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbAssessments/write",
+    "key": "microsoft.migrate/assessmentprojects/mongoassessments/write",
+    "name": "Microsoft.Migrate/assessmentProjects/mongoAssessments/write",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbcollectors/delete",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbcollectors/delete",
+    "key": "microsoft.migrate/assessmentprojects/mongocollectors/delete",
+    "name": "Microsoft.Migrate/assessmentProjects/mongocollectors/delete",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbcollectors/read",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbcollectors/read",
+    "key": "microsoft.migrate/assessmentprojects/mongocollectors/read",
+    "name": "Microsoft.Migrate/assessmentProjects/mongocollectors/read",
     "roleCount": 0
   },
   {
-    "key": "microsoft.migrate/assessmentprojects/mongodbcollectors/write",
-    "name": "Microsoft.Migrate/assessmentProjects/mongodbcollectors/write",
+    "key": "microsoft.migrate/assessmentprojects/mongocollectors/write",
+    "name": "Microsoft.Migrate/assessmentProjects/mongocollectors/write",
     "roleCount": 0
   },
   {
@@ -78195,13 +78220,38 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/expressroutecrossconnections/confirmactivationkey/action",
+    "name": "Microsoft.Network/expressRouteCrossConnections/confirmActivationKey/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/expressroutecrossconnections/delete",
     "name": "Microsoft.Network/expressRouteCrossConnections/delete",
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/expressroutecrossconnections/features/delete",
+    "name": "Microsoft.Network/expressRouteCrossConnections/features/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutecrossconnections/features/read",
+    "name": "Microsoft.Network/expressRouteCrossConnections/features/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutecrossconnections/features/write",
+    "name": "Microsoft.Network/expressRouteCrossConnections/features/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/expressroutecrossconnections/join/action",
     "name": "Microsoft.Network/expressRouteCrossConnections/join/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutecrossconnections/notifyconnectionstatus/action",
+    "name": "Microsoft.Network/expressRouteCrossConnections/notifyConnectionStatus/action",
     "roleCount": 0
   },
   {
@@ -78232,6 +78282,11 @@
   {
     "key": "microsoft.network/expressroutecrossconnections/peerings/write",
     "name": "Microsoft.Network/expressRouteCrossConnections/peerings/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutecrossconnections/proposeinterconnect/action",
+    "name": "Microsoft.Network/expressRouteCrossConnections/proposeInterconnect/action",
     "roleCount": 0
   },
   {
@@ -78287,6 +78342,21 @@
   {
     "key": "microsoft.network/expressroutegateways/write",
     "name": "Microsoft.Network/expressRouteGateways/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/delete",
+    "name": "Microsoft.Network/expressRouteLags/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/read",
+    "name": "Microsoft.Network/expressRouteLags/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/write",
+    "name": "Microsoft.Network/expressRouteLags/write",
     "roleCount": 0
   },
   {
@@ -78402,6 +78472,11 @@
   {
     "key": "microsoft.network/firewallpolicies/join/action",
     "name": "Microsoft.Network/firewallPolicies/join/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firewallpolicies/pacfile/action",
+    "name": "Microsoft.Network/firewallPolicies/pacFile/action",
     "roleCount": 0
   },
   {
@@ -78662,6 +78737,26 @@
   {
     "key": "microsoft.network/getdnsresourcereference/action",
     "name": "Microsoft.Network/getDnsResourceReference/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/interconnectgroups/delete",
+    "name": "Microsoft.Network/interconnectGroups/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/interconnectgroups/read",
+    "name": "Microsoft.Network/interconnectGroups/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/interconnectgroups/subgroups/read",
+    "name": "Microsoft.Network/interconnectGroups/subgroups/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/interconnectgroups/write",
+    "name": "Microsoft.Network/interconnectGroups/write",
     "roleCount": 0
   },
   {
@@ -79020,6 +79115,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/locations/setlbbackendadminstate/action",
+    "name": "Microsoft.Network/locations/setLbBackendAdminState/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/locations/setloadbalancerfrontendpublicipaddresses/action",
     "name": "Microsoft.Network/locations/setLoadBalancerFrontendPublicIpAddresses/action",
     "roleCount": 0
@@ -79250,8 +79350,28 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/networkmanagers/ipampools/listassociatedresources/action",
+    "name": "microsoft.network/networkmanagers/ipampools/listassociatedresources/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/networkmanagers/ipampools/read",
     "name": "Microsoft.Network/networkManagers/ipamPools/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/networkmanagers/ipampools/staticcidrs/delete",
+    "name": "microsoft.network/networkmanagers/ipampools/staticcidrs/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/networkmanagers/ipampools/staticcidrs/read",
+    "name": "microsoft.network/networkmanagers/ipampools/staticcidrs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/networkmanagers/ipampools/staticcidrs/write",
+    "name": "microsoft.network/networkmanagers/ipampools/staticcidrs/write",
     "roleCount": 0
   },
   {
@@ -79892,6 +80012,11 @@
   {
     "key": "microsoft.network/networkvirtualappliances/getdelegatedsubnets/action",
     "name": "Microsoft.Network/networkVirtualAppliances/getDelegatedSubnets/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/networkvirtualappliances/getvmssresourceid/action",
+    "name": "Microsoft.Network/networkVirtualAppliances/getVmssResourceId/action",
     "roleCount": 0
   },
   {
@@ -80947,6 +81072,11 @@
   {
     "key": "microsoft.network/virtualnetworkgateways/getbgppeerstatus/action",
     "name": "microsoft.network/virtualnetworkgateways/getbgppeerstatus/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/virtualnetworkgateways/geteffectiveroutes/action",
+    "name": "microsoft.network/virtualnetworkgateways/geteffectiveroutes/action",
     "roleCount": 0
   },
   {
@@ -83187,6 +83317,111 @@
   {
     "key": "microsoft.offazure/vmwaresites/write",
     "name": "Microsoft.OffAzure/vmwareSites/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/locations/operationstatuses/read",
+    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/locations/operationstatuses/write",
+    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/operations/read",
+    "name": "Microsoft.OffAzureSpringBoot/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/register/action",
+    "name": "Microsoft.OffAzureSpringBoot/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/refreshsite/action",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/refreshSite/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/unregister/action",
+    "name": "Microsoft.OffAzureSpringBoot/unregister/action",
     "roleCount": 0
   },
   {
@@ -105712,46 +105947,6 @@
   {
     "key": "microsoft.workloads/virtualinstances/write",
     "name": "Microsoft.Workloads/virtualInstances/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/operations/read",
-    "name": "Microsoft.ZeroTrustSegmentation/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/register/action",
-    "name": "Microsoft.ZeroTrustSegmentation/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/segmentationmanagers/delete",
-    "name": "Microsoft.ZeroTrustSegmentation/segmentationManagers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/segmentationmanagers/getgraph/action",
-    "name": "Microsoft.ZeroTrustSegmentation/segmentationManagers/getGraph/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/segmentationmanagers/read",
-    "name": "Microsoft.ZeroTrustSegmentation/segmentationManagers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/segmentationmanagers/setlabels/action",
-    "name": "Microsoft.ZeroTrustSegmentation/segmentationManagers/setLabels/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/segmentationmanagers/write",
-    "name": "Microsoft.ZeroTrustSegmentation/segmentationManagers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.zerotrustsegmentation/unregister/action",
-    "name": "Microsoft.ZeroTrustSegmentation/unregister/action",
     "roleCount": 0
   },
   {

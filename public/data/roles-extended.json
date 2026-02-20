@@ -22414,6 +22414,7 @@
           "Microsoft.ContainerService/managedClusters/trustedAccessRoleBindings/write",
           "Microsoft.ContainerService/managedClusters/write",
           "Microsoft.Security/pricings/securityoperators/read",
+          "Microsoft.Security/securityOperators/read",
           "Microsoft.OperationalInsights/workspaces/write",
           "Microsoft.OperationalInsights/workspaces/read",
           "Microsoft.OperationalInsights/workspaces/listKeys/action",
@@ -22431,8 +22432,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-01-08T08:19:53.335169+00:00",
-    "permissionCount": 1015,
+    "updatedOn": "2026-02-19T12:31:56.691678+00:00",
+    "permissionCount": 1016,
     "dataActions": [],
     "notDataActions": []
   },
@@ -36764,6 +36765,36 @@
     "updatedBy": null,
     "updatedOn": "2026-02-17T17:29:43.567743+00:00",
     "permissionCount": 10,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-02-19T23:00:28.719480+00:00",
+    "description": "Full access to Genome control plane operations only",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/ef3729d8-2861-401e-95ae-c7d4845a6097",
+    "name": "ef3729d8-2861-401e-95ae-c7d4845a6097",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Genome/*"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Genome Admin",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-02-19T23:00:28.719480+00:00",
+    "permissionCount": 500,
     "dataActions": [],
     "notDataActions": []
   }
