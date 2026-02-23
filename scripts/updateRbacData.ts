@@ -356,8 +356,12 @@ async function updateRbacData(): Promise<void> {
     // Fetch role definitions
     const roles = fetchRoleDefinitions();
 
+    // Filter to built-in roles only to avoid leaking tenant-specific custom roles
+    const builtInRoles = roles.filter(role => role.roleType === 'BuiltInRole');
+    console.info(`Filtered to ${builtInRoles.length} built-in roles (excluded ${roles.length - builtInRoles.length} custom roles)`);
+
     // Extend role data with computed fields
-    const extendedRoles = extendRoleData(roles);
+    const extendedRoles = extendRoleData(builtInRoles);
 
     // Save roles to file
     console.info(`Writing ${extendedRoles.length} roles to ${ROLES_FILE}...`);

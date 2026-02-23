@@ -149,8 +149,12 @@ async function main() {
       return;
     }
 
+    // Filter to built-in roles only to avoid leaking tenant-specific custom roles
+    const builtInRoles = roles.filter(r => r.isBuiltIn);
+    console.info(`Filtered to ${builtInRoles.length} built-in roles (excluded ${roles.length - builtInRoles.length} custom roles)`);
+
     // Extend with computed fields
-    const extendedRoles = extendEntraIDRoleData(roles);
+    const extendedRoles = extendEntraIDRoleData(builtInRoles);
 
     // Save to file
     console.info(`\nWriting ${extendedRoles.length} Entra ID roles to ${ENTRAID_ROLES_FILE}...`);
