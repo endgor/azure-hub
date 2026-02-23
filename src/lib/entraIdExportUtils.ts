@@ -1,5 +1,4 @@
 import type { EntraIDRole } from '@/types/rbac';
-import * as XLSX from 'xlsx';
 import { downloadFile, downloadExcel, downloadCSV, downloadMarkdown } from './downloadUtils';
 
 /**
@@ -68,27 +67,22 @@ export async function exportEntraIdRolesToCSV(roles: EntraIDRole[], filename: st
  * Export Entra ID roles to Excel format
  */
 export async function exportEntraIdRolesToExcel(roles: EntraIDRole[], filename: string): Promise<void> {
-  const workbook = XLSX.utils.book_new();
+  const ExcelJS = await import('exceljs');
+  const workbook = new ExcelJS.Workbook();
 
   // Summary sheet
-  const summaryData: (string | number)[][] = [
-    ['Entra ID Roles Export'],
-    ['Generated', new Date().toLocaleString()],
-    ['Total Roles', roles.length],
-    []
-  ];
-
-  const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
-  XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+  const summarySheet = workbook.addWorksheet('Summary');
+  summarySheet.addRow(['Entra ID Roles Export']);
+  summarySheet.addRow(['Generated', new Date().toLocaleString()]);
+  summarySheet.addRow(['Total Roles', roles.length]);
 
   // Roles overview sheet
-  const overviewRows: (string | number)[][] = [
-    ['Role ID', 'Display Name', 'Description', 'Is Built-in', 'Permission Count']
-  ];
+  const overviewSheet = workbook.addWorksheet('Roles Overview');
+  overviewSheet.addRow(['Role ID', 'Display Name', 'Description', 'Is Built-in', 'Permission Count']);
 
   for (const role of roles) {
     const allPermissions = role.rolePermissions.flatMap(rp => rp.allowedResourceActions || []);
-    overviewRows.push([
+    overviewSheet.addRow([
       role.id,
       role.displayName,
       role.description || '',
@@ -97,44 +91,35 @@ export async function exportEntraIdRolesToExcel(roles: EntraIDRole[], filename: 
     ]);
   }
 
-  const overviewSheet = XLSX.utils.aoa_to_sheet(overviewRows);
-  XLSX.utils.book_append_sheet(workbook, overviewSheet, 'Roles Overview');
-
   // Individual role sheets (limit to first 10 roles to avoid Excel sheet limit)
   const rolesToExport = roles.slice(0, 10);
   for (const role of rolesToExport) {
     const allPermissions = role.rolePermissions.flatMap(rp => rp.allowedResourceActions || []);
-    const roleRows: string[][] = [
-      ['Display Name', role.displayName],
-      ['Description', role.description || ''],
-      ['Role ID', role.id],
-      ['Is Built-in', role.isBuiltIn ? 'Yes' : 'No'],
-      [],
-      ['Permissions']
-    ];
-
-    for (const permission of allPermissions) {
-      roleRows.push([permission]);
-    }
-
-    const roleSheet = XLSX.utils.aoa_to_sheet(roleRows);
     // Sanitize sheet name (max 31 chars, no special chars)
     const sheetName = role.displayName
       .replace(/[\\\/\?\*\[\]]/g, '')
       .substring(0, 31);
-    XLSX.utils.book_append_sheet(workbook, roleSheet, sheetName);
+    const roleSheet = workbook.addWorksheet(sheetName);
+
+    roleSheet.addRow(['Display Name', role.displayName]);
+    roleSheet.addRow(['Description', role.description || '']);
+    roleSheet.addRow(['Role ID', role.id]);
+    roleSheet.addRow(['Is Built-in', role.isBuiltIn ? 'Yes' : 'No']);
+    roleSheet.addRow([]);
+    roleSheet.addRow(['Permissions']);
+    for (const permission of allPermissions) {
+      roleSheet.addRow([permission]);
+    }
   }
 
   if (roles.length > 10) {
-    const noteSheet = XLSX.utils.aoa_to_sheet([
-      ['Note: Only the first 10 roles have individual detail sheets to comply with Excel limits.'],
-      ['All roles are listed in the "Roles Overview" sheet.']
-    ]);
-    XLSX.utils.book_append_sheet(workbook, noteSheet, 'Note');
+    const noteSheet = workbook.addWorksheet('Note');
+    noteSheet.addRow(['Note: Only the first 10 roles have individual detail sheets to comply with Excel limits.']);
+    noteSheet.addRow(['All roles are listed in the "Roles Overview" sheet.']);
   }
 
-  const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  downloadExcel(wbout, filename);
+  const buffer = await workbook.xlsx.writeBuffer();
+  downloadExcel(buffer as ArrayBuffer, filename);
 }
 
 /**

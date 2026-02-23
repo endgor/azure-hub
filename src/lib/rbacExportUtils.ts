@@ -1,5 +1,4 @@
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
-import * as XLSX from 'xlsx';
 import { downloadFile, downloadExcel, downloadCSV, downloadMarkdown } from './downloadUtils';
 import { generateCountFilename } from './filenameUtils';
 import { getFlattenedPermissions, countTotalPermissions, type PermissionType } from './utils/permissionFlattener';
@@ -160,14 +159,15 @@ export async function exportRolesToExcel(
     return;
   }
 
-  // Create a new workbook
-  const wb = XLSX.utils.book_new();
+  const ExcelJS = await import('exceljs');
+  const workbook = new ExcelJS.Workbook();
 
   // Create summary sheet using counting utility
-  const summaryData: any[][] = [['Role Name', 'Role Type', 'Description', 'Total Permissions']];
+  const summarySheet = workbook.addWorksheet('Summary');
+  summarySheet.addRow(['Role Name', 'Role Type', 'Description', 'Total Permissions']);
 
   for (const role of roles) {
-    summaryData.push([
+    summarySheet.addRow([
       role.roleName,
       role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom',
       role.description || '',
@@ -175,25 +175,17 @@ export async function exportRolesToExcel(
     ]);
   }
 
-  const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
-  XLSX.utils.book_append_sheet(wb, summarySheet, 'Summary');
-
   // Create detailed permissions sheet using flattening utility
-  const detailsData: any[][] = [['Role Name', 'Role Type', 'Permission Type', 'Permission']];
+  const detailsSheet = workbook.addWorksheet('Permissions');
+  detailsSheet.addRow(['Role Name', 'Role Type', 'Permission Type', 'Permission']);
 
   for (const role of roles) {
     const roleType = role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom';
     const flattened = getFlattenedPermissions(role);
 
-    // Helper to add permissions of a specific type
     const addPermissions = (permissions: string[], type: PermissionType) => {
       for (const permission of permissions) {
-        detailsData.push([
-          role.roleName,
-          roleType,
-          type,
-          permission
-        ]);
+        detailsSheet.addRow([role.roleName, roleType, type, permission]);
       }
     };
 
@@ -203,12 +195,8 @@ export async function exportRolesToExcel(
     addPermissions(flattened.notDataActions, 'Not Data Action');
   }
 
-  const detailsSheet = XLSX.utils.aoa_to_sheet(detailsData);
-  XLSX.utils.book_append_sheet(wb, detailsSheet, 'Permissions');
-
-  // Generate Excel file and trigger download
-  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-  downloadExcel(wbout, filename);
+  const buffer = await workbook.xlsx.writeBuffer();
+  downloadExcel(buffer as ArrayBuffer, filename);
 }
 
 /**

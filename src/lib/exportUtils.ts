@@ -1,5 +1,5 @@
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
-import type { WorkSheet } from 'xlsx';
+import type { Worksheet } from 'exceljs';
 import { downloadFile, downloadExcel, downloadMarkdown } from './downloadUtils';
 import { generateQueryFilename } from './filenameUtils';
 
@@ -66,8 +66,7 @@ export async function exportToCSV<T extends ExportRow>(data: T[], filename: stri
 
 /**
  * Exports data to Excel (.xlsx) format with optional row styling.
- * Now uses SheetJS (xlsx) library for simplified implementation.
- * Supports row background colors via cell styling.
+ * Uses ExcelJS library with native cell styling support.
  */
 export async function exportToExcel<T extends ExportRow>(
   data: T[],
@@ -80,29 +79,27 @@ export async function exportToExcel<T extends ExportRow>(
     return;
   }
 
-  // Dynamically import xlsx to reduce initial bundle size
-  const xlsx = await import('xlsx');
+  // Dynamically import ExcelJS to reduce initial bundle size
+  const ExcelJS = await import('exceljs');
 
-  // Convert data to array of arrays format
   const headers = Object.keys(data[0] ?? {});
   const rows = data.map((row) => headers.map((header) => formatCellValue(row[header])));
 
-  // Create worksheet with headers and data
-  const wsData = [headers, ...rows];
-  const worksheet = xlsx.utils.aoa_to_sheet(wsData);
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet(sheetName);
+
+  worksheet.addRow(headers);
+  for (const row of rows) {
+    worksheet.addRow(row);
+  }
 
   // Apply row fill colors if provided
   if (options?.rowFills && options.rowFills.length > 0) {
-    applyRowFills(xlsx, worksheet, options.rowFills, rows.length);
+    applyRowFills(worksheet, options.rowFills);
   }
 
-  // Create workbook and append worksheet
-  const workbook = xlsx.utils.book_new();
-  xlsx.utils.book_append_sheet(workbook, worksheet, sheetName);
-
-  // Generate Excel file
-  const wbout = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-  downloadExcel(wbout, filename);
+  const buffer = await workbook.xlsx.writeBuffer();
+  downloadExcel(buffer as ArrayBuffer, filename);
 }
 
 /**
@@ -189,41 +186,27 @@ function formatMarkdownValue(value: ExportRow[keyof ExportRow]): string {
 
 /**
  * Applies background colors to worksheet rows.
- * Row 0 is headers, data rows start at index 1.
+ * ExcelJS is 1-based: row 1 = headers, data starts at row 2.
  */
 function applyRowFills(
-  xlsx: typeof import('xlsx'),
-  worksheet: WorkSheet,
-  rowFills: (string | null | undefined)[],
-  dataRowCount: number
+  worksheet: Worksheet,
+  rowFills: (string | null | undefined)[]
 ): void {
-  if (!worksheet['!rows']) {
-    worksheet['!rows'] = [];
-  }
+  const colCount = worksheet.columnCount;
 
-  // Apply fills to data rows (skip header row)
-  for (let i = 0; i < Math.min(rowFills.length, dataRowCount); i++) {
+  for (let i = 0; i < rowFills.length; i++) {
     const fillColor = rowFills[i];
     if (fillColor) {
       const normalizedColor = normalizeExcelColor(fillColor);
       if (normalizedColor) {
-        // Row index i+1 because row 0 is headers
-        const rowIndex = i + 1;
-
-        // Get all column keys for this row
-        const range = xlsx.utils.decode_range(worksheet['!ref'] || 'A1');
-        for (let col = range.s.c; col <= range.e.c; col++) {
-          const cellAddress = xlsx.utils.encode_cell({ r: rowIndex, c: col });
-          const cell = worksheet[cellAddress];
-
-          if (cell) {
-            if (!cell.s) cell.s = {};
-            if (!cell.s.fill) cell.s.fill = {};
-            cell.s.fill = {
-              patternType: 'solid',
-              fgColor: { rgb: normalizedColor }
-            };
-          }
+        // Row i+2: +1 for 1-based indexing, +1 to skip header row
+        const row = worksheet.getRow(i + 2);
+        for (let col = 1; col <= colCount; col++) {
+          row.getCell(col).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: normalizedColor }
+          };
         }
       }
     }
