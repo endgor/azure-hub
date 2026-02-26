@@ -1,5 +1,5 @@
 {
-  "changeNumber": 385,
+  "changeNumber": 386,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -71,7 +71,7 @@
       "name": "AzureActiveDirectory",
       "id": "AzureActiveDirectory",
       "properties": {
-        "changeNumber": 12,
+        "changeNumber": 13,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -95,6 +95,7 @@
           "52.127.55.96/27",
           "52.127.55.208/29",
           "52.127.59.96/27",
+          "52.127.176.0/21",
           "52.227.174.114/32",
           "52.227.221.146/32",
           "52.227.221.153/32",
@@ -11216,7 +11217,7 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 64,
+        "changeNumber": 65,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -11284,6 +11285,7 @@
           "51.55.64.0/19",
           "51.55.96.0/23",
           "51.55.102.0/23",
+          "51.55.128.0/19",
           "52.108.66.0/23",
           "52.126.64.0/18",
           "52.126.192.192/26",
@@ -11353,7 +11355,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 119,
+        "changeNumber": 120,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -11601,6 +11603,7 @@
           "51.55.98.0/23",
           "51.55.100.0/23",
           "51.55.102.0/23",
+          "51.55.128.0/19",
           "52.108.64.0/23",
           "52.108.66.0/23",
           "52.108.140.0/24",
