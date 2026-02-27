@@ -48,7 +48,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.24",
+    "autoprefixer": "^10.4.27",
     "eslint": "^10.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "postcss": "^8.5.6",
