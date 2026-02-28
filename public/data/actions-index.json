@@ -29045,6 +29045,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.billing/billingaccounts/generatebillingtoken/write",
+    "name": "Microsoft.Billing/billingAccounts/generateBillingToken/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.billing/billingaccounts/invoices/amend/write",
     "name": "Microsoft.Billing/billingAccounts/invoices/amend/write",
     "roleCount": 0
@@ -53080,13 +53085,13 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/read",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/read",
+    "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/action",
     "roleCount": 0
   },
   {
-    "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/write",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/write",
+    "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/read",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/read",
     "roleCount": 0
   },
   {
@@ -61962,6 +61967,26 @@
   {
     "key": "microsoft.hardware/registeredsubscriptions/read",
     "name": "Microsoft.Hardware/registeredSubscriptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hardware/returnpreview/action",
+    "name": "Microsoft.Hardware/returnPreview/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hardware/returns/delete",
+    "name": "Microsoft.Hardware/returns/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hardware/returns/read",
+    "name": "Microsoft.Hardware/returns/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hardware/returns/write",
+    "name": "Microsoft.Hardware/returns/write",
     "roleCount": 0
   },
   {
@@ -95620,6 +95645,36 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.softwareplan/softwarelicenses/productdownloadoptions/generatedownloadlinks/action",
+    "name": "Microsoft.SoftwarePlan/softwareLicenses/productDownloadOptions/generateDownloadLinks/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.softwareplan/softwarelicenses/productdownloadoptions/read",
+    "name": "Microsoft.SoftwarePlan/softwareLicenses/productDownloadOptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.softwareplan/softwarelicenses/productkeys/read",
+    "name": "Microsoft.SoftwarePlan/softwareLicenses/productKeys/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.softwareplan/softwarelicenses/productkeys/showfullkey/action",
+    "name": "Microsoft.SoftwarePlan/softwareLicenses/productKeys/showFullKey/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.softwareplan/softwarelicenses/read",
+    "name": "Microsoft.SoftwarePlan/softwareLicenses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.softwareplan/softwarelicenses/write",
+    "name": "Microsoft.SoftwarePlan/softwareLicenses/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.softwareplan/softwaresubscriptions/productkeys/processactivationunitsoffset/action",
     "name": "Microsoft.SoftwarePlan/softwareSubscriptions/productKeys/processActivationUnitsOffset/action",
     "roleCount": 0
@@ -95632,6 +95687,11 @@
   {
     "key": "microsoft.softwareplan/tenantlevelvalidatesoftwaresubscriptioncreate/action",
     "name": "Microsoft.SoftwarePlan/tenantLevelValidateSoftwareSubscriptionCreate/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.softwareplan/validatesoftwarelicensecreate/action",
+    "name": "Microsoft.SoftwarePlan/validateSoftwareLicenseCreate/action",
     "roleCount": 0
   },
   {
@@ -106087,61 +106147,6 @@
   {
     "key": "microsoft.zerotrustsegmentation/unregister/action",
     "name": "Microsoft.ZeroTrustSegmentation/unregister/action",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/checknameavailability/action",
-    "name": "Neon.Postgres/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/locations/operationstatuses/read",
-    "name": "Neon.Postgres/locations/OperationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/locations/operationstatuses/write",
-    "name": "Neon.Postgres/locations/OperationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/operations/read",
-    "name": "Neon.Postgres/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/organizations/delete",
-    "name": "Neon.Postgres/organizations/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/organizations/projects/read",
-    "name": "Neon.Postgres/organizations/projects/read",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/organizations/projects/write",
-    "name": "Neon.Postgres/organizations/projects/write",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/organizations/read",
-    "name": "Neon.Postgres/organizations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/organizations/write",
-    "name": "Neon.Postgres/organizations/write",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/register/action",
-    "name": "Neon.Postgres/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "neon.postgres/unregister/action",
-    "name": "Neon.Postgres/unregister/action",
     "roleCount": 0
   },
   {
