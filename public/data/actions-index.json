@@ -100200,8 +100200,18 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/clusters/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/clusters/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/clusters/privateendpoints/delete",
     "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/clusters/privateendpoints/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -100217,6 +100227,11 @@
   {
     "key": "microsoft.streamanalytics/clusters/write",
     "name": "Microsoft.StreamAnalytics/clusters/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/locations/quotas/read",
+    "name": "Microsoft.StreamAnalytics/locations/quotas/Read",
     "roleCount": 0
   },
   {
@@ -100255,6 +100270,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/streamingjobs/functions/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/functions/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/streamingjobs/functions/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/functions/Read",
     "roleCount": 0
@@ -100285,6 +100305,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/streamingjobs/inputs/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/streamingjobs/inputs/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/Read",
     "roleCount": 0
@@ -100305,8 +100330,23 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/streamingjobs/metricdefinitions/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/metricdefinitions/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/delete",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/outputs/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -100322,6 +100362,16 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/write",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/write",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/write",
     "roleCount": 0
   },
   {
@@ -100342,6 +100392,11 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/scale/action",
     "name": "Microsoft.StreamAnalytics/streamingjobs/Scale/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/skus/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/Skus/Read",
     "roleCount": 0
   },
   {
