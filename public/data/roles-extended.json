@@ -21549,7 +21549,7 @@
         "actions": [
           "Microsoft.Authorization/*/read",
           "Microsoft.Insights/alertRules/*",
-          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Orbital/operations/read",
           "Microsoft.Orbital/geoCatalogs/read"
@@ -21565,8 +21565,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-02-29T16:10:58.857408+00:00",
-    "permissionCount": 1003,
+    "updatedOn": "2026-03-03T16:28:20.847205+00:00",
+    "permissionCount": 670.6666666666666,
     "dataActions": [],
     "notDataActions": []
   },
@@ -35661,7 +35661,6 @@
           "Microsoft.Loadtestservice/playwrightworkspaces/*/read",
           "Microsoft.Loadtestservice/locations/playwrightquotas/*/read",
           "Microsoft.Authorization/*/read",
-          "Microsoft.Resources/deployments/*",
           "Microsoft.Resources/subscriptions/resourceGroups/read"
         ],
         "condition": null,
@@ -35675,8 +35674,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-11-14T18:22:27.039078+00:00",
-    "permissionCount": 1117.6666666666665,
+    "updatedOn": "2026-03-03T16:28:21.839789+00:00",
+    "permissionCount": 784.3333333333333,
     "dataActions": [],
     "notDataActions": []
   },
@@ -36891,6 +36890,36 @@
     "updatedBy": null,
     "updatedOn": "2026-03-02T16:13:09.364776+00:00",
     "permissionCount": 19,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-03-03T16:28:20.845207+00:00",
+    "description": "Allows all actions on healthcare interop provider resources",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/585db2ed-219e-4821-a06a-c6c14b602afa",
+    "name": "585db2ed-219e-4821-a06a-c6c14b602afa",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.HealthcareInterop/*"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Healthcare Interop Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-03-03T16:28:20.845207+00:00",
+    "permissionCount": 500,
     "dataActions": [],
     "notDataActions": []
   }

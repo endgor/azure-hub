@@ -877,7 +877,7 @@
   {
     "key": "microsoft.resources/deployments/operations/read",
     "name": "Microsoft.Resources/deployments/operations/read",
-    "roleCount": 306
+    "roleCount": 304
   },
   {
     "key": "microsoft.resources/subscriptions/operationresults/read",
@@ -1082,7 +1082,7 @@
   {
     "key": "microsoft.resources/deployments/read",
     "name": "Microsoft.Resources/deployments/read",
-    "roleCount": 309
+    "roleCount": 308
   },
   {
     "key": "microsoft.storage/storageaccounts/listkeys/action",
@@ -2162,7 +2162,7 @@
   {
     "key": "microsoft.resources/deployments/write",
     "name": "Microsoft.Resources/deployments/write",
-    "roleCount": 297
+    "roleCount": 295
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
@@ -3867,32 +3867,32 @@
   {
     "key": "microsoft.resources/deployments/delete",
     "name": "Microsoft.Resources/deployments/delete",
-    "roleCount": 281
+    "roleCount": 279
   },
   {
     "key": "microsoft.resources/deployments/cancel/action",
     "name": "Microsoft.Resources/deployments/cancel/action",
-    "roleCount": 279
+    "roleCount": 277
   },
   {
     "key": "microsoft.resources/deployments/validate/action",
     "name": "Microsoft.Resources/deployments/validate/action",
-    "roleCount": 282
+    "roleCount": 280
   },
   {
     "key": "microsoft.resources/deployments/whatif/action",
     "name": "Microsoft.Resources/deployments/whatIf/action",
-    "roleCount": 279
+    "roleCount": 277
   },
   {
     "key": "microsoft.resources/deployments/exporttemplate/action",
     "name": "Microsoft.Resources/deployments/exportTemplate/action",
-    "roleCount": 282
+    "roleCount": 280
   },
   {
     "key": "microsoft.resources/deployments/operationstatuses/read",
     "name": "Microsoft.Resources/deployments/operationstatuses/read",
-    "roleCount": 296
+    "roleCount": 294
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/deployments/read",
@@ -27360,6 +27360,46 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurestackhci/edgemachines/disks/jobs/delete",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Disks/Jobs/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/disks/jobs/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Disks/Jobs/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/disks/jobs/write",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Disks/Jobs/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/disks/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Disks/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/gpus/jobs/delete",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Gpus/Jobs/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/gpus/jobs/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Gpus/Jobs/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/gpus/jobs/write",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Gpus/Jobs/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/gpus/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Gpus/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurestackhci/edgemachines/jobs/delete",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/Jobs/Delete",
     "roleCount": 0
@@ -27375,6 +27415,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurestackhci/edgemachines/networkadapters/jobs/delete",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/NetworkAdapters/Jobs/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/networkadapters/jobs/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/NetworkAdapters/Jobs/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/networkadapters/jobs/write",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/NetworkAdapters/Jobs/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/networkadapters/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/NetworkAdapters/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurestackhci/edgemachines/read",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/Read",
     "roleCount": 0
@@ -27382,6 +27442,11 @@
   {
     "key": "microsoft.azurestackhci/edgemachines/validate/action",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/Validate/Action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/volumes/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/Volumes/Read",
     "roleCount": 0
   },
   {
@@ -29052,6 +29117,11 @@
   {
     "key": "microsoft.billing/billingaccounts/fetchaffiliatedbillingaccounts/write",
     "name": "Microsoft.Billing/billingAccounts/fetchAffiliatedBillingAccounts/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.billing/billingaccounts/generatebillingtoken/write",
+    "name": "Microsoft.Billing/billingAccounts/generateBillingToken/write",
     "roleCount": 0
   },
   {
@@ -32795,6 +32865,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.clouddeviceplatform/delegatedidentities/attach/action",
+    "name": "Microsoft.CloudDevicePlatform/delegatedIdentities/attach/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.clouddeviceplatform/delegatedidentities/delete",
     "name": "Microsoft.CloudDevicePlatform/delegatedIdentities/delete",
     "roleCount": 0
@@ -32815,13 +32890,13 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.clouddeviceplatform/partnerbusiness/read",
-    "name": "Microsoft.CloudDevicePlatform/PartnerBusiness/read",
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/read",
     "roleCount": 0
   },
   {
-    "key": "microsoft.clouddeviceplatform/partnerbusiness/write",
-    "name": "Microsoft.CloudDevicePlatform/PartnerBusiness/write",
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/write",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/write",
     "roleCount": 0
   },
   {
@@ -58575,6 +58650,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.domainregistration/domains/changeofregistrant/delete",
+    "name": "Microsoft.DomainRegistration/domains/changeOfRegistrant/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.domainregistration/domains/changeofregistrant/read",
+    "name": "Microsoft.DomainRegistration/domains/changeOfRegistrant/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.domainregistration/domains/delete",
     "name": "Microsoft.DomainRegistration/domains/Delete",
     "roleCount": 0
@@ -83467,111 +83552,6 @@
   {
     "key": "microsoft.offazure/vmwaresites/write",
     "name": "Microsoft.OffAzure/vmwareSites/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/locations/operationstatuses/read",
-    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/locations/operationstatuses/write",
-    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/operations/read",
-    "name": "Microsoft.OffAzureSpringBoot/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/register/action",
-    "name": "Microsoft.OffAzureSpringBoot/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/refreshsite/action",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/refreshSite/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/summaries/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/summaries/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/summaries/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/unregister/action",
-    "name": "Microsoft.OffAzureSpringBoot/unregister/action",
     "roleCount": 0
   },
   {

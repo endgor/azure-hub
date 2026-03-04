@@ -1,5 +1,5 @@
 {
-  "changeNumber": 386,
+  "changeNumber": 387,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -10163,12 +10163,13 @@
       "name": "WindowsVirtualDesktop.USGovArizona",
       "id": "WindowsVirtualDesktop.USGovArizona",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
         "systemService": "WindowsVirtualDesktop",
         "addressPrefixes": [
+          "20.159.80.96/28",
           "20.159.80.160/28",
           "2001:489a:2104:2::/117"
         ],
@@ -10194,13 +10195,13 @@
       "name": "WindowsVirtualDesktop.USGovTexas",
       "id": "WindowsVirtualDesktop.USGovTexas",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
         "systemService": "WindowsVirtualDesktop",
         "addressPrefixes": [
-          "20.159.80.128/28",
+          "20.159.80.128/27",
           "2001:489a:2104:4::/117"
         ],
         "networkFeatures": null
@@ -10210,12 +10211,13 @@
       "name": "WindowsVirtualDesktop.USGovVirginia",
       "id": "WindowsVirtualDesktop.USGovVirginia",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
         "systemService": "WindowsVirtualDesktop",
         "addressPrefixes": [
+          "20.159.80.112/28",
           "20.159.80.176/28",
           "2001:489a:2104:5::/117"
         ],
@@ -10848,7 +10850,7 @@
       "name": "AzureCloud.usgovarizona",
       "id": "AzureCloud.usgovarizona",
       "properties": {
-        "changeNumber": 67,
+        "changeNumber": 68,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -10901,6 +10903,7 @@
           "20.158.128.0/24",
           "20.158.130.0/30",
           "20.158.160.0/19",
+          "20.159.80.96/28",
           "20.159.80.160/28",
           "20.159.84.0/24",
           "40.66.0.192/26",
@@ -11073,7 +11076,7 @@
       "name": "AzureCloud.usgovtexas",
       "id": "AzureCloud.usgovtexas",
       "properties": {
-        "changeNumber": 58,
+        "changeNumber": 59,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -11114,7 +11117,7 @@
           "20.158.136.0/21",
           "20.158.224.0/19",
           "20.159.64.0/20",
-          "20.159.80.128/28",
+          "20.159.80.128/27",
           "20.159.85.0/24",
           "20.159.96.0/19",
           "40.66.2.32/27",
@@ -11217,7 +11220,7 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 65,
+        "changeNumber": 66,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -11256,6 +11259,7 @@
           "20.158.112.32/28",
           "20.158.192.0/19",
           "20.159.0.0/18",
+          "20.159.80.112/28",
           "20.159.80.176/28",
           "20.159.86.0/24",
           "20.159.128.0/18",
@@ -11355,7 +11359,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 120,
+        "changeNumber": 121,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -11508,7 +11512,9 @@
           "20.158.224.0/19",
           "20.159.0.0/18",
           "20.159.64.0/20",
-          "20.159.80.128/28",
+          "20.159.80.96/28",
+          "20.159.80.112/28",
+          "20.159.80.128/27",
           "20.159.80.160/28",
           "20.159.80.176/28",
           "20.159.84.0/24",
