@@ -17455,6 +17455,56 @@
     "roleCount": 4
   },
   {
+    "key": "commvault.contentstore/checknameavailability/action",
+    "name": "Commvault.ContentStore/checkNameAvailability/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/delete",
+    "name": "Commvault.ContentStore/entities/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/read",
+    "name": "Commvault.ContentStore/entities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/write",
+    "name": "Commvault.ContentStore/entities/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/read",
+    "name": "Commvault.ContentStore/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/write",
+    "name": "Commvault.ContentStore/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/operations/read",
+    "name": "Commvault.ContentStore/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/register/action",
+    "name": "Commvault.ContentStore/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/registeredsubscriptions/read",
+    "name": "Commvault.ContentStore/registeredSubscriptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/unregister/action",
+    "name": "Commvault.ContentStore/unregister/action",
+    "roleCount": 0
+  },
+  {
     "key": "dell.storage/checknameavailability/action",
     "name": "Dell.Storage/checkNameAvailability/action",
     "roleCount": 0
@@ -83555,6 +83605,111 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.offazurespringboot/locations/operationstatuses/read",
+    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/locations/operationstatuses/write",
+    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/operations/read",
+    "name": "Microsoft.OffAzureSpringBoot/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/register/action",
+    "name": "Microsoft.OffAzureSpringBoot/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/refreshsite/action",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/refreshSite/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/unregister/action",
+    "name": "Microsoft.OffAzureSpringBoot/unregister/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.onlineexperimentation/locations/operationstatuses/read",
     "name": "Microsoft.OnlineExperimentation/Locations/OperationStatuses/read",
     "roleCount": 0
@@ -91460,18 +91615,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.resources/populateregionalmovetargetresource/action",
-    "name": "Microsoft.Resources/populateRegionalMoveTargetResource/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.resources/providers/read",
     "name": "Microsoft.Resources/providers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.resources/relayregionalmoverequest/action",
-    "name": "Microsoft.Resources/relayRegionalMoveRequest/action",
     "roleCount": 0
   },
   {
