@@ -780,6 +780,11 @@
     "roleCount": 23
   },
   {
+    "key": "microsoft.resources/deployments/read",
+    "name": "Microsoft.Resources/deployments/read",
+    "roleCount": 298
+  },
+  {
     "key": "microsoft.cdn/profiles/afdendpoints/validatecustomdomain/action",
     "name": "Microsoft.Cdn/profiles/afdendpoints/validateCustomDomain/action",
     "roleCount": 5
@@ -877,7 +882,7 @@
   {
     "key": "microsoft.resources/deployments/operations/read",
     "name": "Microsoft.Resources/deployments/operations/read",
-    "roleCount": 296
+    "roleCount": 294
   },
   {
     "key": "microsoft.resources/subscriptions/operationresults/read",
@@ -1078,11 +1083,6 @@
     "key": "microsoft.network/publicipaddresses/read",
     "name": "Microsoft.Network/publicIPAddresses/read",
     "roleCount": 33
-  },
-  {
-    "key": "microsoft.resources/deployments/read",
-    "name": "Microsoft.Resources/deployments/read",
-    "roleCount": 298
   },
   {
     "key": "microsoft.storage/storageaccounts/listkeys/action",
@@ -2162,7 +2162,7 @@
   {
     "key": "microsoft.resources/deployments/write",
     "name": "Microsoft.Resources/deployments/write",
-    "roleCount": 284
+    "roleCount": 282
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
@@ -3877,32 +3877,32 @@
   {
     "key": "microsoft.resources/deployments/delete",
     "name": "Microsoft.Resources/deployments/delete",
-    "roleCount": 268
+    "roleCount": 266
   },
   {
     "key": "microsoft.resources/deployments/cancel/action",
     "name": "Microsoft.Resources/deployments/cancel/action",
-    "roleCount": 266
+    "roleCount": 264
   },
   {
     "key": "microsoft.resources/deployments/validate/action",
     "name": "Microsoft.Resources/deployments/validate/action",
-    "roleCount": 269
+    "roleCount": 267
   },
   {
     "key": "microsoft.resources/deployments/whatif/action",
     "name": "Microsoft.Resources/deployments/whatIf/action",
-    "roleCount": 266
+    "roleCount": 264
   },
   {
     "key": "microsoft.resources/deployments/exporttemplate/action",
     "name": "Microsoft.Resources/deployments/exportTemplate/action",
-    "roleCount": 269
+    "roleCount": 267
   },
   {
     "key": "microsoft.resources/deployments/operationstatuses/read",
     "name": "Microsoft.Resources/deployments/operationstatuses/read",
-    "roleCount": 286
+    "roleCount": 284
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/deployments/read",
@@ -7735,14 +7735,49 @@
     "roleCount": 49
   },
   {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackup/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackup/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupaccess/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupAccess/action",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupoperations/read",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupOperations/read",
     "roleCount": 19
   },
   {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupprecheck/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupPreCheck/action",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.dbforpostgresql/flexibleservers/ltrprebackup/action",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrPreBackup/action",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestorefinalize/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreFinalize/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreinitialize/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreInitialize/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreprecheck/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestorePreCheck/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/read",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/read",
+    "roleCount": 21
   },
   {
     "key": "microsoft.dbforpostgresql/flexibleservers/startltrbackup/action",
@@ -8862,7 +8897,7 @@
   {
     "key": "microsoft.cognitiveservices/accounts/read",
     "name": "Microsoft.CognitiveServices/accounts/read",
-    "roleCount": 49
+    "roleCount": 50
   },
   {
     "key": "microsoft.cognitiveservices/accounts/privateendpointconnections/read",
@@ -8898,11 +8933,6 @@
     "key": "microsoft.dbforpostgresql/flexibleservers/privatelinkresources/read",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/privateLinkResources/read",
     "roleCount": 19
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/read",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/read",
-    "roleCount": 20
   },
   {
     "key": "microsoft.dbforpostgresql/servergroupsv2/privateendpointconnectionsapproval/action",
@@ -17515,6 +17545,86 @@
     "roleCount": 21
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/read",
+    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/read",
+    "roleCount": 49
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/write",
+    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/write",
+    "roleCount": 12
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/delete",
+    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/delete",
+    "roleCount": 12
+  },
+  {
+    "key": "microsoft.cognitiveservices/raipolicy/read",
+    "name": "Microsoft.CognitiveServices/raiPolicy/read",
+    "roleCount": 49
+  },
+  {
+    "key": "microsoft.cognitiveservices/raipolicy/write",
+    "name": "Microsoft.CognitiveServices/raiPolicy/write",
+    "roleCount": 11
+  },
+  {
+    "key": "microsoft.search/searchservices/knowledgebases/read",
+    "name": "Microsoft.Search/searchServices/knowledgeBases/read",
+    "roleCount": 20
+  },
+  {
+    "key": "commvault.contentstore/checknameavailability/action",
+    "name": "Commvault.ContentStore/checkNameAvailability/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/delete",
+    "name": "Commvault.ContentStore/entities/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/read",
+    "name": "Commvault.ContentStore/entities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/write",
+    "name": "Commvault.ContentStore/entities/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/read",
+    "name": "Commvault.ContentStore/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/write",
+    "name": "Commvault.ContentStore/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/operations/read",
+    "name": "Commvault.ContentStore/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/register/action",
+    "name": "Commvault.ContentStore/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/registeredsubscriptions/read",
+    "name": "Commvault.ContentStore/registeredSubscriptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/unregister/action",
+    "name": "Commvault.ContentStore/unregister/action",
+    "roleCount": 0
+  },
+  {
     "key": "dell.storage/checknameavailability/action",
     "name": "Dell.Storage/checkNameAvailability/action",
     "roleCount": 0
@@ -18362,51 +18472,6 @@
   {
     "key": "microsoft.advisor/workloads/read",
     "name": "Microsoft.Advisor/workloads/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/agriservices/delete",
-    "name": "Microsoft.AgriculturePlatform/agriServices/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/agriservices/listavailablesolutions/action",
-    "name": "Microsoft.AgriculturePlatform/agriServices/listAvailableSolutions/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/agriservices/read",
-    "name": "Microsoft.AgriculturePlatform/agriServices/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/agriservices/write",
-    "name": "Microsoft.AgriculturePlatform/agriServices/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/locations/operationstatuses/read",
-    "name": "Microsoft.AgriculturePlatform/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/locations/operationstatuses/write",
-    "name": "Microsoft.AgriculturePlatform/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/operations/read",
-    "name": "Microsoft.AgriculturePlatform/Operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/register/action",
-    "name": "Microsoft.AgriculturePlatform/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.agricultureplatform/unregister/action",
-    "name": "Microsoft.AgriculturePlatform/unregister/action",
     "roleCount": 0
   },
   {
@@ -27825,6 +27890,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurestackhci/virtualnetworks/subnets/join/action",
+    "name": "Microsoft.AzureStackHCI/virtualNetworks/subnets/join/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurestackhci/virtualnetworks/subnets/read",
     "name": "Microsoft.AzureStackHCI/virtualNetworks/subnets/Read",
     "roleCount": 0
@@ -33010,6 +33080,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/delete",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.clouddeviceplatform/partnerbusinesses/read",
     "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/read",
     "roleCount": 0
@@ -35827,21 +35902,6 @@
   {
     "key": "microsoft.cognitiveservices/accounts/customvoice/zeroshots/write",
     "name": "Microsoft.CognitiveServices/accounts/CustomVoice/zeroshots/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/delete",
-    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/read",
-    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/write",
-    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/write",
     "roleCount": 0
   },
   {
@@ -41382,16 +41442,6 @@
   {
     "key": "microsoft.cognitiveservices/raiexternalsafetyproviders/write",
     "name": "Microsoft.CognitiveServices/raiExternalSafetyProviders/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/raipolicy/read",
-    "name": "Microsoft.CognitiveServices/raiPolicy/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/raipolicy/write",
-    "name": "Microsoft.CognitiveServices/raiPolicy/write",
     "roleCount": 0
   },
   {
@@ -53315,43 +53365,13 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackup/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackup/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupaccess/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupAccess/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupprecheck/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupPreCheck/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestorefinalize/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreFinalize/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreinitialize/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreInitialize/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreprecheck/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestorePreCheck/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/read",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/write",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/write",
     "roleCount": 0
   },
   {
@@ -83605,111 +83625,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.offazurespringboot/locations/operationstatuses/read",
-    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/locations/operationstatuses/write",
-    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/operations/read",
-    "name": "Microsoft.OffAzureSpringBoot/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/register/action",
-    "name": "Microsoft.OffAzureSpringBoot/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/refreshsite/action",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/refreshSite/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/summaries/delete",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/summaries/read",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/summaries/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/springbootsites/write",
-    "name": "Microsoft.OffAzureSpringBoot/springbootsites/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.offazurespringboot/unregister/action",
-    "name": "Microsoft.OffAzureSpringBoot/unregister/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.onlineexperimentation/locations/operationstatuses/read",
     "name": "Microsoft.OnlineExperimentation/Locations/OperationStatuses/read",
     "roleCount": 0
@@ -92327,11 +92242,6 @@
   {
     "key": "microsoft.search/searchservices/knowledgebases/delete",
     "name": "Microsoft.Search/searchServices/knowledgeBases/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.search/searchservices/knowledgebases/read",
-    "name": "Microsoft.Search/searchServices/knowledgeBases/read",
     "roleCount": 0
   },
   {
