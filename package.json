@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",
-    "@vercel/analytics": "^1.6.1",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "exceljs": "^4.4.0",
     "gray-matter": "^4.0.3",
