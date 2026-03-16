@@ -9,6 +9,13 @@ export const getStaticProps: GetStaticProps = async () => {
   return { props: {} };
 };
 
+interface UserRealmResult {
+  nameSpaceType: 'Managed' | 'Federated' | 'Unknown';
+  federationProtocol?: string;
+  federationBrandName?: string;
+  cloudInstanceName?: string;
+}
+
 interface TenantLookupResponse {
   input: { domain: string };
   tenant: {
@@ -25,6 +32,7 @@ interface TenantLookupResponse {
     issuer?: string;
     [key: string]: unknown;
   };
+  userRealm?: UserRealmResult;
   derived: {
     azureAdInstance?: string;
     tenantScope?: string;
@@ -143,24 +151,33 @@ export default function TenantLookupPage() {
 
   const summaryFields = useMemo(() => {
     if (!result) return [];
-    return [
-      {
-        label: 'Tenant Name',
-        value: result.input.domain,
-      },
-      {
-        label: 'Tenant GUID',
-        value: result.tenant.tenantId,
-      },
-      {
-        label: 'Azure AD Instance',
-        value: result.derived.azureAdInstance ?? 'Unknown',
-      },
-      {
-        label: 'Tenant Scope',
-        value: result.derived.tenantScope ?? 'Not applicable',
-      },
-    ];
+
+    const fields: { label: string; value: string; mono?: boolean }[] = [];
+
+    if (result.tenant.displayName) {
+      fields.push({ label: 'Display Name', value: result.tenant.displayName });
+    }
+    fields.push({ label: 'Domain', value: result.input.domain });
+    fields.push({ label: 'Tenant ID', value: result.tenant.tenantId, mono: true });
+    if (result.tenant.defaultDomainName) {
+      fields.push({ label: 'Default Domain', value: result.tenant.defaultDomainName });
+    }
+    fields.push({ label: 'Azure AD Instance', value: result.derived.azureAdInstance ?? 'Unknown' });
+    fields.push({
+      label: 'Tenant Scope',
+      value: result.derived.tenantScope ?? 'Not applicable',
+    });
+    if (result.userRealm) {
+      fields.push({ label: 'Authentication Type', value: result.userRealm.nameSpaceType });
+      if (result.userRealm.federationProtocol) {
+        fields.push({ label: 'Federation Protocol', value: result.userRealm.federationProtocol });
+      }
+    }
+    if (result.metadata?.issuer) {
+      fields.push({ label: 'Issuer', value: result.metadata.issuer });
+    }
+
+    return fields;
   }, [result]);
 
   return (
@@ -242,7 +259,7 @@ export default function TenantLookupPage() {
                   <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
                     {field.label}
                   </dt>
-                  <dd className="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 break-all">
+                  <dd className={`mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 break-all${field.mono ? ' font-mono' : ''}`}>
                     {field.value}
                   </dd>
                 </div>
