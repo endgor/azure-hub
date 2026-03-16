@@ -8,6 +8,7 @@ import {
   formatAzureAdInstance,
   formatTenantScope,
   normalizeDomain,
+  fetchUserRealm,
   MissingCredentialsError,
 } from '@/lib/tenant';
 
@@ -121,11 +122,15 @@ export default async function handler(
     }
 
     const tenantIdOrDomain = tenantInfo.tenantId || tenantInfo.defaultDomainName || domain;
-    const metadata = await fetchTenantMetadata(tenantIdOrDomain);
+    const [metadata, userRealm] = await Promise.all([
+      fetchTenantMetadata(tenantIdOrDomain),
+      fetchUserRealm(domain),
+    ]);
     const result: TenantLookupResponse = {
       input: { domain },
       tenant: tenantInfo,
       metadata: metadata ?? undefined,
+      userRealm: userRealm ?? undefined,
       derived: {
         azureAdInstance: formatAzureAdInstance(
           metadata?.cloud_instance_name,

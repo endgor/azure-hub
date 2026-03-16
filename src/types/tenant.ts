@@ -14,12 +14,20 @@ export interface TenantMetadata {
   [key: string]: unknown;
 }
 
+export interface UserRealmResult {
+  nameSpaceType: 'Managed' | 'Federated' | 'Unknown';
+  federationProtocol?: string;
+  federationBrandName?: string;
+  cloudInstanceName?: string;
+}
+
 export interface TenantLookupResponse {
   input: {
     domain: string;
   };
   tenant: TenantInformation;
   metadata?: TenantMetadata;
+  userRealm?: UserRealmResult;
   derived: {
     azureAdInstance?: string;
     tenantScope?: string;
