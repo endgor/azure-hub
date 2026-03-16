@@ -37,16 +37,16 @@ export function SEOHead({ title, description, url, keywords, noIndex = false, js
       <meta property="og:url" content={url} />
       <meta property="og:site_name" content="Azure Hub" />
       <meta property="og:locale" content="en_US" />
-      <meta property="og:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
-      <meta property="og:image:width" content="512" />
-      <meta property="og:image:height" content="512" />
+      <meta property="og:image" content="https://azurehub.org/og-image.png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content="Azure Hub - Azure networking and identity tools" />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content="https://azurehub.org/favicons/android-chrome-512x512.png" />
+      <meta name="twitter:image" content="https://azurehub.org/og-image.png" />
 
       {/* Structured Data */}
       {jsonLd?.map((obj, i) => (

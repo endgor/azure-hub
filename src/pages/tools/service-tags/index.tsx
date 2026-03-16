@@ -1,5 +1,8 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
+import type { GetStaticProps } from 'next';
 import Link from 'next/link';
+import fs from 'fs';
+import path from 'path';
 import Layout from '@/components/Layout';
 import { getAllServiceTagsWithCloud, ServiceTagIndex } from '@/lib/clientIpIndexService';
 import { AzureCloudName } from '@/types/azure';
@@ -9,6 +12,26 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
+
+interface ServiceTagsPageProps {
+  baseServiceTags: string[];
+}
+
+export const getStaticProps: GetStaticProps<ServiceTagsPageProps> = async () => {
+  let baseServiceTags: string[] = [];
+  try {
+    const indexPath = path.join(process.cwd(), 'public', 'data', 'service-tags-index.json');
+    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+    const tagSet = new Set<string>();
+    for (const entry of index) {
+      if (!entry.id.includes('.')) {
+        tagSet.add(entry.id);
+      }
+    }
+    baseServiceTags = Array.from(tagSet).sort();
+  } catch { /* fallback */ }
+  return { props: { baseServiceTags } };
+};
 
 /** Cloud filter options */
 type CloudFilter = 'all' | AzureCloudName;
@@ -51,7 +74,7 @@ interface ServiceTagsResponse {
   serviceTags: ServiceTagIndex[];
 }
 
-export default function ServiceTags() {
+export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
   const [isCloudFilterOpen, setIsCloudFilterOpen] = useState(false);
@@ -240,6 +263,29 @@ export default function ServiceTags() {
               </div>
             )}
           </div>
+        )}
+        {/* Static directory of base service tags for SEO — rendered in HTML at build time */}
+        {baseServiceTags.length > 0 && !searchTerm && (
+          <nav aria-label="All Azure service tags" className="space-y-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              All service tags ({baseServiceTags.length})
+            </h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              <Link href="/tools/ip-lookup/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Look up a specific IP address</Link>
+            </p>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 text-sm">
+              {baseServiceTags.map((tag) => (
+                <li key={tag}>
+                  <Link
+                    href={getServiceTagPath(tag)}
+                    className="text-sky-700 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted underline-offset-2"
+                  >
+                    {tag}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         )}
       </section>
     </Layout>

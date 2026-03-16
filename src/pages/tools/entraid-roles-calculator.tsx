@@ -1,5 +1,24 @@
 import { useState, useCallback, useEffect, FormEvent, useRef, useMemo, lazy, Suspense } from 'react';
+import type { GetStaticProps } from 'next';
+import fs from 'fs';
+import path from 'path';
 import Layout from '@/components/Layout';
+
+interface EntraIdPageProps {
+  roleCount: number;
+}
+
+export const getStaticProps: GetStaticProps<EntraIdPageProps> = async () => {
+  let roleCount = 0;
+  try {
+    const rolesPath = path.join(process.cwd(), 'public', 'data', 'entraid-roles.json');
+    const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
+    roleCount = Array.isArray(roles) ? roles.filter((r: { isBuiltIn?: boolean }) => r.isBuiltIn).length : 0;
+  } catch {
+    // entraid-roles.json may not exist without Azure credentials
+  }
+  return { props: { roleCount } };
+};
 import {
   calculateLeastPrivilegeEntraID,
   searchEntraIDActions,
@@ -40,7 +59,7 @@ const RoleExplorerMode = lazy(() => import('@/components/shared/RbacCalculator/R
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
 import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
-export default function EntraIdRolesCalculatorPage() {
+export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPageProps) {
   // Mode management
   const { mode: inputMode, setMode: setInputMode, isSimpleMode, isRoleExplorerMode } = useRbacMode({
     initialMode: 'simple',
@@ -376,6 +395,12 @@ export default function EntraIdRolesCalculatorPage() {
             {getDescription()}
           </p>
         </div>
+
+        {roleCount > 0 && (
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Analyzing {roleCount} built-in Entra ID directory roles.
+          </p>
+        )}
 
         {/* Disclaimer Banner */}
         {!disclaimerDismissed && (

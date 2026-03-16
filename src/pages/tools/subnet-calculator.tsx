@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
+import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
+
+export const getStaticProps: GetStaticProps = async () => {
+  return { props: {} };
+};
 import Button from '@/components/shared/Button';
 import {
   DEFAULT_NETWORK,
