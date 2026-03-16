@@ -101,6 +101,18 @@ function generateSitemap() {
 
   const currentDate = new Date().toISOString();
 
+  // Load file-metadata.json for accurate lastmod dates
+  let dataLastUpdated = currentDate;
+  try {
+    const metadataPath = path.join(PUBLIC_DATA_DIR, 'file-metadata.json');
+    const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+    if (Array.isArray(metadata) && metadata.length > 0 && metadata[0].lastRetrieved) {
+      dataLastUpdated = new Date(metadata[0].lastRetrieved).toISOString();
+    }
+  } catch {
+    console.warn('Warning: Could not read file-metadata.json, using current date for lastmod');
+  }
+
   // Get all guide pages
   const guidePages = getGuidePages();
   console.log(`Found ${guidePages.length} guide pages`);
@@ -149,7 +161,7 @@ function generateSitemap() {
   <!-- Static Pages -->
   <url>
     <loc>${BASE_URL}/</loc>
-    <lastmod>${currentDate}</lastmod>
+    <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -162,13 +174,13 @@ function generateSitemap() {
   <!-- Tool Pages -->
   <url>
     <loc>${BASE_URL}/tools/ip-lookup/</loc>
-    <lastmod>${currentDate}</lastmod>
+    <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>${BASE_URL}/tools/service-tags/</loc>
-    <lastmod>${currentDate}</lastmod>
+    <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -186,13 +198,13 @@ function generateSitemap() {
   </url>
   <url>
     <loc>${BASE_URL}/tools/azure-rbac-calculator/</loc>
-    <lastmod>${currentDate}</lastmod>
+    <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>${BASE_URL}/tools/entraid-roles-calculator/</loc>
-    <lastmod>${currentDate}</lastmod>
+    <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
@@ -216,9 +228,9 @@ ${serviceTagsArray
     const xmlSafeUrl = escapeXml(`${BASE_URL}${getServiceTagPath(tag)}`);
     return `  <url>
     <loc>${xmlSafeUrl}</loc>
-    <lastmod>${currentDate}</lastmod>
+    <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.4</priority>
   </url>`;
   })
   .join('\n')}

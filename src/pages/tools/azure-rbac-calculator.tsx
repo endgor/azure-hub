@@ -1,5 +1,34 @@
 import { useState, useCallback, useEffect, FormEvent, useRef, useMemo, lazy, Suspense } from 'react';
+import type { GetStaticProps } from 'next';
+import fs from 'fs';
+import path from 'path';
 import Layout from '@/components/Layout';
+
+interface RbacPageProps {
+  roleCount: number;
+  namespaceCount: number;
+}
+
+export const getStaticProps: GetStaticProps<RbacPageProps> = async () => {
+  let roleCount = 0;
+  let namespaceCount = 0;
+  try {
+    const rolesPath = path.join(process.cwd(), 'public', 'data', 'roles-extended.json');
+    const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
+    roleCount = roles.filter((r: { roleType: string }) => r.roleType === 'BuiltInRole').length;
+    const ns = new Set<string>();
+    for (const role of roles) {
+      for (const perm of role.permissions || []) {
+        for (const action of [...(perm.actions || []), ...(perm.dataActions || [])]) {
+          const provider = action.split('/')[0];
+          if (provider) ns.add(provider.toLowerCase());
+        }
+      }
+    }
+    namespaceCount = ns.size;
+  } catch { /* fallback */ }
+  return { props: { roleCount, namespaceCount } };
+};
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';
 import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getActionsByService, preloadActionsCache, loadRoleDefinitions, classifyActions } from '@/lib/clientRbacService';
@@ -37,7 +66,7 @@ import RoleComparisonTable from '@/components/RoleComparisonTable';
 import type { GenericRole } from '@/components/shared/RbacCalculator/RoleExplorerMode';
 import type { SelectedAction } from '@/components/shared/RbacCalculator/SimpleMode';
 
-export default function AzureRbacCalculatorPage() {
+export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: RbacPageProps) {
   // Mode management
   const { mode: inputMode, setMode: setInputMode, isSimpleMode, isRoleExplorerMode, isRoleCompareMode, isRoleCreatorMode } = useRbacMode({
     initialMode: 'simple',
@@ -479,6 +508,12 @@ export default function AzureRbacCalculatorPage() {
             {getDescription()}
           </p>
         </div>
+
+        {(roleCount > 0 || namespaceCount > 0) && (
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Analyzing {roleCount} built-in roles across {namespaceCount} Azure resource providers.
+          </p>
+        )}
 
         {/* Disclaimer Banner */}
         {!disclaimerDismissed && (

@@ -1,5 +1,26 @@
 import Link from 'next/link';
+import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
+import fs from 'fs';
+import path from 'path';
+
+interface HomeProps {
+  lastUpdated: string | null;
+}
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  let lastUpdated: string | null = null;
+  try {
+    const metadataPath = path.join(process.cwd(), 'public', 'data', 'file-metadata.json');
+    const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+    if (Array.isArray(metadata) && metadata.length > 0) {
+      lastUpdated = metadata[0].lastRetrieved ?? null;
+    }
+  } catch {
+    // Metadata not available
+  }
+  return { props: { lastUpdated } };
+};
 
 const CORE_TOOLS = [
   {
@@ -83,7 +104,7 @@ const CORE_TOOLS = [
 ] as const;
 
 
-export default function Home() {
+export default function Home({ lastUpdated }: HomeProps) {
   return (
     <Layout
       title="Azure Hub - IP Lookup, RBAC & Networking Tools"
@@ -95,6 +116,13 @@ export default function Home() {
             Pick a tool and get to work.
           </h1>
         </div>
+
+        <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
+          Azure Hub provides free tools for Azure administrators and developers to look up IP ranges, discover tenant information, plan subnets, and find least-privilege RBAC roles.
+          {lastUpdated && (
+            <span className="ml-1 text-slate-400 dark:text-slate-500">Data last updated {lastUpdated}.</span>
+          )}
+        </p>
 
         <section className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
