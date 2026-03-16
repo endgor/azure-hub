@@ -167,7 +167,7 @@ export default function TenantLookupPage() {
       label: 'Tenant Scope',
       value: result.derived.tenantScope ?? 'Not applicable',
     });
-    if (result.userRealm) {
+    if (result.userRealm && result.userRealm.nameSpaceType !== 'Unknown') {
       fields.push({ label: 'Authentication Type', value: result.userRealm.nameSpaceType });
       if (result.userRealm.federationProtocol) {
         fields.push({ label: 'Federation Protocol', value: result.userRealm.federationProtocol });
