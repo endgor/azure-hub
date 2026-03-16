@@ -249,7 +249,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
 
         {(serviceTagCount > 0 || lastUpdated) && (
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            {serviceTagCount > 0 && <>Covers {serviceTagCount} Azure service tags across 3 clouds</>}
+            {serviceTagCount > 0 && <>Covers {serviceTagCount} Azure services across 3 clouds</>}
             {serviceTagCount > 0 && lastUpdated && <> · </>}
             {lastUpdated && <>Last updated {lastUpdated}</>}
             {' · '}<Link href="/tools/service-tags/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Browse all service tags</Link>
