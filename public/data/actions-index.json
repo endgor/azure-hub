@@ -780,6 +780,11 @@
     "roleCount": 23
   },
   {
+    "key": "microsoft.resources/deployments/read",
+    "name": "Microsoft.Resources/deployments/read",
+    "roleCount": 298
+  },
+  {
     "key": "microsoft.cdn/profiles/afdendpoints/validatecustomdomain/action",
     "name": "Microsoft.Cdn/profiles/afdendpoints/validateCustomDomain/action",
     "roleCount": 5
@@ -877,7 +882,7 @@
   {
     "key": "microsoft.resources/deployments/operations/read",
     "name": "Microsoft.Resources/deployments/operations/read",
-    "roleCount": 296
+    "roleCount": 294
   },
   {
     "key": "microsoft.resources/subscriptions/operationresults/read",
@@ -1078,11 +1083,6 @@
     "key": "microsoft.network/publicipaddresses/read",
     "name": "Microsoft.Network/publicIPAddresses/read",
     "roleCount": 33
-  },
-  {
-    "key": "microsoft.resources/deployments/read",
-    "name": "Microsoft.Resources/deployments/read",
-    "roleCount": 298
   },
   {
     "key": "microsoft.storage/storageaccounts/listkeys/action",
@@ -2162,7 +2162,7 @@
   {
     "key": "microsoft.resources/deployments/write",
     "name": "Microsoft.Resources/deployments/write",
-    "roleCount": 284
+    "roleCount": 282
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
@@ -3877,32 +3877,32 @@
   {
     "key": "microsoft.resources/deployments/delete",
     "name": "Microsoft.Resources/deployments/delete",
-    "roleCount": 268
+    "roleCount": 266
   },
   {
     "key": "microsoft.resources/deployments/cancel/action",
     "name": "Microsoft.Resources/deployments/cancel/action",
-    "roleCount": 266
+    "roleCount": 264
   },
   {
     "key": "microsoft.resources/deployments/validate/action",
     "name": "Microsoft.Resources/deployments/validate/action",
-    "roleCount": 269
+    "roleCount": 267
   },
   {
     "key": "microsoft.resources/deployments/whatif/action",
     "name": "Microsoft.Resources/deployments/whatIf/action",
-    "roleCount": 266
+    "roleCount": 264
   },
   {
     "key": "microsoft.resources/deployments/exporttemplate/action",
     "name": "Microsoft.Resources/deployments/exportTemplate/action",
-    "roleCount": 269
+    "roleCount": 267
   },
   {
     "key": "microsoft.resources/deployments/operationstatuses/read",
     "name": "Microsoft.Resources/deployments/operationstatuses/read",
-    "roleCount": 286
+    "roleCount": 284
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/deployments/read",
@@ -7735,14 +7735,49 @@
     "roleCount": 49
   },
   {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackup/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackup/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupaccess/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupAccess/action",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupoperations/read",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupOperations/read",
     "roleCount": 19
   },
   {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupprecheck/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupPreCheck/action",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.dbforpostgresql/flexibleservers/ltrprebackup/action",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrPreBackup/action",
     "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestorefinalize/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreFinalize/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreinitialize/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreInitialize/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreprecheck/action",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestorePreCheck/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dbforpostgresql/flexibleservers/read",
+    "name": "Microsoft.DBforPostgreSQL/flexibleServers/read",
+    "roleCount": 21
   },
   {
     "key": "microsoft.dbforpostgresql/flexibleservers/startltrbackup/action",
@@ -8862,7 +8897,7 @@
   {
     "key": "microsoft.cognitiveservices/accounts/read",
     "name": "Microsoft.CognitiveServices/accounts/read",
-    "roleCount": 49
+    "roleCount": 50
   },
   {
     "key": "microsoft.cognitiveservices/accounts/privateendpointconnections/read",
@@ -8898,11 +8933,6 @@
     "key": "microsoft.dbforpostgresql/flexibleservers/privatelinkresources/read",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/privateLinkResources/read",
     "roleCount": 19
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/read",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/read",
-    "roleCount": 20
   },
   {
     "key": "microsoft.dbforpostgresql/servergroupsv2/privateendpointconnectionsapproval/action",
@@ -17513,6 +17543,36 @@
     "key": "microsoft.azurestackhci/edgemachines/read",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/Read",
     "roleCount": 21
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/read",
+    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/read",
+    "roleCount": 49
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/write",
+    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/write",
+    "roleCount": 12
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/delete",
+    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/delete",
+    "roleCount": 12
+  },
+  {
+    "key": "microsoft.cognitiveservices/raipolicy/read",
+    "name": "Microsoft.CognitiveServices/raiPolicy/read",
+    "roleCount": 49
+  },
+  {
+    "key": "microsoft.cognitiveservices/raipolicy/write",
+    "name": "Microsoft.CognitiveServices/raiPolicy/write",
+    "roleCount": 11
+  },
+  {
+    "key": "microsoft.search/searchservices/knowledgebases/read",
+    "name": "Microsoft.Search/searchServices/knowledgeBases/read",
+    "roleCount": 20
   },
   {
     "key": "commvault.contentstore/checknameavailability/action",
@@ -35845,21 +35905,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/delete",
-    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/read",
-    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/write",
-    "name": "Microsoft.CognitiveServices/accounts/defenderForAISettings/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.cognitiveservices/accounts/delete",
     "name": "Microsoft.CognitiveServices/accounts/delete",
     "roleCount": 0
@@ -41400,16 +41445,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.cognitiveservices/raipolicy/read",
-    "name": "Microsoft.CognitiveServices/raiPolicy/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/raipolicy/write",
-    "name": "Microsoft.CognitiveServices/raiPolicy/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.cognitiveservices/register/action",
     "name": "Microsoft.CognitiveServices/register/action",
     "roleCount": 0
@@ -41947,6 +41982,26 @@
   {
     "key": "microsoft.compute/images/write",
     "name": "Microsoft.Compute/images/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/delete",
+    "name": "Microsoft.Compute/interconnectBlocks/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/deploy/action",
+    "name": "Microsoft.Compute/interconnectBlocks/deploy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/read",
+    "name": "Microsoft.Compute/interconnectBlocks/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/write",
+    "name": "Microsoft.Compute/interconnectBlocks/write",
     "roleCount": 0
   },
   {
@@ -53330,36 +53385,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackup/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackup/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupaccess/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupAccess/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrbackupprecheck/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupPreCheck/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestorefinalize/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreFinalize/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreinitialize/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreInitialize/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dbforpostgresql/flexibleservers/ltrrestoreprecheck/action",
-    "name": "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestorePreCheck/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.dbforpostgresql/flexibleservers/majorversionupgradeprecheck/action",
     "name": "Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck/action",
     "roleCount": 0
@@ -63457,6 +63482,21 @@
   {
     "key": "microsoft.hybridcompute/locations/publishers/read",
     "name": "Microsoft.HybridCompute/locations/publishers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/delete",
+    "name": "Microsoft.HybridCompute/machines/applications/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/read",
+    "name": "Microsoft.HybridCompute/machines/applications/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/write",
+    "name": "Microsoft.HybridCompute/machines/applications/write",
     "roleCount": 0
   },
   {
@@ -92342,11 +92382,6 @@
   {
     "key": "microsoft.search/searchservices/knowledgebases/delete",
     "name": "Microsoft.Search/searchServices/knowledgeBases/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.search/searchservices/knowledgebases/read",
-    "name": "Microsoft.Search/searchServices/knowledgeBases/read",
     "roleCount": 0
   },
   {

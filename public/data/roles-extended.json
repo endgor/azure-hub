@@ -1193,7 +1193,7 @@
           "Microsoft.Cdn/operationresults/*",
           "Microsoft.Cdn/profiles/*/read",
           "Microsoft.Insights/alertRules/*",
-          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/read",
           "Microsoft.Cdn/profiles/afdendpoints/validateCustomDomain/action",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Support/*",
@@ -1211,8 +1211,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-01-30T16:11:39.384210+00:00",
-    "permissionCount": 2088.333333333333,
+    "updatedOn": "2026-03-16T15:09:27.302870+00:00",
+    "permissionCount": 1756,
     "dataActions": [],
     "notDataActions": []
   },
@@ -13003,7 +13003,7 @@
           "Microsoft.Cdn/profiles/endpoints/*/read",
           "Microsoft.Cdn/profiles/afdendpoints/validateCustomDomain/action",
           "Microsoft.Insights/alertRules/*",
-          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Support/*"
         ],
@@ -13018,8 +13018,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2023-12-11T16:01:32.166498+00:00",
-    "permissionCount": 2036.3333333333333,
+    "updatedOn": "2026-03-16T15:09:27.302870+00:00",
+    "permissionCount": 1704,
     "dataActions": [],
     "notDataActions": []
   },
@@ -18389,8 +18389,15 @@
     "permissions": [
       {
         "actions": [
+          "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackup/action",
+          "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupAccess/action",
           "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupOperations/read",
+          "Microsoft.DBforPostgreSQL/flexibleServers/ltrBackupPreCheck/action",
           "Microsoft.DBforPostgreSQL/flexibleServers/ltrPreBackup/action",
+          "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreFinalize/action",
+          "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestoreInitialize/action",
+          "Microsoft.DBforPostgreSQL/flexibleServers/ltrRestorePreCheck/action",
+          "Microsoft.DBforPostgreSQL/flexibleServers/read",
           "Microsoft.DBforPostgreSQL/flexibleServers/startLtrBackup/action",
           "Microsoft.DBforPostgreSQL/locations/azureAsyncOperation/read",
           "Microsoft.DBforPostgreSQL/locations/operationResults/read",
@@ -18408,8 +18415,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2023-08-07T15:25:15.908372+00:00",
-    "permissionCount": 7,
+    "updatedOn": "2026-03-16T15:09:27.302870+00:00",
+    "permissionCount": 14,
     "dataActions": [],
     "notDataActions": []
   },
@@ -37025,6 +37032,42 @@
     "updatedBy": null,
     "updatedOn": "2026-03-12T15:24:40.576076+00:00",
     "permissionCount": 1,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-03-16T15:09:26.626083+00:00",
+    "description": "Service role that provides permissions for Microsoft Defender for AI",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/6fe711ec-654d-4ef7-8e32-eb7de3d94774",
+    "name": "6fe711ec-654d-4ef7-8e32-eb7de3d94774",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.CognitiveServices/accounts/read",
+          "Microsoft.CognitiveServices/accounts/defenderForAISettings/read",
+          "Microsoft.CognitiveServices/accounts/defenderForAISettings/write",
+          "Microsoft.CognitiveServices/accounts/defenderForAISettings/delete",
+          "Microsoft.CognitiveServices/raiPolicy/read",
+          "Microsoft.CognitiveServices/raiPolicy/write",
+          "Microsoft.Search/searchServices/knowledgeBases/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Defender AI",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-03-16T15:09:26.626083+00:00",
+    "permissionCount": 7,
     "dataActions": [],
     "notDataActions": []
   }
