@@ -265,7 +265,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
           </div>
         )}
         {/* Static directory of base service tags for SEO — rendered in HTML at build time */}
-        {baseServiceTags.length > 0 && !searchTerm && (
+        {baseServiceTags.length > 0 && !searchTerm && !data && (
           <nav aria-label="All Azure service tags" className="space-y-3">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               All service tags ({baseServiceTags.length})
