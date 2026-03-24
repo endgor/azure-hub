@@ -26218,6 +26218,9 @@
           "Microsoft.Dashboard/grafana/managedPrivateEndpoints/delete",
           "Microsoft.Dashboard/grafana/integrationFabrics/write",
           "Microsoft.Dashboard/grafana/integrationFabrics/delete",
+          "Microsoft.Dashboard/grafana/grafanaDefinitions/read",
+          "Microsoft.Dashboard/grafana/grafanaDefinitions/write",
+          "Microsoft.Dashboard/grafana/grafanaDefinitions/delete",
           "Microsoft.Authorization/*/read",
           "Microsoft.Insights/AlertRules/Write",
           "Microsoft.Insights/AlertRules/Delete",
@@ -26248,8 +26251,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-05-16T00:34:45.274767+00:00",
-    "permissionCount": 364.3333333333333,
+    "updatedOn": "2026-03-23T15:02:34.494769+00:00",
+    "permissionCount": 367.3333333333333,
     "dataActions": [],
     "notDataActions": []
   },
@@ -30340,7 +30343,9 @@
           "Microsoft.Datadog/subscriptionStatuses/read",
           "Microsoft.Datadog/operations/read",
           "Microsoft.Datadog/monitors/getDefaultApplicationKey/action",
-          "Microsoft.Datadog/monitors/manageSreAgentConnectors/action"
+          "Microsoft.Datadog/monitors/manageSreAgentConnectors/action",
+          "Microsoft.Datadog/monitors/latestLinkedSaaS/action",
+          "Microsoft.Datadog/monitors/linkSaaS/action"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -30353,8 +30358,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-01-29T12:19:09.765581+00:00",
-    "permissionCount": 29,
+    "updatedOn": "2026-03-23T15:02:34.492769+00:00",
+    "permissionCount": 31,
     "dataActions": [],
     "notDataActions": []
   },
@@ -30589,7 +30594,8 @@
           "Dynatrace.Observability/monitors/tagRules/write",
           "Dynatrace.Observability/registeredSubscriptions/read",
           "Dynatrace.Observability/operations/read",
-          "Dynatrace.Observability/monitors/manageSreAgentConnectors/action"
+          "Dynatrace.Observability/monitors/manageSreAgentConnectors/action",
+          "Dynatrace.Observability/monitors/latestLinkedSaaS/action"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -30602,8 +30608,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-01-29T12:19:09.527197+00:00",
-    "permissionCount": 27,
+    "updatedOn": "2026-03-23T15:02:34.494769+00:00",
+    "permissionCount": 28,
     "dataActions": [],
     "notDataActions": []
   },
@@ -37473,6 +37479,38 @@
     "dataActions": [
       "Microsoft.ConfidentialLedger/ledgers/transactions/read",
       "Microsoft.ConfidentialLedger/ledgers/transactions/write"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-03-23T15:02:34.493769+00:00",
+    "description": "Grants query access to search and retrieve data from Microsoft Discovery Bookshelf knowledge bases. This is the minimum role required to use the retrieve action when linking a knowledge base to an agent. This role is in preview and subject to change.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/8ec773c5-7ce6-4b78-91d1-182f8faa536d",
+    "name": "8ec773c5-7ce6-4b78-91d1-182f8faa536d",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.Discovery/bookshelf/knowledgeBaseVersions/search"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Microsoft Discovery Bookshelf Index Data Reader - Preview",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-03-23T15:02:34.493769+00:00",
+    "permissionCount": 1,
+    "dataActions": [
+      "Microsoft.Discovery/bookshelf/knowledgeBaseVersions/search"
     ],
     "notDataActions": []
   }

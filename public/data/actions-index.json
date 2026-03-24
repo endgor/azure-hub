@@ -10920,6 +10920,21 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.dashboard/grafana/grafanadefinitions/read",
+    "name": "Microsoft.Dashboard/grafana/grafanaDefinitions/read",
+    "roleCount": 19
+  },
+  {
+    "key": "microsoft.dashboard/grafana/grafanadefinitions/write",
+    "name": "Microsoft.Dashboard/grafana/grafanaDefinitions/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.dashboard/grafana/grafanadefinitions/delete",
+    "name": "Microsoft.Dashboard/grafana/grafanaDefinitions/delete",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.containerservice/fleets/apiextensions.k8s.io/customresourcedefinitions/read",
     "name": "Microsoft.ContainerService/fleets/apiextensions.k8s.io/customresourcedefinitions/read",
     "roleCount": 22
@@ -12925,6 +12940,16 @@
     "roleCount": 3
   },
   {
+    "key": "microsoft.datadog/monitors/latestlinkedsaas/action",
+    "name": "Microsoft.Datadog/monitors/latestLinkedSaaS/action",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.datadog/monitors/linksaas/action",
+    "name": "Microsoft.Datadog/monitors/linkSaaS/action",
+    "roleCount": 3
+  },
+  {
     "key": "microsoft.elastic/getorganizationapikey/action",
     "name": "Microsoft.Elastic/getOrganizationApiKey/action",
     "roleCount": 4
@@ -13402,6 +13427,11 @@
   {
     "key": "dynatrace.observability/monitors/managesreagentconnectors/action",
     "name": "Dynatrace.Observability/monitors/manageSreAgentConnectors/action",
+    "roleCount": 3
+  },
+  {
+    "key": "dynatrace.observability/monitors/latestlinkedsaas/action",
+    "name": "Dynatrace.Observability/monitors/latestLinkedSaaS/action",
     "roleCount": 3
   },
   {
@@ -18015,54 +18045,9 @@
     "roleCount": 3
   },
   {
-    "key": "commvault.contentstore/checknameavailability/action",
-    "name": "Commvault.ContentStore/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/delete",
-    "name": "Commvault.ContentStore/entities/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/read",
-    "name": "Commvault.ContentStore/entities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/write",
-    "name": "Commvault.ContentStore/entities/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/read",
-    "name": "Commvault.ContentStore/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/write",
-    "name": "Commvault.ContentStore/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/operations/read",
-    "name": "Commvault.ContentStore/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/register/action",
-    "name": "Commvault.ContentStore/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/registeredsubscriptions/read",
-    "name": "Commvault.ContentStore/registeredSubscriptions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/unregister/action",
-    "name": "Commvault.ContentStore/unregister/action",
-    "roleCount": 0
+    "key": "microsoft.discovery/bookshelf/knowledgebaseversions/search",
+    "name": "Microsoft.Discovery/bookshelf/knowledgeBaseVersions/search",
+    "roleCount": 5
   },
   {
     "key": "dell.storage/checknameavailability/action",
@@ -18112,11 +18097,6 @@
   {
     "key": "dell.storage/unregister/action",
     "name": "Dell.Storage/unregister/action",
-    "roleCount": 0
-  },
-  {
-    "key": "dynatrace.observability/monitors/latestlinkedsaas/action",
-    "name": "Dynatrace.Observability/monitors/latestLinkedSaaS/action",
     "roleCount": 0
   },
   {
@@ -22590,6 +22570,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.app/sandboxgroups/connections/delete",
+    "name": "Microsoft.App/sandboxGroups/connections/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/connections/read",
+    "name": "Microsoft.App/sandboxGroups/connections/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/connections/write",
+    "name": "Microsoft.App/sandboxGroups/connections/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.app/sandboxgroups/delete",
     "name": "Microsoft.App/sandboxGroups/delete",
     "roleCount": 0
@@ -22607,6 +22602,21 @@
   {
     "key": "microsoft.app/sandboxgroups/diskimages/write",
     "name": "Microsoft.App/sandboxGroups/diskimages/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/egresspolicies/delete",
+    "name": "Microsoft.App/sandboxGroups/egressPolicies/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/egresspolicies/read",
+    "name": "Microsoft.App/sandboxGroups/egressPolicies/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/egresspolicies/write",
+    "name": "Microsoft.App/sandboxGroups/egressPolicies/write",
     "roleCount": 0
   },
   {
@@ -22782,6 +22792,36 @@
   {
     "key": "microsoft.app/sandboxgroups/vnetconnections/write",
     "name": "Microsoft.App/sandboxGroups/vnetConnections/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/volumes/delete",
+    "name": "Microsoft.App/sandboxGroups/volumes/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/volumes/files/delete",
+    "name": "Microsoft.App/sandboxGroups/volumes/files/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/volumes/files/read",
+    "name": "Microsoft.App/sandboxGroups/volumes/files/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/volumes/files/write",
+    "name": "Microsoft.App/sandboxGroups/volumes/files/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/volumes/read",
+    "name": "Microsoft.App/sandboxGroups/volumes/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/volumes/write",
+    "name": "Microsoft.App/sandboxGroups/volumes/write",
     "roleCount": 0
   },
   {
@@ -42810,6 +42850,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.compute/interconnectblocks/delete",
+    "name": "Microsoft.Compute/interconnectBlocks/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/deploy/action",
+    "name": "Microsoft.Compute/interconnectBlocks/deploy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/read",
+    "name": "Microsoft.Compute/interconnectBlocks/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/interconnectblocks/write",
+    "name": "Microsoft.Compute/interconnectBlocks/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.compute/locations/cloudserviceosfamilies/read",
     "name": "Microsoft.Compute/locations/cloudServiceOsFamilies/read",
     "roleCount": 0
@@ -50395,21 +50455,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.dashboard/grafana/grafanadefinitions/delete",
-    "name": "Microsoft.Dashboard/grafana/grafanaDefinitions/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dashboard/grafana/grafanadefinitions/read",
-    "name": "Microsoft.Dashboard/grafana/grafanaDefinitions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.dashboard/grafana/grafanadefinitions/write",
-    "name": "Microsoft.Dashboard/grafana/grafanaDefinitions/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.dashboard/grafana/integrationfabrics/read",
     "name": "Microsoft.Dashboard/grafana/integrationFabrics/read",
     "roleCount": 0
@@ -51172,16 +51217,6 @@
   {
     "key": "microsoft.databricks/workspaces/write",
     "name": "Microsoft.Databricks/workspaces/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.datadog/monitors/latestlinkedsaas/action",
-    "name": "Microsoft.Datadog/monitors/latestLinkedSaaS/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.datadog/monitors/linksaas/action",
-    "name": "Microsoft.Datadog/monitors/linkSaaS/action",
     "roleCount": 0
   },
   {
@@ -86330,6 +86365,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/azuremonitorpipelinelogerrors/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/AzureMonitorPipelineLogErrors/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/behavioranalytics/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/BehaviorAnalytics/read",
     "roleCount": 0
@@ -92000,6 +92040,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.resourcebuilder/locations/operationstatuses/read",
+    "name": "Microsoft.ResourceBuilder/Locations/OperationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.resourcebuilder/locations/operationstatuses/write",
+    "name": "Microsoft.ResourceBuilder/Locations/OperationStatuses/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.resourcebuilder/operations/read",
     "name": "Microsoft.ResourceBuilder/operations/read",
     "roleCount": 0
@@ -92012,6 +92062,21 @@
   {
     "key": "microsoft.resourcebuilder/unregister/action",
     "name": "Microsoft.ResourceBuilder/unregister/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.resourcebuilder/workspaces/dataconnections/delete",
+    "name": "Microsoft.ResourceBuilder/workspaces/dataConnections/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.resourcebuilder/workspaces/dataconnections/read",
+    "name": "Microsoft.ResourceBuilder/workspaces/dataConnections/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.resourcebuilder/workspaces/dataconnections/write",
+    "name": "Microsoft.ResourceBuilder/workspaces/dataConnections/write",
     "roleCount": 0
   },
   {
@@ -94857,6 +94922,11 @@
   {
     "key": "microsoft.servicebus/namespaces/delete",
     "name": "Microsoft.ServiceBus/namespaces/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.servicebus/namespaces/disasterrecoveryconfigs/action",
+    "name": "Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs/action",
     "roleCount": 0
   },
   {
@@ -100975,18 +101045,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/clusters/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/clusters/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/clusters/privateendpoints/delete",
     "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/clusters/privateendpoints/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -101002,11 +101062,6 @@
   {
     "key": "microsoft.streamanalytics/clusters/write",
     "name": "Microsoft.StreamAnalytics/clusters/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/locations/quotas/read",
-    "name": "Microsoft.StreamAnalytics/locations/quotas/Read",
     "roleCount": 0
   },
   {
@@ -101045,11 +101100,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/functions/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/functions/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/functions/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/functions/Read",
     "roleCount": 0
@@ -101080,11 +101130,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/inputs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/inputs/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/Read",
     "roleCount": 0
@@ -101105,23 +101150,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/metricdefinitions/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/metricdefinitions/Read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/delete",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/outputs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -101137,16 +101167,6 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/write",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/write",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/write",
     "roleCount": 0
   },
   {
@@ -101167,11 +101187,6 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/scale/action",
     "name": "Microsoft.StreamAnalytics/streamingjobs/Scale/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/skus/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/Skus/Read",
     "roleCount": 0
   },
   {
