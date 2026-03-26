@@ -119,9 +119,6 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     const r1OnlyDataActions = r1.allDataActions.filter(a => !r2DataActions.has(a));
     const r2OnlyDataActions = r2.allDataActions.filter(a => !r1DataActions.has(a));
 
-    const r1HasWildcard = r1.allActions.includes('*');
-    const r2HasWildcard = r2.allActions.includes('*');
-
     return {
       sharedActions: new Set(sharedActions),
       sharedDataActions: new Set(sharedDataActions),
@@ -131,9 +128,6 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
       isIdentical: r1OnlyActions.length === 0 && r2OnlyActions.length === 0 &&
         r1OnlyDataActions.length === 0 && r2OnlyDataActions.length === 0 &&
         (r1.allActions.length > 0 || r1.allDataActions.length > 0),
-      r1HasWildcard,
-      r2HasWildcard,
-      hasWildcard: r1HasWildcard || r2HasWildcard,
     };
   }, [isComparisonMode, rolesWithFlattenedPermissions]);
 
@@ -167,24 +161,6 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
               </div>
             </div>
           </div>
-
-          {/* Wildcard Notice */}
-          {comparison.hasWildcard && (
-            <div className="rounded-xl border border-sky-200 bg-sky-50 p-4 dark:border-sky-400/30 dark:bg-sky-500/10">
-              <div className="flex gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-sky-600 dark:text-sky-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div className="text-sm text-sky-800 dark:text-sky-200">
-                  <strong>Wildcard Permissions Detected:</strong>{' '}
-                  {comparison.r1HasWildcard && comparison.r2HasWildcard
-                    ? `Both ${roles[0].roleName} and ${roles[1].roleName} have`
-                    : `${comparison.r1HasWildcard ? roles[0].roleName : roles[1].roleName} has`
-                  } a wildcard (*) permission, granting full access to all control plane operations at the assigned scope.
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Identical Notice */}
           {comparison.isIdentical && (
