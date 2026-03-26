@@ -94,12 +94,6 @@ export interface RoleSystemConfig {
     toolSchemaName: string;
   };
 
-  /** Cross-link to the other calculator */
-  crossLink?: {
-    text: string;
-    url: string;
-  };
-
   /** Disclaimer banner content */
   disclaimer: {
     /** Main description paragraph */

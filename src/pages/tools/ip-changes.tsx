@@ -6,12 +6,7 @@ import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
-
-const CLOUD_LABELS: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'Public',
-  [AzureCloudName.AzureUSGovernment]: 'Government',
-  [AzureCloudName.AzureChinaCloud]: 'China'
-};
+import { CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 
 const CLOUD_ORDER: AzureCloudName[] = [
   AzureCloudName.AzureCloud,
@@ -220,12 +215,6 @@ function TagSection({ title, count, variant, children }: {
     </div>
   );
 }
-
-const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
-  [AzureCloudName.AzureUSGovernment]: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-  [AzureCloudName.AzureChinaCloud]: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
-};
 
 function CopyButton({ text, label = 'Copy IP addresses' }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);

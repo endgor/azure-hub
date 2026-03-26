@@ -7,6 +7,7 @@ import Layout from '@/components/Layout';
 import { getAllServiceTagsWithCloud, ServiceTagIndex } from '@/lib/clientIpIndexService';
 import { AzureCloudName } from '@/types/azure';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
+import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 import SearchInput from '@/components/shared/SearchInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -35,20 +36,6 @@ export const getStaticProps: GetStaticProps<ServiceTagsPageProps> = async () => 
 /** Cloud filter options */
 type CloudFilter = 'all' | AzureCloudName;
 
-/** Maps cloud enum to display label */
-const CLOUD_LABELS: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'Public',
-  [AzureCloudName.AzureUSGovernment]: 'Gov',
-  [AzureCloudName.AzureChinaCloud]: 'China'
-};
-
-/** Maps cloud enum to badge styling */
-const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
-  [AzureCloudName.AzureUSGovernment]: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-  [AzureCloudName.AzureChinaCloud]: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
-};
-
 /**
  * Fetcher function for service tags list.
  * Uses lightweight index (~400 KB) instead of full data (~3.9 MB) for 10x faster load.
@@ -66,6 +53,8 @@ interface ServiceTagsResponse {
   serviceTags: ServiceTagIndex[];
 }
 
+const DEFAULT_VISIBLE_COUNT = 50;
+
 export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
@@ -73,6 +62,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasMounted, setHasMounted] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => { setHasMounted(true); }, []);
 
@@ -113,6 +103,17 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
 
     return filtered;
   }, [data?.serviceTags, searchTerm, cloudFilter]);
+
+  // Reset "show all" when filters change
+  useEffect(() => {
+    setShowAll(false);
+  }, [searchTerm, cloudFilter]);
+
+  const isSearching = searchTerm.trim().length > 0;
+  const visibleServiceTags = (isSearching || showAll)
+    ? filteredServiceTags
+    : filteredServiceTags.slice(0, DEFAULT_VISIBLE_COUNT);
+  const hasMore = !isSearching && !showAll && filteredServiceTags.length > DEFAULT_VISIBLE_COUNT;
 
   return (
     <Layout
@@ -194,23 +195,35 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
             </div>
 
             {filteredServiceTags.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filteredServiceTags.map((serviceTag) => (
-                  <Link
-                    key={`${serviceTag.id}-${serviceTag.cloud}`}
-                    href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
-                    className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">
-                        {serviceTag.id}
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {visibleServiceTags.map((serviceTag) => (
+                    <Link
+                      key={`${serviceTag.id}-${serviceTag.cloud}`}
+                      href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
+                      className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">
+                          {serviceTag.id}
+                        </div>
+                        <span className={`inline-block flex-shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[serviceTag.cloud]}`}>
+                          {CLOUD_LABELS[serviceTag.cloud]}
+                        </span>
                       </div>
-                      <span className={`inline-block flex-shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[serviceTag.cloud]}`}>
-                        {CLOUD_LABELS[serviceTag.cloud]}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
+                </div>
+                {hasMore && (
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() => setShowAll(true)}
+                      className="rounded-lg bg-white px-5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                    >
+                      Show all {filteredServiceTags.length} service tags
+                    </button>
+                  </div>
+                )}
               </div>
             ) : searchTerm ? (
               <div className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-200">

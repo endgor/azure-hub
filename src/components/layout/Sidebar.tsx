@@ -5,7 +5,7 @@ import { ICONS, type IconKey } from './icons';
 
 export interface NavItem {
   label: string;
-  description?: string;
+
   href: string;
   icon: IconKey;
   comingSoon?: boolean;
@@ -121,11 +121,7 @@ export function Sidebar({
                 }}
               >
                 <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors ${
-                    active
-                      ? 'bg-transparent dark:bg-transparent'
-                      : 'bg-transparent dark:bg-transparent'
-                  }`}
+                  className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors"
                 >
                   {ICONS[item.icon](active)}
                 </span>

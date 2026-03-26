@@ -11,7 +11,7 @@ export interface UseRbacModeReturn {
   mode: RbacMode;
   setMode: (mode: RbacMode) => void;
   isSimpleMode: boolean;
-  isAdvancedMode: boolean;
+
   isRoleExplorerMode: boolean;
   isRoleCreatorMode: boolean;
 }
@@ -38,7 +38,7 @@ export function useRbacMode({
     mode,
     setMode,
     isSimpleMode: mode === 'simple',
-    isAdvancedMode: mode === 'advanced',
+
     isRoleExplorerMode: mode === 'roleExplorer',
     isRoleCreatorMode: mode === 'roleCreator',
   };

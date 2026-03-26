@@ -1,6 +1,5 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import Layout from '@/components/Layout';
 import SearchInput from '@/components/shared/SearchInput';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -268,17 +267,6 @@ export default function TenantLookupPage() {
           </div>
         )}
 
-        {!result && !error && (
-          <div className="text-sm text-slate-500 dark:text-slate-400 max-w-2xl space-y-2">
-            <p>
-              Enter any domain verified with Microsoft Entra ID to retrieve the associated tenant ID, default domain, Azure AD instance, and tenant region scope.
-              Useful for identifying tenant boundaries during cross-tenant collaboration or security investigations.
-            </p>
-            <p>
-              <Link href="/tools/azure-rbac-calculator/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Explore Azure RBAC roles</Link>
-            </p>
-          </div>
-        )}
 
         {history.length > 0 && (
           <div className="space-y-3">

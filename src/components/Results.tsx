@@ -1,4 +1,5 @@
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
+import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 import { useState, useMemo, memo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -114,20 +115,6 @@ interface ResultsProps {
 
 type SortField = 'serviceTagId' | 'ipAddressPrefix' | 'region' | 'systemService' | 'networkFeatures' | 'cloud';
 type SortDirection = 'asc' | 'desc';
-
-/** Maps cloud enum to display label */
-const CLOUD_LABELS: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'Public',
-  [AzureCloudName.AzureUSGovernment]: 'Gov',
-  [AzureCloudName.AzureChinaCloud]: 'China'
-};
-
-/** Maps cloud enum to badge styling */
-const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
-  [AzureCloudName.AzureUSGovernment]: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-  [AzureCloudName.AzureChinaCloud]: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
-};
 
 /** Cloud filter options */
 type CloudFilter = 'all' | AzureCloudName;

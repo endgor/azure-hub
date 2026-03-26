@@ -3,12 +3,7 @@ import Link from 'next/link';
 import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
-
-const CLOUD_LABELS: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'Public',
-  [AzureCloudName.AzureUSGovernment]: 'Government',
-  [AzureCloudName.AzureChinaCloud]: 'China'
-};
+import { CLOUD_LABELS } from '@/lib/cloudConstants';
 
 interface RecentChangesCardProps {
   serviceCount?: number;

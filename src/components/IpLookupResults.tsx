@@ -1,20 +1,14 @@
 import { useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import type { AzureIpAddress } from '@/types/azure';
-import { AzureCloudName } from '@/types/azure';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 import { prepareDataForExport, exportToCSV, exportToExcel, exportToMarkdown, generateFilename } from '@/lib/exportUtils';
+import { CLOUD_LABELS } from '@/lib/cloudConstants';
 
 interface IpLookupResultsProps {
   results: AzureIpAddress[];
   query: string;
 }
-
-const CLOUD_LABELS: Record<string, string> = {
-  [AzureCloudName.AzureCloud]: 'Public',
-  [AzureCloudName.AzureUSGovernment]: 'Government',
-  [AzureCloudName.AzureChinaCloud]: 'China'
-};
 
 function findPrimaryResult(results: AzureIpAddress[]): { primary: AzureIpAddress; additional: AzureIpAddress[] } {
   if (results.length === 0) {
@@ -60,7 +54,7 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
 
   const handleCopy = useCallback(async () => {
     const lines = results.map(r =>
-      `${r.serviceTagId}\t${r.ipAddressPrefix}\t${r.region || '-'}\t${r.systemService || '-'}\t${r.networkFeatures || '-'}\t${CLOUD_LABELS[r.cloud || ''] || r.cloud || '-'}`
+      `${r.serviceTagId}\t${r.ipAddressPrefix}\t${r.region || '-'}\t${r.systemService || '-'}\t${r.networkFeatures || '-'}\t${(r.cloud && CLOUD_LABELS[r.cloud]) || r.cloud || '-'}`
     );
     const header = 'Service Tag\tIP Range\tRegion\tSystem Service\tNetwork Features\tCloud';
     await navigator.clipboard.writeText([header, ...lines].join('\n'));
@@ -165,7 +159,7 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
           </div>
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Cloud</p>
-            <p className="mt-0.5 text-sm font-medium text-slate-800 dark:text-slate-200">{CLOUD_LABELS[primary.cloud || ''] || primary.cloud || '-'}</p>
+            <p className="mt-0.5 text-sm font-medium text-slate-800 dark:text-slate-200">{(primary.cloud && CLOUD_LABELS[primary.cloud]) || primary.cloud || '-'}</p>
           </div>
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Network Features</p>
