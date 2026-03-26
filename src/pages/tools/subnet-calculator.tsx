@@ -365,7 +365,7 @@ export default function SubnetCalculatorPage(): ReactElement {
         </div>
 
         {/* Network Input Form */}
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-xl border border-slate-100 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
           <form
             onSubmit={handleApplyNetwork}
             className="grid w-full grid-cols-1 gap-4 sm:grid-cols-[240px_160px_minmax(0,1fr)] sm:items-end"
@@ -441,7 +441,7 @@ export default function SubnetCalculatorPage(): ReactElement {
         </div>
 
         {/* Subnet Plan Table */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-xl border border-slate-100 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
           <header className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-2">
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">

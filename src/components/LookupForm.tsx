@@ -79,7 +79,7 @@ const LookupForm = memo(function LookupForm({
           <button
             type="submit"
             disabled={isLoading || !searchQuery.trim()}
-            className="shrink-0 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50 dark:bg-[#0A84FF] dark:hover:bg-[#0A84FF]/80"
+            className="shrink-0 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 disabled:opacity-50 dark:bg-[#0A84FF] dark:hover:bg-[#0A84FF]/80"
           >
             {isLoading ? 'Searching...' : 'Run Query'}
           </button>

@@ -48,7 +48,7 @@ export default function PermissionsSection({
   validateActionCategory,
 }: PermissionsSectionProps) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+    <div className="rounded-xl border border-slate-100 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
           Permissions ({totalPermissions})

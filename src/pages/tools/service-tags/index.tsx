@@ -162,7 +162,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
           <div className="relative inline-block text-left" ref={cloudFilterRef}>
             <button
               type="button"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-200 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-sky-500"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-slate-600"
               onClick={() => setIsCloudFilterOpen(!isCloudFilterOpen)}
               aria-expanded={isCloudFilterOpen}
               aria-haspopup="true"
@@ -208,7 +208,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         </div>
 
         {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-100 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
             <LoadingSpinner size="lg" label="Loading service tags..." />
           </div>
         )}
@@ -237,7 +237,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
                   <Link
                     key={`${serviceTag.id}-${serviceTag.cloud}`}
                     href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
-                    className="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-800/60 dark:hover:shadow-lg"
+                    className="group rounded-xl border border-slate-100 bg-white p-4 transition hover:border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">

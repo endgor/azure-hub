@@ -265,7 +265,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
 
         <div className="space-y-6">
           {isLoading && (
-            <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+            <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-100 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
               <LoadingSpinner size="lg" label="Looking up Azure IP information..." />
             </div>
           )}
@@ -324,7 +324,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
                 {SAMPLE_QUERIES.map((item) => (
                   <div
                     key={item.label}
-                    className="flex flex-col space-y-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-800"
+                    className="flex flex-col space-y-2 rounded-xl border border-slate-100 bg-white p-4 transition hover:border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
                   >
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       {item.label}
@@ -341,7 +341,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
             </section>
 
             <aside>
-              <RecentChangesCard />
+              <RecentChangesCard serviceCount={serviceTagCount} />
             </aside>
           </div>
         )}

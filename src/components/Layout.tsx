@@ -324,7 +324,7 @@ export default function Layout({
         jsonLd={jsonLd}
       />
 
-      <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-[#151515] dark:text-slate-100">
+      <div className="min-h-screen bg-white text-slate-900 transition-colors dark:bg-[#151515] dark:text-slate-100">
         <div className="flex min-h-screen md:h-screen md:overflow-hidden">
           <Sidebar
             isMobileMenuOpen={isMobileMenuOpen}

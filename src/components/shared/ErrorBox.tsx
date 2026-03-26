@@ -70,7 +70,7 @@ export default function ErrorBox({
   className = '',
 }: ErrorBoxProps) {
   return (
-    <div className={`rounded-xl border p-5 text-sm shadow-sm ${variantStyles[variant]} ${className}`}>
+    <div className={`rounded-xl border p-5 text-sm ${variantStyles[variant]} ${className}`}>
       {title && (
         <h2 className={`font-semibold ${titleStyles[variant]}`}>
           {title}

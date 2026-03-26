@@ -501,7 +501,7 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-100 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
             <LoadingSpinner size="lg" label="Calculating least privileged roles..." />
           </div>
         )}

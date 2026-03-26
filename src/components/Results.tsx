@@ -261,7 +261,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   
   return (
     <section
-      className="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
+      className="mb-6 rounded-xl border border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900"
       aria-label="Search Results"
     >
       <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
