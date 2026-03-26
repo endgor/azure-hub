@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { AzureRole } from '@/types/rbac';
 import { exportRolesToCSV, exportRolesToExcel, exportRolesToJSON, exportRolesToMarkdown } from '@/lib/rbacExportUtils';
-import { getPrivilegedRoles, isPrivilegedRole } from '@/config/privilegedRoles';
+import { isPrivilegedRole } from '@/config/privilegedRoles';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { pluralize } from '@/lib/filenameUtils';
@@ -13,6 +13,8 @@ interface RolePermissionsTableProps {
 export default function RolePermissionsTable({ roles }: RolePermissionsTableProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [expandedDescriptions, setExpandedDescriptions] = useState<Set<string>>(new Set());
+
+  const isComparisonMode = roles.length === 2;
 
   const toggleDescription = (roleId: string) => {
     setExpandedDescriptions(prev => {
@@ -81,19 +83,11 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
 
   // Export options for ExportMenu
   const exportOptions: ExportOption[] = useMemo(() => [
-    { label: 'JSON', format: 'json', extension: '.json', onClick: handleJsonExport },
-    { label: 'CSV', format: 'csv', extension: '.csv', onClick: handleCsvExport },
-    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
-    { label: 'Markdown', format: 'md', extension: '.md', onClick: handleMarkdownExport }
+    { label: 'JSON file', format: 'json', extension: '.json', onClick: handleJsonExport },
+    { label: 'Comma separated', format: 'csv', extension: '.csv', onClick: handleCsvExport },
+    { label: 'Excel spreadsheet', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
+    { label: 'Markdown table', format: 'md', extension: '.md', onClick: handleMarkdownExport }
   ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
-
-  // Check if any of the selected roles are privileged
-  const privilegedRolesInSelection = useMemo(
-    () => getPrivilegedRoles(roles),
-    [roles]
-  );
-
-  const hasPrivilegedRoles = privilegedRolesInSelection.length > 0;
 
   // Memoize roles with flattened permissions to avoid rebuilding on every render
   const rolesWithFlattenedPermissions = useMemo(() => {
@@ -107,45 +101,46 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     });
   }, [roles]);
 
-  return (
-    <div className="space-y-4">
-      {/* Privileged Role Warning */}
-      {hasPrivilegedRoles && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-400/30 dark:bg-amber-500/10">
-          <div className="flex gap-3">
-            <svg className="h-6 w-6 flex-shrink-0 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-                Privileged Roles Selected
-              </h3>
-              <div className="text-sm text-amber-800 dark:text-amber-200">
-                <p className="mb-2">
-                  You have selected one or more highly privileged roles that grant extensive permissions across Azure resources:
-                </p>
-                <ul className="list-disc space-y-1 pl-5">
-                  {privilegedRolesInSelection.map(role => (
-                    <li key={role.id}><strong>{role.roleName}</strong></li>
-                  ))}
-                </ul>
-                <p className="mt-2">
-                  <strong>Security Best Practice:</strong> Only assign these roles when absolutely necessary and follow the principle of least privilege.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+  // Comparison data (only computed when exactly 2 roles)
+  const comparison = useMemo(() => {
+    if (!isComparisonMode) return null;
 
+    const [r1, r2] = rolesWithFlattenedPermissions;
+    const r1Actions = new Set(r1.allActions);
+    const r2Actions = new Set(r2.allActions);
+    const r1DataActions = new Set(r1.allDataActions);
+    const r2DataActions = new Set(r2.allDataActions);
+
+    const sharedActions = r1.allActions.filter(a => r2Actions.has(a));
+    const sharedDataActions = r1.allDataActions.filter(a => r2DataActions.has(a));
+
+    const r1OnlyActions = r1.allActions.filter(a => !r2Actions.has(a));
+    const r2OnlyActions = r2.allActions.filter(a => !r1Actions.has(a));
+    const r1OnlyDataActions = r1.allDataActions.filter(a => !r2DataActions.has(a));
+    const r2OnlyDataActions = r2.allDataActions.filter(a => !r1DataActions.has(a));
+
+    return {
+      sharedActions: new Set(sharedActions),
+      sharedDataActions: new Set(sharedDataActions),
+      sharedCount: sharedActions.length + sharedDataActions.length,
+      r1OnlyCount: r1OnlyActions.length + r1OnlyDataActions.length,
+      r2OnlyCount: r2OnlyActions.length + r2OnlyDataActions.length,
+      isIdentical: r1OnlyActions.length === 0 && r2OnlyActions.length === 0 &&
+        r1OnlyDataActions.length === 0 && r2OnlyDataActions.length === 0 &&
+        (r1.allActions.length > 0 || r1.allDataActions.length > 0),
+    };
+  }, [isComparisonMode, rolesWithFlattenedPermissions]);
+
+  return (
+    <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-1">
         <div>
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Role Permissions
           </h2>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Viewing {roles.length} {pluralize(roles.length, 'role')}
+            {isComparisonMode ? 'Comparing 2 roles' : `Viewing ${roles.length} ${pluralize(roles.length, 'role')}`}
           </p>
         </div>
         <ExportMenu
@@ -156,8 +151,31 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
         />
       </div>
 
+      {/* Comparison stats (inline, 2 roles only) */}
+      {comparison && (
+        <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mb-4">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            Shared: <strong className="text-slate-700 dark:text-slate-200">{comparison.sharedCount}</strong>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-sky-500"></span>
+            {roles[0].roleName} only: <strong className="text-slate-700 dark:text-slate-200">{comparison.r1OnlyCount}</strong>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-violet-500"></span>
+            {roles[1].roleName} only: <strong className="text-slate-700 dark:text-slate-200">{comparison.r2OnlyCount}</strong>
+          </span>
+          {comparison.isIdentical && (
+            <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+              Identical permissions
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+      <div className="overflow-hidden rounded-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
@@ -180,6 +198,14 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
               {rolesWithFlattenedPermissions.map(({ role, allActions, allDataActions }, index) => {
                 const isEven = index % 2 === 0;
                 const isPrivileged = isPrivilegedRole(role.roleName);
+
+                // For comparison mode, determine which set of shared permissions to check against
+                const otherActions = isComparisonMode
+                  ? new Set(rolesWithFlattenedPermissions[index === 0 ? 1 : 0].allActions)
+                  : null;
+                const otherDataActions = isComparisonMode
+                  ? new Set(rolesWithFlattenedPermissions[index === 0 ? 1 : 0].allDataActions)
+                  : null;
 
                 return (
                   <tr
@@ -247,9 +273,12 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                           <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
                         ) : (
                           allActions.map((action, idx) => (
-                            <div key={idx} className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
-                              {action}
-                            </div>
+                            <PermissionRow
+                              key={idx}
+                              permission={action}
+                              isShared={otherActions ? otherActions.has(action) : null}
+                              uniqueColor={index === 0 ? 'sky' : 'violet'}
+                            />
                           ))
                         )}
                       </div>
@@ -260,9 +289,12 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                           <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
                         ) : (
                           allDataActions.map((dataAction, idx) => (
-                            <div key={idx} className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
-                              {dataAction}
-                            </div>
+                            <PermissionRow
+                              key={idx}
+                              permission={dataAction}
+                              isShared={otherDataActions ? otherDataActions.has(dataAction) : null}
+                              uniqueColor={index === 0 ? 'sky' : 'violet'}
+                            />
                           ))
                         )}
                       </div>
@@ -275,23 +307,45 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-          Understanding the Table
-        </h3>
-        <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-          <p>
-            <strong className="text-slate-900 dark:text-slate-100">Actions:</strong> Management plane operations that control Azure resources (e.g., creating VMs, updating configurations)
-          </p>
-          <p>
-            <strong className="text-slate-900 dark:text-slate-100">Data Actions:</strong> Data plane operations that interact with data within resources (e.g., reading blob data, writing to storage)
-          </p>
-          <p>
-            <strong className="text-amber-700 dark:text-amber-400">Privileged Roles:</strong> Roles with broad permissions that should be assigned carefully following the principle of least privilege
-          </p>
-        </div>
+    </div>
+  );
+}
+
+/**
+ * A single permission row with an optional comparison indicator dot.
+ * - isShared === null: no comparison mode, render plain text
+ * - isShared === true: green dot (shared)
+ * - isShared === false: colored dot (unique to this role)
+ */
+function PermissionRow({
+  permission,
+  isShared,
+  uniqueColor,
+}: {
+  permission: string;
+  isShared: boolean | null;
+  uniqueColor: 'sky' | 'violet';
+}) {
+  if (isShared === null) {
+    return (
+      <div className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
+        {permission}
       </div>
+    );
+  }
+
+  const dotColor = isShared
+    ? 'bg-emerald-500'
+    : uniqueColor === 'sky'
+      ? 'bg-sky-500'
+      : 'bg-violet-500';
+
+  return (
+    <div className="flex items-start gap-2">
+      <span className={`inline-block w-2 h-2 rounded-full ${dotColor} mt-1 flex-shrink-0`}></span>
+      <code className="font-mono text-xs break-all text-slate-700 dark:text-slate-300">
+        {permission}
+      </code>
     </div>
   );
 }

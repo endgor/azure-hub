@@ -1,4 +1,5 @@
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
+import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 import { useState, useMemo, memo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -115,20 +116,6 @@ interface ResultsProps {
 type SortField = 'serviceTagId' | 'ipAddressPrefix' | 'region' | 'systemService' | 'networkFeatures' | 'cloud';
 type SortDirection = 'asc' | 'desc';
 
-/** Maps cloud enum to display label */
-const CLOUD_LABELS: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'Public',
-  [AzureCloudName.AzureUSGovernment]: 'Gov',
-  [AzureCloudName.AzureChinaCloud]: 'China'
-};
-
-/** Maps cloud enum to badge styling */
-const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200',
-  [AzureCloudName.AzureUSGovernment]: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
-  [AzureCloudName.AzureChinaCloud]: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-900/30 dark:text-rose-200'
-};
-
 /** Cloud filter options */
 type CloudFilter = 'all' | AzureCloudName;
 
@@ -211,7 +198,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   // Export options configuration
   const exportOptions = useMemo<ExportOption[]>(() => [
     {
-      label: 'CSV',
+      label: 'Comma separated',
       format: 'csv',
       extension: '.csv',
       onClick: async () => {
@@ -222,7 +209,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       }
     },
     {
-      label: 'Excel',
+      label: 'Excel spreadsheet',
       format: 'xlsx',
       extension: '.xlsx',
       onClick: async () => {
@@ -233,7 +220,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       }
     },
     {
-      label: 'Markdown',
+      label: 'Markdown table',
       format: 'md',
       extension: '.md',
       onClick: async () => {
@@ -261,7 +248,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   
   return (
     <section
-      className="mb-6 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900"
+      className="mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
       aria-label="Search Results"
     >
       <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
@@ -553,7 +540,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
               >
                 <td className="px-5 py-4 text-sm">
                   {result.cloud && (
-                    <span className={`inline-block rounded-md border px-2 py-1 text-xs font-semibold ${CLOUD_STYLES[result.cloud]}`}>
+                    <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${CLOUD_STYLES[result.cloud]}`}>
                       {CLOUD_LABELS[result.cloud]}
                     </span>
                   )}

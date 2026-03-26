@@ -31,7 +31,7 @@ export default function GuidesPage({ categories }: GuidesPageProps) {
               <Link
                 key={`${guide.category}-${guide.slug}`}
                 href={`/guides/${guide.category}/${guide.slug}`}
-                className="group block rounded-lg border border-slate-200 bg-white p-5 transition hover:border-sky-300 hover:shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-700"
+                className="group block rounded-xl bg-white p-5 transition dark:bg-slate-900"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 space-y-2">

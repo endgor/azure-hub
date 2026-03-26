@@ -351,7 +351,7 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
     () =>
       selectedRoles.map(role => ({
         id: role.id,
-        content: <span className="text-sm">{role.displayName}</span>,
+        content: <span className="text-xs">{role.displayName}</span>,
         removeAriaLabel: `Remove ${role.displayName}`
       })),
     [selectedRoles]
@@ -385,7 +385,7 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">
             {entraIdConfig.labels.categoryLabel}
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
@@ -501,7 +501,7 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
             <LoadingSpinner size="lg" label="Calculating least privileged roles..." />
           </div>
         )}

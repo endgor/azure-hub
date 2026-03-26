@@ -135,7 +135,7 @@ export default function SimpleMode({
               <LoadingSpinner size="md" />
             </div>
           ) : filteredActions.length > 0 ? (
-            <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+            <div className="rounded-lg bg-white dark:bg-slate-900">
               <div className="p-3 border-b border-slate-200 dark:border-slate-700">
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Available {config.labels.actionLabel} ({filteredActions.length}) - Click to add

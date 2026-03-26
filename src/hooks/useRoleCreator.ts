@@ -83,7 +83,7 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
   const [customRole, setCustomRole] = useState<CustomRoleDefinition>({
     roleName: '',
     description: '',
-    assignableScopes: ['/subscriptions/00000000-0000-0000-0000-000000000000'],
+    assignableScopes: [],
     actions: [],
     notActions: [],
     dataActions: [],
@@ -118,7 +118,7 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     setCustomRole({
       roleName: template.name,
       description: template.description,
-      assignableScopes: ['/subscriptions/00000000-0000-0000-0000-000000000000'],
+      assignableScopes: [],
       actions: template.actions,
       notActions: template.notActions || [],
       dataActions: template.dataActions || [],
@@ -290,7 +290,7 @@ export function useRoleCreator({ availableRoles, onSearchActions }: UseRoleCreat
     setCustomRole({
       roleName: '',
       description: '',
-      assignableScopes: ['/subscriptions/00000000-0000-0000-0000-000000000000'],
+      assignableScopes: [],
       actions: [],
       notActions: [],
       dataActions: [],

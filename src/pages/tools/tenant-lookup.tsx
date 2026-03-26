@@ -1,6 +1,5 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { GetStaticProps } from 'next';
-import Link from 'next/link';
 import Layout from '@/components/Layout';
 import SearchInput from '@/components/shared/SearchInput';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -208,7 +207,7 @@ export default function TenantLookupPage() {
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Identity</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">Identity</p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure Tenant Lookup</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Discover Azure AD tenant information from domain names. Retrieve tenant names, GUIDs, Azure AD instances, and tenant scope details.
@@ -242,7 +241,7 @@ export default function TenantLookupPage() {
         )}
 
         {result && !error && summaryFields.length > 0 && (
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+          <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Lookup Results</h2>
               <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
@@ -268,17 +267,6 @@ export default function TenantLookupPage() {
           </div>
         )}
 
-        {!result && !error && (
-          <div className="text-sm text-slate-500 dark:text-slate-400 max-w-2xl space-y-2">
-            <p>
-              Enter any domain verified with Microsoft Entra ID to retrieve the associated tenant ID, default domain, Azure AD instance, and tenant region scope.
-              Useful for identifying tenant boundaries during cross-tenant collaboration or security investigations.
-            </p>
-            <p>
-              <Link href="/tools/azure-rbac-calculator/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Explore Azure RBAC roles</Link>
-            </p>
-          </div>
-        )}
 
         {history.length > 0 && (
           <div className="space-y-3">

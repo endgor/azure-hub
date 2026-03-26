@@ -89,12 +89,25 @@ export default function SubnetTable({
   return (
     <div className="mt-4 overflow-x-auto">
       <table
-        className={`min-w-full border-collapse text-sm text-slate-600 dark:text-slate-400 transition ${
+        className={`w-full border-collapse text-sm text-slate-700 dark:text-slate-300 transition ${
           resetPulse ? 'animate-[pulse_0.6s_ease-in-out_1]' : ''
         }`}
+        style={{ tableLayout: 'fixed' }}
       >
+        <colgroup>
+          <col style={{ width: '70px' }} />
+          <col style={{ width: '150px' }} />
+          <col style={{ width: '120px' }} />
+          <col style={{ width: '170px' }} />
+          <col style={{ width: '170px' }} />
+          <col style={{ width: '80px' }} />
+          <col style={{ width: '140px' }} />
+          {Array.from({ length: joinColumnCount }, (_, i) => (
+            <col key={i} />
+          ))}
+        </colgroup>
         <thead>
-          <tr className="bg-slate-50 dark:bg-slate-800 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
+          <tr className="bg-slate-100/70 dark:bg-slate-800/70 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-600 dark:text-slate-300">
             <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Type</th>
             <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Network Address</th>
             <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Netmask</th>
@@ -143,7 +156,7 @@ export default function SubnetTable({
               ? ''
               : rowIndex % 2 === 0
                 ? 'bg-white dark:bg-slate-900'
-                : 'bg-slate-50/40 dark:bg-slate-800/40';
+                : 'bg-slate-50 dark:bg-slate-800/60';
             const highlightStyle = rowColor ? { backgroundColor: rowColor } : undefined;
             const comment = rowComments[row.id] ?? '';
             const isEditingComment = activeCommentRow === row.id;
@@ -172,26 +185,78 @@ export default function SubnetTable({
               .filter(Boolean)
               .join(' ');
 
-            if (isLockedVNetParent) {
+            if (isLockedVNetParent || isSingleSubnet) {
+              const lockedColSpan = Math.max(joinColumnCount - (path.length - 1), 1);
+              const lockedBg = isSingleSubnet ? 'bg-violet-50 dark:bg-violet-900/10' : 'bg-sky-50 dark:bg-sky-900/10';
+              const lockedText = isSingleSubnet ? 'text-violet-700 dark:text-violet-300' : 'text-sky-700 dark:text-sky-300';
+              const lockedTitle = isSingleSubnet
+                ? 'Locked VNet – entire range used as subnet'
+                : 'Locked VNet – manage splits via child subnets';
+
               joinCells.push(
                 <td
                   key={`${row.id}-locked`}
-                  colSpan={joinColumnCount}
-                  className="border border-slate-200 bg-sky-50 px-2.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.15em] text-sky-700 dark:border-slate-700 dark:bg-sky-900/10 dark:text-sky-300"
+                  colSpan={lockedColSpan}
+                  className={`border border-slate-200 ${lockedBg} px-1 py-2 text-center text-[9px] font-semibold uppercase tracking-wider ${lockedText} overflow-hidden dark:border-slate-700`}
+                  title={lockedTitle}
                 >
-                  Locked VNet – manage splits via child subnets
+                  <span style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>Locked</span>
                 </td>
               );
-            } else if (isSingleSubnet) {
-              joinCells.push(
-                <td
-                  key={`${row.id}-locked-single`}
-                  colSpan={joinColumnCount}
-                  className="border border-slate-200 bg-violet-50 px-2.5 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.15em] text-violet-700 dark:border-slate-700 dark:bg-violet-900/10 dark:text-violet-300"
-                >
-                  Locked VNet – entire range used as subnet
-                </td>
-              );
+
+              // Render parent join cells (same logic as normal rows)
+              segments.forEach((segment, index) => {
+                if (index === 0) return; // skip leaf segment, already handled above
+                if (renderedJoinCells.has(segment.id)) return;
+
+                const isRootSegment = segment.id === rootId;
+                const segmentKey = `${row.id}-${segment.id}`;
+                const rowSpan = leafCounts[segment.id] ?? 1;
+                const joinable = !isRootSegment && isJoinableNode(tree, segment);
+                const alternateBg = index % 2 === 0
+                  ? 'bg-sky-100 dark:bg-sky-900/30'
+                  : 'bg-sky-50 dark:bg-sky-900/20';
+
+                const content = joinable ? (
+                  <button
+                    type="button"
+                    onClick={() => onJoin(segment.id)}
+                    className="flex h-full w-full items-center justify-center bg-sky-200 px-1 py-2 text-sky-900 transition hover:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-sky-900/40 dark:text-sky-100 dark:hover:bg-sky-900/60 dark:focus:ring-sky-600 dark:focus:ring-offset-slate-900"
+                    title={`Join child subnets into ${inetNtoa(segment.network)}/${segment.prefix}`}
+                  >
+                    <span className="font-mono text-[11px] font-semibold" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                      /{segment.prefix}
+                    </span>
+                  </button>
+                ) : isRootSegment ? (
+                  <button
+                    type="button"
+                    onClick={onResetTree}
+                    className="flex h-full w-full items-center justify-center bg-slate-200 px-1 py-2 text-slate-700 transition hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-1 focus:ring-offset-white dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 dark:focus:ring-slate-500 dark:focus:ring-offset-slate-900"
+                    title="Reset subnet plan to the base network"
+                  >
+                    <span className="font-mono text-[11px] font-semibold" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                      /{segment.prefix}
+                    </span>
+                  </button>
+                ) : (
+                  <div
+                    className={`flex h-full w-full items-center justify-center px-1 py-2 text-slate-600 dark:text-slate-300 ${alternateBg}`}
+                    title="Join unavailable until child subnets are merged"
+                  >
+                    <span className="font-mono text-[11px] font-semibold" style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                      /{segment.prefix}
+                    </span>
+                  </div>
+                );
+
+                joinCells.push(
+                  <td key={segmentKey} rowSpan={rowSpan} className="border border-slate-200 dark:border-slate-700 p-0 h-0">
+                    {content}
+                  </td>
+                );
+                renderedJoinCells.add(segment.id);
+              });
             } else {
               segments.forEach((segment, index) => {
                 const isLeafSegment = index === 0;
@@ -201,8 +266,8 @@ export default function SubnetTable({
                 const colSpan = isLeafSegment ? Math.max(joinColumnCount - (path.length - 1), 1) : 1;
                 const alternateBg =
                   index % 2 === 0
-                    ? 'bg-slate-100/80 dark:bg-slate-800/70'
-                    : 'bg-slate-200/60 dark:bg-slate-800/60';
+                    ? 'bg-sky-100 dark:bg-sky-900/30'
+                    : 'bg-sky-50 dark:bg-sky-900/20';
 
                 if (isLeafSegment) {
                   const splitContent = canSplit ? (
@@ -235,7 +300,7 @@ export default function SubnetTable({
                       key={segmentKey}
                       rowSpan={1}
                       colSpan={colSpan}
-                      className="border border-slate-200 dark:border-slate-700 p-0 align-middle"
+                      className={`border border-slate-200 dark:border-slate-700 p-0 h-0 ${canSplit ? 'bg-emerald-500' : 'bg-rose-100'}`}
                     >
                       {splitContent}
                     </td>
@@ -279,7 +344,7 @@ export default function SubnetTable({
                   </button>
                 ) : (
                   <div
-                    className={`flex h-full w-full items-center justify-center px-1 py-2 text-slate-500 dark:text-slate-300 ${alternateBg}`}
+                    className={`flex h-full w-full items-center justify-center px-1 py-2 text-slate-600 dark:text-slate-300 ${alternateBg}`}
                     title="Join unavailable until child subnets are merged"
                   >
                     <span
@@ -295,7 +360,7 @@ export default function SubnetTable({
                   <td
                     key={segmentKey}
                     rowSpan={rowSpan}
-                    className="border border-slate-200 dark:border-slate-700 p-0 align-middle"
+                    className="border border-slate-200 dark:border-slate-700 p-0 h-0"
                   >
                     {content}
                   </td>
@@ -307,6 +372,7 @@ export default function SubnetTable({
             return (
               <tr
                 key={row.id}
+                id={`subnet-row-${row.id}`}
                 className={`transition ${rowBackground} ${
                   isColorModeActive ? 'cursor-pointer select-none' : ''
                 }`}
@@ -351,7 +417,7 @@ export default function SubnetTable({
                   </button>
                 </td>
                 <td
-                  className={`border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top ${treeIndent}`}
+                  className={`border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs ${treeIndent}`}
                   style={highlightStyle}
                 >
                   <div className="flex items-center gap-2">
@@ -366,31 +432,31 @@ export default function SubnetTable({
                   </div>
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs text-slate-600 dark:text-slate-300"
                   style={highlightStyle}
                 >
                   {inetNtoa(subnetNetmask(row.prefix))}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs text-slate-600 dark:text-slate-300"
                   style={highlightStyle}
                 >
                   {formatRange(row.network, lastAddress)}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs text-slate-600 dark:text-slate-300"
                   style={highlightStyle}
                 >
                   {usable ? formatRange(usable.first, usable.last) : 'Reserved'}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs text-slate-600 dark:text-slate-300"
                   style={highlightStyle}
                 >
                   {hostCount.toLocaleString()}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top text-xs text-slate-500 dark:text-slate-400"
+                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top text-xs text-slate-600 dark:text-slate-300"
                   data-skip-color
                   onClick={(event) => event.stopPropagation()}
                   style={highlightStyle}
@@ -413,7 +479,7 @@ export default function SubnetTable({
                             onCloseCommentEditor();
                           }
                         }}
-                        className="w-full rounded-lg border border-slate-300 px-2 py-1 text-sm text-slate-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-500"
+                        className="w-full rounded-lg border border-slate-200 px-2 py-1 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-500"
                         rows={3}
                         autoFocus
                         placeholder="Document this subnet..."

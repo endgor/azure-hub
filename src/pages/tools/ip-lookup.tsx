@@ -1,41 +1,14 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import type { GetStaticProps } from 'next';
-import Link from 'next/link';
-import fs from 'fs';
-import path from 'path';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
-import Results from '@/components/Results';
-import IpDiffPanel from '@/components/IpDiffPanel';
+import RecentChangesCard from '@/components/RecentChangesCard';
+import IpLookupResults from '@/components/IpLookupResults';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
-interface IpLookupStaticProps {
-  serviceTagCount: number;
-  lastUpdated: string | null;
-}
-
-export const getStaticProps: GetStaticProps<IpLookupStaticProps> = async () => {
-  let serviceTagCount = 0;
-  let lastUpdated: string | null = null;
-  try {
-    const indexPath = path.join(process.cwd(), 'public', 'data', 'service-tags-index.json');
-    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-    const baseTags = new Set(index.filter((t: { id: string }) => !t.id.includes('.')).map((t: { id: string }) => t.id));
-    serviceTagCount = baseTags.size;
-  } catch { /* fallback */ }
-  try {
-    const metadataPath = path.join(process.cwd(), 'public', 'data', 'file-metadata.json');
-    const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
-    if (Array.isArray(metadata) && metadata.length > 0) {
-      lastUpdated = metadata[0].lastRetrieved ?? null;
-    }
-  } catch { /* fallback */ }
-  return { props: { serviceTagCount, lastUpdated } };
-};
 
 /**
  * Fetches IP lookup data from the server-side API.
@@ -102,7 +75,7 @@ interface ApiResponse {
 
 const DEFAULT_PAGE_SIZE = 50;
 
-export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupStaticProps) {
+export default function IpLookupPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -238,7 +211,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">
             Networking
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure IP Lookup</h1>
@@ -247,101 +220,81 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
           </p>
         </div>
 
-        {(serviceTagCount > 0 || lastUpdated) && (
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {serviceTagCount > 0 && <>Covers {serviceTagCount} Azure services across 3 clouds</>}
-            {serviceTagCount > 0 && lastUpdated && <> · </>}
-            {lastUpdated && <>Last updated {lastUpdated}</>}
-            {' · '}<Link href="/tools/service-tags/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Browse all service tags</Link>
-          </p>
-        )}
 
         <LookupForm
           initialValue={initialQuery}
           initialRegion={initialRegion}
           initialService={initialService}
+          variant="full-width"
         />
 
-        <div className="space-y-6">
-          {isLoading && (
-            <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <LoadingSpinner size="lg" label="Looking up Azure IP information..." />
-            </div>
-          )}
+        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+          <div className="space-y-6">
+            {isLoading && (
+              <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
+                <LoadingSpinner size="lg" label="Looking up Azure IP information..." />
+              </div>
+            )}
 
-          {isError && errorMessage && (
-            <ErrorBox>
-              {errorMessage}
-            </ErrorBox>
-          )}
+            {isError && errorMessage && (
+              <ErrorBox>
+                {errorMessage}
+              </ErrorBox>
+            )}
 
-          {isNotFound && notFoundMessage && (
-            <ErrorBox variant="warning">
-              {notFoundMessage}
-            </ErrorBox>
-          )}
+            {isNotFound && notFoundMessage && (
+              <ErrorBox variant="warning">
+                {notFoundMessage}
+              </ErrorBox>
+            )}
 
-          {!isLoading && !isError && results.length > 0 && (
-            <Results
-              results={results}
-              query={pageTitle}
-              total={totalResults}
-              pagination={totalPages > 1 ? {
-                currentPage,
-                totalPages,
-                totalItems: totalResults,
-                pageSize: effectivePageSize,
-                isAll,
-                onPageSizeChange: handlePageSizeChange,
-                basePath: '/tools/ip-lookup',
-                query: {
-                  ipOrDomain: initialQuery,
-                  region: initialRegion,
-                  service: initialService
-                }
-              } : undefined}
-            />
-          )}
+            {!isLoading && !isError && results.length > 0 && (
+              <IpLookupResults
+                results={results}
+                query={pageTitle}
+              />
+            )}
 
-          {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
-              No Azure IP ranges found matching your search criteria.
-            </div>
-          )}
+            {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
+                No Azure IP ranges found matching your search criteria.
+              </div>
+            )}
+
+            {!initialQuery && !initialRegion && !initialService && (
+              <section className="space-y-4">
+                <div>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                    Try IP addresses, CIDR notation, hostnames, service tags, or Azure regions.
+                  </p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {SAMPLE_QUERIES.map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex flex-col space-y-2 rounded-xl bg-white p-4 transition dark:bg-slate-900"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        {item.label}
+                      </p>
+                      <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        {item.example}
+                      </p>
+                      <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+
+          <aside>
+            <RecentChangesCard />
+          </aside>
         </div>
-
-        {!initialQuery && !initialRegion && !initialService && (
-          <>
-            <IpDiffPanel className="mb-6" />
-
-            <section className="space-y-4">
-              <div>
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  Use IP addresses, CIDR notations, hostnames (with DNS lookup), service tags, or Azure regions to explore the dataset.
-                </p>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                {SAMPLE_QUERIES.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex flex-col space-y-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-sky-800"
-                  >
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                      {item.label}
-                    </p>
-                    <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {item.example}
-                    </p>
-                    <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </>
-        )}
       </section>
     </Layout>
   );

@@ -7,12 +7,14 @@ interface LookupFormProps {
   initialValue?: string;
   initialRegion?: string;
   initialService?: string;
+  variant?: 'default' | 'full-width';
 }
 
 const LookupForm = memo(function LookupForm({
   initialValue = '',
   initialRegion = '',
-  initialService = ''
+  initialService = '',
+  variant = 'default'
 }: LookupFormProps) {
   const [searchQuery, setSearchQuery] = useState(initialValue || initialService || initialRegion);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +54,28 @@ const LookupForm = memo(function LookupForm({
     e.preventDefault();
     await performSearch();
   };
+
+  if (variant === 'full-width') {
+    return (
+      <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Azure IP Lookup">
+        <label className="sr-only" htmlFor="search-query">
+          Search Azure IP addresses, services, or regions
+        </label>
+        <SearchInput
+          type="search"
+          id="search-query"
+          name="search-query"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search IP, CIDR (e.g. 13.66.0.0/16), Service (e.g. ActionGroup), or Region..."
+          maxWidth="full"
+          isLoading={isLoading}
+          aria-label="Search query"
+          onIconClick={performSearch}
+        />
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Azure IP Lookup">

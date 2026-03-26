@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export type RbacMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCompare' | 'roleCreator';
+export type RbacMode = 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
 
 export interface UseRbacModeProps {
   initialMode?: RbacMode;
@@ -11,9 +11,8 @@ export interface UseRbacModeReturn {
   mode: RbacMode;
   setMode: (mode: RbacMode) => void;
   isSimpleMode: boolean;
-  isAdvancedMode: boolean;
+
   isRoleExplorerMode: boolean;
-  isRoleCompareMode: boolean;
   isRoleCreatorMode: boolean;
 }
 
@@ -39,9 +38,8 @@ export function useRbacMode({
     mode,
     setMode,
     isSimpleMode: mode === 'simple',
-    isAdvancedMode: mode === 'advanced',
+
     isRoleExplorerMode: mode === 'roleExplorer',
-    isRoleCompareMode: mode === 'roleCompare',
     isRoleCreatorMode: mode === 'roleCreator',
   };
 }

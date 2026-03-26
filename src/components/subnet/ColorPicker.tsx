@@ -32,29 +32,21 @@ export default function ColorPicker({
       <button
         type="button"
         onClick={onToggleColorMode}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 dark:bg-slate-800 dark:text-slate-400 ${
+        className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
           isColorModeActive
-            ? 'border-sky-300 text-sky-600 dark:border-sky-700 dark:text-sky-400'
-            : 'border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600'
+            ? 'bg-slate-100 text-sky-600 dark:bg-slate-800 dark:text-sky-400'
+            : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300'
         }`}
         aria-pressed={isColorModeActive}
-        title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
+        aria-label={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
       >
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 3.5c-4.694 0-8.5 3.206-8.5 7.25 0 1.502.414 2.878 1.318 3.999a3.5 3.5 0 002.682 1.251h1.75a1.5 1.5 0 011.5 1.5v.25a2.5 2.5 0 002.5 2.5h.25a3.75 3.75 0 003.75-3.75c0-1.1-.9-2-2-2h-.75a1.5 1.5 0 01-1.5-1.5c0-.828.672-1.5 1.5-1.5H15a3.5 3.5 0 000-7c-.552 0-1 .448-1 1s-.448 1-1 1-1-.448-1-1-.448-1-1-1z"
-          />
-          <circle cx="8.6" cy="10.3" r="0.85" fill="currentColor" />
-          <circle cx="10.6" cy="7.4" r="0.85" fill="currentColor" />
-          <circle cx="13.4" cy="8.2" r="0.85" fill="currentColor" />
-          <circle cx="9.4" cy="13.1" r="0.85" fill="currentColor" />
+        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
         </svg>
       </button>
 
       {isColorModeActive && (
-        <div className="absolute left-1/2 top-[calc(100%+0.5rem)] z-30 flex -translate-x-1/2 flex-col items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+        <div className="absolute left-1/2 top-[calc(100%+0.5rem)] z-30 flex -translate-x-1/2 items-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 shadow-lg dark:border-slate-700 dark:bg-slate-800">
           <div className="flex items-center gap-1.5">
             {COLOR_SWATCHES.map((option) => {
               const isSelected = selectedColorId === option.id;
@@ -83,7 +75,7 @@ export default function ColorPicker({
               aria-label="Clear highlight"
             />
           </div>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
+          <span className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
             Click a row to paint
           </span>
         </div>

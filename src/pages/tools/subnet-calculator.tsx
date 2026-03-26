@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
@@ -28,6 +28,8 @@ import {
 import {
   SubnetTable,
   SubnetToolbar,
+  AddressMap,
+  RecommendedSizes,
   COLOR_SWATCHES,
   CLEAR_COLOR_ID
 } from '@/components/subnet';
@@ -324,6 +326,15 @@ export default function SubnetCalculatorPage(): ReactElement {
     setIsColorModeActive((current) => !current);
   };
 
+  const handleSegmentClick = useCallback((id: string) => {
+    const el = document.getElementById(`subnet-row-${id}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      el.classList.add('ring-2', 'ring-blue-400', 'ring-inset');
+      setTimeout(() => el.classList.remove('ring-2', 'ring-blue-400', 'ring-inset'), 1500);
+    }
+  }, []);
+
   return (
     <Layout
       title="Azure Subnet Calculator - Plan & Split CIDR Networks"
@@ -352,7 +363,7 @@ export default function SubnetCalculatorPage(): ReactElement {
     >
       <section className="space-y-6">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">
             Networking
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
@@ -365,7 +376,7 @@ export default function SubnetCalculatorPage(): ReactElement {
         </div>
 
         {/* Network Input Form */}
-        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
           <form
             onSubmit={handleApplyNetwork}
             className="grid w-full grid-cols-1 gap-4 sm:grid-cols-[240px_160px_minmax(0,1fr)] sm:items-end"
@@ -376,10 +387,10 @@ export default function SubnetCalculatorPage(): ReactElement {
                 <input
                   value={formFields.network}
                   onChange={handleFieldChange('network')}
-                  className={`h-10 w-full rounded-lg border bg-white text-sm text-slate-900 shadow-sm transition focus:outline-none focus:ring-2 placeholder:text-slate-400 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 ${
+                  className={`h-10 w-full rounded-lg border bg-white text-sm text-slate-900 transition focus:outline-none focus:ring-2 placeholder:text-slate-400 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-500 ${
                     formError?.field === 'network'
                       ? 'border-rose-400 pl-4 pr-9 focus:border-rose-500 focus:ring-rose-500/20 dark:border-rose-400'
-                      : 'border-slate-300 px-4 focus:border-sky-500 focus:ring-sky-500/20 dark:border-slate-600 dark:focus:border-sky-400'
+                      : 'border-slate-200 px-4 focus:border-blue-500 focus:ring-blue-500/20 dark:border-slate-700 dark:focus:border-blue-400'
                   } ${shaking && formError?.field === 'network' ? 'animate-shake' : ''}`}
                   placeholder="10.0.0.0"
                   autoComplete="off"
@@ -401,10 +412,10 @@ export default function SubnetCalculatorPage(): ReactElement {
 
             <label className="flex flex-col gap-2 text-sm text-slate-700 dark:text-slate-200 sm:w-auto">
               <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Network Size</span>
-              <div className={`flex h-10 items-center gap-1.5 rounded-lg border bg-white px-3 shadow-sm transition dark:bg-slate-800 ${
+              <div className={`flex h-10 items-center gap-1.5 rounded-lg border bg-white px-3 transition dark:bg-slate-800 ${
                 formError?.field === 'prefix'
                   ? 'border-rose-400 focus-within:border-rose-500 focus-within:ring-2 focus-within:ring-rose-500/20 dark:border-rose-400'
-                  : 'border-slate-300 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20 dark:border-slate-600'
+                  : 'border-slate-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 dark:border-slate-700'
               } ${shaking && formError?.field === 'prefix' ? 'animate-shake' : ''}`}>
                 <span className="text-xs font-medium text-slate-400 dark:text-slate-500">/</span>
                 <input
@@ -441,7 +452,7 @@ export default function SubnetCalculatorPage(): ReactElement {
         </div>
 
         {/* Subnet Plan Table */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-xl bg-white p-5 dark:bg-slate-900">
           <header className="flex flex-wrap items-center justify-between gap-3">
             <div className="space-y-2">
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
@@ -486,6 +497,14 @@ export default function SubnetCalculatorPage(): ReactElement {
             </div>
           </header>
 
+          <AddressMap
+            basePrefix={state.basePrefix}
+            leaves={leaves}
+            rowColors={rowColors}
+            rowComments={rowComments}
+            onSegmentClick={handleSegmentClick}
+          />
+
           <SubnetTable
             renderRows={renderRows}
             tree={state.tree}
@@ -509,6 +528,8 @@ export default function SubnetCalculatorPage(): ReactElement {
             onResetTree={handleResetTree}
           />
         </div>
+
+        <RecommendedSizes />
       </section>
     </Layout>
   );

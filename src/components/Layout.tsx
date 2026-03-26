@@ -7,6 +7,8 @@ import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
 import { useSwipeDrawer } from '@/hooks/useSwipeDrawer';
 import { SEOHead } from './layout/SEOHead';
 import { Sidebar, type NavSection } from './layout/Sidebar';
+import { ICONS } from './layout/icons';
+import { ThemeToggle } from './layout/ThemeToggle';
 
 interface BreadcrumbItem {
   name: string;
@@ -322,18 +324,37 @@ export default function Layout({
         jsonLd={jsonLd}
       />
 
-      <div className="min-h-screen bg-slate-100 text-slate-900 transition-colors dark:bg-[#151515] dark:text-slate-100">
+      <div className="min-h-screen bg-white text-slate-900 transition-colors dark:bg-[#151515] dark:text-slate-100">
         <div className="flex min-h-screen md:h-screen md:overflow-hidden">
           <Sidebar
             isMobileMenuOpen={isMobileMenuOpen}
             onMobileMenuClose={() => setIsMobileMenuOpen(false)}
             matchRoute={matchRoute}
             navSections={NAV_SECTIONS}
-            isDarkMode={isDarkMode}
-            onThemeToggle={() => setIsDarkMode((prev) => !prev)}
           />
 
           <div className="flex flex-1 flex-col">
+            {/* Desktop top-right utility bar */}
+            <div className="hidden md:flex items-center justify-end gap-2 bg-[#F8F9FB] px-6 py-3 dark:bg-[#121212]">
+              <Link
+                href="https://github.com/endgor/azure-hub"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open the Azure Hub GitHub repository"
+                className="group inline-flex"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+                  {ICONS.github(false)}
+                </span>
+              </Link>
+              <Link href="/about" aria-label="About Azure Hub" className="group inline-flex">
+                <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+                  {ICONS.help(false)}
+                </span>
+              </Link>
+              <ThemeToggle isDarkMode={isDarkMode} onToggle={() => setIsDarkMode((prev) => !prev)} />
+            </div>
+
             {/* Mobile header with hamburger button */}
             <div className="flex items-center gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-[#363638] dark:bg-[#1B1B1C] md:hidden">
               <button
@@ -366,9 +387,28 @@ export default function Layout({
                 </span>
                 <span className="text-base font-semibold tracking-tight">Azure Hub</span>
               </Link>
+              <div className="ml-auto flex items-center gap-2">
+                <Link
+                  href="https://github.com/endgor/azure-hub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub repository"
+                  className="group inline-flex"
+                >
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+                    {ICONS.github(false)}
+                  </span>
+                </Link>
+                <Link href="/about" aria-label="About Azure Hub" className="group inline-flex">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
+                    {ICONS.help(false)}
+                  </span>
+                </Link>
+                <ThemeToggle isDarkMode={isDarkMode} onToggle={() => setIsDarkMode((prev) => !prev)} />
+              </div>
             </div>
 
-            <main className="flex-1 overflow-auto px-4 py-6 md:px-6 md:py-10">
+            <main className="flex-1 overflow-auto bg-[#F8F9FB] px-4 py-6 md:px-6 md:py-10 dark:bg-[#121212]">
               <div className="mx-auto w-full max-w-6xl space-y-6">{children}</div>
             </main>
           </div>
