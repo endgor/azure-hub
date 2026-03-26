@@ -1,9 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import type { GetStaticProps } from 'next';
-import Link from 'next/link';
-import fs from 'fs';
-import path from 'path';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import RecentChangesCard from '@/components/RecentChangesCard';
@@ -13,29 +9,6 @@ import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
-interface IpLookupStaticProps {
-  serviceTagCount: number;
-  lastUpdated: string | null;
-}
-
-export const getStaticProps: GetStaticProps<IpLookupStaticProps> = async () => {
-  let serviceTagCount = 0;
-  let lastUpdated: string | null = null;
-  try {
-    const indexPath = path.join(process.cwd(), 'public', 'data', 'service-tags-index.json');
-    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-    const baseTags = new Set(index.filter((t: { id: string }) => !t.id.includes('.')).map((t: { id: string }) => t.id));
-    serviceTagCount = baseTags.size;
-  } catch { /* fallback */ }
-  try {
-    const metadataPath = path.join(process.cwd(), 'public', 'data', 'file-metadata.json');
-    const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
-    if (Array.isArray(metadata) && metadata.length > 0) {
-      lastUpdated = metadata[0].lastRetrieved ?? null;
-    }
-  } catch { /* fallback */ }
-  return { props: { serviceTagCount, lastUpdated } };
-};
 
 /**
  * Fetches IP lookup data from the server-side API.
@@ -102,7 +75,7 @@ interface ApiResponse {
 
 const DEFAULT_PAGE_SIZE = 50;
 
-export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupStaticProps) {
+export default function IpLookupPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -247,14 +220,6 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
           </p>
         </div>
 
-        {(serviceTagCount > 0 || lastUpdated) && (
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {serviceTagCount > 0 && <>Covers {serviceTagCount} Azure services across 3 clouds</>}
-            {serviceTagCount > 0 && lastUpdated && <> · </>}
-            {lastUpdated && <>Last updated {lastUpdated}</>}
-            {' · '}<Link href="/tools/service-tags/" className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-dotted">Browse all service tags</Link>
-          </p>
-        )}
 
         <LookupForm
           initialValue={initialQuery}
