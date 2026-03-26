@@ -42,6 +42,16 @@ try {
     process.exit(1);
   }
   
+  // Check if we have required Private DNS zone data files
+  const requiredDnsFiles = ['private-dns-zones.json'];
+  const missingDnsFiles = requiredDnsFiles.filter(file => !jsonFiles.includes(file));
+
+  if (missingDnsFiles.length > 0) {
+    console.error(`ERROR: Missing required Private DNS zone data files: ${missingDnsFiles.join(', ')}`);
+    console.error('Please run "npm run update-private-dns-zones" to fetch Private Endpoint DNS zone data.');
+    process.exit(1);
+  }
+
   // No file copying needed since data files are already in public/data directory
   console.log(`Found ${jsonFiles.length} existing JSON files in public/data directory`);
   

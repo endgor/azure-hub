@@ -29,6 +29,9 @@ export default function GuideContent({ html }: GuideContentProps) {
       const codeElement = pre.querySelector('code');
       const codeText = codeElement?.textContent || '';
 
+      // Only show copy button for code blocks with a language class (actual code, not text examples)
+      const hasLanguage = codeElement?.className?.includes('language-');
+
       // Create wrapper
       const wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper relative my-4';
@@ -87,7 +90,9 @@ export default function GuideContent({ html }: GuideContentProps) {
       pre.parentNode?.replaceChild(wrapper, pre);
       wrapper.insertBefore(container, wrapper.firstChild);
       container.appendChild(pre);
-      container.appendChild(copyButton);
+      if (hasLanguage) {
+        container.appendChild(copyButton);
+      }
 
       // Reset pre styles
       pre.style.margin = '0';

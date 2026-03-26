@@ -1,0 +1,2859 @@
+{
+  "lastUpdated": "2026-03-26",
+  "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
+  "entries": [
+    {
+      "resourceType": "Azure Machine Learning workspace",
+      "armType": "Microsoft.MachineLearningServices/workspaces",
+      "subresources": [
+        "amlworkspace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.api.azureml.ms",
+        "privatelink.notebooks.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "api.azureml.ms",
+        "notebooks.azure.net",
+        "instances.azureml.ms",
+        "aznbcontent.net",
+        "inference.ml.azure.com"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Machine Learning registry",
+      "armType": "Microsoft.MachineLearningServices/registries",
+      "subresources": [
+        "amlregistry"
+      ],
+      "dnsZoneNames": [
+        "privatelink.api.azureml.ms"
+      ],
+      "publicDnsForwarders": [
+        "api.azureml.ms"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Foundry Tools",
+      "armType": "Microsoft.CognitiveServices/accounts",
+      "subresources": [
+        "account"
+      ],
+      "dnsZoneNames": [
+        "privatelink.cognitiveservices.azure.com",
+        "privatelink.openai.azure.com",
+        "privatelink.services.ai.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "cognitiveservices.azure.com",
+        "openai.azure.com",
+        "services.ai.azure.com"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Bot Service",
+      "armType": "Microsoft.BotService/botServices",
+      "subresources": [
+        "Bot"
+      ],
+      "dnsZoneNames": [
+        "privatelink.directline.botframework.com"
+      ],
+      "publicDnsForwarders": [
+        "directline.botframework.com"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Bot Service",
+      "armType": "Microsoft.BotService/botServices",
+      "subresources": [
+        "Token"
+      ],
+      "dnsZoneNames": [
+        "privatelink.token.botframework.com"
+      ],
+      "publicDnsForwarders": [
+        "token.botframework.com"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Synapse Analytics",
+      "armType": "Microsoft.Synapse/workspaces",
+      "subresources": [
+        "Sql"
+      ],
+      "dnsZoneNames": [
+        "privatelink.sql.azuresynapse.net"
+      ],
+      "publicDnsForwarders": [
+        "sql.azuresynapse.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Synapse Analytics",
+      "armType": "Microsoft.Synapse/workspaces",
+      "subresources": [
+        "SqlOnDemand"
+      ],
+      "dnsZoneNames": [
+        "privatelink.sql.azuresynapse.net"
+      ],
+      "publicDnsForwarders": [
+        "sql.azuresynapse.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Synapse Analytics",
+      "armType": "Microsoft.Synapse/workspaces",
+      "subresources": [
+        "Dev"
+      ],
+      "dnsZoneNames": [
+        "privatelink.dev.azuresynapse.net"
+      ],
+      "publicDnsForwarders": [
+        "dev.azuresynapse.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Synapse Studio",
+      "armType": "Microsoft.Synapse/privateLinkHubs",
+      "subresources": [
+        "Web"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azuresynapse.net"
+      ],
+      "publicDnsForwarders": [
+        "azuresynapse.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Event Hubs",
+      "armType": "Microsoft.EventHub/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.windows.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Service Bus",
+      "armType": "Microsoft.ServiceBus/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.windows.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Data Factory",
+      "armType": "Microsoft.DataFactory/factories",
+      "subresources": [
+        "dataFactory"
+      ],
+      "dnsZoneNames": [
+        "privatelink.datafactory.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "datafactory.azure.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Data Factory",
+      "armType": "Microsoft.DataFactory/factories",
+      "subresources": [
+        "portal"
+      ],
+      "dnsZoneNames": [
+        "privatelink.adf.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "adf.azure.com"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure HDInsight",
+      "armType": "Microsoft.HDInsight/clusters",
+      "subresources": [
+        "gateway",
+        "headnode"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurehdinsight.net"
+      ],
+      "publicDnsForwarders": [
+        "azurehdinsight.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Data Explorer",
+      "armType": "Microsoft.Kusto/Clusters",
+      "subresources": [
+        "cluster"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionName}.kusto.windows.net",
+        "privatelink.blob.core.windows.net",
+        "privatelink.queue.core.windows.net",
+        "privatelink.table.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.kusto.windows.net",
+        "blob.core.windows.net",
+        "queue.core.windows.net",
+        "table.core.windows.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Microsoft Power BI",
+      "armType": "Microsoft.PowerBI/privateLinkServicesForPowerBI",
+      "subresources": [
+        "tenant"
+      ],
+      "dnsZoneNames": [
+        "privatelink.analysis.windows.net",
+        "privatelink.pbidedicated.windows.net",
+        "privatelink.prod.powerquery.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "analysis.windows.net",
+        "pbidedicated.windows.net",
+        "prod.powerquery.microsoft.com"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Databricks",
+      "armType": "Microsoft.Databricks/workspaces",
+      "subresources": [
+        "databricks_ui_api",
+        "browser_authentication"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azuredatabricks.net"
+      ],
+      "publicDnsForwarders": [
+        "azuredatabricks.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Microsoft Fabric",
+      "armType": "Microsoft.Fabric/privateLinkServicesForFabric",
+      "subresources": [
+        "workspace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.fabric.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "fabric.microsoft.com"
+      ],
+      "category": "Analytics",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Batch",
+      "armType": "Microsoft.Batch/batchAccounts",
+      "subresources": [
+        "batchAccount"
+      ],
+      "dnsZoneNames": [
+        "privatelink.batch.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.batch.azure.com"
+      ],
+      "category": "Compute",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Batch",
+      "armType": "Microsoft.Batch/batchAccounts",
+      "subresources": [
+        "nodeManagement"
+      ],
+      "dnsZoneNames": [
+        "privatelink.batch.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.service.batch.azure.com"
+      ],
+      "category": "Compute",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/workspaces",
+      "subresources": [
+        "global"
+      ],
+      "dnsZoneNames": [
+        "privatelink-global.wvd.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "wvd.microsoft.com"
+      ],
+      "category": "Compute",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/workspaces",
+      "subresources": [
+        "feed"
+      ],
+      "dnsZoneNames": [
+        "privatelink.wvd.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "wvd.microsoft.com"
+      ],
+      "category": "Compute",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/hostpools",
+      "subresources": [
+        "connection"
+      ],
+      "dnsZoneNames": [
+        "privatelink.wvd.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "wvd.microsoft.com"
+      ],
+      "category": "Compute",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Kubernetes Service - Kubernetes API",
+      "armType": "Microsoft.ContainerService/managedClusters",
+      "subresources": [
+        "management"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionName}.azmk8s.io",
+        "{subzone}.privatelink.{regionName}.azmk8s.io"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.azmk8s.io"
+      ],
+      "category": "Containers",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Container Apps",
+      "armType": "Microsoft.App/ManagedEnvironments",
+      "subresources": [
+        "managedEnvironments"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionName}.azurecontainerapps.io"
+      ],
+      "publicDnsForwarders": [
+        "azurecontainerapps.io"
+      ],
+      "category": "Containers",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Container Registry",
+      "armType": "Microsoft.ContainerRegistry/registries",
+      "subresources": [
+        "registry"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurecr.io",
+        "{regionName}.data.privatelink.azurecr.io"
+      ],
+      "publicDnsForwarders": [
+        "azurecr.io",
+        "{regionName}.data.azurecr.io"
+      ],
+      "category": "Containers",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure SQL Database",
+      "armType": "Microsoft.Sql/servers",
+      "subresources": [
+        "sqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.database.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "database.windows.net"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure SQL Managed Instance",
+      "armType": "Microsoft.Sql/managedInstances",
+      "subresources": [
+        "managedInstance"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{dnsPrefix}.database.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "{dnsPrefix}.database.windows.net"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Sql"
+      ],
+      "dnsZoneNames": [
+        "privatelink.documents.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "documents.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "MongoDB"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mongo.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "mongo.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Cassandra"
+      ],
+      "dnsZoneNames": [
+        "privatelink.cassandra.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "cassandra.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Gremlin"
+      ],
+      "dnsZoneNames": [
+        "privatelink.gremlin.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "gremlin.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Table"
+      ],
+      "dnsZoneNames": [
+        "privatelink.table.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "table.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Analytical"
+      ],
+      "dnsZoneNames": [
+        "privatelink.analytics.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "analytics.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DBforPostgreSQL/serverGroupsv2",
+      "subresources": [
+        "coordinator"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "postgres.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cosmos DB for MongoDB - vCore",
+      "armType": "Microsoft.DocumentDB/mongoClusters",
+      "subresources": [
+        "MongoCluster"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mongocluster.cosmos.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "mongocluster.cosmos.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Database for PostgreSQL - Single server",
+      "armType": "Microsoft.DBforPostgreSQL/servers",
+      "subresources": [
+        "postgresqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.database.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "postgres.database.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Database for PostgreSQL - Flexible server",
+      "armType": "Microsoft.DBforPostgreSQL/flexibleServers",
+      "subresources": [
+        "postgresqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.database.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "postgres.database.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Database for MySQL - Single Server",
+      "armType": "Microsoft.DBforMySQL/servers",
+      "subresources": [
+        "mysqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mysql.database.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "mysql.database.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Database for MySQL - Flexible Server",
+      "armType": "Microsoft.DBforMySQL/flexibleServers",
+      "subresources": [
+        "mysqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mysql.database.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "mysql.database.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Database for MariaDB",
+      "armType": "Microsoft.DBforMariaDB/servers",
+      "subresources": [
+        "mariadbServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mariadb.database.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "mariadb.database.azure.com"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cache for Redis",
+      "armType": "Microsoft.Cache/Redis",
+      "subresources": [
+        "redisCache"
+      ],
+      "dnsZoneNames": [
+        "privatelink.redis.cache.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "redis.cache.windows.net"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Cache for Redis Enterprise",
+      "armType": "Microsoft.Cache/RedisEnterprise",
+      "subresources": [
+        "redisEnterprise"
+      ],
+      "dnsZoneNames": [
+        "privatelink.redisenterprise.cache.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "{cachename}.{region}.redisenterprise.cache.azure.net"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Managed Redis",
+      "armType": "Microsoft.Cache/RedisEnterprise",
+      "subresources": [
+        "redisEnterprise"
+      ],
+      "dnsZoneNames": [
+        "privatelink.redis.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "{region}.redis.azure.net"
+      ],
+      "category": "Databases",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Arc",
+      "armType": "Microsoft.HybridCompute/privateLinkScopes",
+      "subresources": [
+        "hybridcompute"
+      ],
+      "dnsZoneNames": [
+        "privatelink.his.arc.azure.com",
+        "privatelink.guestconfiguration.azure.com",
+        "privatelink.dp.kubernetesconfiguration.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "his.arc.azure.com",
+        "guestconfiguration.azure.com",
+        "dp.kubernetesconfiguration.azure.com"
+      ],
+      "category": "Hybrid + multicloud",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Service Bus",
+      "armType": "Microsoft.ServiceBus/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.windows.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/topics",
+      "subresources": [
+        "topic"
+      ],
+      "dnsZoneNames": [
+        "privatelink.eventgrid.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/domains",
+      "subresources": [
+        "domain"
+      ],
+      "dnsZoneNames": [
+        "privatelink.eventgrid.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/namespaces",
+      "subresources": [
+        "topic"
+      ],
+      "dnsZoneNames": [
+        "privatelink.eventgrid.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/namespaces",
+      "subresources": [
+        "topicSpace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.ts.eventgrid.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/partnerNamespaces",
+      "subresources": [
+        "partnernamespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.eventgrid.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure API Management",
+      "armType": "Microsoft.ApiManagement/service",
+      "subresources": [
+        "Gateway"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-api.net"
+      ],
+      "publicDnsForwarders": [
+        "azure-api.net"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Health Data Services",
+      "armType": "Microsoft.HealthcareApis/workspaces",
+      "subresources": [
+        "healthcareworkspace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurehealthcareapis.com",
+        "privatelink.dicom.azurehealthcareapis.com"
+      ],
+      "publicDnsForwarders": [
+        "workspace.azurehealthcareapis.com",
+        "fhir.azurehealthcareapis.com",
+        "dicom.azurehealthcareapis.com"
+      ],
+      "category": "Integration",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure IoT Hub",
+      "armType": "Microsoft.Devices/IotHubs",
+      "subresources": [
+        "iotHub"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-devices.net",
+        "privatelink.servicebus.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "azure-devices.net",
+        "servicebus.windows.net"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure IoT Hub Device Provisioning Service",
+      "armType": "Microsoft.Devices/ProvisioningServices",
+      "subresources": [
+        "iotDps"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-devices-provisioning.net"
+      ],
+      "publicDnsForwarders": [
+        "azure-devices-provisioning.net"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Device Update for IoT Hubs",
+      "armType": "Microsoft.DeviceUpdate/accounts",
+      "subresources": [
+        "DeviceUpdate"
+      ],
+      "dnsZoneNames": [
+        "privatelink.api.adu.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "api.adu.microsoft.com"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure IoT Central",
+      "armType": "Microsoft.IoTCentral/IoTApps",
+      "subresources": [
+        "iotApp"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azureiotcentral.com",
+        "privatelink.azure-devices.net",
+        "privatelink.servicebus.windows.net",
+        "privatelink.azure-devices-provisioning.net"
+      ],
+      "publicDnsForwarders": [
+        "azureiotcentral.com",
+        "privatelink.azure-devices.net",
+        "privatelink.servicebus.windows.net",
+        "privatelink.azure-devices-provisioning.net"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Digital Twins",
+      "armType": "Microsoft.DigitalTwins/digitalTwinsInstances",
+      "subresources": [
+        "API"
+      ],
+      "dnsZoneNames": [
+        "privatelink.digitaltwins.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "digitaltwins.azure.net"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Media Services",
+      "armType": "Microsoft.Media/mediaservices",
+      "subresources": [
+        "keydelivery",
+        "liveevent",
+        "streamingendpoint"
+      ],
+      "dnsZoneNames": [
+        "privatelink.media.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "media.azure.net"
+      ],
+      "category": "Media",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Automation",
+      "armType": "Microsoft.Automation/automationAccounts",
+      "subresources": [
+        "Webhook",
+        "DSCAndHybridWorker"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-automation.net"
+      ],
+      "publicDnsForwarders": [
+        "{regionCode}.azure-automation.net"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Backup",
+      "armType": "Microsoft.RecoveryServices/vaults",
+      "subresources": [
+        "AzureBackup"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionCode}.backup.windowsazure.com",
+        "privatelink.blob.core.windows.net",
+        "privatelink.queue.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "{regionCode}.backup.windowsazure.com",
+        "blob.core.windows.net",
+        "queue.core.windows.net"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Backup",
+      "armType": "Microsoft.RecoveryServices/vaults",
+      "subresources": [
+        "AzureBackup_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionCode}.backup.windowsazure.com",
+        "privatelink.blob.core.windows.net",
+        "privatelink.queue.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "{regionCode}.backup.windowsazure.com",
+        "blob.core.windows.net",
+        "queue.core.windows.net"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Site Recovery",
+      "armType": "Microsoft.RecoveryServices/vaults",
+      "subresources": [
+        "AzureSiteRecovery"
+      ],
+      "dnsZoneNames": [
+        "privatelink.siterecovery.windowsazure.com"
+      ],
+      "publicDnsForwarders": [
+        "{regionCode}.siterecovery.windowsazure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Monitor",
+      "armType": "Microsoft.Insights/privateLinkScopes",
+      "subresources": [
+        "azuremonitor"
+      ],
+      "dnsZoneNames": [
+        "privatelink.monitor.azure.com",
+        "privatelink.oms.opinsights.azure.com",
+        "privatelink.ods.opinsights.azure.com",
+        "privatelink.agentsvc.azure-automation.net",
+        "privatelink.blob.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "monitor.azure.com",
+        "oms.opinsights.azure.com",
+        "ods.opinsights.azure.com",
+        "agentsvc.azure-automation.net",
+        "blob.core.windows.net",
+        "services.visualstudio.com",
+        "applicationinsights.azure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Microsoft Purview",
+      "armType": "Microsoft.Purview/accounts",
+      "subresources": [
+        "account"
+      ],
+      "dnsZoneNames": [
+        "privatelink.purview.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "purview.azure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Microsoft Purview",
+      "armType": "Microsoft.Purview/accounts",
+      "subresources": [
+        "portal"
+      ],
+      "dnsZoneNames": [
+        "privatelink.purviewstudio.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "purviewstudio.azure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Microsoft Purview",
+      "armType": "Microsoft.Purview/accounts",
+      "subresources": [
+        "platform"
+      ],
+      "dnsZoneNames": [
+        "privatelink.purview-service.microsoft.com"
+      ],
+      "publicDnsForwarders": [
+        "purview-service.microsoft.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Migrate",
+      "armType": "Microsoft.Migrate/migrateProjects",
+      "subresources": [
+        "Default"
+      ],
+      "dnsZoneNames": [
+        "privatelink.prod.migration.windowsazure.com"
+      ],
+      "publicDnsForwarders": [
+        "prod.migration.windowsazure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Migrate",
+      "armType": "Microsoft.Migrate/assessmentProjects",
+      "subresources": [
+        "Default"
+      ],
+      "dnsZoneNames": [
+        "privatelink.prod.migration.windowsazure.com"
+      ],
+      "publicDnsForwarders": [
+        "prod.migration.windowsazure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Resource Manager",
+      "armType": "Microsoft.Authorization/resourceManagementPrivateLinks",
+      "subresources": [
+        "ResourceManagement"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "azure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Managed Grafana",
+      "armType": "Microsoft.Dashboard/grafana",
+      "subresources": [
+        "grafana"
+      ],
+      "dnsZoneNames": [
+        "privatelink.grafana.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "grafana.azure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Managed Prometheus",
+      "armType": "Microsoft.Monitor/accounts",
+      "subresources": [
+        "prometheusMetrics"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{region}.prometheus.monitor.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "{region}.prometheus.monitor.azure.com"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Key Vault",
+      "armType": "Microsoft.KeyVault/vaults",
+      "subresources": [
+        "vault"
+      ],
+      "dnsZoneNames": [
+        "privatelink.vaultcore.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "vault.azure.net",
+        "vaultcore.azure.net"
+      ],
+      "category": "Security",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure App Configuration",
+      "armType": "Microsoft.AppConfiguration/configurationStores",
+      "subresources": [
+        "configurationStores"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azconfig.io"
+      ],
+      "publicDnsForwarders": [
+        "azconfig.io"
+      ],
+      "category": "Security",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Attestation",
+      "armType": "Microsoft.Attestation/attestationProviders",
+      "subresources": [
+        "standard"
+      ],
+      "dnsZoneNames": [
+        "privatelink.attest.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "attest.azure.net"
+      ],
+      "category": "Security",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "blob",
+        "blob_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.blob.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "blob.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "table",
+        "table_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.table.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "table.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "queue",
+        "queue_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.queue.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "queue.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "file"
+      ],
+      "dnsZoneNames": [
+        "privatelink.file.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "file.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "web",
+        "web_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.web.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "web.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Data Lake File System Gen2",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "dfs",
+        "dfs_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.dfs.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "dfs.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure File Sync",
+      "armType": "Microsoft.StorageSync/storageSyncServices",
+      "subresources": [
+        "afs"
+      ],
+      "dnsZoneNames": [
+        "privatelink.afs.azure.net"
+      ],
+      "publicDnsForwarders": [
+        "afs.azure.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Managed Disks",
+      "armType": "Microsoft.Compute/diskAccesses",
+      "subresources": [
+        "disks"
+      ],
+      "dnsZoneNames": [
+        "privatelink.blob.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "blob.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Elastic SAN",
+      "armType": "Microsoft.ElasticSan/elasticSans",
+      "subresources": [
+        "volumegroup"
+      ],
+      "dnsZoneNames": [
+        "privatelink.blob.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "blob.storage.azure.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Files",
+      "armType": "Microsoft.FileShares/fileShares",
+      "subresources": [
+        "FileShare"
+      ],
+      "dnsZoneNames": [
+        "privatelink.file.core.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "file.core.windows.net"
+      ],
+      "category": "Storage",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Search",
+      "armType": "Microsoft.Search/searchServices",
+      "subresources": [
+        "searchService"
+      ],
+      "dnsZoneNames": [
+        "privatelink.search.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "search.windows.net"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Relay",
+      "armType": "Microsoft.Relay/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.windows.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.windows.net"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Web Apps / Azure Function Apps",
+      "armType": "Microsoft.Web/sites",
+      "subresources": [
+        "sites"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurewebsites.net",
+        "scm.privatelink.azurewebsites.net"
+      ],
+      "publicDnsForwarders": [
+        "azurewebsites.net",
+        "scm.azurewebsites.net"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "SignalR",
+      "armType": "Microsoft.SignalRService/SignalR",
+      "subresources": [
+        "signalr"
+      ],
+      "dnsZoneNames": [
+        "privatelink.service.signalr.net"
+      ],
+      "publicDnsForwarders": [
+        "service.signalr.net"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Static Web Apps",
+      "armType": "Microsoft.Web/staticSites",
+      "subresources": [
+        "staticSites"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurestaticapps.net",
+        "privatelink.{partitionId}.azurestaticapps.net"
+      ],
+      "publicDnsForwarders": [
+        "azurestaticapps.net",
+        "{partitionId}.azurestaticapps.net"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Web PubSub service",
+      "armType": "Microsoft.SignalRService/WebPubSub",
+      "subresources": [
+        "webpubsub"
+      ],
+      "dnsZoneNames": [
+        "privatelink.webpubsub.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "webpubsub.azure.com"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Foundry Tools",
+      "armType": "Microsoft.CognitiveServices/accounts",
+      "subresources": [
+        "account"
+      ],
+      "dnsZoneNames": [
+        "privatelink.cognitiveservices.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "cognitiveservices.azure.us"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Machine Learning",
+      "armType": "Microsoft.MachineLearningServices/workspaces",
+      "subresources": [
+        "amlworkspace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.api.ml.azure.us",
+        "privatelink.notebooks.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "api.ml.azure.us",
+        "notebooks.usgovcloudapi.net",
+        "instances.azureml.us",
+        "aznbcontent.net",
+        "inference.ml.azure.us"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Event Hubs",
+      "armType": "Microsoft.EventHub/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.usgovcloudapi.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Synapse Analytics",
+      "armType": "Microsoft.Synapse/workspaces",
+      "subresources": [
+        "Sql"
+      ],
+      "dnsZoneNames": [
+        "privatelink.sql.azuresynapse.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "sql.azuresynapse.usgovcloudapi.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Synapse Analytics",
+      "armType": "Microsoft.Synapse/workspaces",
+      "subresources": [
+        "SqlOnDemand"
+      ],
+      "dnsZoneNames": [
+        "privatelink.sql.azuresynapse.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "{workspaceName}-ondemand.sql.azuresynapse.usgovcloudapi.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Synapse Analytics",
+      "armType": "Microsoft.Synapse/workspaces",
+      "subresources": [
+        "Dev"
+      ],
+      "dnsZoneNames": [
+        "privatelink.dev.azuresynapse.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "dev.azuresynapse.usgovcloudapi.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Synapse Studio",
+      "armType": "Microsoft.Synapse/privateLinkHubs",
+      "subresources": [
+        "Web"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azuresynapse.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "azuresynapse.usgovcloudapi.net"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Data Factory",
+      "armType": "Microsoft.DataFactory/factories",
+      "subresources": [
+        "dataFactory"
+      ],
+      "dnsZoneNames": [
+        "privatelink.datafactory.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "datafactory.azure.us"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Data Factory",
+      "armType": "Microsoft.DataFactory/factories",
+      "subresources": [
+        "portal"
+      ],
+      "dnsZoneNames": [
+        "privatelink.adf.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "adf.azure.us"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure HDInsight",
+      "armType": "Microsoft.HDInsight",
+      "subresources": [
+        "gateway",
+        "headnode"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurehdinsight.us"
+      ],
+      "publicDnsForwarders": [
+        "azurehdinsight.us"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Databricks",
+      "armType": "Microsoft.Databricks/workspaces",
+      "subresources": [
+        "databricks_ui_api",
+        "browser_authentication"
+      ],
+      "dnsZoneNames": [
+        "privatelink.databricks.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "databricks.azure.us"
+      ],
+      "category": "Analytics",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Batch",
+      "armType": "Microsoft.Batch/batchAccounts",
+      "subresources": [
+        "batchAccount"
+      ],
+      "dnsZoneNames": [
+        "privatelink.batch.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.batch.usgovcloudapi.net"
+      ],
+      "category": "Compute",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Batch",
+      "armType": "Microsoft.Batch/batchAccounts",
+      "subresources": [
+        "nodeManagement"
+      ],
+      "dnsZoneNames": [
+        "privatelink.batch.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.service.batch.usgovcloudapi.net"
+      ],
+      "category": "Compute",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/workspaces",
+      "subresources": [
+        "global"
+      ],
+      "dnsZoneNames": [
+        "privatelink-global.wvd.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "wvd.azure.us"
+      ],
+      "category": "Compute",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/workspaces </br> Microsoft.DesktopVirtualization/hostpools",
+      "subresources": [
+        "feed",
+        "connection"
+      ],
+      "dnsZoneNames": [
+        "privatelink.wvd.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "wvd.azure.us"
+      ],
+      "category": "Compute",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Container Registry",
+      "armType": "Microsoft.ContainerRegistry/registries",
+      "subresources": [
+        "registry"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurecr.us",
+        "{regionName}.privatelink.azurecr.us"
+      ],
+      "publicDnsForwarders": [
+        "azurecr.us",
+        "{regionName}.azurecr.us"
+      ],
+      "category": "Containers",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure SQL Database",
+      "armType": "Microsoft.Sql/servers",
+      "subresources": [
+        "sqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure SQL Managed Instance",
+      "armType": "Microsoft.Sql/managedInstances",
+      "subresources": [
+        "managedInstance"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{dnsPrefix}.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "{dnsPrefix}.database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Sql"
+      ],
+      "dnsZoneNames": [
+        "privatelink.documents.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "documents.azure.us"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "MongoDB"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mongo.cosmos.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "mongo.cosmos.azure.us"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Cassandra"
+      ],
+      "dnsZoneNames": [
+        "privatelink.cassandra.cosmos.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "cassandra.cosmos.azure.us"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Gremlin"
+      ],
+      "dnsZoneNames": [
+        "privatelink.gremlin.cosmos.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "gremlin.cosmos.azure.us"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Table"
+      ],
+      "dnsZoneNames": [
+        "privatelink.table.cosmos.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "table.cosmos.azure.us"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Database for PostgreSQL - Single server",
+      "armType": "Microsoft.DBforPostgreSQL/servers",
+      "subresources": [
+        "postgresqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "postgres.database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Database for PostgreSQL - Flexible server",
+      "armType": "Microsoft.DBforPostgreSQL/flexibleServers",
+      "subresources": [
+        "postgresqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "postgres.database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Database for MySQL - Single Server",
+      "armType": "Microsoft.DBforMySQL/servers",
+      "subresources": [
+        "mysqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mysql.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "mysql.database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Database for MySQL - Flexible Server",
+      "armType": "Microsoft.DBforMySQL/flexibleServers",
+      "subresources": [
+        "mysqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mysql.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "mysql.database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Database for MariaDB",
+      "armType": "Microsoft.DBforMariaDB/servers",
+      "subresources": [
+        "mariadbServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mariadb.database.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "mariadb.database.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Cache for Redis",
+      "armType": "Microsoft.Cache/Redis",
+      "subresources": [
+        "redisCache"
+      ],
+      "dnsZoneNames": [
+        "privatelink.redis.cache.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "redis.cache.usgovcloudapi.net"
+      ],
+      "category": "Databases",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Service Bus",
+      "armType": "Microsoft.ServiceBus/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.usgovcloudapi.net"
+      ],
+      "category": "Integration",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/topics",
+      "subresources": [
+        "topic"
+      ],
+      "dnsZoneNames": [
+        "privatelink.eventgrid.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.us"
+      ],
+      "category": "Integration",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Event Grid",
+      "armType": "Microsoft.EventGrid/domains",
+      "subresources": [
+        "domain"
+      ],
+      "dnsZoneNames": [
+        "privatelink.eventgrid.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "eventgrid.azure.us"
+      ],
+      "category": "Integration",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Health Data Services",
+      "armType": "Microsoft.HealthcareApis/workspaces",
+      "subresources": [
+        "healthcareworkspace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.workspace.azurehealthcareapis.us",
+        "privatelink.fhir.azurehealthcareapis.us",
+        "privatelink.dicom.azurehealthcareapis.us"
+      ],
+      "publicDnsForwarders": [
+        "workspace.azurehealthcareapis.us",
+        "fhir.azurehealthcareapis.us",
+        "dicom.azurehealthcareapis.us"
+      ],
+      "category": "Integration",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure IoT Hub",
+      "armType": "Microsoft.Devices/IotHubs",
+      "subresources": [
+        "iotHub"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-devices.us",
+        "privatelink.servicebus.windows.us"
+      ],
+      "publicDnsForwarders": [
+        "azure-devices.us",
+        "servicebus.usgovcloudapi.net"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure IoT Hub Device Provisioning Service",
+      "armType": "Microsoft.Devices/ProvisioningServices",
+      "subresources": [
+        "iotDps"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-devices-provisioning.us"
+      ],
+      "publicDnsForwarders": [
+        "azure-devices-provisioning.us"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Automation /",
+      "armType": "Microsoft.Automation/automationAccounts",
+      "subresources": [
+        "Webhook",
+        "DSCAndHybridWorker"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-automation.us"
+      ],
+      "publicDnsForwarders": [
+        "azure-automation.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Backup",
+      "armType": "Microsoft.RecoveryServices/vaults",
+      "subresources": [
+        "AzureBackup"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionCode}.backup.windowsazure.us"
+      ],
+      "publicDnsForwarders": [
+        "{regionCode}.backup.windowsazure.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Migrate",
+      "armType": "Microsoft.Migrate/migrateProjects",
+      "subresources": [
+        "Default"
+      ],
+      "dnsZoneNames": [
+        "privatelink.prod.migration.windowsazure.us"
+      ],
+      "publicDnsForwarders": [
+        "prod.migration.windowsazure.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Migrate",
+      "armType": "Microsoft.Migrate/assessmentProjects",
+      "subresources": [
+        "Default"
+      ],
+      "dnsZoneNames": [
+        "privatelink.prod.migration.windowsazure.us"
+      ],
+      "publicDnsForwarders": [
+        "prod.migration.windowsazure.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Site Recovery",
+      "armType": "Microsoft.RecoveryServices/vaults",
+      "subresources": [
+        "AzureSiteRecovery"
+      ],
+      "dnsZoneNames": [
+        "privatelink.siterecovery.windowsazure.us"
+      ],
+      "publicDnsForwarders": [
+        "{regionCode}.siterecovery.windowsazure.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Monitor",
+      "armType": "Microsoft.Insights/privateLinkScopes",
+      "subresources": [
+        "azuremonitor"
+      ],
+      "dnsZoneNames": [
+        "privatelink.monitor.azure.us",
+        "privatelink.adx.monitor.azure.us",
+        "privatelink.oms.opinsights.azure.us",
+        "privatelink.ods.opinsights.azure.us",
+        "privatelink.agentsvc.azure-automation.us",
+        "privatelink.blob.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "monitor.azure.us",
+        "adx.monitor.azure.us",
+        "oms.opinsights.azure.us",
+        "ods.opinsights.azure.us",
+        "agentsvc.azure-automation.us",
+        "blob.core.usgovcloudapi.net"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Microsoft Purview",
+      "armType": "Microsoft.Purview",
+      "subresources": [
+        "account"
+      ],
+      "dnsZoneNames": [
+        "privatelink.purview.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "purview.azure.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Microsoft Purview",
+      "armType": "Microsoft.Purview",
+      "subresources": [
+        "portal"
+      ],
+      "dnsZoneNames": [
+        "privatelink.purviewstudio.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "purview.azure.com",
+        "purviewstudio.azure.us"
+      ],
+      "category": "Management and Governance",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Key Vault",
+      "armType": "Microsoft.KeyVault/vaults",
+      "subresources": [
+        "vault"
+      ],
+      "dnsZoneNames": [
+        "privatelink.vaultcore.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "vault.usgovcloudapi.net",
+        "vaultcore.usgovcloudapi.net"
+      ],
+      "category": "Security",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure App Configuration",
+      "armType": "Microsoft.AppConfiguration/configurationStores",
+      "subresources": [
+        "configurationStores"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azconfig.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "azconfig.azure.us"
+      ],
+      "category": "Security",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "blob",
+        "blob_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.blob.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "blob.core.usgovcloudapi.net"
+      ],
+      "category": "Storage",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "table",
+        "table_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.table.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "table.core.usgovcloudapi.net"
+      ],
+      "category": "Storage",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "queue",
+        "queue_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.queue.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "queue.core.usgovcloudapi.net"
+      ],
+      "category": "Storage",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "file",
+        "file_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.file.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "file.core.usgovcloudapi.net"
+      ],
+      "category": "Storage",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "web",
+        "web_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.web.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "web.core.usgovcloudapi.net"
+      ],
+      "category": "Storage",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Data Lake File System Gen2",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "dfs",
+        "dfs_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.dfs.core.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "dfs.core.usgovcloudapi.net"
+      ],
+      "category": "Storage",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Search",
+      "armType": "Microsoft.Search/searchServices",
+      "subresources": [
+        "searchService"
+      ],
+      "dnsZoneNames": [
+        "privatelink.search.azure.us"
+      ],
+      "publicDnsForwarders": [
+        "search.azure.us"
+      ],
+      "category": "Web",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Relay",
+      "armType": "Microsoft.Relay/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.usgovcloudapi.net"
+      ],
+      "category": "Web",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Web Apps",
+      "armType": "Microsoft.Web/sites",
+      "subresources": [
+        "sites"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurewebsites.us",
+        "scm.privatelink.azurewebsites.us"
+      ],
+      "publicDnsForwarders": [
+        "azurewebsites.us",
+        "scm.azurewebsites.us"
+      ],
+      "category": "Web",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Event Hubs",
+      "armType": "Microsoft.EventHub/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.usgovcloudapi.net"
+      ],
+      "category": "Web",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure Machine Learning",
+      "armType": "Microsoft.MachineLearningServices/workspaces",
+      "subresources": [
+        "amlworkspace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.api.ml.azure.cn",
+        "privatelink.notebooks.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "api.ml.azure.cn",
+        "notebooks.chinacloudapi.cn",
+        "instances.azureml.cn",
+        "aznbcontent.net",
+        "inference.ml.azure.cn"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Data Factory",
+      "armType": "Microsoft.DataFactory/factories",
+      "subresources": [
+        "dataFactory"
+      ],
+      "dnsZoneNames": [
+        "privatelink.datafactory.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "datafactory.azure.cn"
+      ],
+      "category": "Analytics",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Data Factory",
+      "armType": "Microsoft.DataFactory/factories",
+      "subresources": [
+        "portal"
+      ],
+      "dnsZoneNames": [
+        "privatelink.adf.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "adf.azure.cn"
+      ],
+      "category": "Analytics",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure HDInsight",
+      "armType": "Microsoft.HDInsight",
+      "subresources": [
+        "gateway",
+        "headnode"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azurehdinsight.cn"
+      ],
+      "publicDnsForwarders": [
+        "azurehdinsight.cn"
+      ],
+      "category": "Analytics",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Data Explorer",
+      "armType": "Microsoft.Kusto/Clusters",
+      "subresources": [
+        "cluster"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionName}.kusto.windows.cn"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.kusto.windows.cn"
+      ],
+      "category": "Analytics",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Batch",
+      "armType": "Microsoft.Batch/batchAccounts",
+      "subresources": [
+        "batchAccount"
+      ],
+      "dnsZoneNames": [
+        "privatelink.batch.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "{region}.batch.chinacloudapi.cn"
+      ],
+      "category": "Compute",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Batch",
+      "armType": "Microsoft.Batch/batchAccounts",
+      "subresources": [
+        "nodeManagement"
+      ],
+      "dnsZoneNames": [
+        "privatelink.batch.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "{region}.service.batch.chinacloudapi.cn"
+      ],
+      "category": "Compute",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/workspaces",
+      "subresources": [
+        "global"
+      ],
+      "dnsZoneNames": [
+        "privatelink-global.wvd.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "wvd.azure.cn"
+      ],
+      "category": "Compute",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Virtual Desktop",
+      "armType": "Microsoft.DesktopVirtualization/workspaces and Microsoft.DesktopVirtualization/hostpools",
+      "subresources": [
+        "feed",
+        "connection"
+      ],
+      "dnsZoneNames": [
+        "privatelink.wvd.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "wvd.azure.cn"
+      ],
+      "category": "Compute",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure SQL Database",
+      "armType": "Microsoft.Sql/servers",
+      "subresources": [
+        "sqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.database.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "database.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Sql"
+      ],
+      "dnsZoneNames": [
+        "privatelink.documents.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "documents.azure.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "MongoDB"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mongo.cosmos.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "mongo.cosmos.azure.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Cassandra"
+      ],
+      "dnsZoneNames": [
+        "privatelink.cassandra.cosmos.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "cassandra.cosmos.azure.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Gremlin"
+      ],
+      "dnsZoneNames": [
+        "privatelink.gremlin.cosmos.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "gremlin.cosmos.azure.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Cosmos DB",
+      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "subresources": [
+        "Table"
+      ],
+      "dnsZoneNames": [
+        "privatelink.table.cosmos.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "table.cosmos.azure.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Database for PostgreSQL - Single server",
+      "armType": "Microsoft.DBforPostgreSQL/servers",
+      "subresources": [
+        "postgresqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.database.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "postgres.database.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Database for PostgreSQL - Flexible server",
+      "armType": "Microsoft.DBforPostgreSQL/flexibleServers",
+      "subresources": [
+        "postgresqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.postgres.database.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "postgres.database.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Database for MySQL - Single Server",
+      "armType": "Microsoft.DBforMySQL/servers",
+      "subresources": [
+        "mysqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mysql.database.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "mysql.database.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Database for MySQL - Flexible Server",
+      "armType": "Microsoft.DBforMySQL/flexibleServers",
+      "subresources": [
+        "mysqlServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mysql.database.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "mysql.database.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Database for MariaDB",
+      "armType": "Microsoft.DBforMariaDB/servers",
+      "subresources": [
+        "mariadbServer"
+      ],
+      "dnsZoneNames": [
+        "privatelink.mariadb.database.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "mariadb.database.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Cache for Redis",
+      "armType": "Microsoft.Cache/Redis",
+      "subresources": [
+        "redisCache"
+      ],
+      "dnsZoneNames": [
+        "privatelink.redis.cache.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "redis.cache.chinacloudapi.cn"
+      ],
+      "category": "Databases",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Service Bus",
+      "armType": "Microsoft.ServiceBus/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.chinacloudapi.cn"
+      ],
+      "category": "Integration",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure IoT Hub",
+      "armType": "Microsoft.Devices/IotHubs",
+      "subresources": [
+        "iotHub"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-devices.cn",
+        "privatelink.servicebus.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "azure-devices.cn",
+        "servicebus.chinacloudapi.cn"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure IoT Hub Device Provisioning Service",
+      "armType": "Microsoft.Devices/ProvisioningServices",
+      "subresources": [
+        "iotDps"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-devices-provisioning.cn"
+      ],
+      "publicDnsForwarders": [
+        "azure-devices-provisioning.cn"
+      ],
+      "category": "Internet of Things (IoT)",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Automation /",
+      "armType": "Microsoft.Automation/automationAccounts",
+      "subresources": [
+        "Webhook",
+        "DSCAndHybridWorker"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-automation.cn"
+      ],
+      "publicDnsForwarders": [
+        "azure-automation.cn"
+      ],
+      "category": "Management and Governance",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Key Vault",
+      "armType": "Microsoft.KeyVault/vaults",
+      "subresources": [
+        "vault"
+      ],
+      "dnsZoneNames": [
+        "privatelink.vaultcore.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "vaultcore.azure.cn"
+      ],
+      "category": "Security",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "blob",
+        "blob_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.blob.core.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "blob.core.chinacloudapi.cn"
+      ],
+      "category": "Storage",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "table",
+        "table_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.table.core.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "table.core.chinacloudapi.cn"
+      ],
+      "category": "Storage",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "queue",
+        "queue_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.queue.core.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "queue.core.chinacloudapi.cn"
+      ],
+      "category": "Storage",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "file",
+        "file_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.file.core.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "file.core.chinacloudapi.cn"
+      ],
+      "category": "Storage",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Storage account",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "web",
+        "web_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.web.core.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "web.core.chinacloudapi.cn"
+      ],
+      "category": "Storage",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Data Lake File System Gen2",
+      "armType": "Microsoft.Storage/storageAccounts",
+      "subresources": [
+        "dfs",
+        "dfs_secondary"
+      ],
+      "dnsZoneNames": [
+        "privatelink.dfs.core.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "dfs.core.chinacloudapi.cn"
+      ],
+      "category": "Storage",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Event Hubs",
+      "armType": "Microsoft.EventHub/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.chinacloudapi.cn"
+      ],
+      "category": "Web",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Relay",
+      "armType": "Microsoft.Relay/namespaces",
+      "subresources": [
+        "namespace"
+      ],
+      "dnsZoneNames": [
+        "privatelink.servicebus.chinacloudapi.cn"
+      ],
+      "publicDnsForwarders": [
+        "servicebus.chinacloudapi.cn"
+      ],
+      "category": "Web",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "Azure Web Apps",
+      "armType": "Microsoft.Web/sites",
+      "subresources": [
+        "sites"
+      ],
+      "dnsZoneNames": [
+        "privatelink.chinacloudsites.cn"
+      ],
+      "publicDnsForwarders": [
+        "chinacloudsites.cn"
+      ],
+      "category": "Web",
+      "cloud": "China"
+    },
+    {
+      "resourceType": "SignalR",
+      "armType": "Microsoft.SignalRService/SignalR",
+      "subresources": [
+        "signalR"
+      ],
+      "dnsZoneNames": [
+        "privatelink.signalr.azure.cn"
+      ],
+      "publicDnsForwarders": [
+        "service.signalr.azure.cn"
+      ],
+      "category": "Web",
+      "cloud": "China"
+    }
+  ]
+}

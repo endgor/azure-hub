@@ -33,11 +33,18 @@ const GuideMetaSchema = z.object({
 
 export type GuideMeta = z.infer<typeof GuideMetaSchema>;
 
+export interface GuideHeading {
+  id: string;
+  text: string;
+  level: number;
+}
+
 export interface Guide {
   slug: string;
   category: string;
   meta: GuideMeta;
   content?: string;
+  headings?: GuideHeading[];
 }
 
 export interface GuideCategory {
@@ -195,11 +202,23 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
 
     const contentHtml = String(processedContent);
 
+    // Extract headings for TOC
+    const headingRegex = /<h([2-3])\s+id="([^"]+)"[^>]*>([^<]*(?:<[^/][^>]*>[^<]*<\/[^>]+>)*[^<]*)/g;
+    const headings: GuideHeading[] = [];
+    let match;
+    while ((match = headingRegex.exec(contentHtml)) !== null) {
+      const text = match[3].replace(/<[^>]+>/g, '').trim();
+      if (text) {
+        headings.push({ id: match[2], text, level: parseInt(match[1], 10) });
+      }
+    }
+
     return {
       slug,
       category,
       meta: validatedMeta,
-      content: contentHtml
+      content: contentHtml,
+      headings
     };
   } catch {
     return null;

@@ -52,6 +52,18 @@ const TOOLS = [
     ),
   },
   {
+    title: 'Private DNS Zones',
+    description: 'Look up which private DNS zones are needed for Azure Private Endpoints.',
+    href: '/tools/private-dns-zones',
+    accent: 'bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+        <path d="M12 2a10 10 0 00-3.16 19.5A3 3 0 0112 19a3 3 0 013.16 2.5A10 10 0 0012 2zm0 2c.74 0 1.72 1.1 2.39 3H9.61C10.28 5.1 11.26 4 12 4zm-3.66 5h7.32a16.4 16.4 0 01.28 3H8.06a16.4 16.4 0 01.28-3zM4.07 9h3.16A18.5 18.5 0 007 12H4.06c.01-1.04.16-2.05.41-3h-.4zm0 5H7c.08 1.05.28 2.05.57 3H4.88A8 8 0 014.06 14zM12 18a1.5 1.5 0 00-1.42 1c.45.05.94.08 1.42.08s.97-.03 1.42-.08A1.5 1.5 0 0012 18zm4.43-1c.29-.95.49-1.95.57-3h2.94a8 8 0 01-.82 3h-2.69zM20 12h-2.94a18.5 18.5 0 00-.23-3h3.16c.25.95.41 1.96.41 3h-.4z" />
+        <path d="M18 15a3 3 0 00-3 3v1h-.5a.5.5 0 00-.5.5v3a.5.5 0 00.5.5h7a.5.5 0 00.5-.5v-3a.5.5 0 00-.5-.5H21v-1a3 3 0 00-3-3zm-1.5 3a1.5 1.5 0 113 0v1h-3v-1z" />
+      </svg>
+    ),
+  },
+  {
     title: 'Subnet Calculator',
     description: 'Plan VNet address space, split subnets visually, and export for deployments.',
     href: '/tools/subnet-calculator',

@@ -26,8 +26,10 @@ export default function GuidesPage({ categories }: GuidesPageProps) {
 
         {/* Guides List */}
         <div className="space-y-3">
-          {categories.flatMap((category) =>
-            category.guides.map((guide) => (
+          {categories
+            .flatMap((category) => category.guides)
+            .sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
+            .map((guide) => (
               <Link
                 key={`${guide.category}-${guide.slug}`}
                 href={`/guides/${guide.category}/${guide.slug}`}
@@ -77,8 +79,7 @@ export default function GuidesPage({ categories }: GuidesPageProps) {
                   </svg>
                 </div>
               </Link>
-            ))
-          )}
+            ))}
 
           {categories.length === 0 && (
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
