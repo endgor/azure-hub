@@ -104,8 +104,8 @@ export function Sidebar({
             const stateClasses = disabled
               ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
               : active
-              ? 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-200'
-              : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200';
+              ? 'bg-sky-50 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300'
+              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-200';
 
             return (
               <Link
