@@ -372,7 +372,7 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
     () =>
       selectedRoles.map(role => ({
         id: role.id,
-        content: <span className="text-sm">{role.roleName}</span>,
+        content: <span className="text-xs">{role.roleName}</span>,
         removeAriaLabel: `Remove ${role.roleName}`
       })),
     [selectedRoles]

@@ -351,7 +351,7 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
     () =>
       selectedRoles.map(role => ({
         id: role.id,
-        content: <span className="text-sm">{role.displayName}</span>,
+        content: <span className="text-xs">{role.displayName}</span>,
         removeAriaLabel: `Remove ${role.displayName}`
       })),
     [selectedRoles]
