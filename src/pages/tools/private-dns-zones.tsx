@@ -231,10 +231,10 @@ export default function PrivateDnsZones({ data }: PageProps) {
           <div className="flex items-center gap-2">
             <SearchInput
               type="text"
-              placeholder="Search services, ARM types, zones..."
+              placeholder="Search services, ARM types, DNS zones..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              maxWidth="md"
+              maxWidth="lg"
             />
             <ExportMenu
               options={exportOptions}
