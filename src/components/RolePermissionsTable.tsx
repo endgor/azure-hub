@@ -132,54 +132,9 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
   }, [isComparisonMode, rolesWithFlattenedPermissions]);
 
   return (
-    <div className="space-y-4">
-      {/* Comparison Summary (2 roles only) */}
-      {comparison && (
-        <>
-          <div className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
-              Comparison Summary
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
-                <span className="text-slate-600 dark:text-slate-400">
-                  Shared: <strong className="text-slate-900 dark:text-slate-100">{comparison.sharedCount}</strong> {pluralize(comparison.sharedCount, 'permission')}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-sky-500 flex-shrink-0"></span>
-                <span className="text-slate-600 dark:text-slate-400 truncate">
-                  {roles[0].roleName} only: <strong className="text-slate-900 dark:text-slate-100">{comparison.r1OnlyCount}</strong>
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-violet-500 flex-shrink-0"></span>
-                <span className="text-slate-600 dark:text-slate-400 truncate">
-                  {roles[1].roleName} only: <strong className="text-slate-900 dark:text-slate-100">{comparison.r2OnlyCount}</strong>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Identical Notice */}
-          {comparison.isIdentical && (
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-400/30 dark:bg-emerald-500/10">
-              <div className="flex gap-3">
-                <svg className="h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <div className="text-sm text-emerald-800 dark:text-emerald-200">
-                  <strong>Identical Permissions</strong> — Both roles have exactly the same {comparison.sharedCount} permissions.
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
+    <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-1">
         <div>
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Role Permissions
@@ -196,8 +151,31 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
         />
       </div>
 
+      {/* Comparison stats (inline, 2 roles only) */}
+      {comparison && (
+        <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-500 dark:text-slate-400 mb-4">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            Shared: <strong className="text-slate-700 dark:text-slate-200">{comparison.sharedCount}</strong>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-sky-500"></span>
+            {roles[0].roleName} only: <strong className="text-slate-700 dark:text-slate-200">{comparison.r1OnlyCount}</strong>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-violet-500"></span>
+            {roles[1].roleName} only: <strong className="text-slate-700 dark:text-slate-200">{comparison.r2OnlyCount}</strong>
+          </span>
+          {comparison.isIdentical && (
+            <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+              Identical permissions
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Table */}
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
+      <div className="overflow-hidden rounded-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
