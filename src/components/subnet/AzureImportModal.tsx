@@ -26,17 +26,17 @@ export default function AzureImportModal({
       <button
         type="button"
         onClick={onToggleMenu}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-blue-500 transition focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-slate-800 dark:text-blue-400 ${
+        className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
           isAzureMenuOpen
-            ? 'border-blue-200 dark:border-blue-800'
-            : 'border-slate-200 hover:text-blue-600 dark:border-slate-700 dark:hover:text-blue-300'
+            ? 'bg-slate-100 text-sky-600 dark:bg-slate-800 dark:text-sky-400'
+            : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300'
         }`}
-        title="Azure Reserved IPs"
+        aria-label="Azure Reserved IPs"
         aria-expanded={isAzureMenuOpen}
       >
-        <svg className="h-4 w-4" viewBox="0 0 48 48" aria-hidden>
-          <path fill="currentColor" fillOpacity="0.92" d="M8 37L22.5 7H32L16 37H8z" />
-          <path fill="currentColor" fillOpacity="0.66" d="M21.5 37H33l7-12-7-5.5L21.5 37z" />
+        <svg className="h-4 w-4" viewBox="0 0 18 18" aria-hidden>
+          <path fill="currentColor" fillOpacity="0.85" d="M3.5 15L10.5 1.5h4L7 15H3.5z" />
+          <path fill="currentColor" fillOpacity="0.55" d="M7 15h5.5l3-5.5-3-2.5L7 15z" />
         </svg>
       </button>
 
