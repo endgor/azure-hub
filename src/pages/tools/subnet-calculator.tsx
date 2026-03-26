@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, FormEvent, ReactElement } from 'react';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
@@ -28,7 +28,8 @@ import {
 import {
   SubnetTable,
   SubnetToolbar,
-  UtilizationBar,
+  AddressMap,
+  RecommendedSizes,
   COLOR_SWATCHES,
   CLEAR_COLOR_ID
 } from '@/components/subnet';
@@ -325,6 +326,15 @@ export default function SubnetCalculatorPage(): ReactElement {
     setIsColorModeActive((current) => !current);
   };
 
+  const handleSegmentClick = useCallback((id: string) => {
+    const el = document.getElementById(`subnet-row-${id}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      el.classList.add('ring-2', 'ring-blue-400', 'ring-inset');
+      setTimeout(() => el.classList.remove('ring-2', 'ring-blue-400', 'ring-inset'), 1500);
+    }
+  }, []);
+
   return (
     <Layout
       title="Azure Subnet Calculator - Plan & Split CIDR Networks"
@@ -487,10 +497,12 @@ export default function SubnetCalculatorPage(): ReactElement {
             </div>
           </header>
 
-          <UtilizationBar
+          <AddressMap
             basePrefix={state.basePrefix}
             leaves={leaves}
             rowColors={rowColors}
+            rowComments={rowComments}
+            onSegmentClick={handleSegmentClick}
           />
 
           <SubnetTable
@@ -516,6 +528,8 @@ export default function SubnetCalculatorPage(): ReactElement {
             onResetTree={handleResetTree}
           />
         </div>
+
+        <RecommendedSizes />
       </section>
     </Layout>
   );

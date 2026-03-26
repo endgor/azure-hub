@@ -372,6 +372,7 @@ export default function SubnetTable({
             return (
               <tr
                 key={row.id}
+                id={`subnet-row-${row.id}`}
                 className={`transition ${rowBackground} ${
                   isColorModeActive ? 'cursor-pointer select-none' : ''
                 }`}
