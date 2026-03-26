@@ -17,7 +17,7 @@
     "update-private-dns-zones": "ts-node -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts"
   },
   "dependencies": {
-    "@azure/identity": "^4.5.0",
+    "@azure/identity": "^4.13.1",
     "@types/d3-geo": "^3.1.0",
     "@types/topojson-client": "^3.1.5",
     "@vercel/analytics": "^2.0.1",
