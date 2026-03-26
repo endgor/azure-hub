@@ -46,47 +46,25 @@ export default function ImportRoleSection({
         />
 
         {importedRoles.length > 0 && (
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-200">
-              Imported Roles ({importedRoles.length})
-            </label>
-            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
-              <div className="space-y-2">
-                {importedRoles.map((imported) => {
-                  const totalActions =
-                    imported.actions.length +
-                    imported.notActions.length +
-                    imported.dataActions.length +
-                    imported.notDataActions.length;
-
-                  return (
-                    <div
-                      key={imported.role.id}
-                      className="flex items-center justify-between rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 dark:border-emerald-400/30 dark:bg-emerald-500/10"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
-                          {imported.role.roleName}
-                        </div>
-                        <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">
-                          {totalActions} permission{totalActions !== 1 ? 's' : ''} imported
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => onRemoveImportedRole(imported.role.id)}
-                        className="ml-2 shrink-0 text-emerald-600 hover:text-rose-600 dark:text-emerald-400 dark:hover:text-rose-400"
-                        aria-label={`Remove ${imported.role.roleName}`}
-                      >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          <div className="flex flex-wrap gap-2">
+            {importedRoles.map((imported) => (
+              <span
+                key={imported.role.id}
+                className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+              >
+                {imported.role.roleName}
+                <button
+                  type="button"
+                  onClick={() => onRemoveImportedRole(imported.role.id)}
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  aria-label={`Remove ${imported.role.roleName}`}
+                >
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </span>
+            ))}
           </div>
         )}
       </div>
