@@ -105,7 +105,7 @@ export default function RegionMap({ region }: RegionMapProps) {
         {/* Footer with region name + coordinates */}
         <div className="flex items-center justify-between px-4 py-2.5">
           <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
-            {regionInfo.displayName}
+            {regionInfo.city}
           </span>
           <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500">
             {regionInfo.latitude.toFixed(4)}°, {regionInfo.longitude.toFixed(4)}°
