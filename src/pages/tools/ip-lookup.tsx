@@ -6,8 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
-import Results from '@/components/Results';
 import RecentChangesCard from '@/components/RecentChangesCard';
+import IpLookupResults from '@/components/IpLookupResults';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
@@ -263,88 +263,73 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
           variant="full-width"
         />
 
-        <div className="space-y-6">
-          {isLoading && (
-            <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
-              <LoadingSpinner size="lg" label="Looking up Azure IP information..." />
-            </div>
-          )}
-
-          {isError && errorMessage && (
-            <ErrorBox>
-              {errorMessage}
-            </ErrorBox>
-          )}
-
-          {isNotFound && notFoundMessage && (
-            <ErrorBox variant="warning">
-              {notFoundMessage}
-            </ErrorBox>
-          )}
-
-          {!isLoading && !isError && results.length > 0 && (
-            <Results
-              results={results}
-              query={pageTitle}
-              total={totalResults}
-              pagination={totalPages > 1 ? {
-                currentPage,
-                totalPages,
-                totalItems: totalResults,
-                pageSize: effectivePageSize,
-                isAll,
-                onPageSizeChange: handlePageSizeChange,
-                basePath: '/tools/ip-lookup',
-                query: {
-                  ipOrDomain: initialQuery,
-                  region: initialRegion,
-                  service: initialService
-                }
-              } : undefined}
-            />
-          )}
-
-          {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
-              No Azure IP ranges found matching your search criteria.
-            </div>
-          )}
-        </div>
-
-        {!initialQuery && !initialRegion && !initialService && (
-          <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-            <section className="space-y-4">
-              <div>
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  Try IP addresses, CIDR notation, hostnames, service tags, or Azure regions.
-                </p>
+        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+          <div className="space-y-6">
+            {isLoading && (
+              <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
+                <LoadingSpinner size="lg" label="Looking up Azure IP information..." />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {SAMPLE_QUERIES.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex flex-col space-y-2 rounded-xl bg-white p-4 transition dark:bg-slate-900"
-                  >
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                      {item.label}
-                    </p>
-                    <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      {item.example}
-                    </p>
-                    <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
+            )}
 
-            <aside>
-              <RecentChangesCard serviceCount={serviceTagCount} />
-            </aside>
+            {isError && errorMessage && (
+              <ErrorBox>
+                {errorMessage}
+              </ErrorBox>
+            )}
+
+            {isNotFound && notFoundMessage && (
+              <ErrorBox variant="warning">
+                {notFoundMessage}
+              </ErrorBox>
+            )}
+
+            {!isLoading && !isError && results.length > 0 && (
+              <IpLookupResults
+                results={results}
+                query={pageTitle}
+              />
+            )}
+
+            {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
+                No Azure IP ranges found matching your search criteria.
+              </div>
+            )}
+
+            {!initialQuery && !initialRegion && !initialService && (
+              <section className="space-y-4">
+                <div>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                    Try IP addresses, CIDR notation, hostnames, service tags, or Azure regions.
+                  </p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {SAMPLE_QUERIES.map((item) => (
+                    <div
+                      key={item.label}
+                      className="flex flex-col space-y-2 rounded-xl bg-white p-4 transition dark:bg-slate-900"
+                    >
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        {item.label}
+                      </p>
+                      <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        {item.example}
+                      </p>
+                      <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
-        )}
+
+          <aside>
+            <RecentChangesCard serviceCount={serviceTagCount} />
+          </aside>
+        </div>
       </section>
     </Layout>
   );

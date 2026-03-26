@@ -335,7 +335,7 @@ export default function Layout({
 
           <div className="flex flex-1 flex-col">
             {/* Desktop top-right utility bar */}
-            <div className="hidden md:flex items-center justify-end gap-2 px-6 py-3">
+            <div className="hidden md:flex items-center justify-end gap-2 bg-[#F8F9FB] px-6 py-3 dark:bg-[#121212]">
               <Link
                 href="https://github.com/endgor/azure-hub"
                 target="_blank"
@@ -408,7 +408,7 @@ export default function Layout({
               </div>
             </div>
 
-            <main className="flex-1 overflow-auto bg-slate-50 px-4 py-6 md:px-6 md:py-10 dark:bg-[#121212]">
+            <main className="flex-1 overflow-auto bg-[#F8F9FB] px-4 py-6 md:px-6 md:py-10 dark:bg-[#121212]">
               <div className="mx-auto w-full max-w-6xl space-y-6">{children}</div>
             </main>
           </div>
