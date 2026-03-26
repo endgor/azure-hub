@@ -85,10 +85,13 @@ export function computeLeafCounts(tree: SubnetTree, rootId: string): Record<stri
       return 1;
     }
 
+    // Locked VNet parents (VNet with children) render as an extra row
+    const isLockedVNetParent = node.networkType === NetworkType.VNET;
+
     const [leftId, rightId] = node.children;
     const leftCount = dfs(leftId);
     const rightCount = dfs(rightId);
-    const total = leftCount + rightCount;
+    const total = leftCount + rightCount + (isLockedVNetParent ? 1 : 0);
     counts[nodeId] = total;
     return total;
   };

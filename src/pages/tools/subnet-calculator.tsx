@@ -28,6 +28,7 @@ import {
 import {
   SubnetTable,
   SubnetToolbar,
+  UtilizationBar,
   COLOR_SWATCHES,
   CLEAR_COLOR_ID
 } from '@/components/subnet';
@@ -485,6 +486,12 @@ export default function SubnetCalculatorPage(): ReactElement {
               </div>
             </div>
           </header>
+
+          <UtilizationBar
+            basePrefix={state.basePrefix}
+            leaves={leaves}
+            rowColors={rowColors}
+          />
 
           <SubnetTable
             renderRows={renderRows}
