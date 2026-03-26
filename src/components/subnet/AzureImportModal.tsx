@@ -26,10 +26,10 @@ export default function AzureImportModal({
       <button
         type="button"
         onClick={onToggleMenu}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-sky-600 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 dark:bg-slate-800 dark:text-sky-400 ${
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-blue-500 transition focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-slate-800 dark:text-blue-400 ${
           isAzureMenuOpen
-            ? 'border-sky-300 dark:border-sky-700'
-            : 'border-slate-200 hover:border-sky-300 dark:border-slate-700 dark:hover:border-sky-600'
+            ? 'border-blue-200 dark:border-blue-800'
+            : 'border-slate-200 hover:text-blue-600 dark:border-slate-700 dark:hover:text-blue-300'
         }`}
         title="Azure Reserved IPs"
         aria-expanded={isAzureMenuOpen}

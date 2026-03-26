@@ -95,12 +95,12 @@ export default function SubnetToolbar({
         <button
           type="button"
           onClick={onShare}
-          className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 dark:bg-slate-800 ${
+          className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-slate-800 ${
             shareStatus === 'copied'
-              ? 'border-emerald-300 text-emerald-600 dark:border-emerald-700 dark:text-emerald-400'
+              ? 'border-emerald-200 text-emerald-600 dark:border-emerald-800 dark:text-emerald-400'
               : shareStatus === 'error'
-                ? 'border-rose-300 text-rose-500 dark:border-rose-700 dark:text-rose-400'
-                : 'border-slate-200 text-slate-600 hover:border-sky-300 hover:text-sky-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-sky-600 dark:hover:text-sky-400'
+                ? 'border-rose-200 text-rose-500 dark:border-rose-800 dark:text-rose-400'
+                : 'border-slate-200 text-slate-500 hover:text-slate-700 dark:border-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
           }`}
           disabled={isGeneratingShare}
           title={

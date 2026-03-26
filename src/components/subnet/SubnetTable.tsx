@@ -94,20 +94,20 @@ export default function SubnetTable({
         }`}
       >
         <thead>
-          <tr className="bg-slate-50 dark:bg-slate-800 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Type</th>
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Network Address</th>
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Netmask</th>
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Range of Addresses</th>
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">
+          <tr className="bg-slate-50/50 dark:bg-slate-800/50 text-left text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400 dark:text-slate-500">
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">Type</th>
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">Network Address</th>
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">Netmask</th>
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">Range of Addresses</th>
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">
               Usable IPs{useAzureReservations ? ' (Azure)' : ''}
             </th>
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">
               Hosts{useAzureReservations ? ' (Azure)' : ''}
             </th>
-            <th className="border border-slate-200 dark:border-slate-700 px-2.5 py-2">Comment</th>
+            <th className="border border-slate-100 dark:border-slate-800 px-2.5 py-2">Comment</th>
             <th
-              className="border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-center"
+              className="border border-slate-100 dark:border-slate-800 px-2.5 py-2 text-center"
               colSpan={joinColumnCount}
             >
               Split / Join
@@ -235,7 +235,7 @@ export default function SubnetTable({
                       key={segmentKey}
                       rowSpan={1}
                       colSpan={colSpan}
-                      className="border border-slate-200 dark:border-slate-700 p-0 align-middle"
+                      className="border border-slate-100 dark:border-slate-800 p-0 align-middle"
                     >
                       {splitContent}
                     </td>
@@ -295,7 +295,7 @@ export default function SubnetTable({
                   <td
                     key={segmentKey}
                     rowSpan={rowSpan}
-                    className="border border-slate-200 dark:border-slate-700 p-0 align-middle"
+                    className="border border-slate-100 dark:border-slate-800 p-0 align-middle"
                   >
                     {content}
                   </td>
@@ -328,7 +328,7 @@ export default function SubnetTable({
                 title={isColorModeActive ? 'Click to apply selected color' : undefined}
               >
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top text-center"
+                  className="border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top text-center"
                   style={highlightStyle}
                   data-skip-color
                 >
@@ -351,7 +351,7 @@ export default function SubnetTable({
                   </button>
                 </td>
                 <td
-                  className={`border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top ${treeIndent}`}
+                  className={`border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top ${treeIndent}`}
                   style={highlightStyle}
                 >
                   <div className="flex items-center gap-2">
@@ -366,31 +366,31 @@ export default function SubnetTable({
                   </div>
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
                   style={highlightStyle}
                 >
                   {inetNtoa(subnetNetmask(row.prefix))}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
                   style={highlightStyle}
                 >
                   {formatRange(row.network, lastAddress)}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
                   style={highlightStyle}
                 >
                   {usable ? formatRange(usable.first, usable.last) : 'Reserved'}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
+                  className="border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top font-mono text-[11px] text-slate-500 dark:text-slate-400"
                   style={highlightStyle}
                 >
                   {hostCount.toLocaleString()}
                 </td>
                 <td
-                  className="border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top text-xs text-slate-500 dark:text-slate-400"
+                  className="border border-slate-100 dark:border-slate-800 px-2.5 py-1.5 align-top text-xs text-slate-500 dark:text-slate-400"
                   data-skip-color
                   onClick={(event) => event.stopPropagation()}
                   style={highlightStyle}
@@ -413,7 +413,7 @@ export default function SubnetTable({
                             onCloseCommentEditor();
                           }
                         }}
-                        className="w-full rounded-lg border border-slate-300 px-2 py-1 text-sm text-slate-700 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-500"
+                        className="w-full rounded-lg border border-slate-200 px-2 py-1 text-sm text-slate-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-500"
                         rows={3}
                         autoFocus
                         placeholder="Document this subnet..."

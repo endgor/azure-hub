@@ -102,15 +102,18 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
               {exportOpen && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setExportOpen(false)} />
-                  <div className="absolute right-0 z-20 mt-1 w-36 rounded-lg bg-white py-1 shadow-lg ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
-                    <button onClick={() => handleExport('csv')} className="flex w-full items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <span className="text-slate-400">CSV</span> Comma separated
+                  <div className="absolute right-0 z-20 mt-1 w-44 rounded-lg bg-white py-1 shadow-lg ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
+                    <button onClick={() => handleExport('csv')} className="flex w-full items-center gap-3 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
+                      <span className="w-8 shrink-0 text-right text-slate-400">CSV</span>
+                      <span>Comma separated</span>
                     </button>
-                    <button onClick={() => handleExport('xlsx')} className="flex w-full items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <span className="text-slate-400">XLSX</span> Excel spreadsheet
+                    <button onClick={() => handleExport('xlsx')} className="flex w-full items-center gap-3 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
+                      <span className="w-8 shrink-0 text-right text-slate-400">XLSX</span>
+                      <span>Excel spreadsheet</span>
                     </button>
-                    <button onClick={() => handleExport('md')} className="flex w-full items-center gap-2 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <span className="text-slate-400">MD</span> Markdown table
+                    <button onClick={() => handleExport('md')} className="flex w-full items-center gap-3 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
+                      <span className="w-8 shrink-0 text-right text-slate-400">MD</span>
+                      <span>Markdown table</span>
                     </button>
                   </div>
                 </>

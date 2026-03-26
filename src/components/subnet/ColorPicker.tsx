@@ -32,10 +32,10 @@ export default function ColorPicker({
       <button
         type="button"
         onClick={onToggleColorMode}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border bg-white text-slate-500 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-sky-200 dark:bg-slate-800 dark:text-slate-400 ${
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-slate-500 transition focus:outline-none focus:ring-2 focus:ring-blue-200 dark:bg-slate-800 dark:text-slate-400 ${
           isColorModeActive
-            ? 'border-sky-300 text-sky-600 dark:border-sky-700 dark:text-sky-400'
-            : 'border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600'
+            ? 'border-blue-200 text-blue-600 dark:border-blue-800 dark:text-blue-400'
+            : 'border-slate-200 hover:text-slate-700 dark:border-slate-700 dark:hover:text-slate-300'
         }`}
         aria-pressed={isColorModeActive}
         title={isColorModeActive ? 'Color mode enabled' : 'Toggle color mode'}
