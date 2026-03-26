@@ -83,30 +83,12 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
 
       {scopes.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-2">
-          {scopes.map((scope) => {
-            const isPlaceholder = scope.includes('00000000-0000-0000-0000-000000000000');
-            return (
+          {scopes.map((scope) => (
               <div
                 key={scope}
-                className={`flex items-center gap-2 rounded-md border px-3 py-1 ${
-                  isPlaceholder
-                    ? 'border-amber-200 bg-amber-50 dark:border-amber-400/30 dark:bg-amber-500/10'
-                    : 'border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800'
-                }`}
+                className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-1 dark:border-slate-700 dark:bg-slate-800"
               >
-                {isPlaceholder && (
-                  <span
-                    className="text-amber-600 dark:text-amber-400 cursor-help"
-                    title="This is a placeholder. Replace with your actual subscription ID."
-                  >
-                    ⚠️
-                  </span>
-                )}
-                <span className={`font-mono text-xs ${
-                  isPlaceholder
-                    ? 'text-amber-800 dark:text-amber-300'
-                    : 'text-slate-700 dark:text-slate-300'
-                }`}>
+                <span className="font-mono text-xs text-slate-700 dark:text-slate-300">
                   {scope}
                 </span>
                 <Button
@@ -114,11 +96,7 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
                   variant="ghost"
                   size="sm"
                   onClick={() => onRemove(scope)}
-                  className={
-                    isPlaceholder
-                      ? 'text-amber-600 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-200 p-0'
-                      : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-0'
-                  }
+                  className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 p-0"
                   aria-label={`Remove ${scope}`}
                 >
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,8 +104,7 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
                   </svg>
                 </Button>
               </div>
-            );
-          })}
+          ))}
         </div>
       )}
     </div>
