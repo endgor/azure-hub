@@ -7,12 +7,14 @@ interface LookupFormProps {
   initialValue?: string;
   initialRegion?: string;
   initialService?: string;
+  variant?: 'default' | 'full-width';
 }
 
 const LookupForm = memo(function LookupForm({
   initialValue = '',
   initialRegion = '',
-  initialService = ''
+  initialService = '',
+  variant = 'default'
 }: LookupFormProps) {
   const [searchQuery, setSearchQuery] = useState(initialValue || initialService || initialRegion);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +54,39 @@ const LookupForm = memo(function LookupForm({
     e.preventDefault();
     await performSearch();
   };
+
+  if (variant === 'full-width') {
+    return (
+      <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Azure IP Lookup">
+        <label className="sr-only" htmlFor="search-query">
+          Search Azure IP addresses, services, or regions
+        </label>
+        <div className="flex gap-3 items-center">
+          <div className="flex-1">
+            <SearchInput
+              type="search"
+              id="search-query"
+              name="search-query"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search IP, CIDR (e.g. 13.66.0.0/16), Service (e.g. ActionGroup), or Region..."
+              maxWidth="full"
+              isLoading={isLoading}
+              aria-label="Search query"
+              onIconClick={performSearch}
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isLoading || !searchQuery.trim()}
+            className="shrink-0 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-slate-800 disabled:opacity-50 dark:bg-[#0A84FF] dark:hover:bg-[#0A84FF]/80"
+          >
+            {isLoading ? 'Searching...' : 'Run Query'}
+          </button>
+        </div>
+      </form>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Azure IP Lookup">

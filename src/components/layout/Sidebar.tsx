@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ICONS, type IconKey } from './icons';
-import { ThemeToggle } from './ThemeToggle';
 
 export interface NavItem {
   label: string;
@@ -23,17 +22,13 @@ interface SidebarProps {
   onMobileMenuClose: () => void;
   matchRoute: (href: string) => boolean;
   navSections: NavSection[];
-  isDarkMode: boolean;
-  onThemeToggle: () => void;
 }
 
 export function Sidebar({
   isMobileMenuOpen,
   onMobileMenuClose,
   matchRoute,
-  navSections,
-  isDarkMode,
-  onThemeToggle
+  navSections
 }: SidebarProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
@@ -50,7 +45,7 @@ export function Sidebar({
 
       {/* Sidebar */}
       <aside
-        className={`relative flex flex-col border-r border-slate-200 bg-white/95 backdrop-blur transition-all duration-200 ease-out dark:border-[#363638] dark:bg-[#1B1B1C]/95 ${
+        className={`relative flex flex-col border-r border-slate-200 bg-slate-50/95 backdrop-blur transition-all duration-200 ease-out dark:border-[#363638] dark:bg-[#1B1B1C]/95 ${
           isSidebarCollapsed ? 'w-20' : 'w-72'
         } ${
           isMobileMenuOpen ? 'fixed inset-y-0 left-0 z-50 md:relative' : 'hidden md:flex'
@@ -100,99 +95,50 @@ export function Sidebar({
           </button>
         </div>
 
-        <nav className="flex-1 space-y-4 overflow-y-auto px-3 pb-6">
-          {navSections.map((section) => (
-            <div key={section.label}>
-              <p
-                className={`px-3 text-xs font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 ${
-                  isSidebarCollapsed ? 'hidden' : 'block'
-                }`}
-              >
-                {section.label}
-              </p>
-              <div className="mt-2 space-y-0.5">
-                {section.items.map((item) => {
-                  const active = matchRoute(item.href);
-                  const disabled = item.disabled;
-                  const baseClasses =
-                    'group flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors';
-                  const stateClasses = disabled
-                    ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
-                    : active
-                    ? 'bg-sky-100 text-slate-900 dark:bg-[#0A84FF]/10 dark:text-[#0A84FF]'
-                    : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-[#0A84FF]/5 dark:hover:text-slate-100';
+        <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-6">
+          {navSections.flatMap((section) => section.items).map((item) => {
+            const active = matchRoute(item.href);
+            const disabled = item.disabled;
+            const baseClasses =
+              'group flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors';
+            const stateClasses = disabled
+              ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
+              : active
+              ? 'bg-sky-100 text-slate-900 dark:bg-[#0A84FF]/10 dark:text-[#0A84FF]'
+              : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-[#0A84FF]/5 dark:hover:text-slate-100';
 
-                  return (
-                    <Link
-                      key={item.label}
-                      href={disabled ? '#' : item.href}
-                      className={`${baseClasses} ${stateClasses}`}
-                      aria-disabled={disabled}
-                      tabIndex={disabled ? -1 : undefined}
-                      onClick={(event) => {
-                        if (disabled) {
-                          event.preventDefault();
-                        }
-                      }}
-                    >
-                      <span
-                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors ${
-                          active
-                            ? 'bg-[#0A84FF]/10 dark:bg-[#0A84FF]/10'
-                            : 'bg-transparent dark:bg-transparent'
-                        }`}
-                      >
-                        {ICONS[item.icon](active)}
-                      </span>
-                      <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>{item.label}</span>
-                      {item.comingSoon && !isSidebarCollapsed && (
-                        <span className="ml-auto text-xs font-semibold uppercase text-slate-400 dark:text-slate-500">
-                          Soon
-                        </span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </nav>
-
-        <div className="border-t border-slate-200 px-3 py-4 dark:border-[#363638]">
-          <div
-            className={`flex ${
-              isSidebarCollapsed
-                ? 'flex-col items-center gap-2'
-                : 'items-center justify-between gap-3'
-            }`}
-          >
-            <div
-              className={`flex ${
-                isSidebarCollapsed ? 'flex-col items-center gap-2' : 'items-center gap-3'
-              }`}
-            >
+            return (
               <Link
-                href="https://github.com/endgor/azure-hub"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open the Azure Hub GitHub repository in a new tab"
-                className="group inline-flex"
+                key={item.label}
+                href={disabled ? '#' : item.href}
+                className={`${baseClasses} ${stateClasses}`}
+                aria-disabled={disabled}
+                tabIndex={disabled ? -1 : undefined}
+                onClick={(event) => {
+                  if (disabled) {
+                    event.preventDefault();
+                  }
+                }}
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
-                  {ICONS.github(false)}
+                <span
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors ${
+                    active
+                      ? 'bg-[#0A84FF]/10 dark:bg-[#0A84FF]/10'
+                      : 'bg-transparent dark:bg-transparent'
+                  }`}
+                >
+                  {ICONS[item.icon](active)}
                 </span>
-                <span className="sr-only">GitHub repository</span>
+                <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>{item.label}</span>
+                {item.comingSoon && !isSidebarCollapsed && (
+                  <span className="ml-auto text-xs font-semibold uppercase text-slate-400 dark:text-slate-500">
+                    Soon
+                  </span>
+                )}
               </Link>
-              <Link href="/about" aria-label="Learn more about Azure Hub" className="group inline-flex">
-                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-slate-50 text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
-                  {ICONS.help(false)}
-                </span>
-                <span className="sr-only">About Azure Hub</span>
-              </Link>
-            </div>
-            <ThemeToggle isDarkMode={isDarkMode} onToggle={onThemeToggle} />
-          </div>
-        </div>
+            );
+          })}
+        </nav>
       </aside>
     </>
   );

@@ -7,7 +7,7 @@ import path from 'path';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import Results from '@/components/Results';
-import IpDiffPanel from '@/components/IpDiffPanel';
+import RecentChangesCard from '@/components/RecentChangesCard';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
@@ -260,6 +260,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
           initialValue={initialQuery}
           initialRegion={initialRegion}
           initialService={initialService}
+          variant="full-width"
         />
 
         <div className="space-y-6">
@@ -311,17 +312,15 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
         </div>
 
         {!initialQuery && !initialRegion && !initialService && (
-          <>
-            <IpDiffPanel className="mb-6" />
-
+          <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
             <section className="space-y-4">
               <div>
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  Use IP addresses, CIDR notations, hostnames (with DNS lookup), service tags, or Azure regions to explore the dataset.
+                  Try IP addresses, CIDR notation, hostnames, service tags, or Azure regions.
                 </p>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {SAMPLE_QUERIES.map((item) => (
                   <div
                     key={item.label}
@@ -340,7 +339,11 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
                 ))}
               </div>
             </section>
-          </>
+
+            <aside>
+              <RecentChangesCard />
+            </aside>
+          </div>
         )}
       </section>
     </Layout>
