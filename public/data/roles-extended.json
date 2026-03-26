@@ -30094,14 +30094,14 @@
           "Microsoft.DeviceRegistry/schemaRegistries/read",
           "Microsoft.DeviceRegistry/schemaRegistries/write",
           "Microsoft.Authorization/*/read",
-          "Microsoft.Authorization/*/write",
+          "Microsoft.Authorization/roleAssignments/write",
           "Microsoft.Insights/alertRules/*",
           "Microsoft.Resources/deployments/*",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Edge/sites/read"
         ],
-        "condition": null,
-        "conditionVersion": null,
+        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals {ba92f5b4-2d11-453d-a403-e96b0029c9fe, b24988ac-6180-42a0-ab88-20f7382dd24c}))",
+        "conditionVersion": "2.0",
         "dataActions": [],
         "notActions": [],
         "notDataActions": []
@@ -30111,8 +30111,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-07-16T15:09:06.770476+00:00",
-    "permissionCount": 1838.333333333333,
+    "updatedOn": "2026-03-25T15:18:54.637425+00:00",
+    "permissionCount": 1505.9999999999998,
     "dataActions": [],
     "notDataActions": []
   },
@@ -33336,6 +33336,7 @@
       {
         "actions": [
           "Microsoft.HybridConnectivity/endpoints/listIngressGatewayCredentials/action",
+          "Microsoft.HybridConnectivity/Locations/OperationStatuses/write",
           "Microsoft.HybridConnectivity/publicCloudConnectors/delete",
           "Microsoft.HybridConnectivity/publicCloudConnectors/testPermissions/action",
           "Microsoft.HybridConnectivity/publicCloudConnectors/write",
@@ -33354,8 +33355,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-09-09T15:23:12.082701+00:00",
-    "permissionCount": 7,
+    "updatedOn": "2026-03-25T15:18:54.637425+00:00",
+    "permissionCount": 8,
     "dataActions": [],
     "notDataActions": []
   },
