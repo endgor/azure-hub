@@ -80,10 +80,10 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
 
   // Export options for ExportMenu
   const exportOptions: ExportOption[] = useMemo(() => [
-    { label: 'JSON', format: 'json', extension: '.json', onClick: handleJsonExport },
-    { label: 'CSV', format: 'csv', extension: '.csv', onClick: handleCsvExport },
-    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
-    { label: 'Markdown', format: 'md', extension: '.md', onClick: handleMarkdownExport }
+    { label: 'JSON file', format: 'json', extension: '.json', onClick: handleJsonExport },
+    { label: 'Comma separated', format: 'csv', extension: '.csv', onClick: handleCsvExport },
+    { label: 'Excel spreadsheet', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
+    { label: 'Markdown table', format: 'md', extension: '.md', onClick: handleMarkdownExport }
   ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
 
   // Check if any of the selected roles are privileged

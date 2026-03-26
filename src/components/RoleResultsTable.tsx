@@ -176,10 +176,10 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
   }, [selectedResults, roleSystem]);
 
   const exportOptions: ExportOption[] = useMemo(() => [
-    { label: 'JSON', format: 'json', extension: '.json', onClick: handleJsonExport },
-    { label: 'CSV', format: 'csv', extension: '.csv', onClick: handleCsvExport },
-    { label: 'Excel', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
-    { label: 'Markdown', format: 'md', extension: '.md', onClick: handleMarkdownExport }
+    { label: 'JSON file', format: 'json', extension: '.json', onClick: handleJsonExport },
+    { label: 'Comma separated', format: 'csv', extension: '.csv', onClick: handleCsvExport },
+    { label: 'Excel spreadsheet', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
+    { label: 'Markdown table', format: 'md', extension: '.md', onClick: handleMarkdownExport }
   ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
 
   const allSelected = sortedResults.length > 0 && selectedRoles.size === sortedResults.length;
@@ -544,23 +544,6 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-          Understanding Results
-        </h3>
-        <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
-          <p>
-            <strong className="text-slate-900 dark:text-slate-100">Recommended Order:</strong> Roles are ranked by relevance to your requested permissions. Domain-specific roles rank higher than generic broad roles for namespace-specific permissions.
-          </p>
-          <p>
-            <strong className="text-slate-900 dark:text-slate-100">Exact Match:</strong> Roles that grant exactly the permissions you requested without additional access.
-          </p>
-          <p>
-            <strong className="text-slate-900 dark:text-slate-100">Tip:</strong> The top result is usually your best choice for least privilege access. You can click column headers to re-sort if needed.
-          </p>
-        </div>
-      </div>
     </div>
   );
 });

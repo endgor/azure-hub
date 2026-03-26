@@ -211,7 +211,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   // Export options configuration
   const exportOptions = useMemo<ExportOption[]>(() => [
     {
-      label: 'CSV',
+      label: 'Comma separated',
       format: 'csv',
       extension: '.csv',
       onClick: async () => {
@@ -222,7 +222,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       }
     },
     {
-      label: 'Excel',
+      label: 'Excel spreadsheet',
       format: 'xlsx',
       extension: '.xlsx',
       onClick: async () => {
@@ -233,7 +233,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       }
     },
     {
-      label: 'Markdown',
+      label: 'Markdown table',
       format: 'md',
       extension: '.md',
       onClick: async () => {

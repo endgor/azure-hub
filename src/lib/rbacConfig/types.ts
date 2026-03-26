@@ -52,8 +52,8 @@ export interface RoleSystemConfig {
 
   /** Available input modes */
   modes: {
-    available: ('simple' | 'advanced' | 'roleExplorer' | 'roleCompare' | 'roleCreator')[];
-    default: 'simple' | 'advanced' | 'roleExplorer' | 'roleCompare' | 'roleCreator';
+    available: ('simple' | 'advanced' | 'roleExplorer' | 'roleCreator')[];
+    default: 'simple' | 'advanced' | 'roleExplorer' | 'roleCreator';
   };
 
   /** Mode-specific descriptions */
@@ -61,7 +61,6 @@ export interface RoleSystemConfig {
     simple: string;
     advanced: string;
     roleExplorer: string;
-    roleCompare?: string;
     roleCreator?: string;
   };
 
