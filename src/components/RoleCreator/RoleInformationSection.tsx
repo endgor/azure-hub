@@ -1,5 +1,7 @@
 import type { CustomRoleDefinition } from '@/hooks/useRoleCreator';
+import type { RbacTemplate } from '@/lib/rbacTemplates';
 import ScopesManager from '@/components/ScopesManager';
+import TemplateSelector from '@/components/TemplateSelector';
 
 interface RoleInformationSectionProps {
   customRole: CustomRoleDefinition;
@@ -7,25 +9,25 @@ interface RoleInformationSectionProps {
   onDescriptionChange: (description: string) => void;
   onAddScope: (scope: string) => void;
   onRemoveScope: (scope: string) => void;
+  onLoadTemplate: (template: RbacTemplate) => void;
 }
 
-/**
- * Role Information Section - Role name, description, and assignable scopes
- *
- * Displays editable fields for the custom role's basic information.
- */
 export default function RoleInformationSection({
   customRole,
   onRoleNameChange,
   onDescriptionChange,
   onAddScope,
   onRemoveScope,
+  onLoadTemplate,
 }: RoleInformationSectionProps) {
   return (
     <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
-      <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
-        Role Information
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          Role Information
+        </h2>
+        <TemplateSelector onLoadTemplate={onLoadTemplate} />
+      </div>
 
       <div className="space-y-4">
         <div>

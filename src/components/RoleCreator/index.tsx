@@ -1,10 +1,8 @@
 import type { AzureRole } from '@/types/rbac';
 import { useRoleCreator } from '@/hooks/useRoleCreator';
-import TemplateSelector from '@/components/TemplateSelector';
 import RoleInformationSection from './RoleInformationSection';
 import ImportRoleSection from './ImportRoleSection';
 import PermissionsSection from './PermissionsSection';
-import AboutCustomRoles from './AboutCustomRoles';
 import Button from '@/components/shared/Button';
 
 interface RoleCreatorProps {
@@ -64,11 +62,9 @@ export default function RoleCreator({ availableRoles, onSearchActions }: RoleCre
 
   return (
     <div className="space-y-6">
-      {/* Template Selector */}
-      <TemplateSelector onLoadTemplate={handleLoadTemplate} />
-
       {/* Role Information */}
       <RoleInformationSection
+        onLoadTemplate={handleLoadTemplate}
         customRole={customRole}
         onRoleNameChange={(name) => setCustomRole({ ...customRole, roleName: name })}
         onDescriptionChange={(description) => setCustomRole({ ...customRole, description })}
@@ -127,8 +123,6 @@ export default function RoleCreator({ availableRoles, onSearchActions }: RoleCre
         </Button>
       </div>
 
-      {/* About Custom Roles Info */}
-      <AboutCustomRoles />
     </div>
   );
 }
