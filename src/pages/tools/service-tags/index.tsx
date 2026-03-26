@@ -82,8 +82,11 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
   const [data, setData] = useState<ServiceTagsResponse | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
 
   useClickOutside(cloudFilterRef as React.RefObject<HTMLElement>, () => setIsCloudFilterOpen(false), isCloudFilterOpen);
+
+  useEffect(() => { setHasMounted(true); }, []);
 
   // Fetch service tags on component mount
   useEffect(() => {
@@ -265,7 +268,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
           </div>
         )}
         {/* Static directory of base service tags for SEO — rendered in HTML at build time */}
-        {baseServiceTags.length > 0 && !searchTerm && !data && (
+        {baseServiceTags.length > 0 && !searchTerm && !hasMounted && (
           <nav aria-label="All Azure service tags" className="space-y-3">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               All service tags ({baseServiceTags.length})
