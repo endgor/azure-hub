@@ -118,7 +118,7 @@ Set the domain controller or Azure DNS Private Resolver IP addresses as **custom
 
 ### AD-integrated DNS: Conditional forwarder replication
 
-This is a subtle one that has caught me off guard. If your domain controllers use AD-integrated DNS, be careful with conditional forwarder replication. When you create a conditional forwarder and store it in Active Directory, you can choose a replication scope:
+This one bit me the first time I set up a hybrid environment. If your domain controllers use AD-integrated DNS, be careful with conditional forwarder replication. When you create a conditional forwarder and store it in Active Directory, you can choose a replication scope:
 
 - **All DNS servers in the forest** (replicates everywhere, including Azure DCs)
 - **All DNS servers in the domain** (same issue, Azure DCs in the domain get it too)
