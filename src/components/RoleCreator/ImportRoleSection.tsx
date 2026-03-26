@@ -1,5 +1,7 @@
 import type { ImportedRoleInfo } from '@/hooks/useRoleCreator';
 import SearchableDropdown, { type DropdownItem } from '@/components/SearchableDropdown';
+import SelectionChips from '@/components/SelectionChips';
+import { useMemo } from 'react';
 
 interface ImportRoleSectionProps {
   roleSearchQuery: string;
@@ -12,12 +14,6 @@ interface ImportRoleSectionProps {
   onRemoveImportedRole: (roleId: string) => void;
 }
 
-/**
- * Import Role Section - Import permissions from built-in Azure roles
- *
- * Allows searching for and importing permissions from existing Azure roles.
- * Displays imported roles with option to remove them.
- */
 export default function ImportRoleSection({
   roleSearchQuery,
   roleDropdownItems,
@@ -28,6 +24,16 @@ export default function ImportRoleSection({
   onDropdownVisibilityChange,
   onRemoveImportedRole,
 }: ImportRoleSectionProps) {
+  const importedRoleChips = useMemo(
+    () =>
+      importedRoles.map((imported) => ({
+        id: imported.role.id,
+        content: <span className="text-xs">{imported.role.roleName}</span>,
+        removeAriaLabel: `Remove ${imported.role.roleName}`,
+      })),
+    [importedRoles]
+  );
+
   return (
     <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
@@ -45,28 +51,10 @@ export default function ImportRoleSection({
           placeholder="Search for a built-in role (e.g., Storage Blob Data Contributor)"
         />
 
-        {importedRoles.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {importedRoles.map((imported) => (
-              <span
-                key={imported.role.id}
-                className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-              >
-                {imported.role.roleName}
-                <button
-                  type="button"
-                  onClick={() => onRemoveImportedRole(imported.role.id)}
-                  className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-                  aria-label={`Remove ${imported.role.roleName}`}
-                >
-                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
+        <SelectionChips
+          items={importedRoleChips}
+          onRemove={onRemoveImportedRole}
+        />
       </div>
     </div>
   );

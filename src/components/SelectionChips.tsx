@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import Button from '@/components/shared/Button';
 
 export interface SelectionChip {
   id: string;
@@ -8,7 +7,7 @@ export interface SelectionChip {
 }
 
 interface SelectionChipsProps {
-  heading: string;
+  heading?: string;
   items: SelectionChip[];
   onRemove: (id: string) => void;
 }
@@ -20,38 +19,29 @@ export default function SelectionChips({ heading, items, onRemove }: SelectionCh
 
   return (
     <div className="space-y-2">
-      <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">
-        {heading}
-      </h3>
+      {heading && (
+        <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">
+          {heading}
+        </h3>
+      )}
       <div className="flex flex-wrap gap-2">
         {items.map((item) => (
-          <div
+          <span
             key={item.id}
-            className="flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-1.5 shadow-sm dark:border-slate-600 dark:bg-slate-800"
+            className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
           >
-            <div className="max-w-md">{item.content}</div>
-            <Button
+            <span className="max-w-md">{item.content}</span>
+            <button
               type="button"
-              variant="ghost"
-              size="sm"
               onClick={() => onRemove(item.id)}
               aria-label={item.removeAriaLabel}
-              className="shrink-0 text-slate-400 transition hover:text-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500/50 dark:text-slate-500 dark:hover:text-slate-300 p-0"
+              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
+              <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </Button>
-          </div>
+            </button>
+          </span>
         ))}
       </div>
     </div>
