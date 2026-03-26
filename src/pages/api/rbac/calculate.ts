@@ -52,15 +52,18 @@ export default async function handler(
   try {
     const body = req.body as CalculateRequest;
 
-    if (!body.requiredActions || !Array.isArray(body.requiredActions) || body.requiredActions.length === 0) {
+    const hasControlActions = Array.isArray(body.requiredActions) && body.requiredActions.length > 0;
+    const hasDataActions = Array.isArray(body.requiredDataActions) && body.requiredDataActions.length > 0;
+
+    if (!hasControlActions && !hasDataActions) {
       return res.status(400).json({
         results: [],
-        error: 'requiredActions must be a non-empty array'
+        error: 'requiredActions or requiredDataActions must be a non-empty array'
       });
     }
 
     const results = await calculateLeastPrivilege({
-      requiredActions: body.requiredActions,
+      requiredActions: body.requiredActions || [],
       requiredDataActions: body.requiredDataActions || []
     });
 
