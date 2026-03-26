@@ -28,7 +28,7 @@ const CORE_TOOLS = [
     description: 'Verify whether an IP, CIDR, or service tag belongs to Azure and explore its metadata.',
     href: '/tools/ip-lookup',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-700 dark:text-slate-300" aria-hidden="true">
         <path
           fill="currentColor"
           d="M11 4a7 7 0 015.65 11.12l3.12 3.11a1 1 0 11-1.41 1.42l-3.12-3.12A7 7 0 1111 4zm0 2a5 5 0 100 10 5 5 0 000-10zm0 3a1 1 0 01.99.86L12 10v2a1 1 0 01-1.99.14L10 12v-2a1 1 0 011-1zm-2 0a1 1 0 01.99.86L10 10v2a1 1 0 01-1.99.14L8 12v-2a1 1 0 011-1z"
@@ -41,7 +41,7 @@ const CORE_TOOLS = [
     description: 'Browse Azure service tags.',
     href: '/tools/service-tags',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-700 dark:text-slate-300" aria-hidden="true">
         <path
           fill="currentColor"
           d="M3 4a2 2 0 012-2h4.586a2 2 0 011.414.586l8.414 8.414a2 2 0 010 2.828l-4.586 4.586a2 2 0 01-2.828 0L3.586 10.414A2 2 0 013 9V4zm4 3a2 2 0 100-4 2 2 0 000 4z"
@@ -54,7 +54,7 @@ const CORE_TOOLS = [
     description: 'Discover tenant IDs, default domains, and Azure AD region scope by domain.',
     href: '/tools/tenant-lookup',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-700 dark:text-slate-300" aria-hidden="true">
         <path
           fill="currentColor"
           d="M4 4a2 2 0 012-2h4a2 2 0 012 2v3h5a2 2 0 012 2v3h-2V9h-5v11h-2v-4H6v4H4V4zm4 0H6v5h4V4H8zm12 10a2 2 0 012 2v5h-2v-3h-4v3h-2v-5a2 2 0 012-2h4zm-1 2h-2v1h2v-1z"
@@ -67,7 +67,7 @@ const CORE_TOOLS = [
     description: 'Plan subnets, model address allocation, and export results for Azure deployments.',
     href: '/tools/subnet-calculator',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-700 dark:text-slate-300" aria-hidden="true">
         <path
           fill="currentColor"
           d="M5 3a2 2 0 00-2 2v5h18V5a2 2 0 00-2-2H5zm16 9H3v5a2 2 0 002 2h6v-3H9a1 1 0 110-2h6a1 1 0 010 2h-2v3h6a2 2 0 002-2v-5z"
@@ -80,7 +80,7 @@ const CORE_TOOLS = [
     description: 'Find the least privileged Azure RBAC role for managing Azure resources like VMs, storage, and networking.',
     href: '/tools/azure-rbac-calculator',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-700 dark:text-slate-300" aria-hidden="true">
         <path
           fill="currentColor"
           d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
@@ -93,7 +93,7 @@ const CORE_TOOLS = [
     description: 'Find the least privileged Entra ID role for managing directory objects like users, groups, and applications.',
     href: '/tools/entraid-roles-calculator',
     icon: (
-      <svg viewBox="0 0 24 24" className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="h-6 w-6 text-slate-700 dark:text-slate-300" aria-hidden="true">
         <path
           fill="currentColor"
           d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
@@ -133,7 +133,7 @@ export default function Home({ lastUpdated }: HomeProps) {
                 className="group flex flex-col gap-4 rounded-xl bg-white p-5 transition dark:bg-slate-900"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                     {tool.icon}
                   </div>
                   <div>
@@ -141,7 +141,7 @@ export default function Home({ lastUpdated }: HomeProps) {
                   </div>
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-300">{tool.description}</p>
-                <span className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-blue-500 transition group-hover:text-blue-600 dark:text-blue-400 dark:group-hover:text-blue-300">
+                <span className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition group-hover:text-slate-900 dark:text-slate-400 dark:group-hover:text-slate-200">
                   Open tool <span aria-hidden="true">→</span>
                 </span>
               </Link>

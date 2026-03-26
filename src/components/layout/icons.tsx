@@ -17,7 +17,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -29,7 +29,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -41,7 +41,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -53,7 +53,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -65,7 +65,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -77,7 +77,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -89,7 +89,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -101,7 +101,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -113,7 +113,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
     >
       <path
         fill="currentColor"
@@ -126,7 +126,7 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className={`h-5 w-5 transition-colors ${active ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
       fill="none"
       stroke="currentColor"
       strokeWidth={1.5}
