@@ -234,7 +234,7 @@ export default function PrivateDnsZones({ data }: PageProps) {
               placeholder="Search services, ARM types, zones..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              maxWidth="sm"
+              maxWidth="md"
             />
             <ExportMenu
               options={exportOptions}
