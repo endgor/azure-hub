@@ -17,8 +17,11 @@
   },
   "dependencies": {
     "@azure/identity": "^4.5.0",
+    "@types/d3-geo": "^3.1.0",
+    "@types/topojson-client": "^3.1.5",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "d3-geo": "^3.1.1",
     "exceljs": "^4.4.0",
     "gray-matter": "^4.0.3",
     "ip-cidr": "^4.0.2",
@@ -37,6 +40,7 @@
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
+    "topojson-client": "^3.1.0",
     "unified": "^11.0.5",
     "zod": "^4.3.6"
   },

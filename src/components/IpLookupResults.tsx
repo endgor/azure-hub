@@ -4,6 +4,7 @@ import type { AzureIpAddress } from '@/types/azure';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 import { prepareDataForExport, exportToCSV, exportToExcel, exportToMarkdown, generateFilename } from '@/lib/exportUtils';
 import { CLOUD_LABELS } from '@/lib/cloudConstants';
+import RegionMap from '@/components/RegionMap';
 
 interface IpLookupResultsProps {
   results: AzureIpAddress[];
@@ -166,6 +167,9 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
             <p className="mt-0.5 text-sm font-medium text-slate-800 dark:text-slate-200">{primary.networkFeatures || '-'}</p>
           </div>
         </div>
+
+        {/* Region map */}
+        {primary.region && <RegionMap region={primary.region} />}
 
         {/* DNS resolution info */}
         {primary.resolvedFrom && primary.resolvedIp && (
