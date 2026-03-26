@@ -6,5 +6,9 @@
   "azure-policy": {
     "name": "Azure Policy",
     "description": "Guides about Azure Policy for governance and compliance"
+  },
+  "networking": {
+    "name": "Networking",
+    "description": "Guides about Azure networking, DNS, and connectivity"
   }
 }

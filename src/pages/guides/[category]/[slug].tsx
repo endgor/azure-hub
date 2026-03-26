@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import GuideContent from '@/components/GuideContent';
+import GuideTOC from '@/components/GuideTOC';
 import { getGuide, getAllGuideSlugs, Guide } from '@/lib/guides';
 
 interface GuidePageProps {
@@ -59,8 +60,17 @@ export default function GuidePage({ guide }: GuidePageProps) {
           )}
         </div>
 
-        {/* Content */}
-        <GuideContent html={guide.content || ''} />
+        {/* Content + TOC */}
+        <div className="relative flex gap-10">
+          <div className="min-w-0 flex-1">
+            <GuideContent html={guide.content || ''} />
+          </div>
+          {guide.headings && guide.headings.length >= 3 && (
+            <div className="w-56 flex-shrink-0">
+              <GuideTOC headings={guide.headings} />
+            </div>
+          )}
+        </div>
 
         {/* Back to Guides */}
         <div className="pt-8 mt-8 border-t border-slate-200 dark:border-slate-700">

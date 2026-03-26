@@ -36,6 +36,9 @@ jobs:
       - name: Update Azure IP data
         run: npm run update-ip-data
 
+      - name: Update Private DNS zone data
+        run: npm run update-private-dns-zones
+
       - name: Azure Login
         uses: azure/login@v1
         with:

@@ -88,6 +88,11 @@ const NAV_SECTIONS: NavSection[] = [
         icon: 'serviceTags'
       },
       {
+        label: 'Private DNS Zones',
+        href: '/tools/private-dns-zones',
+        icon: 'privateDns'
+      },
+      {
         label: 'Subnet Calculator',
         href: '/tools/subnet-calculator',
         icon: 'subnet'
