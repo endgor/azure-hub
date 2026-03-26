@@ -327,7 +327,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
           </div>
 
           <aside>
-            <RecentChangesCard serviceCount={serviceTagCount} />
+            <RecentChangesCard />
           </aside>
         </div>
       </section>

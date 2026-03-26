@@ -5,11 +5,7 @@ import type { IpDiffFile } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
 import { CLOUD_LABELS } from '@/lib/cloudConstants';
 
-interface RecentChangesCardProps {
-  serviceCount?: number;
-}
-
-export default function RecentChangesCard({ serviceCount }: RecentChangesCardProps) {
+export default function RecentChangesCard() {
   const [diffData, setDiffData] = useState<IpDiffFile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetchingRef = useRef(false);
@@ -111,14 +107,13 @@ export default function RecentChangesCard({ serviceCount }: RecentChangesCardPro
       <div className="px-5 pb-4 pt-1">
         {summary && (summary.serviceTagsAdded > 0 || summary.serviceTagsModified > 0) && (
           <p className="text-[11px] text-slate-400 dark:text-slate-500">
-            {summary.serviceTagsAdded > 0 && <>{summary.serviceTagsAdded} new tags</>}
+            {summary.serviceTagsAdded > 0 && <>{summary.serviceTagsAdded} new service tags</>}
             {summary.serviceTagsAdded > 0 && summary.serviceTagsModified > 0 && <>&nbsp;&nbsp;&nbsp;</>}
-            {summary.serviceTagsModified > 0 && <>{summary.serviceTagsModified} modified</>}
+            {summary.serviceTagsModified > 0 && <>{summary.serviceTagsModified} modified service tags</>}
           </p>
         )}
         <p className="text-[11px] text-slate-400 dark:text-slate-500">
           Last update: {new Date(diffData.meta.generatedAt).toLocaleDateString('sv-SE')}
-          {serviceCount != null && serviceCount > 0 && <> · {serviceCount} services</>}
         </p>
       </div>
     </div>
