@@ -242,7 +242,7 @@ export default function TenantLookupPage() {
         )}
 
         {result && !error && summaryFields.length > 0 && (
-          <div className="rounded-xl border border-slate-100 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Lookup Results</h2>
               <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">

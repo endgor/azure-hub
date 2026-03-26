@@ -38,7 +38,7 @@ export default function RecentChangesCard({ serviceCount }: RecentChangesCardPro
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-5 dark:border-slate-800 dark:bg-slate-800/30">
+      <div className="rounded-xl bg-white p-5 dark:bg-slate-900">
         <div className="animate-pulse space-y-3">
           <div className="h-5 w-32 rounded bg-slate-200 dark:bg-slate-700" />
           <div className="h-4 w-24 rounded bg-slate-200 dark:bg-slate-700" />
@@ -62,7 +62,7 @@ export default function RecentChangesCard({ serviceCount }: RecentChangesCardPro
   );
 
   return (
-    <div className="rounded-xl border border-slate-100 bg-slate-50/50 dark:border-slate-800 dark:bg-slate-800/30">
+    <div className="rounded-xl bg-white dark:bg-slate-900">
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-4 pb-3">
         <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-300">Recent Changes</h3>
@@ -93,7 +93,7 @@ export default function RecentChangesCard({ serviceCount }: RecentChangesCardPro
           {Object.entries(clouds).map(([cloud, info]) => (
             <div
               key={cloud}
-              className="flex items-center justify-between rounded-lg bg-white px-3.5 py-2 dark:bg-slate-800/60"
+              className="flex items-center justify-between rounded-lg bg-slate-50 px-3.5 py-2 dark:bg-slate-800/60"
             >
               <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
                 {CLOUD_LABELS[cloud as AzureCloudName] ?? cloud}

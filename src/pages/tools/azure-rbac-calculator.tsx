@@ -536,7 +536,7 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
         {/* Role Creator Mode */}
         {inputMode === 'roleCreator' ? (
           <Suspense fallback={
-            <div className="flex items-center justify-center rounded-xl border border-slate-100 bg-white p-12 dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-center rounded-xl bg-white p-12 dark:bg-slate-900">
               <LoadingSpinner size="md" label="Loading Role Creator..." />
             </div>
           }>
@@ -650,7 +650,7 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
 
         {/* Loading State */}
         {isLoading && !isRoleCreatorMode && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-100 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
             <LoadingSpinner size="lg" label="Calculating least privileged roles..." />
           </div>
         )}

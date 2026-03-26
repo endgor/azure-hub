@@ -208,7 +208,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         </div>
 
         {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl border border-slate-100 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
             <LoadingSpinner size="lg" label="Loading service tags..." />
           </div>
         )}
@@ -237,7 +237,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
                   <Link
                     key={`${serviceTag.id}-${serviceTag.cloud}`}
                     href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
-                    className="group rounded-xl border border-slate-100 bg-white p-4 transition hover:border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+                    className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">

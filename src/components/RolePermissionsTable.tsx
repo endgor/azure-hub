@@ -157,7 +157,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl border border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900">
+      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">

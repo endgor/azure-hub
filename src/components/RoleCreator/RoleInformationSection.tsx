@@ -22,7 +22,7 @@ export default function RoleInformationSection({
   onRemoveScope,
 }: RoleInformationSectionProps) {
   return (
-    <div className="rounded-xl border border-slate-100 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">
         Role Information
       </h2>

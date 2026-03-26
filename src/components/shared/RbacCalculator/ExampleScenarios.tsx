@@ -21,7 +21,7 @@ export default function ExampleScenarios({ config, onLoadExample }: ExampleScena
           <button
             key={scenario.label}
             onClick={() => onLoadExample(scenario.actions)}
-            className="flex flex-col space-y-2 rounded-xl border border-slate-100 bg-white p-4 text-left transition hover:border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+            className="flex flex-col space-y-2 rounded-xl bg-white p-4 text-left transition dark:bg-slate-900"
           >
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               {scenario.label}

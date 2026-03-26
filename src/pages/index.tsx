@@ -130,7 +130,7 @@ export default function Home({ lastUpdated }: HomeProps) {
               <Link
                 key={tool.title}
                 href={tool.href}
-                className="group flex flex-col gap-4 rounded-xl border border-slate-100 bg-white p-5 transition hover:border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+                className="group flex flex-col gap-4 rounded-xl bg-white p-5 transition dark:bg-slate-900"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-300">

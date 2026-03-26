@@ -48,7 +48,7 @@ export default function AdvancedMode({
       </div>
 
       {searchResults.length > 0 && (
-        <div className="rounded-lg border border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900">
+        <div className="rounded-lg bg-white dark:bg-slate-900">
           <div className="p-3 border-b border-slate-200 dark:border-slate-700">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Suggested {config.labels.actionLabel}
