@@ -104,8 +104,8 @@ export function Sidebar({
             const stateClasses = disabled
               ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
               : active
-              ? 'bg-sky-100 text-slate-900 dark:bg-[#0A84FF]/10 dark:text-[#0A84FF]'
-              : 'text-slate-600 hover:bg-sky-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-[#0A84FF]/5 dark:hover:text-slate-100';
+              ? 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400'
+              : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200';
 
             return (
               <Link
@@ -123,7 +123,7 @@ export function Sidebar({
                 <span
                   className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors ${
                     active
-                      ? 'bg-[#0A84FF]/10 dark:bg-[#0A84FF]/10'
+                      ? 'bg-transparent dark:bg-transparent'
                       : 'bg-transparent dark:bg-transparent'
                   }`}
                 >

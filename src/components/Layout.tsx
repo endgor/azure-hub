@@ -343,12 +343,12 @@ export default function Layout({
                 aria-label="Open the Azure Hub GitHub repository"
                 className="group inline-flex"
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
+                <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                   {ICONS.github(false)}
                 </span>
               </Link>
               <Link href="/about" aria-label="About Azure Hub" className="group inline-flex">
-                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
+                <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                   {ICONS.help(false)}
                 </span>
               </Link>
@@ -395,12 +395,12 @@ export default function Layout({
                   aria-label="GitHub repository"
                   className="group inline-flex"
                 >
-                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                     {ICONS.github(false)}
                   </span>
                 </Link>
                 <Link href="/about" aria-label="About Azure Hub" className="group inline-flex">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-400 transition-colors group-hover:border-sky-200 group-hover:bg-sky-50 group-hover:text-slate-900 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-[#0A84FF]/80 dark:group-hover:border-[#0A84FF]/30 dark:group-hover:bg-[#0A84FF]/10 dark:group-hover:text-[#0A84FF]">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                     {ICONS.help(false)}
                   </span>
                 </Link>

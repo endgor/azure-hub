@@ -238,7 +238,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">
             Networking
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure IP Lookup</h1>
@@ -252,7 +252,7 @@ export default function IpLookupPage({ serviceTagCount, lastUpdated }: IpLookupS
             {serviceTagCount > 0 && <>Covers {serviceTagCount} Azure services across 3 clouds</>}
             {serviceTagCount > 0 && lastUpdated && <> · </>}
             {lastUpdated && <>Last updated {lastUpdated}</>}
-            {' · '}<Link href="/tools/service-tags/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Browse all service tags</Link>
+            {' · '}<Link href="/tools/service-tags/" className="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-dotted">Browse all service tags</Link>
           </p>
         )}
 

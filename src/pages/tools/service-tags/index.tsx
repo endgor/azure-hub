@@ -142,7 +142,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
     >
       <section className="space-y-10">
         <div className="space-y-2 md:space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-wide text-sky-600/80 dark:text-sky-300 md:tracking-[0.3em]">Networking</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">Networking</p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure Service Tags</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Browse all Azure service tags with IP address ranges, regional endpoints, and network features. Essential for firewall rules, NSG configuration, and network security planning.
