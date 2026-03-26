@@ -15,14 +15,14 @@ export default function Custom404() {
 
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             <Link
-              href="/tools/ip-lookup"
+              href="/tools/ip-lookup/"
               className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5 text-left transition hover:border-sky-500/40 hover:bg-slate-900/60"
             >
               <h3 className="text-lg font-semibold text-slate-100">Azure IP Lookup</h3>
               <p className="mt-2 text-sm text-slate-400">Verify IP ownership and inspect service tags.</p>
             </Link>
             <Link
-              href="/tools/service-tags"
+              href="/tools/service-tags/"
               className="rounded-2xl border border-slate-800/60 bg-slate-900/40 p-5 text-left transition hover:border-sky-500/40 hover:bg-slate-900/60"
             >
               <h3 className="text-lg font-semibold text-slate-100">Service Tags Explorer</h3>

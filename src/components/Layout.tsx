@@ -79,22 +79,22 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       {
         label: 'IP Lookup',
-        href: '/tools/ip-lookup',
+        href: '/tools/ip-lookup/',
         icon: 'ipLookup'
       },
       {
         label: 'Service Tags',
-        href: '/tools/service-tags',
+        href: '/tools/service-tags/',
         icon: 'serviceTags'
       },
       {
         label: 'Private DNS Zones',
-        href: '/tools/private-dns-zones',
+        href: '/tools/private-dns-zones/',
         icon: 'privateDns'
       },
       {
         label: 'Subnet Calculator',
-        href: '/tools/subnet-calculator',
+        href: '/tools/subnet-calculator/',
         icon: 'subnet'
       }
     ]
@@ -104,17 +104,17 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       {
         label: 'Tenant Lookup',
-        href: '/tools/tenant-lookup',
+        href: '/tools/tenant-lookup/',
         icon: 'tenant'
       },
       {
         label: 'Azure RBAC Calculator',
-        href: '/tools/azure-rbac-calculator',
+        href: '/tools/azure-rbac-calculator/',
         icon: 'rbac'
       },
       {
         label: 'Entra ID Roles Calculator',
-        href: '/tools/entraid-roles-calculator',
+        href: '/tools/entraid-roles-calculator/',
         icon: 'entraId'
       }
     ]
@@ -124,7 +124,7 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       {
         label: 'Guides',
-        href: '/guides',
+        href: '/guides/',
         icon: 'guides'
       }
     ]
@@ -352,7 +352,7 @@ export default function Layout({
                   {ICONS.github(false)}
                 </span>
               </Link>
-              <Link href="/about" aria-label="About Azure Hub" className="group inline-flex">
+              <Link href="/about/" aria-label="About Azure Hub" className="group inline-flex">
                 <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                   {ICONS.help(false)}
                 </span>
@@ -404,7 +404,7 @@ export default function Layout({
                     {ICONS.github(false)}
                   </span>
                 </Link>
-                <Link href="/about" aria-label="About Azure Hub" className="group inline-flex">
+                <Link href="/about/" aria-label="About Azure Hub" className="group inline-flex">
                   <span className="flex h-9 w-9 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
                     {ICONS.help(false)}
                   </span>

@@ -7,5 +7,8 @@ Disallow: /api/
 # Block crawling of data files (they're for the application, not search engines)
 Disallow: /data/
 
+# Block crawling of search URLs with query parameters
+Disallow: /tools/ip-lookup/?
+
 # Sitemap
 Sitemap: https://azurehub.org/sitemap.xml

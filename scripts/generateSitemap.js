@@ -208,6 +208,12 @@ function generateSitemap() {
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
+  <url>
+    <loc>${BASE_URL}/tools/private-dns-zones/</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
   <!-- Guides Section -->
   <url>
     <loc>${BASE_URL}/guides/</loc>
@@ -246,8 +252,8 @@ ${serviceTagsArray
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
     const baseTagCount = serviceTagsArray.filter((tag) => !isRegionalVariant(tag)).length;
-    const totalUrls = 9 + guidePages.length + baseTagCount;
-    console.log(`  Total URLs: ${totalUrls} (9 core pages + ${guidePages.length} guides + ${baseTagCount} base service tags)`);
+    const totalUrls = 10 + guidePages.length + baseTagCount;
+    console.log(`  Total URLs: ${totalUrls} (10 core pages + ${guidePages.length} guides + ${baseTagCount} base service tags)`);
     console.log(`  Excluded: ${serviceTagsArray.length - baseTagCount} regional variants (noindexed)`);
 
   } catch (error) {

@@ -97,7 +97,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
       <section className="space-y-8">
         <div className="space-y-2 md:space-y-3">
           <nav className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 md:tracking-[0.3em]" aria-label="Breadcrumb">
-            <Link href="/tools/service-tags" className="text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200">
+            <Link href="/tools/service-tags/" className="text-sky-600 transition hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200">
               Service Tags
             </Link>
             <span className="mx-2 text-slate-400 dark:text-slate-600">/</span>
@@ -142,7 +142,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
         {/* Back Link */}
         <div className="mt-10">
           <Link
-            href="/tools/service-tags"
+            href="/tools/service-tags/"
             className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 transition hover:text-sky-700"
           >
             <span aria-hidden="true">←</span> Back to Service Tags

@@ -27,7 +27,7 @@ export default function GuidePage({ guide }: GuidePageProps) {
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm">
           <Link
-            href="/guides"
+            href="/guides/"
             className="text-sky-600 hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
           >
             Guides
@@ -75,7 +75,7 @@ export default function GuidePage({ guide }: GuidePageProps) {
         {/* Back to Guides */}
         <div className="pt-8 mt-8 border-t border-slate-200 dark:border-slate-700">
           <Link
-            href="/guides"
+            href="/guides/"
             className="inline-flex items-center gap-2 text-sm font-medium text-sky-600 hover:text-sky-700 dark:text-sky-300 dark:hover:text-sky-200"
           >
             <span aria-hidden="true">←</span> Back to all guides

@@ -174,7 +174,7 @@ export default function Home({ lastUpdated }: HomeProps) {
 
         {/* Guides row */}
         <Link
-          href="/guides"
+          href="/guides/"
           className="group flex items-center justify-between rounded-xl bg-white px-5 py-4 transition hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800/70"
         >
           <div className="flex items-center gap-3">
