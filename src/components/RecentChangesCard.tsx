@@ -7,6 +7,7 @@ import { CLOUD_LABELS } from '@/lib/cloudConstants';
 
 export default function RecentChangesCard() {
   const [diffData, setDiffData] = useState<IpDiffFile | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const fetchingRef = useRef(false);
 
@@ -15,8 +16,16 @@ export default function RecentChangesCard() {
     fetchingRef.current = true;
     setIsLoading(true);
 
-    loadIpDiff()
-      .then((data) => setDiffData(data))
+    Promise.all([
+      loadIpDiff(),
+      fetch('/data/file-metadata.json').then(r => r.ok ? r.json() : null).catch(() => null),
+    ])
+      .then(([diff, metadata]) => {
+        setDiffData(diff);
+        if (Array.isArray(metadata) && metadata.length > 0 && metadata[0].lastRetrieved) {
+          setLastUpdated(metadata[0].lastRetrieved);
+        }
+      })
       .catch(() => {})
       .finally(() => {
         setIsLoading(false);
@@ -113,7 +122,7 @@ export default function RecentChangesCard() {
           </p>
         )}
         <p className="text-[11px] text-slate-400 dark:text-slate-500">
-          Last update: {new Date(diffData.meta.generatedAt).toLocaleDateString('sv-SE')}
+          Last update: {lastUpdated ?? new Date(diffData.meta.generatedAt).toLocaleDateString('sv-SE')}
         </p>
       </div>
     </div>
