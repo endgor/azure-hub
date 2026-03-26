@@ -124,9 +124,9 @@ const CLOUD_LABELS: Record<AzureCloudName, string> = {
 
 /** Maps cloud enum to badge styling */
 const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200',
-  [AzureCloudName.AzureUSGovernment]: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
-  [AzureCloudName.AzureChinaCloud]: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-900/30 dark:text-rose-200'
+  [AzureCloudName.AzureCloud]: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+  [AzureCloudName.AzureUSGovernment]: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+  [AzureCloudName.AzureChinaCloud]: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
 };
 
 /** Cloud filter options */
@@ -553,7 +553,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
               >
                 <td className="px-5 py-4 text-sm">
                   {result.cloud && (
-                    <span className={`inline-block rounded-md border px-2 py-1 text-xs font-semibold ${CLOUD_STYLES[result.cloud]}`}>
+                    <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${CLOUD_STYLES[result.cloud]}`}>
                       {CLOUD_LABELS[result.cloud]}
                     </span>
                   )}

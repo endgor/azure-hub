@@ -52,9 +52,9 @@ const CLOUD_LABELS: Record<AzureCloudName, string> = {
 
 /** Maps cloud enum to badge styling */
 const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200',
-  [AzureCloudName.AzureUSGovernment]: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
-  [AzureCloudName.AzureChinaCloud]: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-900/30 dark:text-rose-200'
+  [AzureCloudName.AzureCloud]: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+  [AzureCloudName.AzureUSGovernment]: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+  [AzureCloudName.AzureChinaCloud]: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
 };
 
 /**
@@ -243,7 +243,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
                       <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">
                         {serviceTag.id}
                       </div>
-                      <span className={`inline-block flex-shrink-0 rounded-md border px-2 py-0.5 text-xs font-semibold ${CLOUD_STYLES[serviceTag.cloud]}`}>
+                      <span className={`inline-block flex-shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[serviceTag.cloud]}`}>
                         {CLOUD_LABELS[serviceTag.cloud]}
                       </span>
                     </div>

@@ -15,15 +15,15 @@ const CLOUD_LABELS: Record<AzureCloudName, string> = {
 };
 
 const CLOUD_STYLES: Record<AzureCloudName, string> = {
-  [AzureCloudName.AzureCloud]: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200',
-  [AzureCloudName.AzureUSGovernment]: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-900/30 dark:text-amber-200',
-  [AzureCloudName.AzureChinaCloud]: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-800 dark:bg-rose-900/30 dark:text-rose-200'
+  [AzureCloudName.AzureCloud]: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+  [AzureCloudName.AzureUSGovernment]: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+  [AzureCloudName.AzureChinaCloud]: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400'
 };
 
 function CloudBadge({ cloud }: { cloud?: AzureCloudName }) {
   if (!cloud) return null;
   return (
-    <span className={`inline-block rounded border px-1.5 py-0.5 text-xs font-medium ${CLOUD_STYLES[cloud]}`}>
+    <span className={`inline-block rounded-md px-1.5 py-0.5 text-xs font-medium ${CLOUD_STYLES[cloud]}`}>
       {CLOUD_LABELS[cloud]}
     </span>
   );
@@ -159,7 +159,7 @@ export default function IpDiffPanel({ className = '' }: IpDiffPanelProps) {
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             {Object.entries(diffData.meta.clouds).map(([cloud, info]) => (
               <span key={cloud} className="flex items-center gap-1">
-                <span className={`inline-block rounded border px-1 py-0.5 text-[10px] font-medium ${CLOUD_STYLES[cloud as AzureCloudName]}`}>
+                <span className={`inline-block rounded-md px-1.5 py-0.5 text-[10px] font-medium ${CLOUD_STYLES[cloud as AzureCloudName]}`}>
                   {CLOUD_LABELS[cloud as AzureCloudName]}
                 </span>
                 <span>v{info.fromChangeNumber}→v{info.toChangeNumber}</span>
