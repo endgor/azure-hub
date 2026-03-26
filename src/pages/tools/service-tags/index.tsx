@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import fs from 'fs';
@@ -10,7 +10,6 @@ import { filterAndSortByQuery } from '@/lib/searchUtils';
 import SearchInput from '@/components/shared/SearchInput';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
-import { useClickOutside } from '@/hooks/useClickOutside';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 
 interface ServiceTagsPageProps {
@@ -35,13 +34,6 @@ export const getStaticProps: GetStaticProps<ServiceTagsPageProps> = async () => 
 
 /** Cloud filter options */
 type CloudFilter = 'all' | AzureCloudName;
-
-const CLOUD_FILTER_OPTIONS: { value: CloudFilter; label: string }[] = [
-  { value: 'all', label: 'All Clouds' },
-  { value: AzureCloudName.AzureCloud, label: 'Public' },
-  { value: AzureCloudName.AzureUSGovernment, label: 'Government' },
-  { value: AzureCloudName.AzureChinaCloud, label: 'China' }
-];
 
 /** Maps cloud enum to display label */
 const CLOUD_LABELS: Record<AzureCloudName, string> = {
@@ -77,14 +69,10 @@ interface ServiceTagsResponse {
 export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
-  const [isCloudFilterOpen, setIsCloudFilterOpen] = useState(false);
-  const cloudFilterRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<ServiceTagsResponse | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasMounted, setHasMounted] = useState(false);
-
-  useClickOutside(cloudFilterRef as React.RefObject<HTMLElement>, () => setIsCloudFilterOpen(false), isCloudFilterOpen);
 
   useEffect(() => { setHasMounted(true); }, []);
 
@@ -158,52 +146,26 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
             maxWidth="sm"
           />
 
-          {/* Cloud Filter Dropdown */}
-          <div className="relative inline-block text-left" ref={cloudFilterRef}>
-            <button
-              type="button"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-slate-600"
-              onClick={() => setIsCloudFilterOpen(!isCloudFilterOpen)}
-              aria-expanded={isCloudFilterOpen}
-              aria-haspopup="true"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-              </svg>
-              {CLOUD_FILTER_OPTIONS.find(o => o.value === cloudFilter)?.label}
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isCloudFilterOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
-              </svg>
-            </button>
-
-            {isCloudFilterOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
-                <div className="py-1" role="menu" aria-orientation="vertical">
-                  {CLOUD_FILTER_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => {
-                        setCloudFilter(option.value);
-                        setIsCloudFilterOpen(false);
-                      }}
-                      className={`flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition ${
-                        cloudFilter === option.value
-                          ? 'bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400'
-                          : 'text-slate-700 hover:bg-sky-50 hover:text-sky-700 dark:text-slate-200 dark:hover:bg-sky-900/20 dark:hover:text-sky-400'
-                      }`}
-                      role="menuitem"
-                    >
-                      {cloudFilter === option.value && (
-                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                      <span className={cloudFilter === option.value ? '' : 'ml-7'}>{option.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+          {/* Cloud filter buttons */}
+          <div className="flex flex-wrap items-center gap-2">
+            {([
+              { value: 'all' as CloudFilter, label: 'All clouds' },
+              { value: AzureCloudName.AzureCloud, label: 'Public' },
+              { value: AzureCloudName.AzureChinaCloud, label: 'China' },
+              { value: AzureCloudName.AzureUSGovernment, label: 'Government' }
+            ] as const).map((option) => (
+              <button
+                key={option.value}
+                onClick={() => setCloudFilter(option.value)}
+                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                  cloudFilter === option.value
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
+                    : 'bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
         </div>
 
