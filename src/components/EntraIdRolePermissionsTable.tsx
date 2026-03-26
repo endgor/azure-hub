@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import type { EntraIDRole } from '@/types/rbac';
 import { exportEntraIdRolesToCSV, exportEntraIdRolesToExcel, exportEntraIdRolesToJSON, exportEntraIdRolesToMarkdown } from '@/lib/entraIdExportUtils';
-import { getPrivilegedEntraIdRoles, isPrivilegedEntraIdRole } from '@/config/privilegedEntraIdRoles';
+
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { pluralize } from '@/lib/filenameUtils';
 
@@ -86,14 +86,6 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
     { label: 'Markdown table', format: 'md', extension: '.md', onClick: handleMarkdownExport }
   ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
 
-  // Check if any of the selected roles are privileged
-  const privilegedRolesInSelection = useMemo(
-    () => getPrivilegedEntraIdRoles(roles),
-    [roles]
-  );
-
-  const hasPrivilegedRoles = privilegedRolesInSelection.length > 0;
-
   // Memoize roles with flattened permissions
   const rolesWithFlattenedPermissions = useMemo(() => {
     return roles.map(role => {
@@ -107,35 +99,6 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
 
   return (
     <div className="space-y-4">
-      {/* Privileged Role Warning */}
-      {hasPrivilegedRoles && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-400/30 dark:bg-amber-500/10">
-          <div className="flex gap-3">
-            <svg className="h-6 w-6 flex-shrink-0 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-amber-900 dark:text-amber-200">
-                Privileged Roles Selected
-              </h3>
-              <div className="text-sm text-amber-800 dark:text-amber-200">
-                <p className="mb-2">
-                  You have selected one or more highly privileged roles that grant extensive permissions across Microsoft Entra ID and Microsoft services that use Entra ID identities:
-                </p>
-                <ul className="list-disc space-y-1 pl-5">
-                  {privilegedRolesInSelection.map(role => (
-                    <li key={role.id}><strong>{role.displayName}</strong></li>
-                  ))}
-                </ul>
-                <p className="mt-2">
-                  <strong>Security Best Practice:</strong> Only assign these roles when absolutely necessary and follow the principle of least privilege.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -172,10 +135,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {rolesWithFlattenedPermissions.map(({ role, allPermissions }) => {
-                const isPrivileged = isPrivilegedEntraIdRole(role.displayName);
-
-                return (
+              {rolesWithFlattenedPermissions.map(({ role, allPermissions }) => (
                 <tr
                   key={role.id}
                   className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition"
@@ -221,20 +181,13 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
 
                   {/* Role Type Column */}
                   <td className="px-4 py-3 align-top">
-                    <div className="flex flex-col gap-1 items-start">
-                      <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
-                        role.isBuiltIn
-                          ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                          : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
-                      }`}>
-                        {role.isBuiltIn ? 'Built-in' : 'Custom'}
-                      </span>
-                      {isPrivileged && (
-                        <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 whitespace-nowrap">
-                          Privileged
-                        </span>
-                      )}
-                    </div>
+                    <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
+                      role.isBuiltIn
+                        ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+                        : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
+                    }`}>
+                      {role.isBuiltIn ? 'Built-in' : 'Custom'}
+                    </span>
                   </td>
 
                   {/* Permissions Column */}
@@ -252,8 +205,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
                     </div>
                   </td>
                 </tr>
-                );
-              })}
+              ))}
             </tbody>
           </table>
         </div>
@@ -264,12 +216,9 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
         <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
           Understanding the Table
         </h3>
-        <div className="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+        <div className="text-sm text-slate-600 dark:text-slate-300">
           <p>
             <strong className="text-slate-900 dark:text-slate-100">Permissions:</strong> Actions that the role can perform in Microsoft Entra ID and services that use Entra ID identities
-          </p>
-          <p>
-            <strong className="text-amber-700 dark:text-amber-400">Privileged Roles:</strong> Roles with broad permissions that should be assigned carefully following the principle of least privilege
           </p>
         </div>
       </div>
