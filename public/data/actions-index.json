@@ -202,12 +202,12 @@
   {
     "key": "microsoft.network/virtualnetworks/read",
     "name": "Microsoft.Network/virtualNetworks/read",
-    "roleCount": 60
+    "roleCount": 61
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/read",
     "name": "Microsoft.Network/virtualNetworks/subnets/read",
-    "roleCount": 53
+    "roleCount": 54
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/join/action",
@@ -4852,7 +4852,7 @@
   {
     "key": "microsoft.network/virtualnetworks/subnets/write",
     "name": "Microsoft.Network/virtualNetworks/subnets/write",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/delete",
@@ -6297,12 +6297,12 @@
   {
     "key": "microsoft.compute/sshpublickeys/read",
     "name": "Microsoft.Compute/sshPublicKeys/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.compute/sshpublickeys/write",
     "name": "Microsoft.Compute/sshPublicKeys/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.servicenetworking/trafficcontrollers/read",
@@ -7122,7 +7122,7 @@
   {
     "key": "microsoft.network/locations/operations/read",
     "name": "Microsoft.Network/locations/operations/read",
-    "roleCount": 31
+    "roleCount": 32
   },
   {
     "key": "microsoft.network/locations/operationresults/read",
@@ -9322,12 +9322,12 @@
   {
     "key": "oracle.database/operations/read",
     "name": "Oracle.Database/Operations/read",
-    "roleCount": 26
+    "roleCount": 27
   },
   {
     "key": "microsoft.compute/sshpublickeys/generatekeypair/action",
     "name": "Microsoft.Compute/sshPublicKeys/generateKeyPair/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "oracle.database/cloudvmclusters/listprivateipaddresses/action",
@@ -9347,12 +9347,12 @@
   {
     "key": "oracle.database/resourceanchors/read",
     "name": "Oracle.Database/resourceAnchors/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "oracle.database/networkanchors/read",
     "name": "Oracle.Database/networkAnchors/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "oracle.database/cloudexadatainfrastructures/write",
@@ -18053,56 +18053,6 @@
     "key": "microsoft.discovery/bookshelf/knowledgebaseversions/search",
     "name": "Microsoft.Discovery/bookshelf/knowledgeBaseVersions/search",
     "roleCount": 5
-  },
-  {
-    "key": "commvault.contentstore/checknameavailability/action",
-    "name": "Commvault.ContentStore/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/delete",
-    "name": "Commvault.ContentStore/entities/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/read",
-    "name": "Commvault.ContentStore/entities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/write",
-    "name": "Commvault.ContentStore/entities/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/read",
-    "name": "Commvault.ContentStore/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/write",
-    "name": "Commvault.ContentStore/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/operations/read",
-    "name": "Commvault.ContentStore/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/register/action",
-    "name": "Commvault.ContentStore/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/registeredsubscriptions/read",
-    "name": "Commvault.ContentStore/registeredSubscriptions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/unregister/action",
-    "name": "Commvault.ContentStore/unregister/action",
-    "roleCount": 0
   },
   {
     "key": "dell.storage/checknameavailability/action",
@@ -62195,11 +62145,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.eventhub/namespaces/disasterrecoveryconfigs/action",
-    "name": "Microsoft.EventHub/namespaces/disasterRecoveryConfigs/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.eventhub/namespaces/disasterrecoveryconfigs/authorizationrules/listkeys/action",
     "name": "Microsoft.EventHub/namespaces/disasterRecoveryConfigs/authorizationRules/listkeys/action",
     "roleCount": 0
@@ -64222,6 +64167,21 @@
   {
     "key": "microsoft.hybridcompute/locations/publishers/read",
     "name": "Microsoft.HybridCompute/locations/publishers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/delete",
+    "name": "Microsoft.HybridCompute/machines/applications/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/read",
+    "name": "Microsoft.HybridCompute/machines/applications/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/write",
+    "name": "Microsoft.HybridCompute/machines/applications/write",
     "roleCount": 0
   },
   {
@@ -85905,11 +85865,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.operationalinsights/workspaces/query/appgenaicontent/read",
-    "name": "Microsoft.OperationalInsights/workspaces/query/AppGenAIContent/read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.operationalinsights/workspaces/query/applicationinsights/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/ApplicationInsights/read",
     "roleCount": 0
@@ -88650,21 +88605,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.operationalinsights/workspaces/query/sentinelalibabacloudapigatewaylogs/read",
-    "name": "Microsoft.OperationalInsights/workspaces/query/SentinelAlibabaCloudAPIGatewayLogs/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.operationalinsights/workspaces/query/sentinelalibabacloudvpcflowlogs/read",
-    "name": "Microsoft.OperationalInsights/workspaces/query/SentinelAlibabaCloudVPCFlowLogs/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.operationalinsights/workspaces/query/sentinelalibabacloudwaflogs/read",
-    "name": "Microsoft.OperationalInsights/workspaces/query/SentinelAlibabaCloudWAFLogs/read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.operationalinsights/workspaces/query/sentinelaudit/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/SentinelAudit/read",
     "roleCount": 0
@@ -88682,11 +88622,6 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/sentinelhealth/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/SentinelHealth/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.operationalinsights/workspaces/query/sentinelimpervawafcloudv2logs/read",
-    "name": "Microsoft.OperationalInsights/workspaces/query/SentinelImpervaWAFCloudV2Logs/read",
     "roleCount": 0
   },
   {
@@ -101180,18 +101115,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/clusters/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/clusters/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/clusters/privateendpoints/delete",
     "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/clusters/privateendpoints/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -101207,11 +101132,6 @@
   {
     "key": "microsoft.streamanalytics/clusters/write",
     "name": "Microsoft.StreamAnalytics/clusters/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/locations/quotas/read",
-    "name": "Microsoft.StreamAnalytics/locations/quotas/Read",
     "roleCount": 0
   },
   {
@@ -101250,11 +101170,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/functions/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/functions/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/functions/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/functions/Read",
     "roleCount": 0
@@ -101285,11 +101200,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/inputs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/inputs/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/Read",
     "roleCount": 0
@@ -101310,23 +101220,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/metricdefinitions/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/metricdefinitions/Read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/delete",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/outputs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -101342,16 +101237,6 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/write",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/write",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/write",
     "roleCount": 0
   },
   {
@@ -101372,11 +101257,6 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/scale/action",
     "name": "Microsoft.StreamAnalytics/streamingjobs/Scale/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/skus/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/Skus/Read",
     "roleCount": 0
   },
   {

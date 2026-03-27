@@ -37514,5 +37514,50 @@
       "Microsoft.Discovery/bookshelf/knowledgeBaseVersions/search"
     ],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-03-24T15:13:38.861541+00:00",
+    "description": "Grants full access to manage DbSystems resources",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/63342533-d951-495d-a3c3-a459aa02362b",
+    "name": "63342533-d951-495d-a3c3-a459aa02362b",
+    "permissions": [
+      {
+        "actions": [
+          "Oracle.Database/dbSystems/*/read",
+          "Oracle.Database/dbSystems/*/write",
+          "Oracle.Database/dbSystems/*/delete",
+          "Oracle.Database/Locations/*/read",
+          "Oracle.Database/Locations/*/write",
+          "Oracle.Database/Operations/read",
+          "Oracle.Database/oracleSubscriptions/*/read",
+          "Oracle.Database/resourceAnchors/*",
+          "Oracle.Database/networkAnchors/*",
+          "Microsoft.Network/virtualNetworks/read",
+          "Microsoft.Network/virtualNetworks/subnets/read",
+          "Microsoft.Network/virtualNetworks/subnets/write",
+          "Microsoft.Network/locations/operations/read",
+          "Microsoft.Compute/sshPublicKeys/read",
+          "Microsoft.Compute/sshPublicKeys/write",
+          "Microsoft.Compute/sshPublicKeys/generateKeyPair/action"
+        ],
+        "condition": "@Resource[HasObotoken] boolequals true",
+        "conditionVersion": "1.0",
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Oracle Database DbSystems Administrator",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-03-24T15:13:38.861541+00:00",
+    "permissionCount": 2174.6666666666665,
+    "dataActions": [],
+    "notDataActions": []
   }
 ]
