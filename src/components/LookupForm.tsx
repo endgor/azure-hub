@@ -22,7 +22,7 @@ const LookupForm = memo(function LookupForm({
 
   // Sync search query when initial values change (e.g. URL query params)
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync local state with prop-derived values
+    // sync local state with prop-derived values
     setSearchQuery(initialValue || initialService || initialRegion);
   }, [initialValue, initialRegion, initialService]);
 

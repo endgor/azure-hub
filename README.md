@@ -8,16 +8,19 @@ A collection of tools for Azure administrators and developers: IP lookups, RBAC 
 
 - **IP Lookup** - Check if an IP belongs to Azure and which services use it
 - **Service Tags** - Browse Azure service tags and their IP ranges
+- **IP Changes** - Track modifications to Azure IP ranges between updates
 - **Tenant Discovery** - Look up Entra ID tenant information by domain
 - **Subnet Calculator** - Plan VNet subnets with visual splitting and export to Excel/CSV
 - **RBAC Calculator** - Find least-privilege Azure roles for required permissions
 - **Entra ID Roles** - Analyze Entra ID administrative role permissions
 - **Custom Role Creator** - Build custom RBAC role definitions
+- **Private DNS Zones** - Look up Azure Private Endpoint DNS zone configurations
+- **Guides** - Azure guides and tutorials
 
 ## Running Locally
 
 ```bash
-git clone https://github.com/yourusername/azure-hub.git
+git clone https://github.com/endgor/azure-hub.git
 cd azure-hub
 npm install
 npm run update-ip-data
@@ -30,7 +33,7 @@ Open [http://localhost:3000](http://localhost:3000)
 ### Optional: Entra ID Features
 
 **Tenant Lookup** requires an Azure App Registration with:
-- `User.Read.All` or `Directory.Read.All` (Microsoft Graph)
+- `CrossTenantInformation.ReadBasic.All` (Microsoft Graph)
 
 **Entra ID Roles** requires:
 - `RoleManagement.Read.Directory` (Microsoft Graph)
@@ -51,6 +54,7 @@ Then run: `npm run fetch-entraid-roles`
 - `npm run update-ip-data` - Refresh Azure IP ranges
 - `npm run update-rbac-data` - Refresh RBAC data
 - `npm run fetch-entraid-roles` - Fetch Entra ID roles (requires credentials)
+- `npm run update-private-dns-zones` - Refresh Private DNS zone data
 
 ## Tech Stack
 

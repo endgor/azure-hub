@@ -214,6 +214,12 @@ function generateSitemap() {
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>${BASE_URL}/tools/ip-changes/</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- Guides Section -->
   <url>
     <loc>${BASE_URL}/guides/</loc>
@@ -252,8 +258,8 @@ ${serviceTagsArray
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
     const baseTagCount = serviceTagsArray.filter((tag) => !isRegionalVariant(tag)).length;
-    const totalUrls = 10 + guidePages.length + baseTagCount;
-    console.log(`  Total URLs: ${totalUrls} (10 core pages + ${guidePages.length} guides + ${baseTagCount} base service tags)`);
+    const totalUrls = 11 + guidePages.length + baseTagCount;
+    console.log(`  Total URLs: ${totalUrls} (11 core pages + ${guidePages.length} guides + ${baseTagCount} base service tags)`);
     console.log(`  Excluded: ${serviceTagsArray.length - baseTagCount} regional variants (noindexed)`);
 
   } catch (error) {

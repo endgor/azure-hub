@@ -188,7 +188,6 @@ export default function SubnetCalculatorPage(): ReactElement {
     });
 
     // URL restoration requires synchronous state updates on mount — this is a one-time initialization
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormFields({
       network: inetNtoa(reconstructed.baseNetwork),
       prefix: reconstructed.basePrefix.toString()

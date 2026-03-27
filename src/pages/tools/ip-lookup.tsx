@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
@@ -73,7 +73,6 @@ interface ApiResponse {
   message?: string;
 }
 
-const DEFAULT_PAGE_SIZE = 50;
 
 export default function IpLookupPage() {
   const router = useRouter();
@@ -157,23 +156,6 @@ export default function IpLookupPage() {
   const errorMessage = error || (isError && data && 'error' in data ? data.error : null);
   const notFoundMessage = isNotFound && data?.message ? data.message : null;
   const results = data && !isError && data.results ? data.results : [];
-  const totalResults = data && !isError ? data.total || 0 : 0;
-  const currentPage = data && !isError ? data.page || 1 : 1;
-  const apiPageSize = data && !isError ? data.pageSize || DEFAULT_PAGE_SIZE : DEFAULT_PAGE_SIZE;
-  const isAll = initialPageSize === 'all' || apiPageSize >= totalResults;
-  const effectivePageSize =
-    initialPageSize === 'all' ? totalResults : typeof initialPageSize === 'number' ? initialPageSize : DEFAULT_PAGE_SIZE;
-  const totalPages = Math.ceil(totalResults / (effectivePageSize || DEFAULT_PAGE_SIZE));
-
-  const handlePageSizeChange = useCallback((newPageSize: number | 'all') => {
-    const url = buildUrlWithQuery('/tools/ip-lookup', {
-      ipOrDomain: initialQuery,
-      region: initialRegion,
-      service: initialService,
-      pageSize: newPageSize === DEFAULT_PAGE_SIZE ? undefined : newPageSize
-    });
-    router.push(url);
-  }, [router, initialQuery, initialRegion, initialService]);
 
   const pageTitle = useMemo(() => {
     const parts = [];

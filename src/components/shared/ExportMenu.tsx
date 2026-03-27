@@ -19,7 +19,7 @@ interface ExportMenuProps {
 export default function ExportMenu({
   options,
   itemCount,
-  itemLabel,
+  itemLabel: _itemLabel,
   disabled = false,
   isExporting = false
 }: ExportMenuProps) {
