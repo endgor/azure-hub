@@ -53,7 +53,7 @@ export function Sidebar({
       >
         <div className="flex items-center justify-between gap-3 px-4 py-5">
           <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-[#1B1B1C]">
+            <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
               <Image
                 src="/favicons/favicon-32x32.png"
                 alt="Azure Hub logo"

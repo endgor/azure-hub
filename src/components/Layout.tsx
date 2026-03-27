@@ -306,7 +306,9 @@ export default function Layout({
     if (href === '/') {
       return router.pathname === '/';
     }
-    return router.pathname === href || router.pathname.startsWith(`${href}/`);
+    const normalizedHref = href.replace(/\/+$/, '');
+    const normalizedPath = router.pathname.replace(/\/+$/, '');
+    return normalizedPath === normalizedHref || normalizedPath.startsWith(`${normalizedHref}/`);
   };
 
   // Prepare JSON-LD schemas array
