@@ -220,7 +220,6 @@ export default function TenantLookupPage() {
           </label>
           <SearchInput
             id="tenant-domain"
-            type="search"
             inputMode="email"
             autoCorrect="off"
             autoCapitalize="none"

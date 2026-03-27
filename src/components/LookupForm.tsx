@@ -62,7 +62,6 @@ const LookupForm = memo(function LookupForm({
           Search Azure IP addresses, services, or regions
         </label>
         <SearchInput
-          type="search"
           id="search-query"
           name="search-query"
           value={searchQuery}
@@ -83,7 +82,6 @@ const LookupForm = memo(function LookupForm({
         Search Azure IP addresses, services, or regions
       </label>
       <SearchInput
-        type="search"
         id="search-query"
         name="search-query"
         value={searchQuery}

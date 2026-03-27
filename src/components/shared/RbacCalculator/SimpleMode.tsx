@@ -74,7 +74,6 @@ export default function SimpleMode({
           Step 1: {config.labels.serviceLabel}
         </label>
         <SearchInput
-          type="text"
           id="service-search"
           value={serviceSearch}
           onChange={(e) => {
@@ -121,7 +120,6 @@ export default function SimpleMode({
             Step 2: Browse and Select {config.labels.actionLabel}
           </label>
           <SearchInput
-            type="text"
             id="action-search"
             value={actionSearch}
             onChange={(e) => onActionSearchChange(e.target.value)}

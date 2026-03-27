@@ -66,7 +66,6 @@ export default function RoleExplorerMode<T extends GenericRole>({
           {config.labels.roleExplorerTitle}
         </label>
         <SearchInput
-          type="text"
           id="role-search"
           value={roleSearchQuery}
           onChange={(e) => onRoleSearchChange(e.target.value)}

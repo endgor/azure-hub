@@ -228,13 +228,12 @@ export default function PrivateDnsZones({ data }: PageProps) {
 
         {/* Toolbar */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex min-w-0 flex-1 items-center gap-2 sm:flex-initial">
             <SearchInput
-              type="text"
-              placeholder="Search services, ARM types, DNS zones..."
+              placeholder="Search services or DNS zones..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              maxWidth="lg"
+              maxWidth="xl"
             />
             <ExportMenu
               options={exportOptions}
