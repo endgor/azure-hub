@@ -57,7 +57,7 @@
     "eslint": "^10.0.3",
     "eslint-plugin-unused-imports": "^4.4.1",
     "postcss": "^8.5.8",
-    "tailwindcss": "^4.2.1",
+    "tailwindcss": "^4.2.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3",
