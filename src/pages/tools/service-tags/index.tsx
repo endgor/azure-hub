@@ -115,15 +115,31 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
 
   const [isExporting, setIsExporting] = useState(false);
 
-  const prepareExportData = useCallback((): ExportRow[] => {
-    return filteredServiceTags.map((tag) => ({
-      'Service Tag': tag.id,
-      'System Service': tag.systemService,
-      'Region': tag.region || 'Global',
-      'Prefix Count': tag.prefixCount,
-      'Cloud': tag.cloud,
-    }));
-  }, [filteredServiceTags]);
+  const cloudsToExport: AzureCloudName[] = cloudFilter === 'all'
+    ? [AzureCloudName.AzureCloud, AzureCloudName.AzureChinaCloud, AzureCloudName.AzureUSGovernment]
+    : [cloudFilter];
+
+  const fetchAndFlattenIpData = useCallback(async (): Promise<ExportRow[]> => {
+    const rows: ExportRow[] = [];
+    for (const cloud of cloudsToExport) {
+      const res = await fetch(`/data/${cloud}.json`);
+      const data = await res.json();
+      for (const tag of data.values) {
+        for (const prefix of tag.properties.addressPrefixes) {
+          rows.push({
+            'Cloud': cloud,
+            'Service Tag': tag.name,
+            'IP Range': prefix,
+            'Region': tag.properties.region || 'Global',
+            'System Service': tag.properties.systemService,
+          });
+        }
+      }
+    }
+    return rows;
+  }, [cloudsToExport]);
+
+  const cloudLabel = cloudFilter === 'all' ? 'all-clouds' : CLOUD_LABELS[cloudFilter].toLowerCase();
 
   const exportOptions: ExportOption[] = useMemo(
     () => [
@@ -134,7 +150,8 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         onClick: async () => {
           setIsExporting(true);
           try {
-            await exportToCSV(prepareExportData(), `service-tags_${getDateTimestamp()}.csv`);
+            const rows = await fetchAndFlattenIpData();
+            await exportToCSV(rows, `service-tags-ip-ranges_${cloudLabel}_${getDateTimestamp()}.csv`);
           } finally {
             setIsExporting(false);
           }
@@ -147,7 +164,8 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         onClick: async () => {
           setIsExporting(true);
           try {
-            await exportToExcel(prepareExportData(), `service-tags_${getDateTimestamp()}.xlsx`, 'Service Tags');
+            const rows = await fetchAndFlattenIpData();
+            await exportToExcel(rows, `service-tags-ip-ranges_${cloudLabel}_${getDateTimestamp()}.xlsx`, 'IP Ranges');
           } finally {
             setIsExporting(false);
           }
@@ -160,14 +178,15 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         onClick: async () => {
           setIsExporting(true);
           try {
-            exportToMarkdown(prepareExportData(), `service-tags_${getDateTimestamp()}.md`);
+            const rows = await fetchAndFlattenIpData();
+            exportToMarkdown(rows, `service-tags-ip-ranges_${cloudLabel}_${getDateTimestamp()}.md`);
           } finally {
             setIsExporting(false);
           }
         },
       },
     ],
-    [prepareExportData]
+    [fetchAndFlattenIpData, cloudLabel]
   );
 
   const isSearching = searchTerm.trim().length > 0;
@@ -209,8 +228,8 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
             />
             <ExportMenu
               options={exportOptions}
-              itemCount={filteredServiceTags.length}
-              itemLabel="tag"
+              itemCount={data?.serviceTags ? 1 : 0}
+              itemLabel="cloud"
               isExporting={isExporting}
             />
           </div>

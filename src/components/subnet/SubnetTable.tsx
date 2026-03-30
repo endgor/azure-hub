@@ -96,7 +96,7 @@ export default function SubnetTable({
       >
         <colgroup>
           <col style={{ width: '70px' }} />
-          <col style={{ width: '150px' }} />
+          <col style={{ width: '180px' }} />
           <col style={{ width: '120px' }} />
           <col style={{ width: '170px' }} />
           <col style={{ width: '170px' }} />
@@ -417,11 +417,11 @@ export default function SubnetTable({
                   </button>
                 </td>
                 <td
-                  className={`border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs ${treeIndent}`}
+                  className={`border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 align-top font-mono text-xs overflow-hidden ${treeIndent}`}
                   style={highlightStyle}
                 >
-                  <div className="flex items-center gap-2">
-                    {isUnderVnet && <span className="text-slate-400 dark:text-slate-600">└</span>}
+                  <div className="flex items-center gap-2 min-w-0">
+                    {isUnderVnet && <span className="shrink-0 text-slate-400 dark:text-slate-600">└</span>}
                     <span
                       className={`${
                         isVNet ? 'font-bold text-sky-700 dark:text-sky-400' : 'font-medium'
