@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import fs from 'fs';
@@ -9,6 +9,10 @@ import { AzureCloudName } from '@/types/azure';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 import SearchInput from '@/components/shared/SearchInput';
+import ExportMenu from '@/components/shared/ExportMenu';
+import type { ExportOption } from '@/components/shared/ExportMenu';
+import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/lib/exportUtils';
+import { getDateTimestamp } from '@/lib/filenameUtils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
@@ -109,6 +113,63 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
     setShowAll(false);
   }, [searchTerm, cloudFilter]);
 
+  const [isExporting, setIsExporting] = useState(false);
+
+  const prepareExportData = useCallback((): ExportRow[] => {
+    return filteredServiceTags.map((tag) => ({
+      'Service Tag': tag.id,
+      'System Service': tag.systemService,
+      'Region': tag.region || 'Global',
+      'Prefix Count': tag.prefixCount,
+      'Cloud': tag.cloud,
+    }));
+  }, [filteredServiceTags]);
+
+  const exportOptions: ExportOption[] = useMemo(
+    () => [
+      {
+        label: 'Export as CSV',
+        format: 'csv',
+        extension: '.csv',
+        onClick: async () => {
+          setIsExporting(true);
+          try {
+            await exportToCSV(prepareExportData(), `service-tags_${getDateTimestamp()}.csv`);
+          } finally {
+            setIsExporting(false);
+          }
+        },
+      },
+      {
+        label: 'Export as Excel',
+        format: 'xlsx',
+        extension: '.xlsx',
+        onClick: async () => {
+          setIsExporting(true);
+          try {
+            await exportToExcel(prepareExportData(), `service-tags_${getDateTimestamp()}.xlsx`, 'Service Tags');
+          } finally {
+            setIsExporting(false);
+          }
+        },
+      },
+      {
+        label: 'Export as Markdown',
+        format: 'md',
+        extension: '.md',
+        onClick: async () => {
+          setIsExporting(true);
+          try {
+            exportToMarkdown(prepareExportData(), `service-tags_${getDateTimestamp()}.md`);
+          } finally {
+            setIsExporting(false);
+          }
+        },
+      },
+    ],
+    [prepareExportData]
+  );
+
   const isSearching = searchTerm.trim().length > 0;
   const visibleServiceTags = (isSearching || showAll)
     ? filteredServiceTags
@@ -139,12 +200,20 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <SearchInput
-            placeholder="Search service tags..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            maxWidth="sm"
-          />
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <SearchInput
+              placeholder="Search service tags..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              maxWidth="sm"
+            />
+            <ExportMenu
+              options={exportOptions}
+              itemCount={filteredServiceTags.length}
+              itemLabel="tag"
+              isExporting={isExporting}
+            />
+          </div>
 
           {/* Cloud filter buttons */}
           <div className="flex flex-wrap items-center gap-2">
