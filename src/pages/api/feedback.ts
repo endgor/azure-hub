@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Azure Hub <feedback@azurehub.org>',
+        from: 'Azure Hub <onboarding@resend.dev>',
         to: FEEDBACK_TO,
         reply_to: email || undefined,
         subject,
