@@ -20,9 +20,9 @@ const nextConfig = {
 
     return [
       {
-        // Tell crawlers to skip regional variant service tag pages via HTTP header
+        // Tell crawlers to skip all service tag detail pages via HTTP header
         // (saves crawl budget vs requiring HTML rendering to discover the meta noindex)
-        source: '/tools/service-tags/:tag(.*\\..*)',
+        source: '/tools/service-tags/:tag([^/]+)',
         headers: [
           {
             key: 'X-Robots-Tag',

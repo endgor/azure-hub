@@ -86,7 +86,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
       title={`Azure Service Tag: ${serviceTag}`}
       description={`View all IP ranges and CIDR prefixes for the Azure ${serviceTag} service tag, including regional breakdowns and address counts across all clouds.`}
       canonicalUrl={canonicalUrl}
-      noIndex={isRegionalVariant}
+      noIndex
     >
       <Head>
         <script
