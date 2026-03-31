@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && next build && node scripts/generateSitemap.js",
+    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && node scripts/generateSitemap.js && next build",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "eslint .",
