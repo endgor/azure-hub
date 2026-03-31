@@ -8,14 +8,14 @@
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "eslint .",
-    "update-ip-data": "ts-node -r tsconfig-paths/register scripts/updateIpData.ts",
-    "update-rbac-data": "ts-node -r tsconfig-paths/register scripts/updateRbacData.ts",
+    "update-ip-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateIpData.ts",
+    "update-rbac-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateRbacData.ts",
     "fetch-entraid-roles": "ts-node --project tsconfig.node.json scripts/fetchEntraIdRoles.ts",
-    "generate-actions-index": "ts-node -r tsconfig-paths/register scripts/generateActionsIndex.ts",
-    "generate-ip-indexes": "ts-node -r tsconfig-paths/register scripts/generateIpIndexes.ts",
-    "generate-ip-lookup-index": "ts-node -r tsconfig-paths/register scripts/generateIpLookupIndex.ts",
-    "update-private-dns-zones": "ts-node -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
-    "submit-indexnow": "ts-node -r tsconfig-paths/register scripts/submitIndexNow.ts"
+    "generate-actions-index": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateActionsIndex.ts",
+    "generate-ip-indexes": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpIndexes.ts",
+    "generate-ip-lookup-index": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpLookupIndex.ts",
+    "update-private-dns-zones": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
+    "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",
@@ -62,6 +62,6 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.57.2"
+    "typescript-eslint": "^8.58.0"
   }
 }
