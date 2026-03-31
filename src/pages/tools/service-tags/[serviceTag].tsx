@@ -84,7 +84,7 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
   return (
     <Layout
       title={`Azure Service Tag: ${serviceTag}`}
-      description={`Explore the Azure IP ranges associated with the ${serviceTag} service tag.`}
+      description={`View all IP ranges and CIDR prefixes for the Azure ${serviceTag} service tag, including regional breakdowns and address counts across all clouds.`}
       canonicalUrl={canonicalUrl}
       noIndex={isRegionalVariant}
     >

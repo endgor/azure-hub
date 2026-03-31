@@ -168,7 +168,7 @@ export default function IpLookupPage() {
   return (
     <Layout
       title="Azure IP Lookup - Verify IP Addresses & Service Tags"
-      description="Search Microsoft Azure IP ranges, CIDR prefixes, and service tags with the Azure Hub IP lookup tool."
+      description="Check if an IP address, CIDR range, or hostname belongs to Microsoft Azure. Search across all public, government, and China cloud regions with service tag filtering."
       keywords={[
         'azure ip lookup',
         'azure ip checker',

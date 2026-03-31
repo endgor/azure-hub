@@ -11,7 +11,7 @@ export default function GuidesPage({ categories }: GuidesPageProps) {
   return (
     <Layout
       title="Azure Guides - Quick Reference & Best Practices"
-      description="Quick reference guides, FAQs, and best practices for Azure services including VMs, networking, and RBAC."
+      description="Quick reference guides and best practices for Azure administrators covering VM sizing, networking, private endpoints, RBAC, and Azure Policy automation."
     >
       <div className="space-y-8">
         {/* Header */}

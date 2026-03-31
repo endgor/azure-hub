@@ -14,7 +14,8 @@
     "generate-actions-index": "ts-node -r tsconfig-paths/register scripts/generateActionsIndex.ts",
     "generate-ip-indexes": "ts-node -r tsconfig-paths/register scripts/generateIpIndexes.ts",
     "generate-ip-lookup-index": "ts-node -r tsconfig-paths/register scripts/generateIpLookupIndex.ts",
-    "update-private-dns-zones": "ts-node -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts"
+    "update-private-dns-zones": "ts-node -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
+    "submit-indexnow": "ts-node -r tsconfig-paths/register scripts/submitIndexNow.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",

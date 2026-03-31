@@ -48,9 +48,14 @@ jobs:
         run: npm run update-rbac-data
 
       - name: Commit and push if changed
+        id: commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           git status
-          git diff --staged --quiet || (git commit -m "chore: update Azure IP and RBAC data" && git push)
+          git diff --staged --quiet && echo "changes=false" >> $GITHUB_OUTPUT || (git commit -m "chore: update Azure IP and RBAC data" && git push && echo "changes=true" >> $GITHUB_OUTPUT)
+
+      - name: Submit URLs to IndexNow
+        if: steps.commit.outputs.changes == 'true'
+        run: npx ts-node -r tsconfig-paths/register scripts/submitIndexNow.ts --all

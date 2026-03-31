@@ -1,6 +1,6 @@
 ---
 title: "Azure VM Naming Conventions"
-description: "Explaining Virtual machine size names and understand what each character means"
+description: "Learn how to read Azure VM size names. Understand what each character in names like Standard_D4s_v5 means, including family, vCPUs, and features."
 category: "virtual-machines"
 tags: ["vm", "compute", "sizing"]
 date: "2025-11-17"

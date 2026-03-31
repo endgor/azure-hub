@@ -1,6 +1,6 @@
 ---
 title: "VM Application Auto-Deployment with Azure Policy"
-description: "Automation of VM applications deployment using Azure Policy"
+description: "Automate VM application deployment at scale using Azure Policy. Step-by-step guide to packaging apps and enforcing installation across your fleet."
 category: "azure-policy"
 tags: ["policy", "vm", "vm-applications", "automation"]
 date: "2025-12-03"

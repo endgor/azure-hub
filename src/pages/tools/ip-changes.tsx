@@ -70,7 +70,7 @@ export default function IpChangesPage() {
   return (
     <Layout
       title="Azure IP Range Changes - Weekly Update Changelog"
-      description="View recent changes to Azure IP ranges and service tags across Public, China, and Government clouds."
+      description="Track weekly changes to Azure IP ranges and service tags. See added, removed, and modified prefixes across Public, China, and Government clouds."
       keywords={[
         'azure ip changes',
         'azure service tag updates',
