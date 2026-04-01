@@ -58,4 +58,4 @@ jobs:
 
       - name: Submit URLs to IndexNow
         if: steps.commit.outputs.changes == 'true'
-        run: npx ts-node -r tsconfig-paths/register scripts/submitIndexNow.ts --all
+        run: npm run submit-indexnow -- --all

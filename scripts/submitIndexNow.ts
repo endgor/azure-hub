@@ -10,13 +10,12 @@
  * Without arguments, submits the core tool pages (most common after data updates).
  */
 
+import fs from 'fs';
+import path from 'path';
+
 const INDEXNOW_KEY = '869fc665e77e4ca4be074a8685df12a4';
 const SITE_URL = 'https://azurehub.org';
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow';
-
-const fs = require('fs');
-const path = require('path');
-const matter = require('gray-matter');
 
 const CORE_PAGES = [
   '/',
