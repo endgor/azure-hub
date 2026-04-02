@@ -186,7 +186,7 @@ export default function SubnetTable({
               .join(' ');
 
             if (isLockedVNetParent || isSingleSubnet) {
-              const lockedColSpan = Math.max(joinColumnCount - (path.length - 1), 1);
+              const lockedFillerCount = Math.max(joinColumnCount - (path.length - 1), 1) - 1;
               const lockedBg = isSingleSubnet ? 'bg-violet-50 dark:bg-violet-900/10' : 'bg-sky-50 dark:bg-sky-900/10';
               const lockedText = isSingleSubnet ? 'text-violet-700 dark:text-violet-300' : 'text-sky-700 dark:text-sky-300';
               const lockedTitle = isSingleSubnet
@@ -196,13 +196,17 @@ export default function SubnetTable({
               joinCells.push(
                 <td
                   key={`${row.id}-locked`}
-                  colSpan={lockedColSpan}
                   className={`border border-slate-200 ${lockedBg} px-1 py-2 text-center text-[9px] font-semibold uppercase tracking-wider ${lockedText} overflow-hidden dark:border-slate-700`}
                   title={lockedTitle}
                 >
                   <span style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}>Locked</span>
                 </td>
               );
+              for (let f = 0; f < lockedFillerCount; f++) {
+                joinCells.push(
+                  <td key={`${row.id}-locked-filler-${f}`} className="border border-slate-200 dark:border-slate-700 p-0 h-0" />
+                );
+              }
 
               // Render parent join cells (same logic as normal rows)
               segments.forEach((segment, index) => {
@@ -263,13 +267,13 @@ export default function SubnetTable({
                 const isRootSegment = segment.id === rootId;
                 const segmentKey = `${row.id}-${segment.id}`;
                 const rowSpan = leafCounts[segment.id] ?? 1;
-                const colSpan = isLeafSegment ? Math.max(joinColumnCount - (path.length - 1), 1) : 1;
                 const alternateBg =
                   index % 2 === 0
                     ? 'bg-sky-100 dark:bg-sky-900/30'
                     : 'bg-sky-50 dark:bg-sky-900/20';
 
                 if (isLeafSegment) {
+                  const fillerCount = Math.max(joinColumnCount - (path.length - 1), 1) - 1;
                   const splitContent = canSplit ? (
                     <button
                       type="button"
@@ -299,12 +303,16 @@ export default function SubnetTable({
                     <td
                       key={segmentKey}
                       rowSpan={1}
-                      colSpan={colSpan}
                       className={`border border-slate-200 dark:border-slate-700 p-0 h-0 ${canSplit ? 'bg-emerald-500' : 'bg-rose-100'}`}
                     >
                       {splitContent}
                     </td>
                   );
+                  for (let f = 0; f < fillerCount; f++) {
+                    joinCells.push(
+                      <td key={`${segmentKey}-filler-${f}`} className="border border-slate-200 dark:border-slate-700 p-0 h-0" />
+                    );
+                  }
                   return;
                 }
 
