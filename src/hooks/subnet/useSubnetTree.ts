@@ -179,11 +179,11 @@ export function useSubnetTree(
         newType = NetworkType.VNET;
         newSingleSubnet = true;
       } else if (currentType === NetworkType.VNET) {
-        // VNET (with singleSubnet or non-leaf) → SUBNET
-        newType = NetworkType.SUBNET;
+        // VNET (with singleSubnet or non-leaf) → UNASSIGNED (skip SUBNET — subnet without parent VNET is invalid)
+        newType = NetworkType.UNASSIGNED;
         newSingleSubnet = undefined;
       } else {
-        // SUBNET → UNASSIGNED
+        // Fallback: any other state → UNASSIGNED
         newType = NetworkType.UNASSIGNED;
         newSingleSubnet = undefined;
       }
