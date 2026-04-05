@@ -18145,6 +18145,181 @@
     "roleCount": 20
   },
   {
+    "key": "anyscale.platform/admin/action",
+    "name": "Anyscale.Platform/admin/action",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/cloudresources/delete",
+    "name": "Anyscale.Platform/clouds/cloudResources/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/cloudresources/read",
+    "name": "Anyscale.Platform/clouds/cloudResources/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/cloudresources/write",
+    "name": "Anyscale.Platform/clouds/cloudResources/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/computeconfigs/delete",
+    "name": "Anyscale.Platform/clouds/computeConfigs/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/computeconfigs/read",
+    "name": "Anyscale.Platform/clouds/computeConfigs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/computeconfigs/write",
+    "name": "Anyscale.Platform/clouds/computeConfigs/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/delete",
+    "name": "Anyscale.Platform/clouds/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/images/delete",
+    "name": "Anyscale.Platform/clouds/images/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/images/read",
+    "name": "Anyscale.Platform/clouds/images/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/images/write",
+    "name": "Anyscale.Platform/clouds/images/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/delete",
+    "name": "Anyscale.Platform/clouds/projects/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/jobs/delete",
+    "name": "Anyscale.Platform/clouds/projects/jobs/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/jobs/read",
+    "name": "Anyscale.Platform/clouds/projects/jobs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/jobs/write",
+    "name": "Anyscale.Platform/clouds/projects/jobs/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/read",
+    "name": "Anyscale.Platform/clouds/projects/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/services/delete",
+    "name": "Anyscale.Platform/clouds/projects/services/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/services/read",
+    "name": "Anyscale.Platform/clouds/projects/services/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/services/write",
+    "name": "Anyscale.Platform/clouds/projects/services/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/workspaces/delete",
+    "name": "Anyscale.Platform/clouds/projects/workspaces/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/workspaces/read",
+    "name": "Anyscale.Platform/clouds/projects/workspaces/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/workspaces/write",
+    "name": "Anyscale.Platform/clouds/projects/workspaces/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/projects/write",
+    "name": "Anyscale.Platform/clouds/projects/write",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/read",
+    "name": "Anyscale.Platform/clouds/read",
+    "roleCount": 0
+  },
+  {
+    "key": "anyscale.platform/clouds/write",
+    "name": "Anyscale.Platform/clouds/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/checknameavailability/action",
+    "name": "Commvault.ContentStore/checkNameAvailability/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/delete",
+    "name": "Commvault.ContentStore/entities/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/read",
+    "name": "Commvault.ContentStore/entities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/write",
+    "name": "Commvault.ContentStore/entities/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/read",
+    "name": "Commvault.ContentStore/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/write",
+    "name": "Commvault.ContentStore/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/operations/read",
+    "name": "Commvault.ContentStore/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/register/action",
+    "name": "Commvault.ContentStore/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/registeredsubscriptions/read",
+    "name": "Commvault.ContentStore/registeredSubscriptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/unregister/action",
+    "name": "Commvault.ContentStore/unregister/action",
+    "roleCount": 0
+  },
+  {
     "key": "dell.storage/checknameavailability/action",
     "name": "Dell.Storage/checkNameAvailability/action",
     "roleCount": 0
@@ -43665,6 +43840,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.computelimit/locations/features/read",
+    "name": "Microsoft.ComputeLimit/locations/features/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/features/write",
+    "name": "Microsoft.ComputeLimit/locations/features/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/operationresults/read",
+    "name": "Microsoft.ComputeLimit/locations/operationResults/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.computelimit/operations/read",
     "name": "Microsoft.ComputeLimit/operations/read",
     "roleCount": 0
@@ -51255,6 +51445,31 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.databricks/workspaces/dbworkspaces/dbprivateendpointconnections/delete",
+    "name": "Microsoft.Databricks/workspaces/dbWorkspaces/dbPrivateEndpointConnections/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.databricks/workspaces/dbworkspaces/dbprivateendpointconnections/write",
+    "name": "Microsoft.Databricks/workspaces/dbWorkspaces/dbPrivateEndpointConnections/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.databricks/workspaces/dbworkspaces/delete",
+    "name": "Microsoft.Databricks/workspaces/dbWorkspaces/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.databricks/workspaces/dbworkspaces/privatelinkresources/read",
+    "name": "Microsoft.Databricks/workspaces/dbWorkspaces/privateLinkResources/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.databricks/workspaces/dbworkspaces/read",
+    "name": "Microsoft.Databricks/workspaces/dbWorkspaces/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.databricks/workspaces/dbworkspaces/write",
     "name": "Microsoft.Databricks/workspaces/dbWorkspaces/write",
     "roleCount": 0
@@ -55375,6 +55590,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.desktopvirtualization/repositoryfolders/listrepositoryapplications/action",
+    "name": "Microsoft.DesktopVirtualization/repositoryfolders/listRepositoryApplications/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.desktopvirtualization/repositoryfolders/providers/microsoft.insights/diagnosticsettings/read",
     "name": "Microsoft.DesktopVirtualization/repositoryfolders/providers/Microsoft.Insights/diagnosticSettings/read",
     "roleCount": 0
@@ -55397,6 +55617,11 @@
   {
     "key": "microsoft.desktopvirtualization/repositoryfolders/repositoryintegrations/delete",
     "name": "Microsoft.DesktopVirtualization/repositoryfolders/repositoryIntegrations/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.desktopvirtualization/repositoryfolders/repositoryintegrations/listrepositoryapplicationdetails/action",
+    "name": "Microsoft.DesktopVirtualization/repositoryfolders/repositoryIntegrations/listRepositoryApplicationDetails/action",
     "roleCount": 0
   },
   {
@@ -64252,6 +64477,21 @@
   {
     "key": "microsoft.hybridcompute/locations/publishers/read",
     "name": "Microsoft.HybridCompute/locations/publishers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/delete",
+    "name": "Microsoft.HybridCompute/machines/applications/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/read",
+    "name": "Microsoft.HybridCompute/machines/applications/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.hybridcompute/machines/applications/write",
+    "name": "Microsoft.HybridCompute/machines/applications/write",
     "roleCount": 0
   },
   {
@@ -91132,6 +91372,81 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupconfig/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupconfig/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupfabrics/protectioncontainers/protecteditems/operationresults/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupFabrics/protectionContainers/protectedItems/operationResults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupfabrics/protectioncontainers/protecteditems/operationsstatus/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupFabrics/protectionContainers/protectedItems/operationsStatus/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupfabrics/protectioncontainers/protecteditems/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupFabrics/protectionContainers/protectedItems/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupfabrics/protectioncontainers/protecteditems/recoverypoints/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupFabrics/protectionContainers/protectedItems/recoveryPoints/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupfabrics/protectioncontainers/protecteditems/recoverypoints/restore/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupFabrics/protectionContainers/protectedItems/recoveryPoints/restore/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupjobs/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupJobs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupprotecteditems/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupProtectedItems/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backuptriggervalidateoperation/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupTriggerValidateOperation/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupvalidateoperation/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupValidateOperation/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupvalidateoperationresults/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupValidateOperationResults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/backupvalidateoperationsstatuses/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/backupValidateOperationsStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/remove/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/remove/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmapping/write",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMapping/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmappingstatus/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMappingStatus/action",
     "roleCount": 0
   },
   {
