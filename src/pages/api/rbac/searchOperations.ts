@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { searchOperations } from '@/lib/serverRbacService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
+import { RateLimiter, getClientIdentifier } from '@/lib/rateLimit';
 import type { Operation } from '@/types/rbac';
+
+// Higher limit for search — debounced keystrokes still add up across multiple searches
+const searchRateLimiter = new RateLimiter(30, 60000);
 
 interface SearchResponse {
   operations: Operation[];
@@ -25,7 +28,7 @@ export default async function handler(
 
   // Apply rate limiting
   const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:searchOperations`);
+  const rateLimitResult = searchRateLimiter.check(`${clientId}:rbac:searchOperations`);
 
   if (!rateLimitResult.success) {
     res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());

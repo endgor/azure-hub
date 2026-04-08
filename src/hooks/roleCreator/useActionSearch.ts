@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 export interface ActionSearchResult {
   name: string;
@@ -13,36 +13,47 @@ export interface UseActionSearchReturn {
   actionSearchQuery: string;
   actionSearchResults: ActionSearchResult[];
   setActionSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  handleActionSearchChange: (query: string) => Promise<void>;
+  handleActionSearchChange: (query: string) => void;
   clearActionSearch: () => void;
 }
 
+const DEBOUNCE_MS = 300;
+
 /**
  * Hook for managing action search functionality.
- * Handles async action search with debouncing logic.
+ * Debounces API calls to avoid hitting rate limits on rapid typing.
  */
 export function useActionSearch({ onSearch }: UseActionSearchProps): UseActionSearchReturn {
   const [actionSearchQuery, setActionSearchQuery] = useState('');
   const [actionSearchResults, setActionSearchResults] = useState<ActionSearchResult[]>([]);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Handle action search
-  const handleActionSearchChange = useCallback(async (query: string) => {
+  const handleActionSearchChange = useCallback((query: string) => {
     setActionSearchQuery(query);
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
 
     if (!query.trim() || query.length < 3) {
       setActionSearchResults([]);
       return;
     }
 
-    try {
-      const results = await onSearch(query);
-      setActionSearchResults(results.slice(0, 10));
-    } catch {
-      setActionSearchResults([]);
-    }
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const results = await onSearch(query);
+        setActionSearchResults(results.slice(0, 10));
+      } catch {
+        setActionSearchResults([]);
+      }
+    }, DEBOUNCE_MS);
   }, [onSearch]);
 
   const clearActionSearch = useCallback(() => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
     setActionSearchQuery('');
     setActionSearchResults([]);
   }, []);
