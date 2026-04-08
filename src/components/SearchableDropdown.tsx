@@ -66,8 +66,10 @@ export default function SearchableDropdown({
         value={value}
         onChange={(e) => {
           onChange(e.target.value);
-          if (e.target.value.trim() && items.length > 0) {
+          if (e.target.value.trim()) {
             onDropdownVisibilityChange(true);
+          } else {
+            onDropdownVisibilityChange(false);
           }
         }}
         onFocus={() => {
