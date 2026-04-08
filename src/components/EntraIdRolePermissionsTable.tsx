@@ -146,6 +146,9 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
                       <div className="font-medium text-slate-900 dark:text-slate-100">
                         {role.displayName}
                       </div>
+                      <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 select-all">
+                        {role.templateId}
+                      </div>
                       {role.description && (
                         <div className="text-xs text-slate-600 dark:text-slate-400">
                           {expandedDescriptions.has(role.id) ? (

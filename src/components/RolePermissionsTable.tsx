@@ -218,6 +218,9 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                       <div className="font-medium text-sm text-slate-900 dark:text-slate-100">
                         {role.roleName}
                       </div>
+                      <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 select-all">
+                        {role.name}
+                      </div>
                       {role.description && (
                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                           {expandedDescriptions.has(role.id) ? (
