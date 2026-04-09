@@ -18300,6 +18300,56 @@
     "roleCount": 0
   },
   {
+    "key": "commvault.contentstore/checknameavailability/action",
+    "name": "Commvault.ContentStore/checkNameAvailability/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/delete",
+    "name": "Commvault.ContentStore/entities/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/read",
+    "name": "Commvault.ContentStore/entities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/entities/write",
+    "name": "Commvault.ContentStore/entities/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/read",
+    "name": "Commvault.ContentStore/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/locations/operationstatuses/write",
+    "name": "Commvault.ContentStore/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/operations/read",
+    "name": "Commvault.ContentStore/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/register/action",
+    "name": "Commvault.ContentStore/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/registeredsubscriptions/read",
+    "name": "Commvault.ContentStore/registeredSubscriptions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "commvault.contentstore/unregister/action",
+    "name": "Commvault.ContentStore/unregister/action",
+    "roleCount": 0
+  },
+  {
     "key": "dell.storage/checknameavailability/action",
     "name": "Dell.Storage/checkNameAvailability/action",
     "roleCount": 0
@@ -19707,6 +19757,21 @@
   {
     "key": "microsoft.apicenter/services/workspaces/environments/write",
     "name": "Microsoft.ApiCenter/services/workspaces/environments/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/languagemodels/delete",
+    "name": "Microsoft.ApiCenter/services/workspaces/languageModels/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/languagemodels/read",
+    "name": "Microsoft.ApiCenter/services/workspaces/languageModels/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/languagemodels/write",
+    "name": "Microsoft.ApiCenter/services/workspaces/languageModels/write",
     "roleCount": 0
   },
   {
@@ -29920,16 +29985,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.billing/billingaccounts/billingprofiles/invoicesections/policies/read",
-    "name": "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/policies/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billing/billingaccounts/billingprofiles/invoicesections/policies/write",
-    "name": "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/policies/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.billing/billingaccounts/billingprofiles/invoicesections/products/move/action",
     "name": "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/products/move/action",
     "roleCount": 0
@@ -32897,546 +32952,6 @@
   {
     "key": "microsoft.chaos/unregister/action",
     "name": "Microsoft.Chaos/unregister/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/capabilities/read",
-    "name": "Microsoft.ClassicCompute/capabilities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/checkdomainnameavailability/action",
-    "name": "Microsoft.ClassicCompute/checkDomainNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/checkdomainnameavailability/read",
-    "name": "Microsoft.ClassicCompute/checkDomainNameAvailability/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/active/write",
-    "name": "Microsoft.ClassicCompute/domainNames/active/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/availabilitysets/read",
-    "name": "Microsoft.ClassicCompute/domainNames/availabilitySets/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/capabilities/read",
-    "name": "Microsoft.ClassicCompute/domainNames/capabilities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/delete",
-    "name": "Microsoft.ClassicCompute/domainNames/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/read",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/roles/read",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/roles/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/roles/roleinstances/read",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/roles/roleinstances/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/state/read",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/state/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/state/write",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/state/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/upgradedomain/read",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/upgradedomain/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/upgradedomain/write",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/upgradedomain/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/deploymentslots/write",
-    "name": "Microsoft.ClassicCompute/domainNames/deploymentslots/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/extensions/delete",
-    "name": "Microsoft.ClassicCompute/domainNames/extensions/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/extensions/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/extensions/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/extensions/read",
-    "name": "Microsoft.ClassicCompute/domainNames/extensions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/extensions/write",
-    "name": "Microsoft.ClassicCompute/domainNames/extensions/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/internalloadbalancers/delete",
-    "name": "Microsoft.ClassicCompute/domainNames/internalLoadBalancers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/internalloadbalancers/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/internalLoadBalancers/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/internalloadbalancers/read",
-    "name": "Microsoft.ClassicCompute/domainNames/internalLoadBalancers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/internalloadbalancers/write",
-    "name": "Microsoft.ClassicCompute/domainNames/internalLoadBalancers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/loadbalancedendpointsets/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/loadBalancedEndpointSets/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/loadbalancedendpointsets/read",
-    "name": "Microsoft.ClassicCompute/domainNames/loadBalancedEndpointSets/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/loadbalancedendpointsets/write",
-    "name": "Microsoft.ClassicCompute/domainNames/loadBalancedEndpointSets/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/operationstatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/read",
-    "name": "Microsoft.ClassicCompute/domainNames/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/servicecertificates/delete",
-    "name": "Microsoft.ClassicCompute/domainNames/serviceCertificates/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/servicecertificates/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/serviceCertificates/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/servicecertificates/read",
-    "name": "Microsoft.ClassicCompute/domainNames/serviceCertificates/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/servicecertificates/write",
-    "name": "Microsoft.ClassicCompute/domainNames/serviceCertificates/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/abortmigration/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/abortMigration/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/commitmigration/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/commitMigration/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/delete",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/preparemigration/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/prepareMigration/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/extensionreferences/delete",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/extensionReferences/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/extensionreferences/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/extensionReferences/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/extensionreferences/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/extensionReferences/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/extensionreferences/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/extensionReferences/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/metricdefinitions/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/metricdefinitions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/metrics/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/metrics/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/operationstatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/providers/microsoft.insights/diagnosticsettings/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/providers/Microsoft.Insights/diagnosticSettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/providers/microsoft.insights/diagnosticsettings/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/providers/Microsoft.Insights/diagnosticSettings/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/providers/microsoft.insights/metricdefinitions/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/providers/Microsoft.Insights/metricDefinitions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/roleinstances/downloadremotedesktopconnectionfile/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/roleInstances/downloadremotedesktopconnectionfile/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/roleinstances/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/roleInstances/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/roleinstances/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/roleInstances/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/roleinstances/rebuild/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/roleInstances/rebuild/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/roleinstances/reimage/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/roleInstances/reimage/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/roleinstances/restart/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/roleInstances/restart/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/skus/read",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/skus/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/roles/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/roles/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/start/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/start/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/state/start/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/state/start/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/state/stop/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/state/stop/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/stop/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/stop/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/upgradedomain/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/upgradeDomain/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/validatemigration/action",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/validateMigration/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/slots/write",
-    "name": "Microsoft.ClassicCompute/domainNames/slots/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/swap/action",
-    "name": "Microsoft.ClassicCompute/domainNames/swap/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/domainnames/write",
-    "name": "Microsoft.ClassicCompute/domainNames/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/movesubscriptionresources/action",
-    "name": "Microsoft.ClassicCompute/moveSubscriptionResources/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/operatingsystemfamilies/read",
-    "name": "Microsoft.ClassicCompute/operatingSystemFamilies/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/operatingsystems/read",
-    "name": "Microsoft.ClassicCompute/operatingSystems/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/operations/read",
-    "name": "Microsoft.ClassicCompute/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/quotas/read",
-    "name": "Microsoft.ClassicCompute/quotas/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/register/action",
-    "name": "Microsoft.ClassicCompute/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/resourcetypes/skus/read",
-    "name": "Microsoft.ClassicCompute/resourceTypes/skus/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/validatesubscriptionmoveavailability/action",
-    "name": "Microsoft.ClassicCompute/validateSubscriptionMoveAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/associatednetworksecuritygroups/delete",
-    "name": "Microsoft.ClassicCompute/virtualMachines/associatedNetworkSecurityGroups/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/associatednetworksecuritygroups/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/associatedNetworkSecurityGroups/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/associatednetworksecuritygroups/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/associatedNetworkSecurityGroups/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/associatednetworksecuritygroups/write",
-    "name": "Microsoft.ClassicCompute/virtualMachines/associatedNetworkSecurityGroups/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/asyncoperations/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/asyncOperations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/attachdisk/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/attachDisk/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/capture/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/capture/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/delete",
-    "name": "Microsoft.ClassicCompute/virtualMachines/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/detachdisk/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/detachDisk/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/diagnosticsettings/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/diagnosticsettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/disks/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/disks/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/downloadremotedesktopconnectionfile/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/downloadRemoteDesktopConnectionFile/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/extensions/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/extensions/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/extensions/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/extensions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/extensions/write",
-    "name": "Microsoft.ClassicCompute/virtualMachines/extensions/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/metricdefinitions/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/metricdefinitions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/metrics/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/metrics/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/networkinterfaces/associatednetworksecuritygroups/delete",
-    "name": "Microsoft.ClassicCompute/virtualMachines/networkInterfaces/associatedNetworkSecurityGroups/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/networkinterfaces/associatednetworksecuritygroups/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/networkInterfaces/associatedNetworkSecurityGroups/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/networkinterfaces/associatednetworksecuritygroups/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/networkInterfaces/associatedNetworkSecurityGroups/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/networkinterfaces/associatednetworksecuritygroups/write",
-    "name": "Microsoft.ClassicCompute/virtualMachines/networkInterfaces/associatedNetworkSecurityGroups/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/operationstatuses/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/performmaintenance/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/performMaintenance/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/providers/microsoft.insights/diagnosticsettings/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/providers/Microsoft.Insights/diagnosticSettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/providers/microsoft.insights/diagnosticsettings/write",
-    "name": "Microsoft.ClassicCompute/virtualMachines/providers/Microsoft.Insights/diagnosticSettings/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/providers/microsoft.insights/metricdefinitions/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/providers/Microsoft.Insights/metricDefinitions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/read",
-    "name": "Microsoft.ClassicCompute/virtualMachines/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/redeploy/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/redeploy/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/restart/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/restart/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/shutdown/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/shutdown/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/start/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/start/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/stop/action",
-    "name": "Microsoft.ClassicCompute/virtualMachines/stop/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.classiccompute/virtualmachines/write",
-    "name": "Microsoft.ClassicCompute/virtualMachines/write",
     "roleCount": 0
   },
   {
@@ -78545,6 +78060,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/applicationgateways/applicationgatewayhealth/action",
+    "name": "Microsoft.Network/applicationGateways/applicationGatewayHealth/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/applicationgateways/appprotectpolicy/attachappprotectpolicy/action",
     "name": "Microsoft.Network/applicationGateways/appProtectPolicy/attachAppProtectPolicy/action",
     "roleCount": 0
@@ -78700,6 +78220,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/applicationsecuritygroups/addressprefixsets/delete",
+    "name": "Microsoft.Network/applicationSecurityGroups/addressPrefixSets/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/addressprefixsets/read",
+    "name": "Microsoft.Network/applicationSecurityGroups/addressPrefixSets/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/addressprefixsets/write",
+    "name": "Microsoft.Network/applicationSecurityGroups/addressPrefixSets/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/applicationsecuritygroups/delete",
     "name": "Microsoft.Network/applicationSecurityGroups/delete",
     "roleCount": 0
@@ -78707,6 +78242,11 @@
   {
     "key": "microsoft.network/applicationsecuritygroups/joinipconfiguration/action",
     "name": "Microsoft.Network/applicationSecurityGroups/joinIpConfiguration/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/listaddressprefixsets/action",
+    "name": "Microsoft.Network/applicationSecurityGroups/listAddressPrefixSets/action",
     "roleCount": 0
   },
   {
@@ -79560,6 +79100,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/expressroutecrossconnections/deprovisionconnection/action",
+    "name": "Microsoft.Network/expressRouteCrossConnections/deprovisionConnection/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/expressroutecrossconnections/features/delete",
     "name": "Microsoft.Network/expressRouteCrossConnections/features/delete",
     "roleCount": 0
@@ -79677,6 +79222,16 @@
   {
     "key": "microsoft.network/expressroutelags/delete",
     "name": "Microsoft.Network/expressRouteLags/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/generateloa/action",
+    "name": "Microsoft.Network/expressRouteLags/generateloa/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/join/action",
+    "name": "Microsoft.Network/expressRouteLags/join/action",
     "roleCount": 0
   },
   {
@@ -79862,6 +79417,21 @@
   {
     "key": "microsoft.network/firewallpolicies/write",
     "name": "Microsoft.Network/firewallPolicies/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firstpartyservicetags/delete",
+    "name": "Microsoft.Network/firstPartyServiceTags/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firstpartyservicetags/read",
+    "name": "Microsoft.Network/firstPartyServiceTags/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firstpartyservicetags/write",
+    "name": "Microsoft.Network/firstPartyServiceTags/write",
     "roleCount": 0
   },
   {
@@ -81400,16 +80970,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/networkwatchers/agents/deregister/action",
-    "name": "Microsoft.Network/networkWatchers/agents/deregister/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/networkwatchers/agents/fetchregistrationinfo/action",
-    "name": "Microsoft.Network/networkWatchers/agents/fetchRegistrationInfo/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/networkwatchers/agents/read",
     "name": "Microsoft.Network/networkWatchers/agents/read",
     "roleCount": 0
@@ -82192,6 +81752,11 @@
   {
     "key": "microsoft.network/trafficmanagerprofiles/providers/microsoft.insights/metricdefinitions/read",
     "name": "Microsoft.Network/trafficManagerProfiles/providers/Microsoft.Insights/metricDefinitions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/trafficmanagerprofiles/validatelink/action",
+    "name": "Microsoft.Network/trafficManagerProfiles/validateLink/action",
     "roleCount": 0
   },
   {
@@ -101525,18 +101090,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/clusters/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/clusters/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/clusters/privateendpoints/delete",
     "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/clusters/privateendpoints/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -101552,11 +101107,6 @@
   {
     "key": "microsoft.streamanalytics/clusters/write",
     "name": "Microsoft.StreamAnalytics/clusters/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/locations/quotas/read",
-    "name": "Microsoft.StreamAnalytics/locations/quotas/Read",
     "roleCount": 0
   },
   {
@@ -101595,11 +101145,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/functions/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/functions/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/functions/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/functions/Read",
     "roleCount": 0
@@ -101630,11 +101175,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/inputs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/inputs/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/Read",
     "roleCount": 0
@@ -101655,23 +101195,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.streamanalytics/streamingjobs/metricdefinitions/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/metricdefinitions/Read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/operationresults/Read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/delete",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/outputs/operationresults/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -101687,16 +101212,6 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/write",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/write",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/write",
     "roleCount": 0
   },
   {
@@ -101717,11 +101232,6 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/scale/action",
     "name": "Microsoft.StreamAnalytics/streamingjobs/Scale/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.streamanalytics/streamingjobs/skus/read",
-    "name": "Microsoft.StreamAnalytics/streamingjobs/Skus/Read",
     "roleCount": 0
   },
   {
@@ -107337,6 +106847,21 @@
   {
     "key": "microsoft.workloads/virtualinstances/delete",
     "name": "Microsoft.Workloads/virtualInstances/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.workloads/virtualinstances/instancemonitors/delete",
+    "name": "Microsoft.Workloads/virtualInstances/instanceMonitors/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.workloads/virtualinstances/instancemonitors/read",
+    "name": "Microsoft.Workloads/virtualInstances/instanceMonitors/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.workloads/virtualinstances/instancemonitors/write",
+    "name": "Microsoft.Workloads/virtualInstances/instanceMonitors/write",
     "roleCount": 0
   },
   {
