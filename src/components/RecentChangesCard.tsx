@@ -53,7 +53,30 @@ export default function RecentChangesCard() {
     );
   }
 
-  if (!diffData) return null;
+  if (!diffData) {
+    return (
+      <div className="rounded-xl bg-white dark:bg-slate-900">
+        <div className="flex items-center justify-between px-5 pt-4 pb-3">
+          <Link href="/tools/ip-changes/" className="text-sm font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 transition">
+            Recent Changes
+          </Link>
+          <Link href="/tools/ip-changes/" className="text-slate-300 hover:text-slate-500 dark:text-slate-600 dark:hover:text-slate-400 transition">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </Link>
+        </div>
+        <div className="px-5 pb-4 pt-1">
+          <p className="text-[11px] text-slate-400 dark:text-slate-500">No changes since last update</p>
+          {lastUpdated && (
+            <p className="text-[11px] text-slate-400 dark:text-slate-500">
+              Last update: {lastUpdated}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   const summary = diffData.meta.summary;
   const clouds = diffData.meta.clouds;
