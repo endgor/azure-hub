@@ -18960,7 +18960,7 @@
           "Microsoft.Authorization/*/read",
           "Microsoft.EventGrid/*/read",
           "Microsoft.Insights/alertRules/*",
-          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read"
         ],
         "condition": null,
@@ -18976,8 +18976,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2023-10-23T15:12:07.128827+00:00",
-    "permissionCount": 1335.3333333333333,
+    "updatedOn": "2026-04-09T22:19:43.642084+00:00",
+    "permissionCount": 1003,
     "dataActions": [
       "Microsoft.EventGrid/topicSpaces/subscribe/action"
     ],
@@ -18998,7 +18998,7 @@
           "Microsoft.Authorization/*/read",
           "Microsoft.EventGrid/*/read",
           "Microsoft.Insights/alertRules/*",
-          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read"
         ],
         "condition": null,
@@ -19014,8 +19014,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2023-10-23T15:12:07.130830+00:00",
-    "permissionCount": 1335.3333333333333,
+    "updatedOn": "2026-04-09T22:34:48.767413+00:00",
+    "permissionCount": 1003,
     "dataActions": [
       "Microsoft.EventGrid/topicSpaces/publish/action"
     ],
