@@ -415,6 +415,16 @@ async function updateAllIpData(): Promise<void> {
       if (currentVersionData) {
         const previousDataPath = path.join(DATA_DIR, `${mapping.cloud}-previous.json`);
 
+        // Guard: skip if the downloaded file is older than what we already have.
+        // Microsoft occasionally serves a stale version temporarily; writing it would
+        // corrupt the stored data and produce a misleading backwards diff.
+        // Restore the original file since downloadFile() already overwrote it.
+        if (data.changeNumber < currentVersionData.changeNumber) {
+          console.warn(`[${mapping.cloud}] Downloaded changeNumber ${data.changeNumber} is OLDER than stored ${currentVersionData.changeNumber}. Restoring previous version to preserve data integrity.`);
+          fs.writeFileSync(dataFilePath, JSON.stringify(currentVersionData, null, 2), 'utf8');
+          continue;
+        }
+
         // If the changeNumber is different, compute diff
         if (currentVersionData.changeNumber !== data.changeNumber) {
           console.info(`[${mapping.cloud}] Computing diff: changeNumber ${currentVersionData.changeNumber} → ${data.changeNumber}`);
