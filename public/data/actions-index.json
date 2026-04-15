@@ -18365,56 +18365,6 @@
     "roleCount": 0
   },
   {
-    "key": "commvault.contentstore/checknameavailability/action",
-    "name": "Commvault.ContentStore/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/delete",
-    "name": "Commvault.ContentStore/entities/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/read",
-    "name": "Commvault.ContentStore/entities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/write",
-    "name": "Commvault.ContentStore/entities/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/read",
-    "name": "Commvault.ContentStore/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/write",
-    "name": "Commvault.ContentStore/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/operations/read",
-    "name": "Commvault.ContentStore/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/register/action",
-    "name": "Commvault.ContentStore/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/registeredsubscriptions/read",
-    "name": "Commvault.ContentStore/registeredSubscriptions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/unregister/action",
-    "name": "Commvault.ContentStore/unregister/action",
-    "roleCount": 0
-  },
-  {
     "key": "dell.storage/checknameavailability/action",
     "name": "Dell.Storage/checkNameAvailability/action",
     "roleCount": 0
@@ -84515,6 +84465,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/aadagentriskevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/AADAgentRiskEvents/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/aadb2crequestlogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/AADB2CRequestLogs/read",
     "roleCount": 0
@@ -84587,6 +84542,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/aadprovisioninglogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/AADProvisioningLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/aadriskyagents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/AADRiskyAgents/read",
     "roleCount": 0
   },
   {
@@ -87350,6 +87310,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/ledgertransactionlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/LedgerTransactionLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/ledgeruserdefinedlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/LedgerUserDefinedLogs/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/liatrackingevents/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/LIATrackingEvents/read",
     "roleCount": 0
@@ -87775,6 +87745,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/ntansprulerecommendation/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/NTANspRuleRecommendation/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/ntarulerecommendation/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/NTARuleRecommendation/read",
     "roleCount": 0
@@ -88050,6 +88025,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/quantumprovideraccountjobauditlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/QuantumProviderAccountJobAuditLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/quantumprovideraccountqueueauditlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/QuantumProviderAccountQueueAuditLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/quantumprovideraccounttargetauditlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/QuantumProviderAccountTargetAuditLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/quantumworkspacejobauditlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/QuantumWorkspaceJobAuditLogs/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/rapid7insightvmcloudassets/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/Rapid7InsightVMCloudAssets/read",
     "roleCount": 0
@@ -88077,6 +88072,16 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/retinanetworkflowlogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/RetinaNetworkFlowLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/salesforceaudittrail/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/SalesforceAuditTrail/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/salesforceloginhistory/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/SalesforceLoginHistory/read",
     "roleCount": 0
   },
   {
@@ -88302,6 +88307,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/storagemalwarescanningresults/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/StorageMalwareScanningResults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/storagemoverauditlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/StorageMoverAuditLogs/read",
     "roleCount": 0
   },
   {
