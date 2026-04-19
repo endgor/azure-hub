@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-18",
+  "lastUpdated": "2026-04-19",
   "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
   "entries": [
     {
@@ -929,6 +929,21 @@
       "cloud": "Commercial"
     },
     {
+      "resourceType": "Azure AI Video Indexer",
+      "armType": "Microsoft.VideoIndexer/accounts",
+      "subresources": [
+        "account"
+      ],
+      "dnsZoneNames": [
+        "privatelink.api.videoindexer.ai"
+      ],
+      "publicDnsForwarders": [
+        "api.videoindexer.ai"
+      ],
+      "category": "Media",
+      "cloud": "Commercial"
+    },
+    {
       "resourceType": "Azure Automation",
       "armType": "Microsoft.Automation/automationAccounts",
       "subresources": [
@@ -1418,6 +1433,21 @@
       "publicDnsForwarders": [
         "azurestaticapps.net",
         "{partitionId}.azurestaticapps.net"
+      ],
+      "category": "Web",
+      "cloud": "Commercial"
+    },
+    {
+      "resourceType": "Azure Maps",
+      "armType": "Microsoft.Maps/accounts",
+      "subresources": [
+        "account"
+      ],
+      "dnsZoneNames": [
+        "privatelink.account.maps.azure.com"
+      ],
+      "publicDnsForwarders": [
+        "account.maps.azure.com"
       ],
       "category": "Web",
       "cloud": "Commercial"
