@@ -54,6 +54,18 @@ function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
   );
 }
 
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
+}
+
 /**
  * Server-side API endpoint for IP lookups.
  *
@@ -99,12 +111,13 @@ export default async function handler(
   const { ipOrDomain, region, service } = req.query;
 
   try {
+    const baseUrl = getBaseUrl(req);
     let results: AzureIpAddress[] = [];
 
     if (ipOrDomain && typeof ipOrDomain === 'string') {
       // Check if it's an IP address or CIDR
       if (isIpOrCidr(ipOrDomain)) {
-        results = await checkIpAddress(ipOrDomain);
+        results = await checkIpAddress(ipOrDomain, { baseUrl });
       }
       // Check if it's a hostname that needs DNS resolution
       else if (isHostname(ipOrDomain)) {
@@ -121,7 +134,7 @@ export default async function handler(
           if (ipAddresses.length > 0) {
             // Check each resolved IP in parallel
             const matchPromises = ipAddresses.map(async (resolvedIp: string) => {
-              const matches = await checkIpAddress(resolvedIp);
+              const matches = await checkIpAddress(resolvedIp, { baseUrl });
               // Tag each result with DNS info
               matches.forEach(match => {
                 match.resolvedFrom = ipOrDomain;
@@ -134,16 +147,16 @@ export default async function handler(
           } else {
             // No DNS results, fall back to service/region search
             const [serviceResults, regionResults] = await Promise.all([
-              searchAzureIpAddresses({ service: ipOrDomain }),
-              searchAzureIpAddresses({ region: ipOrDomain })
+              searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
+              searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
             ]);
             results = deduplicateResults([...serviceResults, ...regionResults]);
           }
         } catch {
           // DNS lookup failed, fall back to service/region search
           const [serviceResults, regionResults] = await Promise.all([
-            searchAzureIpAddresses({ service: ipOrDomain }),
-            searchAzureIpAddresses({ region: ipOrDomain })
+            searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
+            searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
           ]);
           results = deduplicateResults([...serviceResults, ...regionResults]);
         }
@@ -151,8 +164,8 @@ export default async function handler(
       // Otherwise treat as service/region search
       else {
         const [serviceResults, regionResults] = await Promise.all([
-          searchAzureIpAddresses({ service: ipOrDomain }),
-          searchAzureIpAddresses({ region: ipOrDomain })
+          searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
+          searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
         ]);
         results = deduplicateResults([...serviceResults, ...regionResults]);
       }
@@ -161,7 +174,7 @@ export default async function handler(
       results = await searchAzureIpAddresses({
         region: typeof region === 'string' ? region : undefined,
         service: typeof service === 'string' ? service : undefined
-      });
+      }, { baseUrl });
     }
 
     if (results.length === 0) {

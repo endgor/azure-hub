@@ -1,4 +1,3 @@
-import { Base64 } from 'js-base64';
 import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
 import { isRfc1918Cidr, normaliseNetwork } from '@/lib/subnetCalculator';
 
@@ -205,7 +204,21 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
  * Supports both Node.js (Buffer) and browser (TextEncoder + btoa) environments.
  */
 function encodeBase64Url(value: string): string {
-  return Base64.encodeURI(value);
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(value, 'utf8').toString('base64url');
+  }
+
+  const bytes = new TextEncoder().encode(value);
+  let binary = '';
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '');
 }
 
 /**
@@ -214,5 +227,14 @@ function encodeBase64Url(value: string): string {
  * Automatically adds padding if missing (Base64URL omits it).
  */
 function decodeBase64Url(encoded: string): string {
-  return Base64.decode(encoded);
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(encoded, 'base64url').toString('utf8');
+  }
+
+  const padded = encoded + '='.repeat((4 - (encoded.length % 4)) % 4);
+  const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
+  const binary = atob(base64);
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+
+  return new TextDecoder().decode(bytes);
 }

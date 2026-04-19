@@ -31,6 +31,10 @@ export interface SearchOptions {
   service?: string;
 }
 
+export interface ServerDataLoadOptions {
+  baseUrl?: string;
+}
+
 // --- Lookup Index Types ---
 
 interface MetaEntry {
@@ -59,20 +63,45 @@ interface IpLookupIndex {
   ipv6MinPrefix: number; // smallest prefix length across all IPv6 CIDRs
 }
 
+interface ServiceTagDocument {
+  values?: Array<{
+    name: string;
+    properties?: {
+      addressPrefixes?: string[];
+      systemService?: string;
+      region?: string;
+      regionId?: string | number;
+      networkFeatures?: string[];
+    };
+  }>;
+}
+
 // --- Lookup Index Cache ---
 
 let lookupIndexCache: { data: IpLookupIndex; expiry: number } | null = null;
 
-async function loadLookupIndex(): Promise<IpLookupIndex | null> {
+async function loadJsonAsset<T>(assetPath: string, options?: ServerDataLoadOptions): Promise<T> {
+  if (options?.baseUrl) {
+    const response = await fetch(new URL(assetPath, options.baseUrl));
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${assetPath}: ${response.status}`);
+    }
+    return await response.json() as T;
+  }
+
+  const filePath = path.join(process.cwd(), 'public', ...assetPath.replace(/^\/+/, '').split('/'));
+  const content = await fs.readFile(filePath, 'utf-8');
+  return JSON.parse(content) as T;
+}
+
+async function loadLookupIndex(options?: ServerDataLoadOptions): Promise<IpLookupIndex | null> {
   const now = Date.now();
   if (lookupIndexCache && lookupIndexCache.expiry > now) {
     return lookupIndexCache.data;
   }
 
   try {
-    const indexPath = path.join(process.cwd(), 'public', 'data', 'ip-lookup-index.json');
-    const content = await fs.readFile(indexPath, 'utf-8');
-    const data = JSON.parse(content) as IpLookupIndex;
+    const data = await loadJsonAsset<IpLookupIndex>('/data/ip-lookup-index.json', options);
     lookupIndexCache = { data, expiry: now + CACHE_TTL_MS };
     return data;
   } catch (error) {
@@ -258,7 +287,7 @@ async function checkIpAddressWithIndex(index: IpLookupIndex, ipAddress: string):
  * Loads Azure IP data for a specific cloud from the filesystem.
  * Caches in memory for 6 hours to avoid repeated file reads.
  */
-async function loadAzureIpData(cloud: AzureCloudName): Promise<AzureIpAddress[]> {
+async function loadAzureIpData(cloud: AzureCloudName, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
   const now = Date.now();
   const cached = cloudCache.get(cloud);
 
@@ -267,24 +296,25 @@ async function loadAzureIpData(cloud: AzureCloudName): Promise<AzureIpAddress[]>
   }
 
   try {
-    const dataPath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
-    const fileContent = await fs.readFile(dataPath, 'utf-8');
-    const data = JSON.parse(fileContent);
+    const data = await loadJsonAsset<ServiceTagDocument>(
+      `/data/${cloud}.json`,
+      options
+    );
     const ipRanges: AzureIpAddress[] = [];
 
     if (data.values && Array.isArray(data.values)) {
       for (const serviceTag of data.values) {
         const { name: serviceTagId, properties } = serviceTag;
-        const { addressPrefixes = [], systemService, region } = properties || {};
+        const { addressPrefixes = [], systemService, region, regionId, networkFeatures } = properties || {};
 
         for (const ipRange of addressPrefixes) {
           ipRanges.push({
             serviceTagId,
             ipAddressPrefix: ipRange,
             region: region || '',
-            regionId: properties.regionId?.toString() || '',
+            regionId: regionId?.toString() || '',
             systemService: systemService || '',
-            networkFeatures: properties.networkFeatures?.join(', ') || '',
+            networkFeatures: networkFeatures?.join(', ') || '',
             cloud
           });
         }
@@ -304,16 +334,20 @@ async function loadAzureIpData(cloud: AzureCloudName): Promise<AzureIpAddress[]>
  * Each cloud is loaded in parallel for performance.
  */
 async function loadAllCloudsIpData(): Promise<AzureIpAddress[]> {
-  const results = await Promise.all(ALL_CLOUDS.map(loadAzureIpData));
+  return loadAllCloudsIpDataWithOptions();
+}
+
+async function loadAllCloudsIpDataWithOptions(options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
+  const results = await Promise.all(ALL_CLOUDS.map((cloud) => loadAzureIpData(cloud, options)));
   return results.flat();
 }
 
 // --- Fallback: Linear scan using ip-cidr (used if index fails to load) ---
 
-async function checkIpAddressFallback(ipAddress: string): Promise<AzureIpAddress[]> {
+async function checkIpAddressFallback(ipAddress: string, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
   // Dynamic import to avoid bundling ip-cidr when the index is available
   const IPCIDR = (await import('ip-cidr')).default;
-  const azureIpRanges = await loadAllCloudsIpData();
+  const azureIpRanges = await loadAllCloudsIpDataWithOptions(options);
   const matches: AzureIpAddress[] = [];
 
   for (const azureIpRange of azureIpRanges) {
@@ -337,19 +371,22 @@ async function checkIpAddressFallback(ipAddress: string): Promise<AzureIpAddress
  * numeric index with binary search. Falls back to linear IPCIDR scan if
  * the index is unavailable.
  */
-export async function checkIpAddress(ipAddress: string): Promise<AzureIpAddress[]> {
-  const index = await loadLookupIndex();
+export async function checkIpAddress(ipAddress: string, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
+  const index = await loadLookupIndex(options);
   if (index) {
     return checkIpAddressWithIndex(index, ipAddress);
   }
-  return checkIpAddressFallback(ipAddress);
+  return checkIpAddressFallback(ipAddress, options);
 }
 
 /**
  * Searches Azure IP ranges by region and/or service name
  * across all Azure clouds (Public, China, Government).
  */
-export async function searchAzureIpAddresses(options: SearchOptions): Promise<AzureIpAddress[]> {
+export async function searchAzureIpAddresses(
+  options: SearchOptions,
+  loadOptions?: ServerDataLoadOptions
+): Promise<AzureIpAddress[]> {
   const regionFilter = options.region?.trim();
   const serviceFilter = options.service?.trim();
   const hasRegionFilter = Boolean(regionFilter);
@@ -359,7 +396,7 @@ export async function searchAzureIpAddresses(options: SearchOptions): Promise<Az
     return [];
   }
 
-  const azureIpAddressList = await loadAllCloudsIpData();
+  const azureIpAddressList = await loadAllCloudsIpDataWithOptions(loadOptions);
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
     return [];
   }
