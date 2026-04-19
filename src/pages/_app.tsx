@@ -4,8 +4,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { Inter } from 'next/font/google';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -69,8 +67,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <div className={`${inter.variable} font-sans`}>
         <Component {...pageProps} />
       </div>
-      <Analytics />
-      <SpeedInsights />
     </>
   );
 }

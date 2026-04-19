@@ -7,6 +7,10 @@
     "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && node scripts/generateSitemap.js && next build",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy:preview": "opennextjs-cloudflare build && wrangler deploy --env preview",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "lint": "eslint .",
     "update-ip-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateIpData.ts",
     "update-rbac-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateRbacData.ts",
@@ -18,11 +22,10 @@
     "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.8.3",
     "@azure/identity": "^4.13.1",
     "@types/d3-geo": "^3.1.0",
     "@types/topojson-client": "^3.1.5",
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
     "d3-geo": "^3.1.1",
     "exceljs": "^4.4.0",
     "gray-matter": "^4.0.3",
@@ -62,6 +65,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.1"
+    "typescript-eslint": "^8.58.1",
+    "wrangler": "^4.83.0"
   }
 }

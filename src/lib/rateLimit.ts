@@ -17,37 +17,32 @@ export class RateLimiter {
   private cache: Map<string, RateLimitEntry>;
   private readonly limit: number;
   private readonly windowMs: number;
-  private cleanupInterval: NodeJS.Timeout | null;
+  private lastCleanup: number;
 
   constructor(limit: number = 10, windowMs: number = 60000) {
     this.cache = new Map();
     this.limit = limit;
     this.windowMs = windowMs;
-    this.cleanupInterval = null;
-    this.startCleanup();
-
+    this.lastCleanup = 0;
   }
 
-  private startCleanup(): void {
-    clearInterval(this.cleanupInterval!);
-    this.cleanupInterval = setInterval(() => {
-      const now = Date.now();
-      const keysToDelete: string[] = [];
-      this.cache.forEach((entry, key) => {
-        if (entry.resetTime < now) {
-          keysToDelete.push(key);
-        }
-      });
-      keysToDelete.forEach((key) => this.cache.delete(key));
-    }, this.windowMs);
-
-    if (this.cleanupInterval.unref) {
-      this.cleanupInterval.unref();
+  private cleanupExpiredEntries(now: number): void {
+    if (now - this.lastCleanup < this.windowMs) {
+      return;
     }
+
+    for (const [key, entry] of this.cache.entries()) {
+      if (entry.resetTime < now) {
+        this.cache.delete(key);
+      }
+    }
+
+    this.lastCleanup = now;
   }
 
   check(identifier: string): RateLimitResult {
     const now = Date.now();
+    this.cleanupExpiredEntries(now);
     const entry = this.cache.get(identifier);
 
     if (!entry || entry.resetTime < now) {
@@ -84,10 +79,6 @@ export class RateLimiter {
   }
 
   destroy(): void {
-    if (this.cleanupInterval) {
-      clearInterval(this.cleanupInterval);
-      this.cleanupInterval = null;
-    }
     this.cache.clear();
   }
 }
@@ -104,18 +95,19 @@ export function getClientIdentifier(req: {
   headers: Record<string, string | string[] | undefined>;
   socket?: { remoteAddress?: string };
 }): string {
-  const isVercel = process.env.VERCEL === '1';
-
-  if (isVercel) {
-    const forwarded = req.headers['x-forwarded-for'];
-    if (typeof forwarded === 'string') {
-      const ip = forwarded.split(',')[0].trim();
-      if (ip) return ip;
-    }
-
-    const realIp = req.headers['x-real-ip'];
-    if (typeof realIp === 'string' && realIp) return realIp;
+  const cloudflareIp = req.headers['cf-connecting-ip'];
+  if (typeof cloudflareIp === 'string' && cloudflareIp) {
+    return cloudflareIp;
   }
+
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') {
+    const ip = forwarded.split(',')[0].trim();
+    if (ip) return ip;
+  }
+
+  const realIp = req.headers['x-real-ip'];
+  if (typeof realIp === 'string' && realIp) return realIp;
 
   if (req.socket?.remoteAddress) {
     return req.socket.remoteAddress;

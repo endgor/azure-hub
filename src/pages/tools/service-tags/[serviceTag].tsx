@@ -53,8 +53,6 @@ export default function ServiceTagDetail({ serviceTag, ipRanges }: ServiceTagDet
   };
 
   const canonicalUrl = getServiceTagCanonicalUrl(serviceTag);
-  const isRegionalVariant = serviceTag.includes('.');
-
   // Generate breadcrumb structured data
   const breadcrumbSchema = {
     "@context": "https://schema.org",

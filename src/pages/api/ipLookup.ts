@@ -1,13 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import net from 'net';
-import dns from 'dns';
-import { promisify } from 'util';
+import net from 'node:net';
+import dns from 'node:dns';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/serverIpService';
 import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { AzureIpAddress } from '@/types/azure';
 
-const resolve4 = promisify(dns.resolve4);
-const resolve6 = promisify(dns.resolve6);
+const { resolve4, resolve6 } = dns.promises;
 
 interface IpLookupResponse {
   results: AzureIpAddress[];
