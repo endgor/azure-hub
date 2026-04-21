@@ -1,25 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import { z } from 'zod';
 
 const guidesDirectory = path.join(process.cwd(), 'content/guides');
 
-// Zod schema for frontmatter validation
-const GuideMetaSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().min(1, 'Description is required'),
-  category: z.string().min(1, 'Category is required'),
-  tags: z.array(z.string()).default([]),
-  date: z.string().transform((v) => {
-    const d = new Date(v);
-    if (Number.isNaN(d.getTime())) {
-      throw new Error(`Invalid date: ${v}`);
-    }
-    return d.toISOString();
-  }),
-});
-
-export type GuideMeta = z.infer<typeof GuideMetaSchema>;
+export interface GuideMeta {
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+  date: string;
+}
 
 export interface GuideHeading {
   id: string;
@@ -45,6 +35,42 @@ export interface GuideCategory {
 interface MatterResult {
   data: unknown;
   content: string;
+}
+
+function parseGuideMeta(data: unknown): GuideMeta {
+  if (!data || typeof data !== 'object') {
+    throw new Error('Guide frontmatter is missing.');
+  }
+
+  const candidate = data as Record<string, unknown>;
+  const title = typeof candidate.title === 'string' ? candidate.title.trim() : '';
+  const description = typeof candidate.description === 'string' ? candidate.description.trim() : '';
+  const category = typeof candidate.category === 'string' ? candidate.category.trim() : '';
+  const rawTags = Array.isArray(candidate.tags) ? candidate.tags : [];
+  const tags = rawTags.filter((tag): tag is string => typeof tag === 'string').map((tag) => tag.trim()).filter(Boolean);
+  const rawDate = typeof candidate.date === 'string' ? candidate.date.trim() : '';
+  const parsedDate = new Date(rawDate);
+
+  if (!title) {
+    throw new Error('Guide title is required.');
+  }
+  if (!description) {
+    throw new Error('Guide description is required.');
+  }
+  if (!category) {
+    throw new Error('Guide category is required.');
+  }
+  if (!rawDate || Number.isNaN(parsedDate.getTime())) {
+    throw new Error(`Invalid guide date: ${rawDate}`);
+  }
+
+  return {
+    title,
+    description,
+    category,
+    tags,
+    date: parsedDate.toISOString(),
+  };
 }
 
 // Load category metadata from content file
@@ -116,7 +142,7 @@ export async function getGuidesByCategory(category: string): Promise<Guide[]> {
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { data } = await parseMarkdownFile(fileContents);
 
-      const validatedMeta = GuideMetaSchema.parse(data);
+      const validatedMeta = parseGuideMeta(data);
 
       return {
         slug,
@@ -163,7 +189,7 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data, content } = await parseMarkdownFile(fileContents);
 
-    const validatedMeta = GuideMetaSchema.parse(data);
+    const validatedMeta = parseGuideMeta(data);
 
     const [{ unified }, remarkParse, remarkGfm, remarkRehype, rehypeRaw, rehypeSanitizeModule, rehypeSlug, rehypeAutolinkHeadings, rehypeExternalLinks, rehypeStringify, rehypePrism] = await Promise.all([
       import('unified'),
