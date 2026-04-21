@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import net from 'node:net';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/serverIpService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { AzureIpAddress } from '@/types/azure';
 
 interface IpLookupResponse {
@@ -120,27 +119,6 @@ export default async function handler(
       error: 'Method not allowed'
     });
   }
-
-  // Apply rate limiting
-  const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(clientId);
-
-  if (!rateLimitResult.success) {
-    res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
-    return res.status(429).json({
-      results: [],
-      total: 0,
-      error: 'Rate limit exceeded. Please try again later.'
-    });
-  }
-
-  // Set rate limit headers
-  res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-  res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
-  res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
 
   const { ipOrDomain, region, service } = req.query;
 

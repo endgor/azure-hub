@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FEEDBACK_TO = 'endgor@gmail.com';
@@ -7,12 +6,6 @@ const FEEDBACK_TO = 'endgor@gmail.com';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const clientId = getClientIdentifier(req);
-  const rateLimit = await checkRateLimit(`feedback:${clientId}`);
-  if (!rateLimit.success) {
-    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
   const { name, email, message, type } = req.body as {

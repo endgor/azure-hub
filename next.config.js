@@ -105,6 +105,26 @@ const nextConfig = {
         source: '/tools/rbac-calculator/',
         destination: '/tools/azure-rbac-calculator/',
         permanent: true,
+      },
+      {
+        source: '/service-tags',
+        destination: '/tools/service-tags/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags/',
+        destination: '/tools/service-tags/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags/:serviceTag',
+        destination: '/tools/service-tags/:serviceTag/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags/:serviceTag/',
+        destination: '/tools/service-tags/:serviceTag/',
+        permanent: true,
       }
     ];
   }

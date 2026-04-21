@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getActionsByService } from '@/lib/serverRbacService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { Operation } from '@/types/rbac';
 
 interface ActionsByServiceResponse {
@@ -34,24 +33,6 @@ export default async function handler(
       error: 'Method not allowed'
     });
   }
-
-  const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:actionsByService`);
-
-  if (!rateLimitResult.success) {
-    res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
-    return res.status(429).json({
-      operations: [],
-      error: 'Rate limit exceeded. Please try again later.'
-    });
-  }
-
-  res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-  res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
-  res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
 
   const { service } = req.query;
   if (!service || typeof service !== 'string') {
