@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - codex/cloudflare-migration
   workflow_dispatch:
 
 concurrency:

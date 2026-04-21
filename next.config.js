@@ -80,21 +80,12 @@ const nextConfig = {
     ];
   },
 
-  // Redirects for backward compatibility and SEO
+  // Redirects for backward compatibility and SEO.
+  // Note: www → apex redirect lives in Cloudflare Redirect Rules because
+  // Next.js' host-based redirects emit a literal ":path*" in the Location
+  // header when run under OpenNext.
   async redirects() {
     return [
-      // Redirect www to non-www (canonical domain)
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'www.azurehub.org',
-          },
-        ],
-        destination: 'https://azurehub.org/:path*',
-        permanent: true,
-      },
       // Legacy URL redirects
       {
         source: '/tools/rbac-calculator',
