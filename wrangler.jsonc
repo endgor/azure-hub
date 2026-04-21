@@ -14,10 +14,33 @@
     "binding": "ASSETS"
   },
   "workers_dev": true,
+  // 10 requests / 60 seconds per client IP. Used by /api/tenantLookup to
+  // protect the Microsoft Graph quota. See Cloudflare Workers Rate Limiting:
+  // https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+  "ratelimits": [
+    {
+      "name": "TENANT_LOOKUP_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ],
   "env": {
     "preview": {
       "name": "azure-hub-preview",
-      "workers_dev": true
+      "workers_dev": true,
+      "ratelimits": [
+        {
+          "name": "TENANT_LOOKUP_RATE_LIMITER",
+          "namespace_id": "1001",
+          "simple": {
+            "limit": 10,
+            "period": 60
+          }
+        }
+      ]
     }
   }
 }

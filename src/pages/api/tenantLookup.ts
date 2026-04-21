@@ -15,6 +15,33 @@ type ErrorResponse = { error: string };
 
 const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:3000', 'https://localhost:3000'];
 
+function getClientIp(req: NextApiRequest): string {
+  const cf = req.headers['cf-connecting-ip'];
+  if (typeof cf === 'string' && cf) return cf;
+
+  const fwd = req.headers['x-forwarded-for'];
+  if (typeof fwd === 'string') {
+    const ip = fwd.split(',')[0].trim();
+    if (ip) return ip;
+  }
+
+  return req.socket?.remoteAddress ?? 'unknown';
+}
+
+async function isRateLimited(key: string): Promise<boolean> {
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+    const { env } = await getCloudflareContext({ async: true });
+    const limiter = env.TENANT_LOOKUP_RATE_LIMITER;
+    if (!limiter) return false;
+    const { success } = await limiter.limit({ key });
+    return !success;
+  } catch {
+    // Binding unavailable (e.g. `next dev`): fail open.
+    return false;
+  }
+}
+
 function sendJson<T>(
   res: NextApiResponse<T>,
   status: number,
@@ -55,6 +82,17 @@ export default async function handler(
 
   if (!['GET', 'POST'].includes(req.method ?? '')) {
     sendJson(res, 405, { error: 'Method Not Allowed' }, corsAllowOrigin);
+    return;
+  }
+
+  if (await isRateLimited(getClientIp(req))) {
+    res.setHeader('Retry-After', '60');
+    sendJson(
+      res,
+      429,
+      { error: 'Too many requests. Please try again in a minute.' },
+      corsAllowOrigin
+    );
     return;
   }
 
