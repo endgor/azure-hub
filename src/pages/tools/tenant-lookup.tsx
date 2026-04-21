@@ -47,10 +47,25 @@ interface TenantHistoryEntry {
 
 const HISTORY_STORAGE_KEY = 'azurehub:tenantLookupHistory:v1';
 
-const rawTenantLookupBase = process.env.NEXT_PUBLIC_TENANT_LOOKUP_API_BASE?.trim();
-const TENANT_LOOKUP_ENDPOINT = rawTenantLookupBase && rawTenantLookupBase.length > 0
-  ? `${rawTenantLookupBase.replace(/\/+$/, '')}/api/tenantLookup`
-  : '/api/tenantLookup';
+function getTenantLookupEndpoint(): string {
+  const rawTenantLookupBase = process.env.NEXT_PUBLIC_TENANT_LOOKUP_API_BASE?.trim();
+
+  if (!rawTenantLookupBase) {
+    return '/api/tenantLookup';
+  }
+
+  try {
+    const normalizedBase = new URL(rawTenantLookupBase);
+    normalizedBase.pathname = normalizedBase.pathname.replace(/\/+$/, '') + '/api/tenantLookup';
+    normalizedBase.search = '';
+    normalizedBase.hash = '';
+    return normalizedBase.toString();
+  } catch {
+    return '/api/tenantLookup';
+  }
+}
+
+const TENANT_LOOKUP_ENDPOINT = getTenantLookupEndpoint();
 
 const domainRegex =
   /^(?=.{1,255}$)(?!-)(?:[a-z0-9-]{0,62}[a-z0-9]\.)+[a-z0-9][a-z0-9-]{0,62}[a-z0-9]$/i;

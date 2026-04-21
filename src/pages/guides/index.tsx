@@ -95,7 +95,7 @@ export default function GuidesPage({ categories }: GuidesPageProps) {
 }
 
 export const getStaticProps: GetStaticProps<GuidesPageProps> = async () => {
-  const categories = getAllGuides();
+  const categories = await getAllGuides();
 
   return {
     props: {

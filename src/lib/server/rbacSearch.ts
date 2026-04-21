@@ -6,11 +6,15 @@
 import type { Operation } from '@/types/rbac';
 import { loadActionsCache } from './rbacDataLoader';
 
+interface LoadOptions {
+  baseUrl?: string;
+}
+
 /**
  * Search operations by query string
  */
-export async function searchOperations(query: string, limit: number = 50): Promise<Operation[]> {
-  const actionsMap = await loadActionsCache();
+export async function searchOperations(query: string, limit: number = 50, options?: LoadOptions): Promise<Operation[]> {
+  const actionsMap = await loadActionsCache(options);
   const queryLower = query.toLowerCase();
   const results: Operation[] = [];
 
@@ -37,8 +41,8 @@ export async function searchOperations(query: string, limit: number = 50): Promi
 /**
  * Get service namespaces
  */
-export async function getServiceNamespaces(): Promise<string[]> {
-  const actionsMap = await loadActionsCache();
+export async function getServiceNamespaces(options?: LoadOptions): Promise<string[]> {
+  const actionsMap = await loadActionsCache(options);
   const namespaces = new Set<string>();
 
   // Convert Map entries to array for iteration (ES5 compatibility)
@@ -56,8 +60,8 @@ export async function getServiceNamespaces(): Promise<string[]> {
 /**
  * Get actions by service namespace
  */
-export async function getActionsByService(service: string): Promise<Operation[]> {
-  const actionsMap = await loadActionsCache();
+export async function getActionsByService(service: string, options?: LoadOptions): Promise<Operation[]> {
+  const actionsMap = await loadActionsCache(options);
   const results: Operation[] = [];
 
   // Convert Map entries to array for iteration (ES5 compatibility)

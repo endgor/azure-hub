@@ -8,6 +8,18 @@ interface ActionsByServiceResponse {
   error?: string;
 }
 
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
+}
+
 /**
  * Server-side actions-by-service API.
  * Returns all operations under a specific Azure provider namespace.
@@ -50,7 +62,7 @@ export default async function handler(
   }
 
   try {
-    const operations = await getActionsByService(service);
+    const operations = await getActionsByService(service, { baseUrl: getBaseUrl(req) });
     return res.status(200).json({ operations });
   } catch (error) {
     console.error('Actions by service lookup error:', error);

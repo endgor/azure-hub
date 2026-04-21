@@ -13,6 +13,18 @@ interface CalculateResponse {
   error?: string;
 }
 
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
+}
+
 /**
  * Server-side RBAC calculation API endpoint.
  *
@@ -65,7 +77,7 @@ export default async function handler(
     const results = await calculateLeastPrivilege({
       requiredActions: body.requiredActions || [],
       requiredDataActions: body.requiredDataActions || []
-    });
+    }, { baseUrl: getBaseUrl(req) });
 
     return res.status(200).json({
       results

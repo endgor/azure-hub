@@ -1,17 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import remarkRehype from 'remark-rehype';
-import rehypeRaw from 'rehype-raw';
-import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeExternalLinks from 'rehype-external-links';
-import rehypeStringify from 'rehype-stringify';
-import rehypePrism from 'rehype-prism-plus';
 import { z } from 'zod';
 
 const guidesDirectory = path.join(process.cwd(), 'content/guides');
@@ -52,6 +40,11 @@ export interface GuideCategory {
   slug: string;
   description: string;
   guides: Guide[];
+}
+
+interface MatterResult {
+  data: unknown;
+  content: string;
 }
 
 // Load category metadata from content file
@@ -102,7 +95,12 @@ export function getGuideCategories(): string[] {
 /**
  * Get all guides from a specific category
  */
-export function getGuidesByCategory(category: string): Guide[] {
+async function parseMarkdownFile(fileContents: string): Promise<MatterResult> {
+  const matter = (await import('gray-matter')).default;
+  return matter(fileContents) as MatterResult;
+}
+
+export async function getGuidesByCategory(category: string): Promise<Guide[]> {
   const categoryPath = path.join(guidesDirectory, category);
 
   if (!fs.existsSync(categoryPath)) {
@@ -110,15 +108,14 @@ export function getGuidesByCategory(category: string): Guide[] {
   }
 
   const fileNames = fs.readdirSync(categoryPath);
-  const guides: Guide[] = fileNames
+  const guides = await Promise.all(fileNames
     .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => {
+    .map(async (fileName) => {
       const slug = fileName.replace(/\.md$/, '');
       const fullPath = path.join(categoryPath, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
-      const { data } = matter(fileContents);
+      const { data } = await parseMarkdownFile(fileContents);
 
-      // Validate frontmatter with zod
       const validatedMeta = GuideMetaSchema.parse(data);
 
       return {
@@ -126,7 +123,7 @@ export function getGuidesByCategory(category: string): Guide[] {
         category,
         meta: validatedMeta
       };
-    });
+    }));
 
   // Sort by date descending
   guides.sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime());
@@ -137,12 +134,12 @@ export function getGuidesByCategory(category: string): Guide[] {
 /**
  * Get all guides organized by category
  */
-export function getAllGuides(): GuideCategory[] {
+export async function getAllGuides(): Promise<GuideCategory[]> {
   const categories = getGuideCategories();
   const categoryInfo = loadCategoryInfo();
 
-  return categories.map((categorySlug) => {
-    const guides = getGuidesByCategory(categorySlug);
+  return Promise.all(categories.map(async (categorySlug) => {
+    const guides = await getGuidesByCategory(categorySlug);
     const info = categoryInfo[categorySlug] || {
       name: categorySlug,
       description: ''
@@ -154,7 +151,7 @@ export function getAllGuides(): GuideCategory[] {
       description: info.description,
       guides
     };
-  });
+  }));
 }
 
 /**
@@ -164,12 +161,27 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
   try {
     const fullPath = path.join(guidesDirectory, category, `${slug}.md`);
     const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { data, content } = matter(fileContents);
+    const { data, content } = await parseMarkdownFile(fileContents);
 
-    // Validate frontmatter with zod
     const validatedMeta = GuideMetaSchema.parse(data);
 
-    // Custom sanitize schema that allows safe HTML elements and classes
+    const [{ unified }, remarkParse, remarkGfm, remarkRehype, rehypeRaw, rehypeSanitizeModule, rehypeSlug, rehypeAutolinkHeadings, rehypeExternalLinks, rehypeStringify, rehypePrism] = await Promise.all([
+      import('unified'),
+      import('remark-parse'),
+      import('remark-gfm'),
+      import('remark-rehype'),
+      import('rehype-raw'),
+      import('rehype-sanitize'),
+      import('rehype-slug'),
+      import('rehype-autolink-headings'),
+      import('rehype-external-links'),
+      import('rehype-stringify'),
+      import('rehype-prism-plus')
+    ]);
+
+    const rehypeSanitize = rehypeSanitizeModule.default;
+    const defaultSchema = rehypeSanitizeModule.defaultSchema;
+
     const sanitizeSchema = {
       ...defaultSchema,
       attributes: {
@@ -186,18 +198,17 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
       ]
     };
 
-    // Convert markdown to sanitized HTML with enhanced features
     const processedContent = await unified()
-      .use(remarkParse)
-      .use(remarkGfm)
-      .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypeRaw)
-      .use(rehypePrism, { ignoreMissing: true })
+      .use(remarkParse.default)
+      .use(remarkGfm.default)
+      .use(remarkRehype.default, { allowDangerousHtml: true })
+      .use(rehypeRaw.default)
+      .use(rehypePrism.default, { ignoreMissing: true })
       .use(rehypeSanitize, sanitizeSchema)
-      .use(rehypeSlug)
-      .use(rehypeAutolinkHeadings, { behavior: 'append' })
-      .use(rehypeExternalLinks, { target: '_blank', rel: ['noopener', 'noreferrer'] })
-      .use(rehypeStringify)
+      .use(rehypeSlug.default)
+      .use(rehypeAutolinkHeadings.default, { behavior: 'append' })
+      .use(rehypeExternalLinks.default, { target: '_blank', rel: ['noopener', 'noreferrer'] })
+      .use(rehypeStringify.default)
       .process(content);
 
     const contentHtml = String(processedContent);
@@ -228,7 +239,7 @@ export async function getGuide(category: string, slug: string): Promise<Guide | 
 /**
  * Get all guide slugs for static generation
  */
-export function getAllGuideSlugs(): { category: string; slug: string }[] {
+export async function getAllGuideSlugs(): Promise<{ category: string; slug: string }[]> {
   const categories = getGuideCategories();
   const slugs: { category: string; slug: string }[] = [];
 

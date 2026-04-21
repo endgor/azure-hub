@@ -7,6 +7,18 @@ interface NamespacesResponse {
   error?: string;
 }
 
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
+}
+
 /**
  * Server-side service namespace API.
  * Returns all Azure provider namespaces from RBAC actions cache.
@@ -41,7 +53,7 @@ export default async function handler(
   res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
 
   try {
-    const namespaces = await getServiceNamespaces();
+    const namespaces = await getServiceNamespaces({ baseUrl: getBaseUrl(req) });
     return res.status(200).json({ namespaces });
   } catch (error) {
     console.error('Service namespaces lookup error:', error);

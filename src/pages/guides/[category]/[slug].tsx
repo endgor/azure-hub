@@ -87,7 +87,7 @@ export default function GuidePage({ guide }: GuidePageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = getAllGuideSlugs();
+  const slugs = await getAllGuideSlugs();
 
   return {
     paths: slugs.map((item) => ({

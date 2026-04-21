@@ -11,6 +11,18 @@ interface SearchResponse {
   error?: string;
 }
 
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
+}
+
 /**
  * Server-side operations search API.
  * Searches through Azure RBAC actions without loading full dataset client-side.
@@ -56,7 +68,7 @@ export default async function handler(
 
   try {
     const limitNum = limit && typeof limit === 'string' ? parseInt(limit, 10) : 50;
-    const operations = await searchOperations(query, limitNum);
+    const operations = await searchOperations(query, limitNum, { baseUrl: getBaseUrl(req) });
 
     return res.status(200).json({
       operations
