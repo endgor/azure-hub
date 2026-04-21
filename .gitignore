@@ -68,3 +68,11 @@ public/data/entraid-roles.json
 # AI
 CLAUDE.md
 PR_DESCRIPTION.md
+# OpenNext
+.open-next
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example

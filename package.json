@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && node scripts/generateSitemap.js && next build",
+    "dev": "next dev",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "eslint .",
@@ -15,10 +15,15 @@
     "generate-ip-indexes": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpIndexes.ts",
     "generate-ip-lookup-index": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpLookupIndex.ts",
     "update-private-dns-zones": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
-    "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts"
+    "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",
+    "@opennextjs/cloudflare": "^1.19.2",
     "@types/d3-geo": "^3.1.0",
     "@types/topojson-client": "^3.1.5",
     "@vercel/analytics": "^2.0.1",
@@ -62,6 +67,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.1"
+    "typescript-eslint": "^8.58.1",
+    "wrangler": "^4.84.0"
   }
 }
