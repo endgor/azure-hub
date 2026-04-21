@@ -1,26 +1,18 @@
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
-import fs from 'fs';
-import path from 'path';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface HomeProps {
   lastUpdated: string | null;
 }
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  let lastUpdated: string | null = null;
-  try {
-    const metadataPath = path.join(process.cwd(), 'public', 'data', 'file-metadata.json');
-    const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
-    if (Array.isArray(metadata) && metadata.length > 0) {
-      lastUpdated = metadata[0].lastRetrieved ?? null;
-    }
-  } catch {
-    // Metadata not available
-  }
   return { props: { lastUpdated } };
 };
+
+const { lastUpdated } = (siteData as GeneratedSiteData).home;
 
 const HERO_TOOL = {
   title: 'IP Lookup',

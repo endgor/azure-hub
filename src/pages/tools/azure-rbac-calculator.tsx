@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, FormEvent, useRef, useMemo, lazy, Suspense } from 'react';
 import type { GetStaticProps } from 'next';
-import fs from 'fs';
-import path from 'path';
 import Layout from '@/components/Layout';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface RbacPageProps {
   roleCount: number;
@@ -10,24 +10,8 @@ interface RbacPageProps {
 }
 
 export const getStaticProps: GetStaticProps<RbacPageProps> = async () => {
-  let roleCount = 0;
-  let namespaceCount = 0;
-  try {
-    const rolesPath = path.join(process.cwd(), 'public', 'data', 'roles-extended.json');
-    const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
-    roleCount = roles.filter((r: { roleType: string }) => r.roleType === 'BuiltInRole').length;
-    const ns = new Set<string>();
-    for (const role of roles) {
-      for (const perm of role.permissions || []) {
-        for (const action of [...(perm.actions || []), ...(perm.dataActions || [])]) {
-          const provider = action.split('/')[0];
-          if (provider) ns.add(provider.toLowerCase());
-        }
-      }
-    }
-    namespaceCount = ns.size;
-  } catch { /* fallback */ }
-  return { props: { roleCount, namespaceCount } };
+  const data = siteData as GeneratedSiteData;
+  return { props: data.rbac };
 };
 import RoleResultsTable from '@/components/RoleResultsTable';
 import RolePermissionsTable from '@/components/RolePermissionsTable';

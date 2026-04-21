@@ -1,8 +1,6 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
-import fs from 'fs';
-import path from 'path';
 import Layout from '@/components/Layout';
 import { getAllServiceTagsWithCloud, ServiceTagIndex } from '@/lib/clientIpIndexService';
 import { AzureCloudName } from '@/types/azure';
@@ -16,25 +14,16 @@ import { getDateTimestamp } from '@/lib/filenameUtils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface ServiceTagsPageProps {
   baseServiceTags: string[];
 }
 
 export const getStaticProps: GetStaticProps<ServiceTagsPageProps> = async () => {
-  let baseServiceTags: string[] = [];
-  try {
-    const indexPath = path.join(process.cwd(), 'public', 'data', 'service-tags-index.json');
-    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-    const tagSet = new Set<string>();
-    for (const entry of index) {
-      if (!entry.id.includes('.')) {
-        tagSet.add(entry.id);
-      }
-    }
-    baseServiceTags = Array.from(tagSet).sort();
-  } catch { /* fallback */ }
-  return { props: { baseServiceTags } };
+  const data = siteData as GeneratedSiteData;
+  return { props: { baseServiceTags: data.serviceTags.baseServiceTags } };
 };
 
 /** Cloud filter options */

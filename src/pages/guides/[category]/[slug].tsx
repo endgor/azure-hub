@@ -3,7 +3,9 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import GuideContent from '@/components/GuideContent';
 import GuideTOC from '@/components/GuideTOC';
-import { getGuide, getAllGuideSlugs, Guide } from '@/lib/guides';
+import type { Guide } from '@/lib/guides';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface GuidePageProps {
   guide: Guide;
@@ -87,7 +89,11 @@ export default function GuidePage({ guide }: GuidePageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await getAllGuideSlugs();
+  const data = siteData as GeneratedSiteData;
+  const slugs = data.guides.guides.map((guide) => ({
+    category: guide.category,
+    slug: guide.slug
+  }));
 
   return {
     paths: slugs.map((item) => ({
@@ -103,8 +109,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<GuidePageProps> = async ({ params }) => {
   const category = params?.category as string;
   const slug = params?.slug as string;
-
-  const guide = await getGuide(category, slug);
+  const data = siteData as GeneratedSiteData;
+  const guide = data.guides.guides.find((item) => item.category === category && item.slug === slug) ?? null;
 
   if (!guide) {
     return {

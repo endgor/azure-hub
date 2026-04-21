@@ -1,23 +1,16 @@
 import { useState, useCallback, useEffect, FormEvent, useRef, useMemo, lazy, Suspense } from 'react';
 import type { GetStaticProps } from 'next';
-import fs from 'fs';
-import path from 'path';
 import Layout from '@/components/Layout';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface EntraIdPageProps {
   roleCount: number;
 }
 
 export const getStaticProps: GetStaticProps<EntraIdPageProps> = async () => {
-  let roleCount = 0;
-  try {
-    const rolesPath = path.join(process.cwd(), 'public', 'data', 'entraid-roles.json');
-    const roles = JSON.parse(fs.readFileSync(rolesPath, 'utf8'));
-    roleCount = Array.isArray(roles) ? roles.filter((r: { isBuiltIn?: boolean }) => r.isBuiltIn).length : 0;
-  } catch {
-    // entraid-roles.json may not exist without Azure credentials
-  }
-  return { props: { roleCount } };
+  const data = siteData as GeneratedSiteData;
+  return { props: { roleCount: data.entraid.roleCount } };
 };
 import {
   calculateLeastPrivilegeEntraID,
@@ -164,6 +157,9 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
           // Only show built-in roles
           const builtInRoles = roles.filter(role => role.isBuiltIn);
           setAvailableRoles(builtInRoles);
+          if (builtInRoles.length === 0 && getEntraIDRolesDataStatus() === 'missing') {
+            setError('Entra ID role data has not been generated yet. The refresh workflow needs to create /data/entraid-roles.json before role results can be listed.');
+          }
           setIsLoading(false);
         } catch {
           setError('Failed to load Entra ID role definitions. Please try again.');
@@ -400,6 +396,14 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Analyzing {roleCount} built-in Entra ID directory roles.
           </p>
+        )}
+
+        {roleCount === 0 && (
+          <ErrorBox title="Entra ID data not available yet">
+            Built-in Entra ID role data is missing from this deployment. The GitHub refresh workflow now fetches and commits
+            <code className="mx-1">entraid-roles.json</code>
+            so a fresh run of that workflow should restore this page.
+          </ErrorBox>
         )}
 
         {/* Disclaimer Banner */}

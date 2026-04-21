@@ -44,8 +44,19 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Export Azure service principal credentials
+        run: |
+          echo '${{ secrets.AZURE_CREDENTIALS }}' > azure-credentials.json
+          echo "AZURE_CLIENT_ID=$(node -p "JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).clientId")" >> $GITHUB_ENV
+          echo "AZURE_CLIENT_SECRET=$(node -p "JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).clientSecret")" >> $GITHUB_ENV
+          echo "AZURE_TENANT_ID=$(node -p "JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).tenantId")" >> $GITHUB_ENV
+          rm azure-credentials.json
+
       - name: Update Azure RBAC data
         run: npm run update-rbac-data
+
+      - name: Update Entra ID roles data
+        run: npm run fetch-entraid-roles
 
       - name: Commit and push if changed
         id: commit

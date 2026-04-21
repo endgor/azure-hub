@@ -1,11 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import net from 'node:net';
-import dns from 'node:dns';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/serverIpService';
 import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { AzureIpAddress } from '@/types/azure';
-
-const { resolve4, resolve6 } = dns.promises;
 
 interface IpLookupResponse {
   results: AzureIpAddress[];
@@ -66,6 +63,43 @@ function getBaseUrl(req: NextApiRequest): string {
   return `${protocol}://${host}`;
 }
 
+interface DnsJsonAnswer {
+  data?: string;
+  type?: number;
+}
+
+interface DnsJsonResponse {
+  Answer?: DnsJsonAnswer[];
+}
+
+async function resolveHostname(hostname: string): Promise<string[]> {
+  const recordTypes = ['A', 'AAAA'];
+  const resolved = await Promise.all(
+    recordTypes.map(async (type) => {
+      const response = await fetch(
+        `https://dns.google/resolve?name=${encodeURIComponent(hostname)}&type=${type}`
+      );
+
+      if (!response.ok) {
+        return [];
+      }
+
+      const payload = await response.json() as DnsJsonResponse;
+      return (payload.Answer || [])
+        .map((answer) => answer.data?.trim())
+        .filter((value): value is string => {
+          if (!value) {
+            return false;
+          }
+
+          return net.isIP(value) !== 0;
+        });
+    })
+  );
+
+  return Array.from(new Set(resolved.flat()));
+}
+
 /**
  * Server-side API endpoint for IP lookups.
  *
@@ -122,14 +156,7 @@ export default async function handler(
       // Check if it's a hostname that needs DNS resolution
       else if (isHostname(ipOrDomain)) {
         try {
-          const ipAddresses: string[] = [];
-
-          // Resolve DNS
-          const ipv4 = await resolve4(ipOrDomain).catch(() => []);
-          ipAddresses.push(...ipv4);
-
-          const ipv6 = await resolve6(ipOrDomain).catch(() => []);
-          ipAddresses.push(...ipv6);
+          const ipAddresses = await resolveHostname(ipOrDomain);
 
           if (ipAddresses.length > 0) {
             // Check each resolved IP in parallel
