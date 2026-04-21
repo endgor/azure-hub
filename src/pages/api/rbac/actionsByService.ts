@@ -1,11 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getActionsByService } from '@/lib/serverRbacService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { Operation } from '@/types/rbac';
 
 interface ActionsByServiceResponse {
   operations: Operation[];
   error?: string;
+}
+
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
 }
 
 /**
@@ -23,24 +34,6 @@ export default async function handler(
     });
   }
 
-  const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:actionsByService`);
-
-  if (!rateLimitResult.success) {
-    res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
-    return res.status(429).json({
-      operations: [],
-      error: 'Rate limit exceeded. Please try again later.'
-    });
-  }
-
-  res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-  res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
-  res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
   const { service } = req.query;
   if (!service || typeof service !== 'string') {
     return res.status(400).json({
@@ -50,7 +43,7 @@ export default async function handler(
   }
 
   try {
-    const operations = await getActionsByService(service);
+    const operations = await getActionsByService(service, { baseUrl: getBaseUrl(req) });
     return res.status(200).json({ operations });
   } catch (error) {
     console.error('Actions by service lookup error:', error);

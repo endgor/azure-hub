@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { calculateLeastPrivilege } from '@/lib/serverRbacService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { LeastPrivilegeResult } from '@/types/rbac';
 
 interface CalculateRequest {
@@ -11,6 +10,18 @@ interface CalculateRequest {
 interface CalculateResponse {
   results: LeastPrivilegeResult[];
   error?: string;
+}
+
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
 }
 
 /**
@@ -30,25 +41,6 @@ export default async function handler(
     });
   }
 
-  // Apply rate limiting
-  const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:calculate`);
-
-  if (!rateLimitResult.success) {
-    res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
-    return res.status(429).json({
-      results: [],
-      error: 'Rate limit exceeded. Please try again later.'
-    });
-  }
-
-  res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-  res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
-  res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
   try {
     const body = req.body as CalculateRequest;
 
@@ -65,7 +57,7 @@ export default async function handler(
     const results = await calculateLeastPrivilege({
       requiredActions: body.requiredActions || [],
       requiredDataActions: body.requiredDataActions || []
-    });
+    }, { baseUrl: getBaseUrl(req) });
 
     return res.status(200).json({
       results

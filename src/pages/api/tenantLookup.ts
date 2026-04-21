@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { TenantLookupResponse } from '@/types/tenant';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import {
   getCredential,
   fetchTenantInformation,
@@ -16,21 +15,52 @@ type ErrorResponse = { error: string };
 
 const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:3000', 'https://localhost:3000'];
 
+function getClientIp(req: NextApiRequest): string {
+  const cf = req.headers['cf-connecting-ip'];
+  if (typeof cf === 'string' && cf) return cf;
+
+  const fwd = req.headers['x-forwarded-for'];
+  if (typeof fwd === 'string') {
+    const ip = fwd.split(',')[0].trim();
+    if (ip) return ip;
+  }
+
+  return req.socket?.remoteAddress ?? 'unknown';
+}
+
+function getRateLimiterBinding(): RateLimit | null {
+  const globalScope = globalThis as typeof globalThis & {
+    TENANT_LOOKUP_RATE_LIMITER?: RateLimit;
+    [key: symbol]: unknown;
+  };
+  const context = globalScope[Symbol.for('__cloudflare-context__')] as
+    | { env?: { TENANT_LOOKUP_RATE_LIMITER?: RateLimit } }
+    | undefined;
+
+  return context?.env?.TENANT_LOOKUP_RATE_LIMITER ?? globalScope.TENANT_LOOKUP_RATE_LIMITER ?? null;
+}
+
+async function isRateLimited(key: string): Promise<boolean> {
+  try {
+    const limiter = getRateLimiterBinding();
+    if (!limiter) return false;
+    const { success } = await limiter.limit({ key });
+    return !success;
+  } catch {
+    // Binding unavailable or errored: fail open so real traffic isn't blocked.
+    return false;
+  }
+}
+
 function sendJson<T>(
   res: NextApiResponse<T>,
   status: number,
   payload: T,
-  corsOrigin?: string,
-  rateLimitHeaders?: { limit: number; remaining: number; reset: number }
+  corsOrigin?: string
 ) {
   if (corsOrigin) {
     res.setHeader('Access-Control-Allow-Origin', corsOrigin);
     res.setHeader('Vary', 'Origin');
-  }
-  if (rateLimitHeaders) {
-    res.setHeader('X-RateLimit-Limit', rateLimitHeaders.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', rateLimitHeaders.remaining.toString());
-    res.setHeader('X-RateLimit-Reset', rateLimitHeaders.reset.toString());
   }
   res.status(status).json(payload);
 }
@@ -60,31 +90,19 @@ export default async function handler(
     return;
   }
 
-  const clientId = getClientIdentifier(req);
-  const rateLimit = await checkRateLimit(clientId);
-
-  if (!rateLimit.success) {
-    const retryAfter = Math.ceil((rateLimit.reset - Date.now()) / 1000);
-    res.setHeader('Retry-After', retryAfter.toString());
-    if (corsAllowOrigin) {
-      res.setHeader('Access-Control-Allow-Origin', corsAllowOrigin);
-      res.setHeader('Vary', 'Origin');
-    }
-    res.setHeader('X-RateLimit-Limit', rateLimit.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimit.reset.toString());
-    res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  if (!['GET', 'POST'].includes(req.method ?? '')) {
+    sendJson(res, 405, { error: 'Method Not Allowed' }, corsAllowOrigin);
     return;
   }
 
-  const rateLimitHeaders = {
-    limit: rateLimit.limit,
-    remaining: rateLimit.remaining,
-    reset: rateLimit.reset,
-  };
-
-  if (!['GET', 'POST'].includes(req.method ?? '')) {
-    sendJson(res, 405, { error: 'Method Not Allowed' }, corsAllowOrigin, rateLimitHeaders);
+  if (await isRateLimited(getClientIp(req))) {
+    res.setHeader('Retry-After', '60');
+    sendJson(
+      res,
+      429,
+      { error: 'Too many requests. Please try again in a minute.' },
+      corsAllowOrigin
+    );
     return;
   }
 
@@ -101,8 +119,7 @@ export default async function handler(
         res,
         400,
         { error: 'Enter a valid tenant-verified domain such as contoso.com.' },
-        corsAllowOrigin,
-        rateLimitHeaders
+        corsAllowOrigin
       );
       return;
     }
@@ -115,8 +132,7 @@ export default async function handler(
         res,
         404,
         { error: `No Microsoft Entra tenant found for ${domain}.` },
-        corsAllowOrigin,
-        rateLimitHeaders
+        corsAllowOrigin
       );
       return;
     }
@@ -141,7 +157,7 @@ export default async function handler(
       fetchedAt: new Date().toISOString(),
     };
 
-    sendJson(res, 200, result, corsAllowOrigin, rateLimitHeaders);
+    sendJson(res, 200, result, corsAllowOrigin);
   } catch (error) {
     if (error instanceof MissingCredentialsError) {
       console.error('Tenant lookup configuration error');
@@ -149,8 +165,7 @@ export default async function handler(
         res,
         500,
         { error: 'Unable to retrieve tenant information. Try again later.' },
-        corsAllowOrigin,
-        rateLimitHeaders
+        corsAllowOrigin
       );
       return;
     }
@@ -160,8 +175,7 @@ export default async function handler(
       res,
       500,
       { error: 'Unable to retrieve tenant information. Try again later.' },
-      corsAllowOrigin,
-      rateLimitHeaders
+      corsAllowOrigin
     );
   }
 }

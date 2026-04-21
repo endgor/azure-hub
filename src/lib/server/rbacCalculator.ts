@@ -8,6 +8,10 @@ import { matchesPattern } from './rbacPatternMatcher';
 import { loadRoleDefinitions } from './rbacDataLoader';
 import { calculatePermissionCount } from '@/lib/rbacUtils';
 
+interface LoadOptions {
+  baseUrl?: string;
+}
+
 type MatchSpecificity = 'exact' | 'narrowWildcard' | 'broadWildcard' | 'fullWildcard';
 
 const MATCH_SPECIFICITY_RANK: Record<MatchSpecificity, number> = {
@@ -155,9 +159,9 @@ function countRolePermissionEntries(rolePermissions: Array<{
 export async function calculateLeastPrivilege(params: {
   requiredActions: string[];
   requiredDataActions: string[];
-}): Promise<LeastPrivilegeResult[]> {
+}, options?: LoadOptions): Promise<LeastPrivilegeResult[]> {
   const { requiredActions, requiredDataActions } = params;
-  const roles = await loadRoleDefinitions();
+  const roles = await loadRoleDefinitions(options);
 
   const matchingRoles: RankedLeastPrivilegeResult[] = [];
   const requiredPermissionTotal = requiredActions.length + requiredDataActions.length;

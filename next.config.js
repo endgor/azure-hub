@@ -65,12 +65,11 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               // unsafe-eval only needed for Next.js dev mode
-              `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval' "}https://va.vercel-scripts.com`,
+              `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval' "}`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              // Allow Vercel analytics/speed-insights beaconing
-              "connect-src 'self' https://vitals.vercel-insights.com",
+              "connect-src 'self'",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'"
@@ -105,6 +104,26 @@ const nextConfig = {
       {
         source: '/tools/rbac-calculator/',
         destination: '/tools/azure-rbac-calculator/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags',
+        destination: '/tools/service-tags/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags/',
+        destination: '/tools/service-tags/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags/:serviceTag',
+        destination: '/tools/service-tags/:serviceTag/',
+        permanent: true,
+      },
+      {
+        source: '/service-tags/:serviceTag/',
+        destination: '/tools/service-tags/:serviceTag/',
         permanent: true,
       }
     ];

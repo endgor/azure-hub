@@ -1,0 +1,476 @@
+{
+  "home": {
+    "lastUpdated": "2026-04-15"
+  },
+  "about": {
+    "fileMetadata": [
+      {
+        "cloud": "AzureCloud",
+        "changeNumber": 395,
+        "filename": "ServiceTags_Public_20260413.json",
+        "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20260413.json",
+        "lastRetrieved": "2026-04-15",
+        "previousChangeNumber": 394,
+        "previousFilename": "ServiceTags_Public_20260406.json",
+        "diffAvailable": true
+      },
+      {
+        "cloud": "AzureChinaCloud",
+        "changeNumber": 394,
+        "filename": "ServiceTags_China_20260406.json",
+        "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20260406.json",
+        "lastRetrieved": "2026-04-10"
+      },
+      {
+        "cloud": "AzureUSGovernment",
+        "changeNumber": 390,
+        "filename": "ServiceTags_AzureGovernment_20260323.json",
+        "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20260323.json",
+        "lastRetrieved": "2026-04-15"
+      }
+    ],
+    "rbacLastRetrieved": "2026-04-15"
+  },
+  "rbac": {
+    "roleCount": 873,
+    "namespaceCount": 233
+  },
+  "entraid": {
+    "roleCount": 0,
+    "hasData": false
+  },
+  "serviceTags": {
+    "baseServiceTags": [
+      "ActionGroup",
+      "ApiManagement",
+      "AppConfiguration",
+      "AppService",
+      "AppServiceManagement",
+      "ApplicationInsightsAvailability",
+      "AutonomousDevelopmentPlatform",
+      "AzureActiveDirectory",
+      "AzureActiveDirectoryDomainServices",
+      "AzureAdvancedThreatProtection",
+      "AzureArcInfrastructure",
+      "AzureAttestation",
+      "AzureBackup",
+      "AzureBotService",
+      "AzureCloud",
+      "AzureCognitiveSearch",
+      "AzureConnectors",
+      "AzureContainerRegistry",
+      "AzureCosmosDB",
+      "AzureDataExplorerManagement",
+      "AzureDataLake",
+      "AzureDatabricks",
+      "AzureDevOps",
+      "AzureDevSpaces",
+      "AzureDeviceUpdate",
+      "AzureDigitalTwins",
+      "AzureEventGrid",
+      "AzureHealthcareAPIs",
+      "AzureInformationProtection",
+      "AzureIoTHub",
+      "AzureKeyVault",
+      "AzureLoadTestingInstanceManagement",
+      "AzureMachineLearning",
+      "AzureMachineLearningInference",
+      "AzureManagedGrafana",
+      "AzureMonitor",
+      "AzureMonitorForSAP",
+      "AzureOpenDatasets",
+      "AzurePortal",
+      "AzureResourceManager",
+      "AzureSecurityCenter",
+      "AzureSentinel",
+      "AzureSignalR",
+      "AzureSiteRecovery",
+      "AzureSphere",
+      "AzureSpringCloud",
+      "AzureStack",
+      "AzureTrafficManager",
+      "AzureUpdateDelivery",
+      "AzureWebPubSub",
+      "BatchNodeManagement",
+      "ChaosStudio",
+      "CognitiveServicesFrontend",
+      "CognitiveServicesManagement",
+      "CopilotActions",
+      "DataFactory",
+      "DataFactoryManagement",
+      "Dynamics365BusinessCentral",
+      "Dynamics365ForMarketingEmail",
+      "EOPExternalPublishedIPs",
+      "EventHub",
+      "GatewayManager",
+      "Grafana",
+      "GuestAndHybridManagement",
+      "HDInsight",
+      "KustoAnalytics",
+      "LogicApps",
+      "LogicAppsManagement",
+      "M365LighthouseProd",
+      "M365ManagementActivityApi",
+      "M365ManagementActivityApiWebhook",
+      "Marketplace",
+      "MicrosoftAzureFluidRelay",
+      "MicrosoftCloudAppSecurity",
+      "MicrosoftContainerRegistry",
+      "MicrosoftDefenderForEndpoint",
+      "MicrosoftPurviewPolicyDistribution",
+      "OneDsCollector",
+      "PowerBI",
+      "PowerPlatformInfra",
+      "PowerPlatformPlex",
+      "PowerQueryOnline",
+      "SCCservice",
+      "Scuba",
+      "SecurityCopilot",
+      "SerialConsole",
+      "ServiceBus",
+      "ServiceFabric",
+      "Sql",
+      "SqlManagement",
+      "Storage",
+      "StorageMover",
+      "StorageSyncService",
+      "SystemServiceAzureSpringAppsResourceProvider",
+      "VideoIndexer",
+      "WindowsAdminCenter",
+      "WindowsVirtualDesktop",
+      "ZeroTrustSegmentation"
+    ]
+  },
+  "guides": {
+    "categories": [
+      {
+        "name": "Azure Policy",
+        "slug": "azure-policy",
+        "description": "Guides about Azure Policy for governance and compliance",
+        "guides": [
+          {
+            "slug": "auto-deploy-vm-applications",
+            "category": "azure-policy",
+            "meta": {
+              "title": "VM Application Auto-Deployment with Azure Policy",
+              "description": "Automate VM application deployment at scale using Azure Policy. Step-by-step guide to packaging apps and enforcing installation across your fleet.",
+              "category": "azure-policy",
+              "tags": [
+                "policy",
+                "vm",
+                "vm-applications",
+                "automation"
+              ],
+              "date": "2025-12-03T00:00:00.000Z"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Networking",
+        "slug": "networking",
+        "description": "Guides about Azure networking, DNS, and connectivity",
+        "guides": [
+          {
+            "slug": "private-endpoint-dns-setup",
+            "category": "networking",
+            "meta": {
+              "title": "Private Endpoint DNS Setup for Hybrid and Cloud-Only Environments",
+              "description": "A practical guide to configuring DNS resolution for Azure Private Endpoints, covering both cloud-only and hybrid (on-premises) setups",
+              "category": "networking",
+              "tags": [
+                "private-endpoint",
+                "dns",
+                "private-link",
+                "hybrid",
+                "private-dns-resolver"
+              ],
+              "date": "2026-03-26T00:00:00.000Z"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Virtual Machines",
+        "slug": "virtual-machines",
+        "description": "Guides about Azure VMs, sizing, and compute resources",
+        "guides": [
+          {
+            "slug": "vm-naming-convention",
+            "category": "virtual-machines",
+            "meta": {
+              "title": "Azure VM Naming Conventions",
+              "description": "Learn how to read Azure VM size names. Understand what each character in names like Standard_D4s_v5 means, including family, vCPUs, and features.",
+              "category": "virtual-machines",
+              "tags": [
+                "vm",
+                "compute",
+                "sizing"
+              ],
+              "date": "2025-11-17T00:00:00.000Z"
+            }
+          }
+        ]
+      }
+    ],
+    "guides": [
+      {
+        "slug": "private-endpoint-dns-setup",
+        "category": "networking",
+        "meta": {
+          "title": "Private Endpoint DNS Setup for Hybrid and Cloud-Only Environments",
+          "description": "A practical guide to configuring DNS resolution for Azure Private Endpoints, covering both cloud-only and hybrid (on-premises) setups",
+          "category": "networking",
+          "tags": [
+            "private-endpoint",
+            "dns",
+            "private-link",
+            "hybrid",
+            "private-dns-resolver"
+          ],
+          "date": "2026-03-26T00:00:00.000Z"
+        },
+        "content": "<p>Getting DNS right for Private Endpoints is one of those things that looks simple on paper but trips people up constantly. I've set this up for multiple customers and the same issues come up every time. Microsoft's documentation is detailed but spreads the information across multiple pages, making it hard to see the full picture. This guide is what I wish I had when I first started working with private endpoints.</p>\n<h2 id=\"quick-setup-tldr\">Quick Setup (TLDR)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#quick-setup-tldr\"><span class=\"icon icon-link\"></span></a></h2>\n<p><strong>Cloud-only:</strong> Create a Private DNS Zone (e.g., <code>privatelink.blob.core.windows.net</code>), link it to your VNet, and make sure your VNet is using Azure-provided DNS or forwarding to <code>168.63.129.16</code>. For hub-and-spoke, either link every spoke VNet to the zone or use Azure DNS Private Resolver in the hub.</p>\n<p><strong>Hybrid (on-premises + Azure):</strong></p>\n<ol>\n<li><strong>On-premises DCs:</strong> Add conditional forwarders for the <strong>public</strong> zone names (<code>blob.core.windows.net</code>, not <code>privatelink.blob.core.windows.net</code>). Point the forwarder IP to your Azure DNS Private Resolver or a DC in Azure.</li>\n<li><strong>Azure DCs:</strong> Set the server-level forwarder to <code>168.63.129.16</code>. No conditional forwarders needed.</li>\n<li><strong>VNets:</strong> Set custom DNS to your Azure DC or Private Resolver IPs.</li>\n<li><strong>Private DNS Zones:</strong> Link them to the VNet where your DNS resolver or Azure DC lives.</li>\n</ol>\n<p>That's the short version. Read on for the why and common pitfalls.</p>\n<h2 id=\"how-private-endpoint-dns-works\">How Private Endpoint DNS Works<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#how-private-endpoint-dns-works\"><span class=\"icon icon-link\"></span></a></h2>\n<p>When you create a private endpoint for an Azure service, Azure does two things behind the scenes:</p>\n<ol>\n<li>Creates a <strong>network interface</strong> with a private IP in your VNet (e.g., <code>10.0.1.5</code>)</li>\n<li>Inserts a <strong>CNAME record</strong> in public DNS that redirects the service's FQDN into a <code>privatelink.*</code> namespace</li>\n</ol>\n<p>For example, if you create a private endpoint for a storage account:</p>\n<pre><code class=\"\"><span class=\"code-line\">mystorageaccount.blob.core.windows.net\n</span><span class=\"code-line\">  → CNAME → mystorageaccount.privatelink.blob.core.windows.net\n</span></code></pre>\n<p>This CNAME is created globally in Azure public DNS the moment you create the private endpoint. Your application connection strings stay the same, still pointing to <code>mystorageaccount.blob.core.windows.net</code>. The CNAME silently redirects the lookup into the <code>privatelink.*</code> zone where your Private DNS Zone can answer with the private IP.</p>\n<p>Clients on the public internet follow the same CNAME but get the public IP (since they don't have your Private DNS Zone). Clients going through your Azure DNS infrastructure get the private IP. Same FQDN, different answers depending on where the query is resolved.</p>\n<h2 id=\"cloud-only-setup\">Cloud-Only Setup<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#cloud-only-setup\"><span class=\"icon icon-link\"></span></a></h2>\n<p>If all your workloads are in Azure with no on-premises connectivity, the setup is straightforward.</p>\n<h3 id=\"default-dns-no-custom-dns-servers\">Default DNS (no custom DNS servers)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#default-dns-no-custom-dns-servers\"><span class=\"icon icon-link\"></span></a></h3>\n<p>When your VNet uses Azure-provided DNS (the default), VMs automatically query <code>168.63.129.16</code>. This is a virtual IP present in every Azure VNet that provides DNS, DHCP, health probes, and VM agent communication.</p>\n<p>All you need:</p>\n<ol>\n<li><strong>Create a Private DNS Zone</strong> for the service type (e.g., <code>privatelink.blob.core.windows.net</code>)</li>\n<li><strong>Link the zone to your VNet</strong></li>\n<li>The private endpoint's A record is automatically added to the zone</li>\n</ol>\n<p>That's it. Azure DNS resolves the CNAME, checks linked Private DNS Zones, and returns the private IP.</p>\n<p><strong>Important:</strong> The Private DNS Zone only resolves for VNets that are directly linked to it. If you have a single VNet this is straightforward, but in a hub-and-spoke topology you need to think about this more carefully.</p>\n<h3 id=\"hub-and-spoke-topology\">Hub-and-spoke topology<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#hub-and-spoke-topology\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Without a centralized DNS resolver, <strong>every spoke VNet that needs to resolve private endpoints must be directly linked to the Private DNS Zone</strong>. Azure DNS at <code>168.63.129.16</code> only checks zones linked to the VNet where the query originates. It doesn't follow peering or traverse hub networks. If a spoke VNet isn't linked, queries return the public IP instead of the private one.</p>\n<p>This works fine for small setups, but I've seen it become a real headache as environments grow. If you have 10 Private DNS Zones and 20 spoke VNets, that's 200 zone links to manage. Every time you add a spoke or a new service type, someone needs to remember to link them. And they won't.</p>\n<p>For larger environments, use <strong>Azure DNS Private Resolver</strong> to centralize resolution and avoid the zone-linking multiplication:</p>\n<ol>\n<li>Deploy the Private Resolver in your hub VNet</li>\n<li>Link all Private DNS Zones to the hub VNet only</li>\n<li>Configure spoke VNets to use the resolver's <strong>inbound endpoint</strong> IP as their DNS server (the inbound endpoint receives queries from clients and VNets, while the outbound endpoint is used for forwarding rules to on-premises or external DNS)</li>\n</ol>\n<p>Now spoke VNets don't need direct links to the zones. Their queries are forwarded to the resolver in the hub, which has access to all linked zones. One zone link per service type instead of one per spoke.</p>\n<h3 id=\"when-you-have-custom-dns-servers-on-the-vnet\">When you have custom DNS servers on the VNet<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#when-you-have-custom-dns-servers-on-the-vnet\"><span class=\"icon icon-link\"></span></a></h3>\n<p>If your VNet has custom DNS configured (e.g., domain controllers for Active Directory), VMs no longer query <code>168.63.129.16</code> directly. This means Private DNS Zone links aren't consulted automatically.</p>\n<p>Your custom DNS server must forward queries to <code>168.63.129.16</code> to re-enter the Azure DNS resolution path. Set it as a <strong>server-level forwarder</strong> on the DNS server. Without this forwarder, Private DNS Zones are effectively invisible to your workloads.</p>\n<h2 id=\"hybrid-setup-on-premises--azure\">Hybrid Setup (On-Premises + Azure)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#hybrid-setup-on-premises--azure\"><span class=\"icon icon-link\"></span></a></h2>\n<p>This is where I spend most of my time troubleshooting. The goal is simple: on-premises clients should resolve Azure private endpoints to their private IPs, not the public ones. But without proper planning upfront, this can get messy fast.</p>\n<h3 id=\"on-premises-dns-servers\">On-premises DNS servers<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#on-premises-dns-servers\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Add <strong>conditional forwarders</strong> for the public DNS zone names of the Azure services you're using. For example:</p>\n<ul>\n<li><code>blob.core.windows.net</code> (not <del>privatelink.blob.core.windows.net</del>)</li>\n<li><code>database.windows.net</code> (not <del>privatelink.database.windows.net</del>)</li>\n<li><code>vaultcore.azure.net</code> (not <del>privatelink.vaultcore.azure.net</del>)</li>\n</ul>\n<p>The forwarder IP should point to something in Azure that can resolve private endpoints:</p>\n<ul>\n<li><strong>Azure DNS Private Resolver</strong> inbound endpoint IP (recommended)</li>\n<li><strong>Domain controller in Azure</strong> that forwards to <code>168.63.129.16</code></li>\n<li><strong>DNS forwarder VM</strong> in Azure</li>\n</ul>\n<p>Note that <code>168.63.129.16</code> is <strong>only reachable from within Azure</strong>. It's a virtual IP on the host node, not a routable address. You cannot use it as a forwarder IP on your on-premises DNS servers. That's why you need something in Azure (Private Resolver, DC, or forwarder VM) to act as the intermediary.</p>\n<p>You do <strong>not</strong> need to set up the <code>privatelink.*</code> zones on your on-premises DNS servers. Use the public zone names only.</p>\n<h3 id=\"why-the-public-zone-name-matters\">Why the public zone name matters<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#why-the-public-zone-name-matters\"><span class=\"icon icon-link\"></span></a></h3>\n<p>This is the most common mistake I see. If you set up a conditional forwarder for <code>privatelink.blob.core.windows.net</code>, it won't do anything useful. Your DNS server still handles the initial query for <code>blob.core.windows.net</code> the normal way and resolves it to the public IP. The forwarder never kicks in because the query never matches <code>privatelink.*</code> directly. That redirect only happens through the CNAME, and the CNAME lives under the public zone. So your forwarder has to sit on <code>blob.core.windows.net</code> to catch the query before it goes anywhere else.</p>\n<h3 id=\"azure-side-dns-servers\">Azure-side DNS servers<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#azure-side-dns-servers\"><span class=\"icon icon-link\"></span></a></h3>\n<p>On your domain controllers or DNS forwarder VMs in Azure:</p>\n<ol>\n<li>Set the <strong>server-level forwarder</strong> to <code>168.63.129.16</code></li>\n<li>In most cases, you don't need to create conditional forwarder zones for each <code>privatelink.*</code> zone (as long as zones are properly linked to the VNet)</li>\n</ol>\n<p>When the Azure DNS server forwards to <code>168.63.129.16</code>, Azure DNS handles the full chain: resolves the CNAME, checks linked Private DNS Zones, and returns the private IP. The Private DNS Zones just need to be linked to the VNet where the DNS server lives.</p>\n<h3 id=\"vnet-dns-settings\">VNet DNS settings<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#vnet-dns-settings\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Set the domain controller or Azure DNS Private Resolver IP addresses as <strong>custom DNS</strong> on your virtual networks. This ensures VMs and other resources in those VNets use your DNS infrastructure instead of Azure-provided DNS directly.</p>\n<h3 id=\"ad-integrated-dns-conditional-forwarder-replication\">AD-integrated DNS: Conditional forwarder replication<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#ad-integrated-dns-conditional-forwarder-replication\"><span class=\"icon icon-link\"></span></a></h3>\n<p>This one bit me the first time I set up a hybrid environment. If your domain controllers use AD-integrated DNS, be careful with conditional forwarder replication. When you create a conditional forwarder and store it in Active Directory, you can choose a replication scope:</p>\n<ul>\n<li><strong>All DNS servers in the forest</strong> (replicates everywhere, including Azure DCs)</li>\n<li><strong>All DNS servers in the domain</strong> (same issue, Azure DCs in the domain get it too)</li>\n<li><strong>All domain controllers in the domain</strong> (legacy option, also replicates to Azure)</li>\n<li><strong>Custom directory partition</strong> (you control exactly which DCs participate)</li>\n<li><strong>Not stored in AD</strong> (local only, no replication)</li>\n</ul>\n<p>The problem: if you replicate a conditional forwarder for <code>blob.core.windows.net</code> (pointing to the Private DNS Resolver) to all DCs in the domain, your Azure DCs will also get it. Those Azure DCs don't need it because they already resolve private endpoints through their server-level forwarder to <code>168.63.129.16</code>. At best it's an unnecessary extra hop, at worst it creates confusion.</p>\n<p><strong>Two approaches to handle this:</strong></p>\n<p><strong>Option 1: Don't replicate (simple).</strong> Disable AD replication for the conditional forwarders and set them up manually on each on-premises DC. On Azure DCs, don't create them at all since the server-level forwarder to <code>168.63.129.16</code> already handles everything. This is straightforward and works well for smaller environments.</p>\n<p><strong>Option 2: Custom DNS application directory partition (scalable).</strong> Create a custom partition that only your on-premises DCs are enlisted in:</p>\n<pre class=\"language-powershell\"><code class=\"language-powershell\"><span class=\"code-line\"><span class=\"token comment\"># Create the partition</span>\n</span><span class=\"code-line\"><span class=\"token function\">Add-DnsServerDirectoryPartition</span> <span class=\"token operator\">-</span>Name <span class=\"token string\">\"AzurePrivateDns.contoso.com\"</span>\n</span><span class=\"code-line\">\n</span><span class=\"code-line\"><span class=\"token comment\"># Enlist each on-premises DC</span>\n</span><span class=\"code-line\"><span class=\"token function\">Register-DnsServerDirectoryPartition</span> <span class=\"token operator\">-</span>Name <span class=\"token string\">\"AzurePrivateDns.contoso.com\"</span> <span class=\"token operator\">-</span>ComputerName <span class=\"token string\">\"DC-ONPREM1\"</span>\n</span><span class=\"code-line\"><span class=\"token function\">Register-DnsServerDirectoryPartition</span> <span class=\"token operator\">-</span>Name <span class=\"token string\">\"AzurePrivateDns.contoso.com\"</span> <span class=\"token operator\">-</span>ComputerName <span class=\"token string\">\"DC-ONPREM2\"</span>\n</span><span class=\"code-line\"><span class=\"token comment\"># Do NOT enlist Azure DCs</span>\n</span><span class=\"code-line\">\n</span><span class=\"code-line\"><span class=\"token comment\"># Create the conditional forwarder using the custom partition</span>\n</span><span class=\"code-line\"><span class=\"token function\">Add-DnsServerConditionalForwarderZone</span> `\n</span><span class=\"code-line\">    <span class=\"token operator\">-</span>Name <span class=\"token string\">\"blob.core.windows.net\"</span> `\n</span><span class=\"code-line\">    <span class=\"token operator\">-</span>MasterServers 10<span class=\"token punctuation\">.</span>10<span class=\"token punctuation\">.</span>0<span class=\"token punctuation\">.</span>4 `\n</span><span class=\"code-line\">    <span class=\"token operator\">-</span>ReplicationScope Custom `\n</span><span class=\"code-line\">    <span class=\"token operator\">-</span>DirectoryPartitionName <span class=\"token string\">\"AzurePrivateDns.contoso.com\"</span>\n</span></code></pre>\n<p>This way the conditional forwarders replicate automatically across all on-premises DCs but never reach the Azure ones. Better for larger environments where manually configuring each DC isn't practical.</p>\n<h2 id=\"the-full-resolution-flow-hybrid\">The Full Resolution Flow (Hybrid)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#the-full-resolution-flow-hybrid\"><span class=\"icon icon-link\"></span></a></h2>\n<p>Here's what happens step by step when an on-premises client queries <code>mystorageaccount.blob.core.windows.net</code>:</p>\n<ol>\n<li>Client asks the on-premises DNS server</li>\n<li>DNS server matches the conditional forwarder for <code>blob.core.windows.net</code></li>\n<li>Query is forwarded over VPN/ExpressRoute to the Azure DNS Private Resolver (or forwarder VM)</li>\n<li>The resolver forwards to <code>168.63.129.16</code></li>\n<li>Azure DNS resolves the CNAME: <code>mystorageaccount.blob.core.windows.net</code> → <code>mystorageaccount.privatelink.blob.core.windows.net</code></li>\n<li>Azure DNS checks Private DNS Zones linked to the VNet and finds an A record: <code>mystorageaccount.privatelink.blob.core.windows.net</code> → <code>10.0.1.5</code></li>\n<li>The private IP travels back through the chain to the client</li>\n<li>Client connects to <code>10.0.1.5</code> over VPN/ExpressRoute</li>\n</ol>\n<h2 id=\"quick-verification\">Quick Verification<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#quick-verification\"><span class=\"icon icon-link\"></span></a></h2>\n<p>Test from a VM in a linked VNet or from on-premises (after setting up forwarders):</p>\n<pre class=\"language-bash\"><code class=\"language-bash\"><span class=\"code-line\"><span class=\"token function\">nslookup</span> mystorageaccount.blob.core.windows.net\n</span></code></pre>\n<ul>\n<li><strong>Correct:</strong> Returns a private IP (10.x.x.x or 172.x.x.x)</li>\n<li><strong>Wrong:</strong> Returns a public IP, which means you need to check your DNS forwarders and zone links</li>\n</ul>\n<h2 id=\"when-does-public-resolution-still-work\">When Does Public Resolution Still Work?<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#when-does-public-resolution-still-work\"><span class=\"icon icon-link\"></span></a></h2>\n<p>This is a question I get asked a lot: if you have a Private DNS Zone for <code>privatelink.blob.core.windows.net</code> linked to your VNet, can you still access storage accounts that <strong>don't</strong> have private endpoints?</p>\n<p><strong>Yes, this works fine.</strong> The key is understanding the CNAME. Azure only creates the CNAME redirect from <code>storageA.blob.core.windows.net</code> → <code>storageA.privatelink.blob.core.windows.net</code> when you create a private endpoint for that specific resource. If <code>storageB</code> has no private endpoint, there's no CNAME. The query for <code>storageB.blob.core.windows.net</code> resolves directly to its public IP through normal DNS. Your Private DNS Zone is never consulted because the query never enters the <code>privatelink.*</code> namespace.</p>\n<p>So in a standard setup, private and public resolution coexist without issues. Resources with private endpoints resolve to private IPs, resources without them resolve to public IPs.</p>\n<h2 id=\"the-nxdomain-edge-case\">The NXDOMAIN Edge Case<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#the-nxdomain-edge-case\"><span class=\"icon icon-link\"></span></a></h2>\n<p>There is one scenario where this breaks. If a resource has a private endpoint <strong>somewhere else</strong> (a different tenant, subscription, or VNet that has its own Private DNS Zone), the CNAME to <code>privatelink.*</code> exists in public DNS, but the A record is not in <strong>your</strong> Private DNS Zone.</p>\n<p>For example: <code>storageC</code> belongs to another team and they created a private endpoint for it in their VNet. Public DNS now returns <code>storageC.blob.core.windows.net → storageC.privatelink.blob.core.windows.net</code>. When your DNS infrastructure follows this CNAME, it hits your Private DNS Zone for <code>privatelink.blob.core.windows.net</code>. Your zone is authoritative but has no A record for <code>storageC</code>, so it returns NXDOMAIN. Resolution fails.</p>\n<p>Microsoft introduced <strong>Fallback to Internet</strong> to address this. When enabled on a virtual network link, NXDOMAIN responses from the Private DNS Zone fall back to public DNS instead of failing. Enable it with the <code>resolutionPolicy</code> set to <code>NxDomainRedirect</code>:</p>\n<pre class=\"language-bash\"><code class=\"language-bash\"><span class=\"code-line\">az network private-dns <span class=\"token function\">link</span> vnet create <span class=\"token punctuation\">\\</span>\n</span><span class=\"code-line\">  --zone-name <span class=\"token string\">\"privatelink.blob.core.windows.net\"</span> <span class=\"token punctuation\">\\</span>\n</span><span class=\"code-line\">  --virtual-network myVNet <span class=\"token punctuation\">\\</span>\n</span><span class=\"code-line\">  --registration-enabled <span class=\"token boolean\">false</span> <span class=\"token punctuation\">\\</span>\n</span><span class=\"code-line\">  --resolution-policy NxDomainRedirect\n</span></code></pre>\n<p>This is mainly relevant in multi-tenant or multi-region setups where private endpoints for the same service type exist across different environments.</p>\n<h2 id=\"common-mistakes\">Common Mistakes<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#common-mistakes\"><span class=\"icon icon-link\"></span></a></h2>\n<p>These are the issues I run into most often when helping customers set up private endpoints.</p>\n<ol>\n<li>\n<p><strong>Forwarding to the <code>privatelink.*</code> zone instead of the public zone.</strong> The conditional forwarder must be for <code>blob.core.windows.net</code>, not <code>privatelink.blob.core.windows.net</code>.</p>\n</li>\n<li>\n<p><strong>Not linking the Private DNS Zone to the right VNet.</strong> The zone must be linked to the VNet where your DNS resolver or forwarder lives, not just the VNet where the private endpoint is deployed.</p>\n</li>\n<li>\n<p><strong>Windows DNS forwarding timeout too low.</strong> If using Windows DNS servers forwarding to <code>168.63.129.16</code>, increase the forwarding timeout to 5-10 seconds. The default 3 seconds is too short, especially over ExpressRoute or VPN where latency varies. If it times out, the server falls back to root hints and resolves the public IP instead. This one is particularly frustrating to debug because it works intermittently.</p>\n</li>\n<li>\n<p><strong>Creating multiple zones with the same name.</strong> In hub-and-spoke, create one <code>privatelink.blob.core.windows.net</code> zone and link it to all VNets. Don't create separate zones per spoke.</p>\n</li>\n<li>\n<p><strong>Missing zones for multi-zone services.</strong> Some services require multiple DNS zones. Azure Monitor needs <code>privatelink.monitor.azure.com</code>, <code>privatelink.oms.opinsights.azure.com</code>, <code>privatelink.ods.opinsights.azure.com</code> and more. Azure Backup needs <code>privatelink.blob.core.windows.net</code> and <code>privatelink.queue.core.windows.net</code> on top of its own backup zone. Storage accounts need separate zones for blob, queue, table, and file if you use private endpoints for each. Miss one and that sub-service fails to resolve. Check the <a href=\"/tools/private-dns-zones/\">DNS zone reference</a> for the full list per service.</p>\n</li>\n<li>\n<p><strong>Private endpoint in a different VNet than the zone link.</strong> If you create a private endpoint in a spoke VNet but only link the Private DNS Zone to the hub, resolution only works if spoke VNets forward DNS through the hub (via Private Resolver or a DNS forwarder). If spokes use Azure-provided DNS directly, the zone must also be linked to the spoke VNet.</p>\n</li>\n<li>\n<p><strong>Blocking <code>168.63.129.16</code>.</strong> This IP must be reachable on port 53 from any VM acting as a DNS forwarder. Local firewall rules that block it will break the entire chain.</p>\n</li>\n</ol>\n<h2 id=\"references\">References<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#references\"><span class=\"icon icon-link\"></span></a></h2>\n<ul>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns\" rel=\"noopener noreferrer\" target=\"_blank\">Azure Private Endpoint DNS zone values</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration\" rel=\"noopener noreferrer\" target=\"_blank\">Private Endpoint DNS integration</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16\" rel=\"noopener noreferrer\" target=\"_blank\">What is IP address 168.63.129.16</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/dns/private-resolver-hybrid-dns\" rel=\"noopener noreferrer\" target=\"_blank\">Azure DNS Private Resolver for hybrid DNS</a></li>\n<li><a href=\"https://oneuptime.com/blog/post/2026-02-16-how-to-configure-azure-private-dns-zones-for-name-resolution-across-vnets/view\" rel=\"noopener noreferrer\" target=\"_blank\">Private DNS Zones across VNets</a></li>\n<li><a href=\"https://www.kristhecodingunicorn.com/post/azure-private-dns-zone-fallback-to-public/\" rel=\"noopener noreferrer\" target=\"_blank\">Azure Private DNS Zone Fallback to Internet</a></li>\n</ul>",
+        "headings": [
+          {
+            "id": "quick-setup-tldr",
+            "text": "Quick Setup (TLDR)",
+            "level": 2
+          },
+          {
+            "id": "how-private-endpoint-dns-works",
+            "text": "How Private Endpoint DNS Works",
+            "level": 2
+          },
+          {
+            "id": "cloud-only-setup",
+            "text": "Cloud-Only Setup",
+            "level": 2
+          },
+          {
+            "id": "default-dns-no-custom-dns-servers",
+            "text": "Default DNS (no custom DNS servers)",
+            "level": 3
+          },
+          {
+            "id": "hub-and-spoke-topology",
+            "text": "Hub-and-spoke topology",
+            "level": 3
+          },
+          {
+            "id": "when-you-have-custom-dns-servers-on-the-vnet",
+            "text": "When you have custom DNS servers on the VNet",
+            "level": 3
+          },
+          {
+            "id": "hybrid-setup-on-premises--azure",
+            "text": "Hybrid Setup (On-Premises + Azure)",
+            "level": 2
+          },
+          {
+            "id": "on-premises-dns-servers",
+            "text": "On-premises DNS servers",
+            "level": 3
+          },
+          {
+            "id": "why-the-public-zone-name-matters",
+            "text": "Why the public zone name matters",
+            "level": 3
+          },
+          {
+            "id": "azure-side-dns-servers",
+            "text": "Azure-side DNS servers",
+            "level": 3
+          },
+          {
+            "id": "vnet-dns-settings",
+            "text": "VNet DNS settings",
+            "level": 3
+          },
+          {
+            "id": "ad-integrated-dns-conditional-forwarder-replication",
+            "text": "AD-integrated DNS: Conditional forwarder replication",
+            "level": 3
+          },
+          {
+            "id": "the-full-resolution-flow-hybrid",
+            "text": "The Full Resolution Flow (Hybrid)",
+            "level": 2
+          },
+          {
+            "id": "quick-verification",
+            "text": "Quick Verification",
+            "level": 2
+          },
+          {
+            "id": "when-does-public-resolution-still-work",
+            "text": "When Does Public Resolution Still Work?",
+            "level": 2
+          },
+          {
+            "id": "the-nxdomain-edge-case",
+            "text": "The NXDOMAIN Edge Case",
+            "level": 2
+          },
+          {
+            "id": "common-mistakes",
+            "text": "Common Mistakes",
+            "level": 2
+          },
+          {
+            "id": "references",
+            "text": "References",
+            "level": 2
+          }
+        ]
+      },
+      {
+        "slug": "auto-deploy-vm-applications",
+        "category": "azure-policy",
+        "meta": {
+          "title": "VM Application Auto-Deployment with Azure Policy",
+          "description": "Automate VM application deployment at scale using Azure Policy. Step-by-step guide to packaging apps and enforcing installation across your fleet.",
+          "category": "azure-policy",
+          "tags": [
+            "policy",
+            "vm",
+            "vm-applications",
+            "automation"
+          ],
+          "date": "2025-12-03T00:00:00.000Z"
+        },
+        "content": "<p><strong><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/vm-applications?tabs=template%2CVM%2Cubuntu\" rel=\"noopener noreferrer\" target=\"_blank\">VM Applications</a></strong> is a handy Azure feature that lets you package and deploy applications to your VMs in a consistent way. It's often overlooked, but it can save you a lot of time.</p>\n<p>If you're deploying VMs with code (Bicep, Terraform, etc.), you probably already handle application installation automatically. But with <strong>manual VM deployments</strong>, it's easy to forget installing things like monitoring agents, security tools, or other required software. And once VMs are deployed, it's hard to keep track of which ones are missing applications.</p>\n<p>Azure Policy doesn't have a built-in policy for this, but you can create a simple <strong>custom policy</strong> that automatically deploys missing applications to your VMs. As a bonus, you'll get an easy overview of which VMs are missing applications.</p>\n<h2 id=\"setup-steps\">Setup Steps<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#setup-steps\"><span class=\"icon icon-link\"></span></a></h2>\n<h3 id=\"1-create-a-new-policy-definition\">1. Create a New Policy Definition<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#1-create-a-new-policy-definition\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Create a new policy definition with the following policy rule:</p>\n<pre class=\"language-json\"><code class=\"language-json\"><span class=\"code-line\"><span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">  <span class=\"token property\">\"mode\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Indexed\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">  <span class=\"token property\">\"policyRule\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">    <span class=\"token property\">\"if\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">      <span class=\"token property\">\"allOf\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">[</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">          <span class=\"token property\">\"field\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"type\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">          <span class=\"token property\">\"equals\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Microsoft.Compute/virtualMachines\"</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">          <span class=\"token property\">\"field\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Microsoft.Compute/virtualMachines/storageProfile.osDisk.osType\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">          <span class=\"token property\">\"equals\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Windows\"</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">      <span class=\"token punctuation\">]</span>\n</span><span class=\"code-line\">    <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">    <span class=\"token property\">\"then\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">      <span class=\"token property\">\"effect\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"DeployIfNotExists\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">      <span class=\"token property\">\"details\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"type\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Microsoft.Compute/virtualMachines\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"name\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[field('name')]\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"evaluationDelay\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"AfterProvisioning\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"roleDefinitionIds\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">[</span>\n</span><span class=\"code-line\">          <span class=\"token string\">\"/providers/Microsoft.Authorization/roleDefinitions/9980e02c-c2be-4d73-94e8-173b1dc7cf3c\"</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">]</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"existenceCondition\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">          <span class=\"token property\">\"anyOf\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">[</span>\n</span><span class=\"code-line\">            <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"field\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Microsoft.Compute/virtualMachines/applicationProfile.galleryApplications[*].packageReferenceId\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"like\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[concat(parameters('vmApplicationId'), '/*')]\"</span>\n</span><span class=\"code-line\">            <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">          <span class=\"token punctuation\">]</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"deployment\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">          <span class=\"token property\">\"properties\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">            <span class=\"token property\">\"mode\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"incremental\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">            <span class=\"token property\">\"parameters\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"vmName\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                <span class=\"token property\">\"value\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[field('name')]\"</span>\n</span><span class=\"code-line\">              <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"location\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                <span class=\"token property\">\"value\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[field('location')]\"</span>\n</span><span class=\"code-line\">              <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"vmApplicationVersionId\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                <span class=\"token property\">\"value\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[concat(parameters('vmApplicationId'), '/versions/latest')]\"</span>\n</span><span class=\"code-line\">              <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">            <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">            <span class=\"token property\">\"template\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"$schema\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"contentVersion\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"1.0.0.0\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"parameters\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                <span class=\"token property\">\"vmName\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"type\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"string\"</span>\n</span><span class=\"code-line\">                <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                <span class=\"token property\">\"location\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"type\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"string\"</span>\n</span><span class=\"code-line\">                <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                <span class=\"token property\">\"vmApplicationVersionId\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"type\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"string\"</span>\n</span><span class=\"code-line\">                <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">              <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">              <span class=\"token property\">\"resources\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">[</span>\n</span><span class=\"code-line\">                <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"type\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Microsoft.Compute/virtualMachines\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"apiVersion\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"2024-03-01\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"name\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[parameters('vmName')]\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"location\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[parameters('location')]\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                  <span class=\"token property\">\"properties\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                    <span class=\"token property\">\"applicationProfile\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                      <span class=\"token property\">\"galleryApplications\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">[</span>\n</span><span class=\"code-line\">                        <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">                          <span class=\"token property\">\"packageReferenceId\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"[parameters('vmApplicationVersionId')]\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">                          <span class=\"token property\">\"treatFailureAsDeploymentFailure\"</span><span class=\"token operator\">:</span> <span class=\"token boolean\">true</span>\n</span><span class=\"code-line\">                        <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">                      <span class=\"token punctuation\">]</span>\n</span><span class=\"code-line\">                    <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">                  <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">                <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">              <span class=\"token punctuation\">]</span>\n</span><span class=\"code-line\">            <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">          <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">        <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">      <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">    <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">  <span class=\"token punctuation\">}</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">  <span class=\"token property\">\"parameters\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">    <span class=\"token property\">\"vmApplicationId\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">      <span class=\"token property\">\"type\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"String\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">      <span class=\"token property\">\"metadata\"</span><span class=\"token operator\">:</span> <span class=\"token punctuation\">{</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"displayName\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"VM Application\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"description\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Select the VM Application to deploy. The latest version will be used automatically.\"</span><span class=\"token punctuation\">,</span>\n</span><span class=\"code-line\">        <span class=\"token property\">\"strongType\"</span><span class=\"token operator\">:</span> <span class=\"token string\">\"Microsoft.Compute/galleries/applications\"</span>\n</span><span class=\"code-line\">      <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">    <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\">  <span class=\"token punctuation\">}</span>\n</span><span class=\"code-line\"><span class=\"token punctuation\">}</span>\n</span></code></pre>\n<h3 id=\"2-assign-the-policy\">2. Assign the Policy<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#2-assign-the-policy\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Assign the policy to your subscription or resource group.</p>\n<h3 id=\"3-set-the-parameters\">3. Set the Parameters<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#3-set-the-parameters\"><span class=\"icon icon-link\"></span></a></h3>\n<p>When assigning the policy, you'll need to pick:</p>\n<ul>\n<li>Your <strong>subscription</strong></li>\n<li>The <strong>gallery</strong> where your application lives</li>\n<li>The <strong>application</strong> you want to auto-deploy</li>\n</ul>\n<p><strong>Note:</strong> Need multiple applications? Create a separate policy assignment for each one.</p>\n<blockquote>\n<p>For Linux VMs you need to create a separate policy and change <code>\"Windows\"</code> to <code>\"Linux\"</code> in the policy rule.</p>\n</blockquote>\n<h3 id=\"4-copy-the-managed-identity-id\">4. Copy the Managed Identity ID<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#4-copy-the-managed-identity-id\"><span class=\"icon icon-link\"></span></a></h3>\n<ol>\n<li>Go to your assigned policy and click <strong>View assignment</strong></li>\n<li>Find the <strong>Managed Identity</strong> section</li>\n<li>Copy the <strong>Principal ID</strong> (you'll need this in the next step)</li>\n</ol>\n<h3 id=\"5-give-the-policy-reader-access\">5. Give the Policy Reader Access<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#5-give-the-policy-reader-access\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Head over to your <strong>Azure Compute Gallery</strong> and assign the <strong>Reader</strong> role to the Principal ID you just copied.</p>\n<p>⚠️ <strong>Important:</strong> The policy needs this permission to read the application from the gallery. Without it, deployments will fail.</p>\n<h3 id=\"6-youre-done\">6. You're Done<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#6-youre-done\"><span class=\"icon icon-link\"></span></a></h3>\n<p>That's it! From now on:</p>\n<ul>\n<li><strong>New VMs</strong> will automatically get the application during creation</li>\n<li><strong>Existing VMs</strong> can be fixed by running a remediation task from the policy assignment page</li>\n</ul>",
+        "headings": [
+          {
+            "id": "setup-steps",
+            "text": "Setup Steps",
+            "level": 2
+          },
+          {
+            "id": "1-create-a-new-policy-definition",
+            "text": "1. Create a New Policy Definition",
+            "level": 3
+          },
+          {
+            "id": "2-assign-the-policy",
+            "text": "2. Assign the Policy",
+            "level": 3
+          },
+          {
+            "id": "3-set-the-parameters",
+            "text": "3. Set the Parameters",
+            "level": 3
+          },
+          {
+            "id": "4-copy-the-managed-identity-id",
+            "text": "4. Copy the Managed Identity ID",
+            "level": 3
+          },
+          {
+            "id": "5-give-the-policy-reader-access",
+            "text": "5. Give the Policy Reader Access",
+            "level": 3
+          },
+          {
+            "id": "6-youre-done",
+            "text": "6. You're Done",
+            "level": 3
+          }
+        ]
+      },
+      {
+        "slug": "vm-naming-convention",
+        "category": "virtual-machines",
+        "meta": {
+          "title": "Azure VM Naming Conventions",
+          "description": "Learn how to read Azure VM size names. Understand what each character in names like Standard_D4s_v5 means, including family, vCPUs, and features.",
+          "category": "virtual-machines",
+          "tags": [
+            "vm",
+            "compute",
+            "sizing"
+          ],
+          "date": "2025-11-17T00:00:00.000Z"
+        },
+        "content": "<p>Azure virtual machine names follow a specific pattern that encodes important information about the VM's capabilities. Understanding this naming convention helps you quickly identify the right VM size for your workload.</p>\n<h2 id=\"vm-name-structure\">VM Name Structure<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#vm-name-structure\"><span class=\"icon icon-link\"></span></a></h2>\n<p>A typical VM name looks like: <strong>Standard_D4s_v5</strong></p>\n<p>Let's break down each component:</p>\n<h3 id=\"family\">Family<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#family\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The first letter(s) indicate the VM Family Series.</p>\n<p><strong>Examples:</strong></p>\n<ul>\n<li><code>D</code> - General purpose</li>\n<li><code>E</code> - Memory optimized</li>\n<li><code>F</code> - Compute optimized</li>\n<li><code>M</code> - Memory intensive</li>\n<li><code>N</code> - GPU-enabled</li>\n</ul>\n<h3 id=\"subfamily-optional\">Subfamily (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#subfamily-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Used for specialized VM differentiations:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Subfamily</th><th>Meaning</th></tr></thead><tbody><tr><td><code>B</code></td><td>Memory bandwidth optimized</td></tr><tr><td><code>C</code></td><td>Confidential (for DC, EC, NCC series) OR Compute intensive (for HC, NC, NCC series)</td></tr><tr><td><code>D</code></td><td>AI training and inference optimized</td></tr><tr><td><code>G</code></td><td>Cloud gaming and remote desktop optimized</td></tr><tr><td><code>V</code></td><td>Visualization and graphics optimized</td></tr><tr><td><code>X</code></td><td>Extra memory</td></tr></tbody></table>\n<h3 id=\"number-of-vcpus\">Number of vCPUs<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#number-of-vcpus\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The number following the family letter indicates the number of virtual CPUs.</p>\n<p><strong>Example:</strong> <code>D4</code> = 4 vCPUs</p>\n<h3 id=\"constrained-vcpus-optional\">Constrained vCPUs (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#constrained-vcpus-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>For certain VM sizes, this denotes the number of vCPUs for constrained vCPU capable sizes.</p>\n<h3 id=\"additive-features\">Additive Features<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#additive-features\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Lower case letters denote additive features:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Feature</th><th>Meaning</th></tr></thead><tbody><tr><td><code>a</code></td><td>AMD-based processor</td></tr><tr><td><code>b</code></td><td>Remote storage bandwidth optimized</td></tr><tr><td><code>d</code></td><td>Includes a local temp disk</td></tr><tr><td><code>e</code></td><td>Encrypted; contains confidential TDX capabilities</td></tr><tr><td><code>f</code></td><td>Flat ratio (1:1) of vCPU to memory size</td></tr><tr><td><code>i</code></td><td>Isolated size</td></tr><tr><td><code>l</code></td><td>Low memory; decreased vCPU to memory ratio</td></tr><tr><td><code>m</code></td><td>Memory intensive; highest vCPU to memory ratio in a particular series</td></tr><tr><td><code>n</code></td><td>Network optimized; increased vCPU to network bandwidth ratio</td></tr><tr><td><code>o</code></td><td>Increased vCPU to local SSD storage capacity ratio</td></tr><tr><td><code>p</code></td><td>ARM-based processor</td></tr><tr><td><code>r</code></td><td>Includes RDMA (InfiniBand) secondary network</td></tr><tr><td><code>s</code></td><td>Compatible with any premium SSD type</td></tr><tr><td><code>t</code></td><td>Tiny memory; smallest vCPU to memory ratio in a particular size</td></tr></tbody></table>\n<h3 id=\"accelerator-type-optional\">Accelerator Type (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#accelerator-type-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Denotes the type of hardware accelerator in specialized/GPU SKUs.</p>\n<h3 id=\"memory-capacity-optional\">Memory Capacity (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#memory-capacity-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>For M-series VMs, denotes memory capacity rounded to the nearest TiB.</p>\n<h3 id=\"version\">Version<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#version\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The version number of the VM Family Series (e.g., <code>v5</code>, <code>v4</code>, <code>v3</code>).</p>\n<h2 id=\"common-examples\">Common Examples<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#common-examples\"><span class=\"icon icon-link\"></span></a></h2>\n<h3 id=\"standard_d4s_v5\">Standard_D4s_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_d4s_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>D</strong> - General purpose family</li>\n<li><strong>4</strong> - 4 vCPUs</li>\n<li><strong>s</strong> - Premium storage capable</li>\n<li><strong>v5</strong> - Version 5 of the D-series</li>\n</ul>\n<h3 id=\"standard_e16ads_v5\">Standard_E16ads_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_e16ads_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>E</strong> - Memory optimized family</li>\n<li><strong>16</strong> - 16 vCPUs</li>\n<li><strong>a</strong> - AMD processor</li>\n<li><strong>d</strong> - Local temp disk included</li>\n<li><strong>s</strong> - Premium storage capable</li>\n<li><strong>v5</strong> - Version 5</li>\n</ul>\n<h3 id=\"standard_f8s_v2\">Standard_F8s_v2<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_f8s_v2\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>F</strong> - Compute optimized family</li>\n<li><strong>8</strong> - 8 vCPUs</li>\n<li><strong>s</strong> - Premium storage capable</li>\n<li><strong>v2</strong> - Version 2</li>\n</ul>\n<h2 id=\"quick-tips\">Quick Tips<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#quick-tips\"><span class=\"icon icon-link\"></span></a></h2>\n<ol>\n<li>\n<p><strong>Premium Storage</strong>: Look for the <code>s</code> suffix to ensure your VM supports premium SSDs for better performance.</p>\n</li>\n<li>\n<p><strong>Local Temp Disk</strong>: The <code>d</code> suffix indicates a local temporary disk is included, useful for page files or caching.</p>\n</li>\n<li>\n<p><strong>AMD vs Intel</strong>: The <code>a</code> suffix indicates AMD processors, which often provide better price-performance for certain workloads.</p>\n</li>\n<li>\n<p><strong>Version Numbers</strong>: Higher version numbers (v5, v6) typically offer better performance and newer features than older versions (v2, v3).</p>\n</li>\n</ol>\n<h2 id=\"references\">References<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#references\"><span class=\"icon icon-link\"></span></a></h2>\n<ul>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/sizes\" rel=\"noopener noreferrer\" target=\"_blank\">Azure VM Size Families</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/vm-naming-conventions\" rel=\"noopener noreferrer\" target=\"_blank\">VM Size Naming Conventions</a></li>\n</ul>",
+        "headings": [
+          {
+            "id": "vm-name-structure",
+            "text": "VM Name Structure",
+            "level": 2
+          },
+          {
+            "id": "family",
+            "text": "Family",
+            "level": 3
+          },
+          {
+            "id": "subfamily-optional",
+            "text": "Subfamily (Optional)",
+            "level": 3
+          },
+          {
+            "id": "number-of-vcpus",
+            "text": "Number of vCPUs",
+            "level": 3
+          },
+          {
+            "id": "constrained-vcpus-optional",
+            "text": "Constrained vCPUs (Optional)",
+            "level": 3
+          },
+          {
+            "id": "additive-features",
+            "text": "Additive Features",
+            "level": 3
+          },
+          {
+            "id": "accelerator-type-optional",
+            "text": "Accelerator Type (Optional)",
+            "level": 3
+          },
+          {
+            "id": "memory-capacity-optional",
+            "text": "Memory Capacity (Optional)",
+            "level": 3
+          },
+          {
+            "id": "version",
+            "text": "Version",
+            "level": 3
+          },
+          {
+            "id": "common-examples",
+            "text": "Common Examples",
+            "level": 2
+          },
+          {
+            "id": "standard_d4s_v5",
+            "text": "Standard_D4s_v5",
+            "level": 3
+          },
+          {
+            "id": "standard_e16ads_v5",
+            "text": "Standard_E16ads_v5",
+            "level": 3
+          },
+          {
+            "id": "standard_f8s_v2",
+            "text": "Standard_F8s_v2",
+            "level": 3
+          },
+          {
+            "id": "quick-tips",
+            "text": "Quick Tips",
+            "level": 2
+          },
+          {
+            "id": "references",
+            "text": "References",
+            "level": 2
+          }
+        ]
+      }
+    ]
+  }
+}

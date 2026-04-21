@@ -1,0 +1,53 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "azure-hub",
+  "compatibility_date": "2026-04-19",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "workers_dev": true,
+  // Custom domains for the production worker. Cloudflare manages the DNS
+  // records (orange-clouded AAAA to the Workers edge) so the Vercel record
+  // is replaced on first deploy. Preview stays on workers.dev only.
+  "routes": [
+    { "pattern": "azurehub.org", "custom_domain": true },
+    { "pattern": "www.azurehub.org", "custom_domain": true }
+  ],
+  // 10 requests / 60 seconds per client IP. Used by /api/tenantLookup to
+  // protect the Microsoft Graph quota. See Cloudflare Workers Rate Limiting:
+  // https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/
+  "ratelimits": [
+    {
+      "name": "TENANT_LOOKUP_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    }
+  ],
+  "env": {
+    "preview": {
+      "name": "azure-hub-preview",
+      "workers_dev": true,
+      "ratelimits": [
+        {
+          "name": "TENANT_LOOKUP_RATE_LIMITER",
+          "namespace_id": "1001",
+          "simple": {
+            "limit": 10,
+            "period": 60
+          }
+        }
+      ]
+    }
+  }
+}

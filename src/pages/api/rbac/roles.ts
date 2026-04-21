@@ -1,11 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { searchRoles, getRoleById } from '@/lib/serverRbacService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { AzureRole } from '@/types/rbac';
 
 interface RolesResponse {
   roles: AzureRole[];
   error?: string;
+}
+
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
 }
 
 /**
@@ -23,31 +34,12 @@ export default async function handler(
     });
   }
 
-  // Apply rate limiting
-  const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(`${clientId}:rbac:roles`);
-
-  if (!rateLimitResult.success) {
-    res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
-    return res.status(429).json({
-      roles: [],
-      error: 'Rate limit exceeded. Please try again later.'
-    });
-  }
-
-  res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-  res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
-  res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
   const { query, id, limit } = req.query;
 
   try {
     // If ID is provided, get specific role
     if (id && typeof id === 'string') {
-      const role = await getRoleById(id);
+      const role = await getRoleById(id, { baseUrl: getBaseUrl(req) });
       if (!role) {
         return res.status(404).json({
           roles: [],
@@ -68,7 +60,7 @@ export default async function handler(
     }
 
     const limitNum = limit && typeof limit === 'string' ? parseInt(limit, 10) : 50;
-    const roles = await searchRoles(query, limitNum);
+    const roles = await searchRoles(query, limitNum, { baseUrl: getBaseUrl(req) });
 
     return res.status(200).json({
       roles

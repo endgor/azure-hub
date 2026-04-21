@@ -1,13 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import net from 'net';
-import dns from 'dns';
-import { promisify } from 'util';
+import net from 'node:net';
 import { checkIpAddress, searchAzureIpAddresses } from '@/lib/serverIpService';
-import { checkRateLimit, getClientIdentifier } from '@/lib/rateLimit';
 import type { AzureIpAddress } from '@/types/azure';
-
-const resolve4 = promisify(dns.resolve4);
-const resolve6 = promisify(dns.resolve6);
 
 interface IpLookupResponse {
   results: AzureIpAddress[];
@@ -56,6 +50,55 @@ function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
   );
 }
 
+function getBaseUrl(req: NextApiRequest): string {
+  const protoHeader = req.headers['x-forwarded-proto'];
+  const protocol = typeof protoHeader === 'string' ? protoHeader.split(',')[0] : 'https';
+  const host = req.headers.host;
+
+  if (!host) {
+    throw new Error('Missing host header');
+  }
+
+  return `${protocol}://${host}`;
+}
+
+interface DnsJsonAnswer {
+  data?: string;
+  type?: number;
+}
+
+interface DnsJsonResponse {
+  Answer?: DnsJsonAnswer[];
+}
+
+async function resolveHostname(hostname: string): Promise<string[]> {
+  const recordTypes = ['A', 'AAAA'];
+  const resolved = await Promise.all(
+    recordTypes.map(async (type) => {
+      const response = await fetch(
+        `https://dns.google/resolve?name=${encodeURIComponent(hostname)}&type=${type}`
+      );
+
+      if (!response.ok) {
+        return [];
+      }
+
+      const payload = await response.json() as DnsJsonResponse;
+      return (payload.Answer || [])
+        .map((answer) => answer.data?.trim())
+        .filter((value): value is string => {
+          if (!value) {
+            return false;
+          }
+
+          return net.isIP(value) !== 0;
+        });
+    })
+  );
+
+  return Array.from(new Set(resolved.flat()));
+}
+
 /**
  * Server-side API endpoint for IP lookups.
  *
@@ -77,53 +120,26 @@ export default async function handler(
     });
   }
 
-  // Apply rate limiting
-  const clientId = getClientIdentifier(req);
-  const rateLimitResult = await checkRateLimit(clientId);
-
-  if (!rateLimitResult.success) {
-    res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-    res.setHeader('X-RateLimit-Remaining', '0');
-    res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
-    return res.status(429).json({
-      results: [],
-      total: 0,
-      error: 'Rate limit exceeded. Please try again later.'
-    });
-  }
-
-  // Set rate limit headers
-  res.setHeader('X-RateLimit-Limit', rateLimitResult.limit.toString());
-  res.setHeader('X-RateLimit-Remaining', rateLimitResult.remaining.toString());
-  res.setHeader('X-RateLimit-Reset', rateLimitResult.reset.toString());
-
   const { ipOrDomain, region, service } = req.query;
 
   try {
+    const baseUrl = getBaseUrl(req);
     let results: AzureIpAddress[] = [];
 
     if (ipOrDomain && typeof ipOrDomain === 'string') {
       // Check if it's an IP address or CIDR
       if (isIpOrCidr(ipOrDomain)) {
-        results = await checkIpAddress(ipOrDomain);
+        results = await checkIpAddress(ipOrDomain, { baseUrl });
       }
       // Check if it's a hostname that needs DNS resolution
       else if (isHostname(ipOrDomain)) {
         try {
-          const ipAddresses: string[] = [];
-
-          // Resolve DNS
-          const ipv4 = await resolve4(ipOrDomain).catch(() => []);
-          ipAddresses.push(...ipv4);
-
-          const ipv6 = await resolve6(ipOrDomain).catch(() => []);
-          ipAddresses.push(...ipv6);
+          const ipAddresses = await resolveHostname(ipOrDomain);
 
           if (ipAddresses.length > 0) {
             // Check each resolved IP in parallel
             const matchPromises = ipAddresses.map(async (resolvedIp: string) => {
-              const matches = await checkIpAddress(resolvedIp);
+              const matches = await checkIpAddress(resolvedIp, { baseUrl });
               // Tag each result with DNS info
               matches.forEach(match => {
                 match.resolvedFrom = ipOrDomain;
@@ -136,16 +152,16 @@ export default async function handler(
           } else {
             // No DNS results, fall back to service/region search
             const [serviceResults, regionResults] = await Promise.all([
-              searchAzureIpAddresses({ service: ipOrDomain }),
-              searchAzureIpAddresses({ region: ipOrDomain })
+              searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
+              searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
             ]);
             results = deduplicateResults([...serviceResults, ...regionResults]);
           }
         } catch {
           // DNS lookup failed, fall back to service/region search
           const [serviceResults, regionResults] = await Promise.all([
-            searchAzureIpAddresses({ service: ipOrDomain }),
-            searchAzureIpAddresses({ region: ipOrDomain })
+            searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
+            searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
           ]);
           results = deduplicateResults([...serviceResults, ...regionResults]);
         }
@@ -153,8 +169,8 @@ export default async function handler(
       // Otherwise treat as service/region search
       else {
         const [serviceResults, regionResults] = await Promise.all([
-          searchAzureIpAddresses({ service: ipOrDomain }),
-          searchAzureIpAddresses({ region: ipOrDomain })
+          searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
+          searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
         ]);
         results = deduplicateResults([...serviceResults, ...regionResults]);
       }
@@ -163,7 +179,7 @@ export default async function handler(
       results = await searchAzureIpAddresses({
         region: typeof region === 'string' ? region : undefined,
         service: typeof service === 'string' ? service : undefined
-      });
+      }, { baseUrl });
     }
 
     if (results.length === 0) {

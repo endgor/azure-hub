@@ -4,7 +4,8 @@ import Link from 'next/link';
 import DefinitionsTable from '@/components/DefinitionsTable';
 import Button from '@/components/shared/Button';
 import { GetStaticProps } from 'next';
-import { getFileMetadata, getRbacFileDate } from '@/lib/ipService';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 import { AzureFileMetadata } from '@/types/azure';
 
 interface AboutProps {
@@ -253,21 +254,12 @@ export default function About({ fileMetadata, rbacLastRetrieved }: AboutProps) {
 }
 
 export const getStaticProps: GetStaticProps<AboutProps> = async () => {
-  try {
-    const fileMetadata = await getFileMetadata();
-    const rbacLastRetrieved = await getRbacFileDate();
-    return {
-      props: {
-        fileMetadata,
-        rbacLastRetrieved,
-      },
-    };
-  } catch {
-    return {
-      props: {
-        fileMetadata: [],
-        rbacLastRetrieved: null,
-      },
-    };
-  }
+  const data = siteData as GeneratedSiteData;
+
+  return {
+    props: {
+      fileMetadata: data.about.fileMetadata,
+      rbacLastRetrieved: data.about.rbacLastRetrieved,
+    },
+  };
 };

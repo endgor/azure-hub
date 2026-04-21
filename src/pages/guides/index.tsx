@@ -1,7 +1,9 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
-import { getAllGuides, GuideCategory } from '@/lib/guides';
+import type { GuideCategory } from '@/lib/guides';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface GuidesPageProps {
   categories: GuideCategory[];
@@ -95,11 +97,11 @@ export default function GuidesPage({ categories }: GuidesPageProps) {
 }
 
 export const getStaticProps: GetStaticProps<GuidesPageProps> = async () => {
-  const categories = getAllGuides();
+  const data = siteData as GeneratedSiteData;
 
   return {
     props: {
-      categories
+      categories: data.guides.categories
     }
   };
 };

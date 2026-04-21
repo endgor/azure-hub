@@ -1,4 +1,3 @@
-import { ClientSecretCredential, TokenCredential } from '@azure/identity';
 import type { TenantInformation } from '@/types/tenant';
 
 const GRAPH_SCOPE = process.env.GRAPH_SCOPE ?? 'https://graph.microsoft.com/.default';
@@ -23,12 +22,17 @@ export class MissingCredentialsError extends Error {
   }
 }
 
-let cachedCredential: TokenCredential | null = null;
+export interface ClientSecretCredentialLike {
+  getToken(scope: string): Promise<{ token: string } | null>;
+}
+
+let cachedCredential: ClientSecretCredentialLike | null = null;
 let cachedGraphBaseUrl: URL | null = null;
 let cachedGraphScope: string | null = null;
+let cachedToken: { scope: string; token: string; expiresAt: number } | null = null;
 
 function getEnvValue(...keys: string[]): string | undefined {
-  return keys.map(key => process.env[key]).find(value => value);
+  return keys.map((key) => process.env[key]).find((value) => value);
 }
 
 function getValidatedGraphBaseUrl(): URL {
@@ -82,7 +86,24 @@ function getValidatedGraphScope(): string {
   return cachedGraphScope;
 }
 
-export function getCredential(): TokenCredential {
+function getAuthorityHost(): string {
+  const authorityHost = process.env.AZURE_AUTHORITY_HOST ?? 'https://login.microsoftonline.com';
+
+  let url: URL;
+  try {
+    url = new URL(authorityHost);
+  } catch {
+    throw new Error('AZURE_AUTHORITY_HOST must be an absolute URL.');
+  }
+
+  if (url.protocol !== 'https:') {
+    throw new Error('AZURE_AUTHORITY_HOST must use HTTPS.');
+  }
+
+  return url.origin;
+}
+
+export function getCredential(): ClientSecretCredentialLike {
   if (cachedCredential) {
     return cachedCredential;
   }
@@ -95,16 +116,57 @@ export function getCredential(): TokenCredential {
     throw new MissingCredentialsError();
   }
 
-  cachedCredential = new ClientSecretCredential(tenantId, clientId, clientSecret, {
-    authorityHost: process.env.AZURE_AUTHORITY_HOST,
-  });
+  const authorityHost = getAuthorityHost();
+
+  cachedCredential = {
+    async getToken(scope: string) {
+      const now = Date.now();
+      if (cachedToken && cachedToken.scope === scope && cachedToken.expiresAt - 60_000 > now) {
+        return { token: cachedToken.token };
+      }
+
+      const tokenUrl = `${authorityHost}/${tenantId}/oauth2/v2.0/token`;
+      const body = new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: 'client_credentials',
+        scope,
+      });
+
+      const response = await fetch(tokenUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to acquire Microsoft Graph access token: ${response.status} ${errorText}`);
+      }
+
+      const payload = await response.json() as { access_token?: string; expires_in?: number };
+      if (!payload.access_token) {
+        throw new Error('Failed to acquire Microsoft Graph access token.');
+      }
+
+      cachedToken = {
+        scope,
+        token: payload.access_token,
+        expiresAt: now + ((payload.expires_in ?? 3600) * 1000),
+      };
+
+      return { token: payload.access_token };
+    },
+  };
 
   return cachedCredential;
 }
 
 export async function fetchTenantInformation(
   domain: string,
-  credential: TokenCredential
+  credential: ClientSecretCredentialLike
 ): Promise<TenantInformation | null> {
   const graphBaseUrl = getValidatedGraphBaseUrl();
   const graphScope = getValidatedGraphScope();

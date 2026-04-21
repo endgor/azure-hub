@@ -51,6 +51,9 @@ Then run: `npm run fetch-entraid-roles`
 
 - `npm run dev` - Development server
 - `npm run build` - Production build
+- `npm run preview` - Preview the app in the Cloudflare Workers runtime
+- `npm run deploy` - Deploy the production Worker to Cloudflare
+- `npm run deploy:preview` - Deploy the preview Worker to Cloudflare
 - `npm run update-ip-data` - Refresh Azure IP ranges
 - `npm run update-rbac-data` - Refresh RBAC data
 - `npm run fetch-entraid-roles` - Fetch Entra ID roles (requires credentials)
@@ -59,6 +62,27 @@ Then run: `npm run fetch-entraid-roles`
 ## Tech Stack
 
 Next.js 15, React 19, TypeScript, Tailwind CSS
+
+## Cloudflare Deployment
+
+This repository is configured to deploy to Cloudflare Workers using OpenNext.
+
+- Production Worker: `azure-hub`
+- Preview Worker: `azure-hub-preview`
+- Runtime config: [wrangler.jsonc](/Users/ender/Repos/personal/azure-hub/wrangler.jsonc)
+- OpenNext config: [open-next.config.ts](/Users/ender/Repos/personal/azure-hub/open-next.config.ts)
+
+GitHub Actions deploys:
+
+- `main` to the production Worker
+- `codex/cloudflare-migration` to the preview Worker
+
+Required GitHub secrets:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+Runtime secrets such as `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`, `RESEND_API_KEY`, and `INDEXNOW_SECRET` should be configured in Cloudflare for each Worker environment before go-live.
 
 ## Data Sources
 

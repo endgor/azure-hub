@@ -4,25 +4,28 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && node scripts/generateSitemap.js && next build",
+    "build": "node scripts/validateData.js && node scripts/fetchEntraIdRolesIfPossible.js && npm run generate-ip-lookup-index && npm run generate-site-data && node scripts/generateSitemap.js && next build",
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "deploy:preview": "opennextjs-cloudflare build && wrangler deploy --env preview",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "lint": "eslint .",
     "update-ip-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateIpData.ts",
     "update-rbac-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateRbacData.ts",
     "fetch-entraid-roles": "ts-node --project tsconfig.node.json scripts/fetchEntraIdRoles.ts",
     "generate-actions-index": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateActionsIndex.ts",
+    "generate-site-data": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateSiteData.ts",
     "generate-ip-indexes": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpIndexes.ts",
     "generate-ip-lookup-index": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpLookupIndex.ts",
     "update-private-dns-zones": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
     "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts"
   },
   "dependencies": {
-    "@azure/identity": "^4.13.1",
+    "@opennextjs/cloudflare": "^1.8.3",
     "@types/d3-geo": "^3.1.0",
     "@types/topojson-client": "^3.1.5",
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
     "d3-geo": "^3.1.1",
     "exceljs": "^4.4.0",
     "gray-matter": "^4.0.3",
@@ -47,6 +50,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@azure/identity": "^4.13.1",
     "@next/bundle-analyzer": "^16.2.3",
     "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/typography": "^0.5.19",
@@ -62,6 +66,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.1"
+    "typescript-eslint": "^8.58.1",
+    "wrangler": "^4.83.0"
   }
 }
