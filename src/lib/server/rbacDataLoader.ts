@@ -21,10 +21,11 @@ let actionsCacheExpiry = 0;
 async function loadJsonAssetFromCloudflare<T>(assetPath: string): Promise<T | null> {
   try {
     const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-    const { env } = getCloudflareContext();
+    const { env } = await getCloudflareContext({ async: true });
     const assets = env?.ASSETS;
 
     if (!assets) {
+      console.warn(`Cloudflare assets binding unavailable for ${assetPath}`);
       return null;
     }
 
@@ -34,7 +35,11 @@ async function loadJsonAssetFromCloudflare<T>(assetPath: string): Promise<T | nu
     }
 
     return await response.json() as T;
-  } catch {
+  } catch (error) {
+    console.warn(
+      `Failed to load ${assetPath} from Cloudflare assets:`,
+      error instanceof Error ? error.message : error
+    );
     return null;
   }
 }
