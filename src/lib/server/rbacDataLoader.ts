@@ -18,7 +18,33 @@ let rolesCacheExpiry = 0;
 let actionsCache: Map<string, { name: string; roleCount: number }> | null = null;
 let actionsCacheExpiry = 0;
 
+async function loadJsonAssetFromCloudflare<T>(assetPath: string): Promise<T | null> {
+  try {
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+    const { env } = getCloudflareContext();
+    const assets = env?.ASSETS;
+
+    if (!assets) {
+      return null;
+    }
+
+    const response = await assets.fetch(new URL(assetPath, 'https://assets.local'));
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${assetPath} from Cloudflare assets: ${response.status}`);
+    }
+
+    return await response.json() as T;
+  } catch {
+    return null;
+  }
+}
+
 async function loadJsonAsset<T>(assetPath: string, options?: LoadOptions): Promise<T> {
+  const cloudflareAsset = await loadJsonAssetFromCloudflare<T>(assetPath);
+  if (cloudflareAsset) {
+    return cloudflareAsset;
+  }
+
   if (options?.baseUrl) {
     const response = await fetch(new URL(assetPath, options.baseUrl));
     if (!response.ok) {
