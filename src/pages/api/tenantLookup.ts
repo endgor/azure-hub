@@ -28,16 +28,26 @@ function getClientIp(req: NextApiRequest): string {
   return req.socket?.remoteAddress ?? 'unknown';
 }
 
+function getRateLimiterBinding(): RateLimit | null {
+  const globalScope = globalThis as typeof globalThis & {
+    TENANT_LOOKUP_RATE_LIMITER?: RateLimit;
+    [key: symbol]: unknown;
+  };
+  const context = globalScope[Symbol.for('__cloudflare-context__')] as
+    | { env?: { TENANT_LOOKUP_RATE_LIMITER?: RateLimit } }
+    | undefined;
+
+  return context?.env?.TENANT_LOOKUP_RATE_LIMITER ?? globalScope.TENANT_LOOKUP_RATE_LIMITER ?? null;
+}
+
 async function isRateLimited(key: string): Promise<boolean> {
   try {
-    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-    const { env } = await getCloudflareContext({ async: true });
-    const limiter = env.TENANT_LOOKUP_RATE_LIMITER;
+    const limiter = getRateLimiterBinding();
     if (!limiter) return false;
     const { success } = await limiter.limit({ key });
     return !success;
   } catch {
-    // Binding unavailable (e.g. `next dev`): fail open.
+    // Binding unavailable or errored: fail open so real traffic isn't blocked.
     return false;
   }
 }

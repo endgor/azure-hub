@@ -80,12 +80,29 @@ interface ServiceTagDocument {
 
 let lookupIndexCache: { data: IpLookupIndex; expiry: number } | null = null;
 
+interface CloudflareAssetsBinding {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
+// OpenNext sets the Cloudflare context on globalThis under a known symbol,
+// but in some code paths (e.g. routes invoked outside the normal request
+// scope) only the direct ASSETS binding is present. Check both so we don't
+// silently drop back to the fs fallback — which 404s in the Worker runtime.
+function getCloudflareAssetsBinding(): CloudflareAssetsBinding | null {
+  const globalScope = globalThis as typeof globalThis & {
+    ASSETS?: CloudflareAssetsBinding;
+    [key: symbol]: unknown;
+  };
+  const context = globalScope[Symbol.for('__cloudflare-context__')] as
+    | { env?: { ASSETS?: CloudflareAssetsBinding } }
+    | undefined;
+
+  return context?.env?.ASSETS ?? globalScope.ASSETS ?? null;
+}
+
 async function loadJsonAssetFromCloudflare<T>(assetPath: string): Promise<T | null> {
   try {
-    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-    const { env } = await getCloudflareContext({ async: true });
-    const assets = env.ASSETS;
-
+    const assets = getCloudflareAssetsBinding();
     if (!assets) {
       return null;
     }

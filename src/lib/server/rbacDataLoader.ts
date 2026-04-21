@@ -18,12 +18,27 @@ let rolesCacheExpiry = 0;
 let actionsCache: Map<string, { name: string; roleCount: number }> | null = null;
 let actionsCacheExpiry = 0;
 
+interface CloudflareAssetsBinding {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
+// See the matching helper in serverIpService.ts for why we check both the
+// OpenNext context symbol and globalThis.ASSETS directly.
+function getCloudflareAssetsBinding(): CloudflareAssetsBinding | null {
+  const globalScope = globalThis as typeof globalThis & {
+    ASSETS?: CloudflareAssetsBinding;
+    [key: symbol]: unknown;
+  };
+  const context = globalScope[Symbol.for('__cloudflare-context__')] as
+    | { env?: { ASSETS?: CloudflareAssetsBinding } }
+    | undefined;
+
+  return context?.env?.ASSETS ?? globalScope.ASSETS ?? null;
+}
+
 async function loadJsonAssetFromCloudflare<T>(assetPath: string): Promise<T | null> {
   try {
-    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
-    const { env } = await getCloudflareContext({ async: true });
-    const assets = env.ASSETS;
-
+    const assets = getCloudflareAssetsBinding();
     if (!assets) {
       return null;
     }
