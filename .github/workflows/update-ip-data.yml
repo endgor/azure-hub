@@ -22,6 +22,7 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     steps:
       - name: Checkout repository
@@ -44,12 +45,23 @@ jobs:
       - name: Update Private DNS zone data
         run: npm run update-private-dns-zones
 
+      - name: Build Azure credentials JSON
+        run: |
+          creds=$(jq -nc \
+            --arg cid "$AZURE_CLIENT_ID" \
+            --arg cs  "$AZURE_CLIENT_SECRET" \
+            --arg tid "$AZURE_TENANT_ID" \
+            --arg sid "$AZURE_SUBSCRIPTION_ID" \
+            '{clientId:$cid, clientSecret:$cs, tenantId:$tid, subscriptionId:$sid}')
+          echo "::add-mask::$creds"
+          echo "AZURE_CREDENTIALS<<EOF" >> "$GITHUB_ENV"
+          echo "$creds" >> "$GITHUB_ENV"
+          echo "EOF" >> "$GITHUB_ENV"
+
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: ${{ env.AZURE_CREDENTIALS }}
 
       - name: Update Azure RBAC data
         run: npm run update-rbac-data
