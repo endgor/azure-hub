@@ -8,15 +8,20 @@ on:
     # Allow manual triggering
 
 # This workflow updates both Azure IP ranges and RBAC role definitions
-# Required GitHub Secret: AZURE_CREDENTIALS (JSON format for Azure CLI login)
-# Format: {"clientId":"...","clientSecret":"...","subscriptionId":"...","tenantId":"..."}
-# The service principal needs read permissions on role definitions
-
+# Required GitHub secrets:
+# - AZURE_CLIENT_ID
+# - AZURE_CLIENT_SECRET
+# - AZURE_TENANT_ID
+# - AZURE_SUBSCRIPTION_ID
 jobs:
   update-azure-data:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # This is crucial for allowing the workflow to push changes
+    env:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     steps:
       - name: Checkout repository
@@ -42,15 +47,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Export Azure service principal credentials
-        run: |
-          echo '${{ secrets.AZURE_CREDENTIALS }}' > azure-credentials.json
-          echo "AZURE_CLIENT_ID=$(node -p "JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).clientId")" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_SECRET=$(node -p "JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).clientSecret")" >> $GITHUB_ENV
-          echo "AZURE_TENANT_ID=$(node -p "JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).tenantId")" >> $GITHUB_ENV
-          rm azure-credentials.json
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Update Azure RBAC data
         run: npm run update-rbac-data
