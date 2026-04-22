@@ -34073,6 +34073,9 @@
         "actions": [
           "Microsoft.AzureActiveDirectory/directories/write",
           "Microsoft.AzureActiveDirectory/directories/read",
+          "Microsoft.AzureActiveDirectory/entraTenants/write",
+          "Microsoft.AzureActiveDirectory/entraTenants/read",
+          "Microsoft.AzureActiveDirectory/entraTenants/delete",
           "Microsoft.AzureActiveDirectory/register/action",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Resources/subscriptions/read"
@@ -34088,8 +34091,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-03-16T15:09:27.137442+00:00",
-    "permissionCount": 5,
+    "updatedOn": "2026-04-21T15:22:53.178321+00:00",
+    "permissionCount": 8,
     "dataActions": [],
     "notDataActions": []
   },
