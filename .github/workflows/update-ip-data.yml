@@ -8,9 +8,11 @@ on:
     # Allow manual triggering
 
 # This workflow updates both Azure IP ranges and RBAC role definitions
-# Supported secret formats:
-# 1) AZURE_CREDENTIALS (JSON: {"clientId","clientSecret","subscriptionId","tenantId"})
-# 2) Individual secrets: AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+# Required GitHub secrets:
+# - AZURE_CLIENT_ID
+# - AZURE_CLIENT_SECRET
+# - AZURE_TENANT_ID
+# - AZURE_SUBSCRIPTION_ID
 jobs:
   update-azure-data:
     runs-on: ubuntu-latest
@@ -20,10 +22,6 @@ jobs:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      GRAPH_TENANT_ID: ${{ secrets.GRAPH_TENANT_ID }}
-      GRAPH_CLIENT_ID: ${{ secrets.GRAPH_CLIENT_ID }}
-      GRAPH_CLIENT_SECRET: ${{ secrets.GRAPH_CLIENT_SECRET }}
 
     steps:
       - name: Checkout repository
@@ -46,35 +44,12 @@ jobs:
       - name: Update Private DNS zone data
         run: npm run update-private-dns-zones
 
-      - name: Azure Login (AZURE_CREDENTIALS JSON)
-        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Azure Login (individual AZURE_* secrets)
-        if: ${{ secrets.AZURE_CREDENTIALS == '' }}
+      - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Export Azure service principal credentials from AZURE_CREDENTIALS
-        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
-        run: |
-          echo '${{ secrets.AZURE_CREDENTIALS }}' > azure-credentials.json
-          echo "AZURE_CLIENT_ID=$(node -p \"JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).clientId\")" >> $GITHUB_ENV
-          echo "AZURE_CLIENT_SECRET=$(node -p \"JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).clientSecret\")" >> $GITHUB_ENV
-          echo "AZURE_TENANT_ID=$(node -p \"JSON.parse(require('fs').readFileSync('azure-credentials.json', 'utf8')).tenantId\")" >> $GITHUB_ENV
-          rm azure-credentials.json
-
-      - name: Verify Graph or Azure credentials are present for Entra role fetch
-        run: |
-          if [ -z "${GRAPH_CLIENT_ID}${AZURE_CLIENT_ID}" ] || [ -z "${GRAPH_CLIENT_SECRET}${AZURE_CLIENT_SECRET}" ] || [ -z "${GRAPH_TENANT_ID}${AZURE_TENANT_ID}" ]; then
-            echo "Missing credentials. Set GRAPH_* secrets or AZURE_* secrets."
-            exit 1
-          fi
 
       - name: Update Azure RBAC data
         run: npm run update-rbac-data
