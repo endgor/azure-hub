@@ -45,15 +45,15 @@ export function Sidebar({
 
       {/* Sidebar */}
       <aside
-        className={`relative flex flex-col border-r border-slate-200 bg-[#F3F4F6]/95 backdrop-blur transition-all duration-200 ease-out dark:border-[#363638] dark:bg-[#1B1B1C]/95 ${
-          isSidebarCollapsed ? 'w-20' : 'w-72'
-        } ${
-          isMobileMenuOpen ? 'fixed inset-y-0 left-0 z-50 md:relative' : 'hidden md:flex'
-        }`}
+        className={`flex-col border-r border-slate-200 bg-[#F3F4F6]/95 backdrop-blur transition-all duration-200 ease-out dark:border-[#363638] dark:bg-[#1B1B1C]/95 ${
+          isMobileMenuOpen
+            ? 'fixed inset-y-0 left-0 z-50 flex w-[85vw] max-w-sm md:relative md:max-w-none'
+            : 'relative hidden md:flex'
+        } ${isSidebarCollapsed ? 'md:w-20' : 'md:w-72'}`}
       >
         <div className="flex items-center justify-between gap-3 px-4 py-5">
-          <Link href="/" className="flex items-center gap-3" aria-label="Azure Hub home">
-            <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl">
+          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Azure Hub home">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl">
               <Image
                 src="/favicons/favicon-32x32.png"
                 alt="Azure Hub logo"
@@ -63,13 +63,32 @@ export function Sidebar({
                 unoptimized
               />
             </span>
-            <span className={`text-lg font-semibold tracking-tight ${isSidebarCollapsed ? 'hidden' : 'block'}`}>
+            <span className={`whitespace-nowrap text-lg font-semibold tracking-tight ${isSidebarCollapsed ? 'md:hidden' : 'block'}`}>
               Azure Hub
             </span>
           </Link>
+          {/* Mobile close button */}
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 md:hidden dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
+            onClick={onMobileMenuClose}
+            aria-label="Close navigation menu"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-5 w-5 text-current"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+          {/* Desktop collapse/expand button */}
+          <button
+            type="button"
+            className="hidden h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 md:flex dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
             onClick={() => setIsSidebarCollapsed((prev) => !prev)}
             aria-pressed={isSidebarCollapsed}
             aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
@@ -100,7 +119,7 @@ export function Sidebar({
             const active = matchRoute(item.href);
             const disabled = item.disabled;
             const baseClasses =
-              'group flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors';
+              'group flex items-center gap-2 rounded-lg px-3 py-2 text-base font-medium transition-colors md:py-1.5 md:text-sm';
             const stateClasses = disabled
               ? 'cursor-not-allowed text-slate-300 dark:text-slate-700'
               : active
@@ -116,8 +135,9 @@ export function Sidebar({
                 tabIndex={disabled ? -1 : undefined}
                 onClick={(event) => {
                   if (disabled) {
-                    event.preventDefault();
+                    return event.preventDefault();
                   }
+                  onMobileMenuClose();
                 }}
               >
                 <span
@@ -125,9 +145,9 @@ export function Sidebar({
                 >
                   {ICONS[item.icon](active)}
                 </span>
-                <span className={`${isSidebarCollapsed ? 'hidden' : 'block'}`}>{item.label}</span>
+                <span className={`whitespace-nowrap ${isSidebarCollapsed ? 'md:hidden' : 'block'}`}>{item.label}</span>
                 {item.comingSoon && !isSidebarCollapsed && (
-                  <span className="ml-auto text-xs font-semibold uppercase text-slate-400 dark:text-slate-500">
+                  <span className="ml-auto whitespace-nowrap text-xs font-semibold uppercase text-slate-400 dark:text-slate-500">
                     Soon
                   </span>
                 )}

@@ -475,41 +475,41 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       </header>
 
       <div className="w-full overflow-x-auto">
-        <table className="relative w-full min-w-[800px] table-auto divide-y divide-slate-200 dark:divide-slate-700" aria-label="Azure IP Ranges">
+        <table className="relative w-full min-w-full table-auto divide-y divide-slate-200 md:min-w-[800px] dark:divide-slate-700" aria-label="Azure IP Ranges">
           <thead className="bg-slate-100 dark:bg-slate-900/60">
             <tr className="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
               <th
-                className="w-[8%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="hidden w-[8%] px-5 py-4 font-semibold transition hover:bg-slate-200 md:table-cell dark:hover:bg-slate-800"
                 onClick={() => handleSort('cloud')}
               >
                 Cloud {renderSortIndicator('cloud')}
               </th>
               <th
-                className="w-[18%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="w-[30%] px-3 py-3 font-semibold transition hover:bg-slate-200 md:w-[18%] md:px-5 md:py-4 dark:hover:bg-slate-800"
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
               <th
-                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="w-[35%] px-3 py-3 font-semibold transition hover:bg-slate-200 md:w-[20%] md:px-5 md:py-4 dark:hover:bg-slate-800"
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
               <th
-                className="w-[15%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="hidden w-[15%] px-5 py-4 font-semibold transition hover:bg-slate-200 lg:table-cell dark:hover:bg-slate-800"
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
               <th
-                className="w-[20%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="w-[35%] px-3 py-3 font-semibold transition hover:bg-slate-200 md:w-[20%] md:px-5 md:py-4 dark:hover:bg-slate-800"
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
               <th
-                className="relative w-[25%] px-5 py-4 font-semibold transition hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="relative hidden w-[25%] px-5 py-4 font-semibold transition hover:bg-slate-200 lg:table-cell dark:hover:bg-slate-800"
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-2">
@@ -538,25 +538,25 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
                 key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`}
                 className={index % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900/70'}
               >
-                <td className="px-5 py-4 text-sm">
+                <td className="hidden px-5 py-4 text-sm md:table-cell">
                   {result.cloud && (
                     <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${CLOUD_STYLES[result.cloud]}`}>
                       {CLOUD_LABELS[result.cloud]}
                     </span>
                   )}
                 </td>
-                <td className="px-5 py-4 text-sm font-semibold text-slate-900 dark:text-slate-100">
+                <td className="px-3 py-3 text-sm font-semibold text-slate-900 md:px-5 md:py-4 dark:text-slate-100">
                   <button
                     onClick={() => handleServiceTagClick(result.serviceTagId)}
                     className="rounded-md border border-transparent px-2 py-1 text-left text-sky-600 transition hover:border-sky-200 hover:bg-sky-100 hover:text-sky-700 dark:text-sky-300 dark:hover:border-sky-800 dark:hover:bg-sky-900/20 dark:hover:text-sky-200"
                     title={`View details for ${result.serviceTagId}`}
                   >
-                    {result.serviceTagId}
+                    <span className="break-all">{result.serviceTagId}</span>
                   </button>
                 </td>
-                <td className="px-5 py-4 font-mono text-sm text-slate-900 dark:text-slate-100">
+                <td className="px-3 py-3 font-mono text-sm text-slate-900 md:px-5 md:py-4 dark:text-slate-100">
                   <div className="space-y-2">
-                    <div>{result.ipAddressPrefix}</div>
+                    <div className="break-all">{result.ipAddressPrefix}</div>
                     {result.resolvedFrom && result.resolvedIp && (
                       <div className="space-y-1">
                         <span className="inline-block rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-200">
@@ -571,9 +571,15 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
                     )}
                   </div>
                 </td>
-                <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.region || '-'}</td>
-                <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.systemService || '-'}</td>
-                <td className="px-5 py-4 text-sm text-slate-600 dark:text-slate-300">{result.networkFeatures || '-'}</td>
+                <td className="hidden px-5 py-4 text-sm text-slate-600 lg:table-cell dark:text-slate-300">{result.region || '-'}</td>
+                <td className="px-3 py-3 text-sm text-slate-600 md:px-5 md:py-4 dark:text-slate-300">
+                  <div className="break-words">{result.systemService || '-'}</div>
+                  <div className="mt-1 text-xs text-slate-400 lg:hidden dark:text-slate-500">
+                    {result.region && <span className="mr-2">Region: {result.region}</span>}
+                    {result.networkFeatures && <span>{result.networkFeatures}</span>}
+                  </div>
+                </td>
+                <td className="hidden px-5 py-4 text-sm text-slate-600 lg:table-cell dark:text-slate-300">{result.networkFeatures || '-'}</td>
               </tr>
             ))}
           </tbody>
