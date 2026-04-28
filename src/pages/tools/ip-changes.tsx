@@ -168,7 +168,8 @@ export default function IpChangesPage() {
 
             {totalChanges === 0 && (
               <div className="rounded-xl bg-white p-6 text-sm text-slate-500 dark:bg-slate-900 dark:text-slate-400">
-                No changes found for this cloud.
+                No IP prefix changes were found for this cloud/version selection. Microsoft sometimes increments
+                the weekly Service Tags version without changing published address prefixes.
               </div>
             )}
           </>
