@@ -47,37 +47,32 @@ export function computeIpDiff(options: ComputeDiffOptions): IpDiffFile {
         ...(cloud && { cloud }),
       });
     } else {
-      // Check if tag was modified (changeNumber changed)
-      if (
-        previousTag.properties.changeNumber !== currentTag.properties.changeNumber
-      ) {
-        const previousPrefixes = new Set(
-          previousTag.properties.addressPrefixes || []
-        );
-        const currentPrefixes = new Set(
-          currentTag.properties.addressPrefixes || []
-        );
+      const previousPrefixes = new Set(
+        previousTag.properties.addressPrefixes || []
+      );
+      const currentPrefixes = new Set(
+        currentTag.properties.addressPrefixes || []
+      );
 
-        const addedPrefixes = [...currentPrefixes].filter(
-          (p) => !previousPrefixes.has(p)
-        );
-        const removedPrefixes = [...previousPrefixes].filter(
-          (p) => !currentPrefixes.has(p)
-        );
+      const addedPrefixes = [...currentPrefixes].filter(
+        (p) => !previousPrefixes.has(p)
+      );
+      const removedPrefixes = [...previousPrefixes].filter(
+        (p) => !currentPrefixes.has(p)
+      );
 
-        // Only include if there are actual prefix changes
-        if (addedPrefixes.length > 0 || removedPrefixes.length > 0) {
-          modifiedTags.push({
-            name: currentTag.name,
-            systemService: currentTag.properties.systemService || '',
-            region: currentTag.properties.region || '',
-            previousChangeNumber: previousTag.properties.changeNumber || 0,
-            currentChangeNumber: currentTag.properties.changeNumber || 0,
-            addedPrefixes,
-            removedPrefixes,
-            ...(cloud && { cloud }),
-          });
-        }
+      // Only include if there are actual prefix changes
+      if (addedPrefixes.length > 0 || removedPrefixes.length > 0) {
+        modifiedTags.push({
+          name: currentTag.name,
+          systemService: currentTag.properties.systemService || '',
+          region: currentTag.properties.region || '',
+          previousChangeNumber: previousTag.properties.changeNumber || 0,
+          currentChangeNumber: currentTag.properties.changeNumber || 0,
+          addedPrefixes,
+          removedPrefixes,
+          ...(cloud && { cloud }),
+        });
       }
     }
   }
