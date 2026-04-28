@@ -137,6 +137,11 @@ export default function RecentChangesCard() {
 
       {/* Footer stats */}
       <div className="px-5 pb-4 pt-1">
+        {summary && summary.serviceTagsAdded === 0 && summary.serviceTagsRemoved === 0 && summary.serviceTagsModified === 0 && (
+          <p className="text-[11px] text-slate-400 dark:text-slate-500">
+            Version updated, but no IP prefix changes were published in this update.
+          </p>
+        )}
         {summary && (summary.serviceTagsAdded > 0 || summary.serviceTagsModified > 0) && (
           <p className="text-[11px] text-slate-400 dark:text-slate-500">
             {summary.serviceTagsAdded > 0 && <>{summary.serviceTagsAdded} new service tags</>}
