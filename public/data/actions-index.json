@@ -70755,21 +70755,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.logic/automationprojects/delete",
-    "name": "Microsoft.Logic/automationProjects/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.logic/automationprojects/read",
-    "name": "Microsoft.Logic/automationProjects/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.logic/automationprojects/write",
-    "name": "Microsoft.Logic/automationProjects/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.logic/businessprocesses/delete",
     "name": "Microsoft.Logic/businessprocesses/delete",
     "roleCount": 0
@@ -77850,6 +77835,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/applicationgateways/applicationgatewayhealth/action",
+    "name": "Microsoft.Network/applicationGateways/applicationGatewayHealth/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/applicationgateways/appprotectpolicy/attachappprotectpolicy/action",
     "name": "Microsoft.Network/applicationGateways/appProtectPolicy/attachAppProtectPolicy/action",
     "roleCount": 0
@@ -78005,6 +77995,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/applicationsecuritygroups/addressprefixsets/delete",
+    "name": "Microsoft.Network/applicationSecurityGroups/addressPrefixSets/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/addressprefixsets/read",
+    "name": "Microsoft.Network/applicationSecurityGroups/addressPrefixSets/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/addressprefixsets/write",
+    "name": "Microsoft.Network/applicationSecurityGroups/addressPrefixSets/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/applicationsecuritygroups/delete",
     "name": "Microsoft.Network/applicationSecurityGroups/delete",
     "roleCount": 0
@@ -78012,6 +78017,11 @@
   {
     "key": "microsoft.network/applicationsecuritygroups/joinipconfiguration/action",
     "name": "Microsoft.Network/applicationSecurityGroups/joinIpConfiguration/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/applicationsecuritygroups/listaddressprefixsets/action",
+    "name": "Microsoft.Network/applicationSecurityGroups/listAddressPrefixSets/action",
     "roleCount": 0
   },
   {
@@ -78865,6 +78875,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/expressroutecrossconnections/deprovisionconnection/action",
+    "name": "Microsoft.Network/expressRouteCrossConnections/deprovisionConnection/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/expressroutecrossconnections/features/delete",
     "name": "Microsoft.Network/expressRouteCrossConnections/features/delete",
     "roleCount": 0
@@ -78982,6 +78997,16 @@
   {
     "key": "microsoft.network/expressroutelags/delete",
     "name": "Microsoft.Network/expressRouteLags/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/generateloa/action",
+    "name": "Microsoft.Network/expressRouteLags/generateloa/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/join/action",
+    "name": "Microsoft.Network/expressRouteLags/join/action",
     "roleCount": 0
   },
   {
@@ -79167,6 +79192,21 @@
   {
     "key": "microsoft.network/firewallpolicies/write",
     "name": "Microsoft.Network/firewallPolicies/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firstpartyservicetags/delete",
+    "name": "Microsoft.Network/firstPartyServiceTags/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firstpartyservicetags/read",
+    "name": "Microsoft.Network/firstPartyServiceTags/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/firstpartyservicetags/write",
+    "name": "Microsoft.Network/firstPartyServiceTags/write",
     "roleCount": 0
   },
   {
@@ -80705,16 +80745,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/networkwatchers/agents/deregister/action",
-    "name": "Microsoft.Network/networkWatchers/agents/deregister/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/networkwatchers/agents/fetchregistrationinfo/action",
-    "name": "Microsoft.Network/networkWatchers/agents/fetchRegistrationInfo/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/networkwatchers/agents/read",
     "name": "Microsoft.Network/networkWatchers/agents/read",
     "roleCount": 0
@@ -81497,6 +81527,11 @@
   {
     "key": "microsoft.network/trafficmanagerprofiles/providers/microsoft.insights/metricdefinitions/read",
     "name": "Microsoft.Network/trafficManagerProfiles/providers/Microsoft.Insights/metricDefinitions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/trafficmanagerprofiles/validatelink/action",
+    "name": "Microsoft.Network/trafficManagerProfiles/validateLink/action",
     "roleCount": 0
   },
   {
@@ -85260,6 +85295,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/amahealth/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/AMAHealth/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/amlcomputeclusterevent/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/AmlComputeClusterEvent/read",
     "roleCount": 0
@@ -85632,6 +85672,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/asimalerteventlogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/ASimAlertEventLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/asimassetentitylogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/ASimAssetEntityLogs/read",
     "roleCount": 0
   },
   {
@@ -86185,8 +86230,23 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/cloudauditevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/CloudAuditEvents/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/cloudhsmserviceoperationauditlogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/CloudHsmServiceOperationAuditLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/cloudprocessevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/CloudProcessEvents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/cloudstorageaggregatedevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/CloudStorageAggregatedEvents/read",
     "roleCount": 0
   },
   {
@@ -87310,8 +87370,18 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/identityaccountinfo/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/IdentityAccountInfo/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/identitydirectoryevents/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/IdentityDirectoryEvents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/identityevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/IdentityEvents/read",
     "roleCount": 0
   },
   {
@@ -87645,6 +87715,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/messageevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/MessageEvents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/messagepostdeliveryevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/MessagePostDeliveryEvents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/messageurlinfo/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/MessageUrlInfo/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/microsoftazurebastionauditlogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/MicrosoftAzureBastionAuditLogs/read",
     "roleCount": 0
@@ -87667,6 +87752,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/microsoftgraphactivitylogs/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/MicrosoftGraphActivityLogs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/microsoftgraphpolicylogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/MicrosoftGraphPolicyLogs/read",
     "roleCount": 0
   },
   {
@@ -87882,6 +87972,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/nwconnectionmonitortestresult/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/NWConnectionMonitorTestResult/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/oauthappinfo/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/OAuthAppInfo/read",
     "roleCount": 0
   },
   {
@@ -88237,6 +88332,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/securitybaselinesummary/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/SecurityBaselineSummary/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/securitycaseevent/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/SecurityCaseEvent/read",
     "roleCount": 0
   },
   {
@@ -95922,56 +96022,6 @@
   {
     "key": "microsoft.signalrservice/webpubsub/auth/accesstoken/action",
     "name": "Microsoft.SignalRService/WebPubSub/auth/accessToken/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/conversation/read",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/conversation/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/conversation/write",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/conversation/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/message/read",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/message/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/message/write",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/message/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/role/read",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/role/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/role/write",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/role/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/room/read",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/room/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/room/write",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/room/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/user/read",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/user/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.signalrservice/webpubsub/chat/user/write",
-    "name": "Microsoft.SignalRService/WebPubSub/chat/user/write",
     "roleCount": 0
   },
   {
