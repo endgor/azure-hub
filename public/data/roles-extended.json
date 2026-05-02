@@ -28074,7 +28074,7 @@
           "Microsoft.Support/*",
           "Microsoft.Authorization/*/read"
         ],
-        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals {c12c1c16-33a1-487b-954d-41c89c60f349, 69566ab7-960f-475b-8e7c-b3118f30c6bd, 17d1049b-9a84-46fb-8f53-869881c3d3ab}))",
+        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR ((@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals {c12c1c16-33a1-487b-954d-41c89c60f349, 69566ab7-960f-475b-8e7c-b3118f30c6bd, 17d1049b-9a84-46fb-8f53-869881c3d3ab}) AND (@Request[Microsoft.Authorization/roleAssignments:PrincipalType] StringEqualsIgnoreCase 'ServicePrincipal')))",
         "conditionVersion": "2.0",
         "dataActions": [],
         "notActions": [],
@@ -28085,7 +28085,7 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-11-07T00:36:58.499670+00:00",
+    "updatedOn": "2026-05-01T16:26:29.205092+00:00",
     "permissionCount": 2175.6666666666665,
     "dataActions": [],
     "notDataActions": []
@@ -37990,6 +37990,53 @@
     "updatedBy": null,
     "updatedOn": "2026-04-10T10:54:55.582373+00:00",
     "permissionCount": 339.3333333333333,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-05-01T11:09:23.948724+00:00",
+    "description": "Full management of Logic Apps Hybrid, including creation, deletion, and updates.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/32109304-a0e2-4d64-bd07-b23ac5efbe43",
+    "name": "32109304-a0e2-4d64-bd07-b23ac5efbe43",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Insights/alertRules/*",
+          "Microsoft.App/containerApps/*/read",
+          "Microsoft.App/containerApps/*/write",
+          "Microsoft.App/containerApps/*/delete",
+          "Microsoft.App/containerApps/*/action",
+          "Microsoft.App/logicApps/*/read",
+          "Microsoft.App/logicApps/*/write",
+          "Microsoft.App/logicApps/*/delete",
+          "Microsoft.App/logicApps/*/action",
+          "Microsoft.App/managedEnvironments/read",
+          "Microsoft.App/managedEnvironments/*/read",
+          "Microsoft.App/managedEnvironments/join/action",
+          "Microsoft.App/managedEnvironments/checknameavailability/action",
+          "Microsoft.App/connectedEnvironments/read",
+          "Microsoft.App/connectedEnvironments/*/read",
+          "Microsoft.App/connectedEnvironments/join/action",
+          "Microsoft.App/connectedEnvironments/checknameavailability/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Logic Apps Hybrid Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-05-01T11:09:23.948724+00:00",
+    "permissionCount": 3172.6666666666665,
     "dataActions": [],
     "notDataActions": []
   }
