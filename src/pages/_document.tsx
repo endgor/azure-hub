@@ -1,5 +1,7 @@
 import { Html, Head, Main, NextScript } from 'next/document';
 
+const CF_BEACON_TOKEN = process.env.NEXT_PUBLIC_CF_BEACON_TOKEN;
+
 export default function Document() {
   // Organization Schema for Google Knowledge Graph
   const organizationSchema = {
@@ -59,6 +61,13 @@ export default function Document() {
       <body className="bg-slate-100">
         <Main />
         <NextScript />
+        {CF_BEACON_TOKEN && (
+          <script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token": "${CF_BEACON_TOKEN}"}`}
+          />
+        )}
       </body>
     </Html>
   );

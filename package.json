@@ -20,7 +20,8 @@
     "generate-ip-indexes": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpIndexes.ts",
     "generate-ip-lookup-index": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/generateIpLookupIndex.ts",
     "update-private-dns-zones": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
-    "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts"
+    "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts",
+    "cf-stats": "ts-node --project tsconfig.node.json scripts/cfStats.ts"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.8.3",
