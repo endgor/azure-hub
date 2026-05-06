@@ -157,6 +157,48 @@ function createNoChangesDiff(metadata: AzureFileMetadata[]): IpDiffFile {
   };
 }
 
+function loadExistingDiff(): IpDiffFile | null {
+  try {
+    if (fs.existsSync(DIFF_FILE)) {
+      return JSON.parse(fs.readFileSync(DIFF_FILE, 'utf8')) as IpDiffFile;
+    }
+  } catch (error) {
+    console.warn('Could not load existing diff file:', error);
+  }
+  return null;
+}
+
+/**
+ * Builds a single diff for a cloud whose data did not change this run, by
+ * pulling that cloud's entry (and its tag arrays) out of the existing diff
+ * file. Returns null if the existing diff has nothing for this cloud.
+ */
+function preservedDiffForCloud(
+  cloud: AzureCloudName,
+  existingDiff: IpDiffFile | null
+): IpDiffFile | null {
+  const info = existingDiff?.meta.clouds?.[cloud];
+  if (!info) {
+    return null;
+  }
+  return {
+    meta: {
+      generatedAt: existingDiff!.meta.generatedAt,
+      summary: {
+        serviceTagsAdded: 0,
+        serviceTagsRemoved: 0,
+        serviceTagsModified: 0,
+        totalPrefixesAdded: 0,
+        totalPrefixesRemoved: 0,
+      },
+      clouds: { [cloud]: info },
+    },
+    addedTags: existingDiff!.addedTags.filter(t => t.cloud === cloud),
+    removedTags: existingDiff!.removedTags.filter(t => t.cloud === cloud),
+    modifiedTags: existingDiff!.modifiedTags.filter(t => t.cloud === cloud),
+  };
+}
+
 /**
  * Selects the most specific link based on URL length.
  */
@@ -392,8 +434,13 @@ async function updateAllIpData(): Promise<void> {
   // Load existing metadata
   const metadata = loadMetadata();
 
+  // Load existing diff so we can preserve entries for clouds that don't change
+  // this run (Microsoft often goes days without publishing a new version).
+  const existingDiff = loadExistingDiff();
+
   // Collect diffs from all clouds
   const cloudDiffs: IpDiffFile[] = [];
+  const updatedClouds = new Set<AzureCloudName>();
 
   for (const mapping of downloadMappings) {
     console.info(`Processing ${mapping.cloud}...`);
@@ -465,6 +512,7 @@ async function updateAllIpData(): Promise<void> {
 
           // Add to collection for later merging
           cloudDiffs.push(diff);
+          updatedClouds.add(mapping.cloud);
 
           console.info(`[${mapping.cloud}] Diff computed: +${diff.meta.summary.totalPrefixesAdded} prefixes, -${diff.meta.summary.totalPrefixesRemoved} prefixes`);
           console.info(`[${mapping.cloud}] ${diff.meta.summary.serviceTagsAdded} tags added, ${diff.meta.summary.serviceTagsRemoved} removed, ${diff.meta.summary.serviceTagsModified} modified`);
@@ -514,13 +562,33 @@ async function updateAllIpData(): Promise<void> {
   // Save updated metadata
   saveMetadata(metadata);
 
-  const diffToPersist = cloudDiffs.length > 0
-    ? mergeDiffs(cloudDiffs)
+  // Preserve entries for clouds that didn't change this run by pulling them
+  // out of the existing diff file. This stops daily no-change runs from
+  // wiping the most recent meaningful diff (the bug that produced v398→v398
+  // on the Recent Changes card).
+  const preservedDiffs: IpDiffFile[] = [];
+  for (const mapping of downloadMappings) {
+    if (updatedClouds.has(mapping.cloud)) continue;
+    const preserved = preservedDiffForCloud(mapping.cloud, existingDiff);
+    if (preserved) {
+      preservedDiffs.push(preserved);
+    } else {
+      // No prior diff for this cloud — fall back to a current-only entry so
+      // the UI still has something to render for it.
+      const meta = metadata.find(m => m.cloud === mapping.cloud);
+      if (meta) preservedDiffs.push(createNoChangesDiff([meta]));
+    }
+  }
+
+  const allDiffs = [...cloudDiffs, ...preservedDiffs];
+  const diffToPersist = allDiffs.length > 0
+    ? mergeDiffs(allDiffs)
     : createNoChangesDiff(metadata);
 
   fs.writeFileSync(DIFF_FILE, JSON.stringify(diffToPersist, null, 2), 'utf8');
   console.info(`Saved diff to ${DIFF_FILE}`);
-  console.info(`  Combined summary: +${diffToPersist.meta.summary.totalPrefixesAdded} prefixes, -${diffToPersist.meta.summary.totalPrefixesRemoved} prefixes across ${cloudDiffs.length} cloud(s)`);
+  console.info(`  ${cloudDiffs.length} cloud(s) updated, ${preservedDiffs.length} preserved from existing diff`);
+  console.info(`  Combined summary: +${diffToPersist.meta.summary.totalPrefixesAdded} prefixes, -${diffToPersist.meta.summary.totalPrefixesRemoved} prefixes`);
   console.info(`  ${diffToPersist.meta.summary.serviceTagsAdded} tags added, ${diffToPersist.meta.summary.serviceTagsRemoved} removed, ${diffToPersist.meta.summary.serviceTagsModified} modified`);
 
   // Regenerate the IP lookup index for binary search
