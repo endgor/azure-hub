@@ -31,24 +31,41 @@ export function generateShareLink(options: ShareLinkOptions, baseUrl: string): s
 
 /**
  * Copies text to clipboard using the most appropriate method.
- * Falls back to legacy execCommand if Clipboard API is unavailable.
+ * Falls back to legacy execCommand if the Clipboard API is unavailable
+ * or rejects (e.g. NotAllowedError when DevTools steals focus).
  */
 export async function copyToClipboard(text: string): Promise<void> {
   if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-    await navigator.clipboard.writeText(text);
-    return;
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // fall through to execCommand fallback
+    }
   }
 
-  // Legacy fallback for older browsers
   const textarea = document.createElement('textarea');
   textarea.value = text;
   textarea.setAttribute('readonly', '');
-  textarea.style.position = 'absolute';
-  textarea.style.left = '-9999px';
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  textarea.style.left = '0';
+  textarea.style.opacity = '0';
+  textarea.style.pointerEvents = 'none';
   document.body.appendChild(textarea);
+
+  const previousActive = document.activeElement as HTMLElement | null;
+  textarea.focus();
   textarea.select();
-  const successful = document.execCommand('copy');
-  document.body.removeChild(textarea);
+  textarea.setSelectionRange(0, text.length);
+
+  let successful = false;
+  try {
+    successful = document.execCommand('copy');
+  } finally {
+    document.body.removeChild(textarea);
+    previousActive?.focus?.();
+  }
 
   if (!successful) {
     throw new Error('Copy to clipboard failed');
