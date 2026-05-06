@@ -66,7 +66,7 @@ const LookupForm = memo(function LookupForm({
           name="search-query"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search IP, CIDR (e.g. 13.66.0.0/16), Service (e.g. ActionGroup), or Region..."
+          placeholder="Search IP, CIDR (e.g. 4.149.64.0/19), Service (e.g. ActionGroup), or Region..."
           maxWidth="full"
           isLoading={isLoading}
           aria-label="Search query"
