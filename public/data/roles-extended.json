@@ -294,7 +294,7 @@
           "Microsoft.Authorization/*/read",
           "Microsoft.Insights/alertRules/*",
           "Microsoft.ResourceHealth/availabilityStatuses/read",
-          "Microsoft.Resources/deployments/*",
+          "Microsoft.Resources/deployments/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Support/*"
         ],
@@ -311,8 +311,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2021-11-11T20:13:11.870446+00:00",
-    "permissionCount": 1752.4999999999998,
+    "updatedOn": "2026-05-05T15:35:33.710333+00:00",
+    "permissionCount": 1420.1666666666665,
     "dataActions": [],
     "notDataActions": []
   },
@@ -37753,7 +37753,7 @@
     ],
     "createdBy": null,
     "createdOn": "2026-03-26T20:35:10.779600+00:00",
-    "description": "Ownership of all SandboxGroup data.",
+    "description": "Ownership of all Container Apps SandboxGroup data.",
     "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/c24cf47c-5077-412d-a19c-45202126392c",
     "name": "c24cf47c-5077-412d-a19c-45202126392c",
     "permissions": [
@@ -37771,11 +37771,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Dev Compute SandboxGroup Data Owner",
+    "roleName": "Container Apps SandboxGroup Data Owner",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-03-26T20:35:10.779600+00:00",
+    "updatedOn": "2026-05-05T23:53:24.838580+00:00",
     "permissionCount": 1000,
     "dataActions": [
       "Microsoft.App/sandboxGroups/*/read",
@@ -37863,7 +37863,7 @@
     ],
     "createdBy": null,
     "createdOn": "2026-04-08T17:59:44.443784+00:00",
-    "description": "Role allows users to collect diagnostic information regarding their Virtual Machine",
+    "description": "Collect diagnostic information regarding Virtual Machine and Virtual Machine Scale Sets",
     "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/64375caa-ac3e-48b3-9492-da4d60aba7bb",
     "name": "64375caa-ac3e-48b3-9492-da4d60aba7bb",
     "permissions": [
@@ -37871,7 +37871,10 @@
         "actions": [
           "Microsoft.Compute/virtualMachines/DiagnosticRunCommands/write",
           "Microsoft.Compute/virtualMachines/DiagnosticRunCommands/read",
-          "Microsoft.Compute/virtualMachines/DiagnosticRunCommands/delete"
+          "Microsoft.Compute/virtualMachines/DiagnosticRunCommands/delete",
+          "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/DiagnosticRunCommands/write",
+          "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/DiagnosticRunCommands/read",
+          "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/DiagnosticRunCommands/delete"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -37884,8 +37887,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-04-08T17:59:44.443784+00:00",
-    "permissionCount": 3,
+    "updatedOn": "2026-05-05T20:37:12.681350+00:00",
+    "permissionCount": 6,
     "dataActions": [],
     "notDataActions": []
   },

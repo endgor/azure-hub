@@ -95,6 +95,11 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.resources/deployments/read",
+    "name": "Microsoft.Resources/deployments/read",
+    "roleCount": 299
+  },
+  {
     "key": "microsoft.insights/generatelivetoken/read",
     "name": "Microsoft.Insights/generateLiveToken/read",
     "roleCount": 20
@@ -875,11 +880,6 @@
     "roleCount": 5
   },
   {
-    "key": "microsoft.resources/deployments/read",
-    "name": "Microsoft.Resources/deployments/read",
-    "roleCount": 299
-  },
-  {
     "key": "microsoft.cdn/profiles/checkresourceusage/action",
     "name": "Microsoft.Cdn/profiles/CheckResourceUsage/action",
     "roleCount": 4
@@ -972,7 +972,7 @@
   {
     "key": "microsoft.resources/deployments/operations/read",
     "name": "Microsoft.Resources/deployments/operations/read",
-    "roleCount": 287
+    "roleCount": 286
   },
   {
     "key": "microsoft.resources/subscriptions/operationresults/read",
@@ -2307,7 +2307,7 @@
   {
     "key": "microsoft.resources/deployments/write",
     "name": "Microsoft.Resources/deployments/write",
-    "roleCount": 274
+    "roleCount": 273
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
@@ -4087,32 +4087,32 @@
   {
     "key": "microsoft.resources/deployments/delete",
     "name": "Microsoft.Resources/deployments/delete",
-    "roleCount": 258
+    "roleCount": 257
   },
   {
     "key": "microsoft.resources/deployments/cancel/action",
     "name": "Microsoft.Resources/deployments/cancel/action",
-    "roleCount": 256
+    "roleCount": 255
   },
   {
     "key": "microsoft.resources/deployments/validate/action",
     "name": "Microsoft.Resources/deployments/validate/action",
-    "roleCount": 259
+    "roleCount": 258
   },
   {
     "key": "microsoft.resources/deployments/whatif/action",
     "name": "Microsoft.Resources/deployments/whatIf/action",
-    "roleCount": 256
+    "roleCount": 255
   },
   {
     "key": "microsoft.resources/deployments/exporttemplate/action",
     "name": "Microsoft.Resources/deployments/exportTemplate/action",
-    "roleCount": 259
+    "roleCount": 258
   },
   {
     "key": "microsoft.resources/deployments/operationstatuses/read",
     "name": "Microsoft.Resources/deployments/operationstatuses/read",
-    "roleCount": 277
+    "roleCount": 276
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/deployments/read",
@@ -18275,6 +18275,21 @@
     "roleCount": 5
   },
   {
+    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommands/write",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/DiagnosticRunCommands/write",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommands/read",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/DiagnosticRunCommands/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommands/delete",
+    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/DiagnosticRunCommands/delete",
+    "roleCount": 4
+  },
+  {
     "key": "anyscale.platform/admin/action",
     "name": "Anyscale.Platform/admin/action",
     "roleCount": 3
@@ -18397,56 +18412,6 @@
   {
     "key": "anyscale.platform/clouds/write",
     "name": "Anyscale.Platform/clouds/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/checknameavailability/action",
-    "name": "Commvault.ContentStore/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/delete",
-    "name": "Commvault.ContentStore/entities/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/read",
-    "name": "Commvault.ContentStore/entities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/write",
-    "name": "Commvault.ContentStore/entities/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/read",
-    "name": "Commvault.ContentStore/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/write",
-    "name": "Commvault.ContentStore/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/operations/read",
-    "name": "Commvault.ContentStore/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/register/action",
-    "name": "Commvault.ContentStore/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/registeredsubscriptions/read",
-    "name": "Commvault.ContentStore/registeredSubscriptions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/unregister/action",
-    "name": "Commvault.ContentStore/unregister/action",
     "roleCount": 0
   },
   {
@@ -23010,6 +22975,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.app/sandboxgroups/agentidentities/delete",
+    "name": "Microsoft.App/sandboxGroups/agentIdentities/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/agentidentities/read",
+    "name": "Microsoft.App/sandboxGroups/agentIdentities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/agentidentities/write",
+    "name": "Microsoft.App/sandboxGroups/agentIdentities/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.app/sandboxgroups/connections/delete",
     "name": "Microsoft.App/sandboxGroups/connections/delete",
     "roleCount": 0
@@ -23022,6 +23002,21 @@
   {
     "key": "microsoft.app/sandboxgroups/connections/write",
     "name": "Microsoft.App/sandboxGroups/connections/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/contentpackages/delete",
+    "name": "Microsoft.App/sandboxGroups/contentpackages/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/contentpackages/read",
+    "name": "Microsoft.App/sandboxGroups/contentpackages/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/sandboxgroups/contentpackages/write",
+    "name": "Microsoft.App/sandboxGroups/contentpackages/write",
     "roleCount": 0
   },
   {
@@ -28080,6 +28075,46 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/delete",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/read",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/reimage/action",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/reimage/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/restart/action",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/restart/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/virtualmachines/read",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/virtualMachines/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/virtualmachines/reimage/action",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/virtualMachines/reimage/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/virtualmachines/restart/action",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/virtualMachines/restart/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurefleet/virtualmachinescalesets/write",
+    "name": "Microsoft.AzureFleet/virtualMachineScaleSets/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azureimagetestingforlinux/jobs/delete",
     "name": "Microsoft.AzureImageTestingForLinux/jobs/delete",
     "roleCount": 0
@@ -32160,6 +32195,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cdn/operationresults/profileresults/authpolicyresults/delete",
+    "name": "Microsoft.Cdn/operationresults/profileresults/authpolicyresults/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/authpolicyresults/read",
+    "name": "Microsoft.Cdn/operationresults/profileresults/authpolicyresults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/authpolicyresults/write",
+    "name": "Microsoft.Cdn/operationresults/profileresults/authpolicyresults/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cdn/operationresults/profileresults/cdncanmigratetoafd/action",
     "name": "Microsoft.Cdn/operationresults/profileresults/CdnCanMigrateToAfd/action",
     "roleCount": 0
@@ -32197,6 +32247,31 @@
   {
     "key": "microsoft.cdn/operationresults/profileresults/delete",
     "name": "Microsoft.Cdn/operationresults/profileresults/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/deploymentversionresults/approve/action",
+    "name": "Microsoft.Cdn/operationresults/profileresults/deploymentversionresults/Approve/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/deploymentversionresults/compare/action",
+    "name": "Microsoft.Cdn/operationresults/profileresults/deploymentversionresults/Compare/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/deploymentversionresults/delete",
+    "name": "Microsoft.Cdn/operationresults/profileresults/deploymentversionresults/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/deploymentversionresults/read",
+    "name": "Microsoft.Cdn/operationresults/profileresults/deploymentversionresults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/deploymentversionresults/write",
+    "name": "Microsoft.Cdn/operationresults/profileresults/deploymentversionresults/write",
     "roleCount": 0
   },
   {
@@ -32420,6 +32495,36 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cdn/operationresults/profileresults/targetgroupresults/delete",
+    "name": "Microsoft.Cdn/operationresults/profileresults/targetgroupresults/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/targetgroupresults/read",
+    "name": "Microsoft.Cdn/operationresults/profileresults/targetgroupresults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/targetgroupresults/write",
+    "name": "Microsoft.Cdn/operationresults/profileresults/targetgroupresults/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/tunnelpolicyresults/delete",
+    "name": "Microsoft.Cdn/operationresults/profileresults/tunnelpolicyresults/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/tunnelpolicyresults/read",
+    "name": "Microsoft.Cdn/operationresults/profileresults/tunnelpolicyresults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/operationresults/profileresults/tunnelpolicyresults/write",
+    "name": "Microsoft.Cdn/operationresults/profileresults/tunnelpolicyresults/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cdn/operationresults/profileresults/upgrade/action",
     "name": "Microsoft.Cdn/operationresults/profileresults/Upgrade/action",
     "roleCount": 0
@@ -32490,6 +32595,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cdn/profiles/authpolicies/delete",
+    "name": "Microsoft.Cdn/profiles/authpolicies/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/authpolicies/read",
+    "name": "Microsoft.Cdn/profiles/authpolicies/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/authpolicies/write",
+    "name": "Microsoft.Cdn/profiles/authpolicies/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cdn/profiles/cdncanmigratetoafd/action",
     "name": "Microsoft.Cdn/profiles/CdnCanMigrateToAfd/action",
     "roleCount": 0
@@ -32512,6 +32632,31 @@
   {
     "key": "microsoft.cdn/profiles/delete",
     "name": "Microsoft.Cdn/profiles/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/deploymentversions/approve/action",
+    "name": "Microsoft.Cdn/profiles/deploymentversions/Approve/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/deploymentversions/compare/action",
+    "name": "Microsoft.Cdn/profiles/deploymentversions/Compare/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/deploymentversions/delete",
+    "name": "Microsoft.Cdn/profiles/deploymentversions/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/deploymentversions/read",
+    "name": "Microsoft.Cdn/profiles/deploymentversions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/deploymentversions/write",
+    "name": "Microsoft.Cdn/profiles/deploymentversions/write",
     "roleCount": 0
   },
   {
@@ -32772,6 +32917,36 @@
   {
     "key": "microsoft.cdn/profiles/securitypolicies/write",
     "name": "Microsoft.Cdn/profiles/securitypolicies/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/targetgroups/delete",
+    "name": "Microsoft.Cdn/profiles/targetgroups/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/targetgroups/read",
+    "name": "Microsoft.Cdn/profiles/targetgroups/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/targetgroups/write",
+    "name": "Microsoft.Cdn/profiles/targetgroups/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/tunnelpolicies/delete",
+    "name": "Microsoft.Cdn/profiles/tunnelpolicies/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/tunnelpolicies/read",
+    "name": "Microsoft.Cdn/profiles/tunnelpolicies/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cdn/profiles/tunnelpolicies/write",
+    "name": "Microsoft.Cdn/profiles/tunnelpolicies/write",
     "roleCount": 0
   },
   {
@@ -42737,21 +42912,6 @@
   {
     "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommand/action",
     "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/diagnosticRunCommand/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommands/delete",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/diagnosticRunCommands/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommands/read",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/diagnosticRunCommands/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/diagnosticruncommands/write",
-    "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/diagnosticRunCommands/write",
     "roleCount": 0
   },
   {
@@ -72185,8 +72345,33 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.logic/automationprojects/applications/delete",
+    "name": "Microsoft.Logic/automationProjects/applications/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.logic/automationprojects/applications/operationstatuses/read",
+    "name": "Microsoft.Logic/automationProjects/applications/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.logic/automationprojects/applications/read",
+    "name": "Microsoft.Logic/automationProjects/applications/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.logic/automationprojects/applications/write",
+    "name": "Microsoft.Logic/automationProjects/applications/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.logic/automationprojects/delete",
     "name": "Microsoft.Logic/automationProjects/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.logic/automationprojects/operationstatuses/read",
+    "name": "Microsoft.Logic/automationProjects/operationStatuses/read",
     "roleCount": 0
   },
   {
