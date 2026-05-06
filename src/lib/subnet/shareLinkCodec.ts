@@ -39,8 +39,8 @@ export async function copyToClipboard(text: string): Promise<void> {
     try {
       await navigator.clipboard.writeText(text);
       return;
-    } catch {
-      // fall through to execCommand fallback
+    } catch (err) {
+      console.warn('navigator.clipboard.writeText rejected, falling back to execCommand:', err);
     }
   }
 

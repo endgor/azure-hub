@@ -201,13 +201,14 @@ export function parseShareableSubnetPlan(encoded: string): ShareableSubnetPlan |
 /**
  * Encodes UTF-8 string to Base64URL format (URL-safe Base64).
  * Base64URL replaces + with -, / with _, and removes = padding.
- * Supports both Node.js (Buffer) and browser (TextEncoder + btoa) environments.
+ *
+ * Browser-only: this codec is invoked from the subnet calculator share UI.
+ * We deliberately avoid the Node Buffer path because the OpenNext/Cloudflare
+ * bundle ships a Buffer polyfill that doesn't implement the 'base64url'
+ * encoding, which made `Buffer.from(...).toString('base64url')` throw at
+ * runtime in the browser.
  */
 function encodeBase64Url(value: string): string {
-  if (typeof Buffer !== 'undefined') {
-    return Buffer.from(value, 'utf8').toString('base64url');
-  }
-
   const bytes = new TextEncoder().encode(value);
   let binary = '';
 
@@ -223,14 +224,9 @@ function encodeBase64Url(value: string): string {
 
 /**
  * Decodes Base64URL string back to UTF-8 string.
- * Handles both Node.js and browser environments.
  * Automatically adds padding if missing (Base64URL omits it).
  */
 function decodeBase64Url(encoded: string): string {
-  if (typeof Buffer !== 'undefined') {
-    return Buffer.from(encoded, 'base64url').toString('utf8');
-  }
-
   const padded = encoded + '='.repeat((4 - (encoded.length % 4)) % 4);
   const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
   const binary = atob(base64);
