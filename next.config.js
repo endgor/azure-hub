@@ -65,11 +65,13 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               // unsafe-eval only needed for Next.js dev mode
-              `script-src 'self' 'unsafe-inline' ${isProd ? '' : "'unsafe-eval' "}`,
+              // static.cloudflareinsights.com hosts the Web Analytics beacon
+              `script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com ${isProd ? '' : "'unsafe-eval' "}`,
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
               "font-src 'self' data:",
-              "connect-src 'self'",
+              // cloudflareinsights.com receives Web Analytics beacon submissions
+              "connect-src 'self' https://cloudflareinsights.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'"
