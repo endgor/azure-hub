@@ -17,14 +17,14 @@ const { lastUpdated } = (siteData as GeneratedSiteData).home;
 const HERO_TOOL = {
   title: 'IP Lookup',
   description: 'Check if an IP address, CIDR range, or hostname belongs to Azure and see which service tags and regions it maps to.',
-  href: '/tools/ip-lookup',
+  href: '/tools/ip-lookup/',
 };
 
 const TOOLS = [
   {
     title: 'Service Tags',
     description: 'Browse and search Azure service tags with IP ranges and diff tracking.',
-    href: '/tools/service-tags',
+    href: '/tools/service-tags/',
     accent: 'bg-violet-500/10 text-violet-600 dark:bg-violet-500/15 dark:text-violet-400',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -35,7 +35,7 @@ const TOOLS = [
   {
     title: 'Tenant Lookup',
     description: 'Discover tenant IDs, default domains, and region scope from any domain.',
-    href: '/tools/tenant-lookup',
+    href: '/tools/tenant-lookup/',
     accent: 'bg-amber-500/10 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -46,7 +46,7 @@ const TOOLS = [
   {
     title: 'Private DNS Zones',
     description: 'Look up which private DNS zones are needed for Azure Private Endpoints.',
-    href: '/tools/private-dns-zones',
+    href: '/tools/private-dns-zones/',
     accent: 'bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-400',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -58,7 +58,7 @@ const TOOLS = [
   {
     title: 'Subnet Calculator',
     description: 'Plan VNet address space, split subnets visually, and export for deployments.',
-    href: '/tools/subnet-calculator',
+    href: '/tools/subnet-calculator/',
     accent: 'bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -69,7 +69,7 @@ const TOOLS = [
   {
     title: 'Azure RBAC Calculator',
     description: 'Find the least-privileged role for any set of Azure resource actions.',
-    href: '/tools/azure-rbac-calculator',
+    href: '/tools/azure-rbac-calculator/',
     accent: 'bg-sky-500/10 text-sky-600 dark:bg-sky-500/15 dark:text-sky-400',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -80,7 +80,7 @@ const TOOLS = [
   {
     title: 'Entra ID Roles',
     description: 'Find the least-privileged Entra ID role for directory operations.',
-    href: '/tools/entraid-roles-calculator',
+    href: '/tools/entraid-roles-calculator/',
     accent: 'bg-rose-500/10 text-rose-600 dark:bg-rose-500/15 dark:text-rose-400',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">

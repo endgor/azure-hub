@@ -318,9 +318,10 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
             )}
           </div>
         )}
-        {/* Static directory of base service tags for SEO — rendered in HTML at build time */}
+        {/* Static directory of base service tags for SEO — rendered as text only.
+            Links would create 5000 internal crawl targets to noindex pages and waste crawl budget. */}
         {baseServiceTags.length > 0 && !searchTerm && !hasMounted && (
-          <nav aria-label="All Azure service tags" className="space-y-3">
+          <section aria-label="All Azure service tags" className="space-y-3">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               All service tags ({baseServiceTags.length})
             </h2>
@@ -329,17 +330,12 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
             </p>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 text-sm">
               {baseServiceTags.map((tag) => (
-                <li key={tag}>
-                  <Link
-                    href={getServiceTagPath(tag)}
-                    className="text-sky-700 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted underline-offset-2"
-                  >
-                    {tag}
-                  </Link>
+                <li key={tag} className="text-slate-700 dark:text-slate-300">
+                  {tag}
                 </li>
               ))}
             </ul>
-          </nav>
+          </section>
         )}
       </section>
     </Layout>
