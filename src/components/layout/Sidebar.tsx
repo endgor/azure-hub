@@ -85,33 +85,6 @@ export function Sidebar({
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
-          {/* Desktop collapse/expand button */}
-          <button
-            type="button"
-            className="hidden h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 md:flex dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
-            onClick={() => setIsSidebarCollapsed((prev) => !prev)}
-            aria-pressed={isSidebarCollapsed}
-            aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
-          >
-            <span className="sr-only">{isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}</span>
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              className="h-5 w-5 text-current"
-            >
-              {isSidebarCollapsed ? (
-                <path
-                  fill="currentColor"
-                  d="M9.3 7.3a1 1 0 011.4 0L15 11.6a1 1 0 01.03 1.35l-.03.03-4.3 4.3a1 1 0 01-1.5-1.32l.1-.11L12.58 12l-3.28-3.29a1 1 0 010-1.41z"
-                />
-              ) : (
-                <path
-                  fill="currentColor"
-                  d="M14.7 7.3a1 1 0 010 1.4L11.41 12l3.3 3.29a1 1 0 01-1.32 1.5l-.11-.1-4.3-4.3a1 1 0 01-.03-1.35l.03-.03 4.3-4.3a1 1 0 011.41 0z"
-                />
-              )}
-            </svg>
-          </button>
         </div>
 
         <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 pb-6">
@@ -155,6 +128,43 @@ export function Sidebar({
             );
           })}
         </nav>
+
+        {/* Desktop collapse/expand button */}
+        <div className="hidden border-t border-slate-200 px-3 py-3 md:block dark:border-[#363638]">
+          <button
+            type="button"
+            className={`group flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200 ${
+              isSidebarCollapsed ? 'justify-center' : ''
+            }`}
+            onClick={() => setIsSidebarCollapsed((prev) => !prev)}
+            aria-pressed={isSidebarCollapsed}
+            aria-label={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+            title={isSidebarCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+          >
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="h-5 w-5 text-current"
+              >
+                {isSidebarCollapsed ? (
+                  <path
+                    fill="currentColor"
+                    d="M9.3 7.3a1 1 0 011.4 0L15 11.6a1 1 0 01.03 1.35l-.03.03-4.3 4.3a1 1 0 01-1.5-1.32l.1-.11L12.58 12l-3.28-3.29a1 1 0 010-1.41z"
+                  />
+                ) : (
+                  <path
+                    fill="currentColor"
+                    d="M14.7 7.3a1 1 0 010 1.4L11.41 12l3.3 3.29a1 1 0 01-1.32 1.5l-.11-.1-4.3-4.3a1 1 0 01-.03-1.35l.03-.03 4.3-4.3a1 1 0 011.41 0z"
+                  />
+                )}
+              </svg>
+            </span>
+            <span className={`whitespace-nowrap ${isSidebarCollapsed ? 'md:hidden' : 'block'}`}>
+              Collapse
+            </span>
+          </button>
+        </div>
       </aside>
     </>
   );
