@@ -69,5 +69,9 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
     "wrangler": "^4.85.0"
+  },
+  "overrides": {
+    "ip-address": "^10.1.1",
+    "postcss": "^8.5.14"
   }
 }
