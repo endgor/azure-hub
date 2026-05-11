@@ -214,12 +214,7 @@ export default function Layout({
       '@type': 'WebSite',
       name: 'Azure Hub',
       url: 'https://azurehub.org',
-      description,
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: 'https://azurehub.org/tools/ip-lookup/?ipOrDomain={search_term_string}',
-        'query-input': 'required name=search_term_string'
-      }
+      description
     }),
     [description]
   );
