@@ -37753,7 +37753,7 @@
     ],
     "createdBy": null,
     "createdOn": "2026-03-31T15:08:42.333492+00:00",
-    "description": "Ownership of all SandboxGroup data.",
+    "description": "Ownership of all Container Apps SandboxGroup data.",
     "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/c24cf47c-5077-412d-a19c-45202126392c",
     "name": "c24cf47c-5077-412d-a19c-45202126392c",
     "permissions": [
@@ -37771,11 +37771,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Dev Compute SandboxGroup Data Owner",
+    "roleName": "Container Apps SandboxGroup Data Owner",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-03-31T15:08:42.333492+00:00",
+    "updatedOn": "2026-05-11T15:00:56.830485+00:00",
     "permissionCount": 1000,
     "dataActions": [
       "Microsoft.App/sandboxGroups/*/read",
@@ -38161,6 +38161,115 @@
       "Anyscale.Platform/*/read",
       "Anyscale.Platform/*/write",
       "Anyscale.Platform/*/delete"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-05-11T15:00:56.829486+00:00",
+    "description": "Create, read, modify, and delete inference accounts. This role should be assigned to users who can only manage inference accounts but can't perform inference operations.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/360cab3d-4340-4c96-816d-682fbd52b3e2",
+    "name": "360cab3d-4340-4c96-816d-682fbd52b3e2",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.InferenceService/inferenceAccounts/write",
+          "Microsoft.InferenceService/inferenceAccounts/read",
+          "Microsoft.InferenceService/inferenceAccounts/delete"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": [
+          "Microsoft.InferenceService/inferenceAccounts/invoke/*"
+        ]
+      }
+    ],
+    "roleName": "Inference Account Operator",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-05-11T15:00:56.829486+00:00",
+    "permissionCount": 2.5,
+    "dataActions": [],
+    "notDataActions": [
+      "Microsoft.InferenceService/inferenceAccounts/invoke/*"
+    ]
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-05-11T15:00:58.369492+00:00",
+    "description": "Create, read, modify, and delete inference accounts; as well as running inference workloads against those accounts. This role should be assigned to users who need full management capabilities over inference accounts, including the ability to run workloads.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/76315a85-9e6b-4514-9780-868b1977b64e",
+    "name": "76315a85-9e6b-4514-9780-868b1977b64e",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.InferenceService/inferenceAccounts/write",
+          "Microsoft.InferenceService/inferenceAccounts/read",
+          "Microsoft.InferenceService/inferenceAccounts/delete"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.InferenceService/inferenceAccounts/invoke/*"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Inference Account Owner",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-05-11T15:00:58.369492+00:00",
+    "permissionCount": 253,
+    "dataActions": [
+      "Microsoft.InferenceService/inferenceAccounts/invoke/*"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-05-11T15:00:58.369492+00:00",
+    "description": "Execute semantic reranking operations against registered inference accounts. This role should be assigned to users who need to run semantic reranking workloads but do not need to manage the accounts themselves.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/6c74a7c5-4a87-40f9-bb03-61e49aecbc78",
+    "name": "6c74a7c5-4a87-40f9-bb03-61e49aecbc78",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.InferenceService/inferenceAccounts/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.InferenceService/inferenceAccounts/invoke/semanticReranker/action"
+        ],
+        "notActions": [
+          "Microsoft.InferenceService/inferenceAccounts/write",
+          "Microsoft.InferenceService/inferenceAccounts/delete"
+        ],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Semantic Reranker User",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-05-11T15:00:58.369492+00:00",
+    "permissionCount": 1,
+    "dataActions": [
+      "Microsoft.InferenceService/inferenceAccounts/invoke/semanticReranker/action"
     ],
     "notDataActions": []
   }
