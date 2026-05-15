@@ -1,516 +1,37 @@
 {
   "meta": {
-    "generatedAt": "2026-05-14T02:49:36.764Z",
+    "generatedAt": "2026-05-15T02:50:19.117Z",
     "summary": {
-      "serviceTagsAdded": 4,
-      "serviceTagsRemoved": 32,
-      "serviceTagsModified": 93,
-      "totalPrefixesAdded": 1507,
-      "totalPrefixesRemoved": 532
+      "serviceTagsAdded": 0,
+      "serviceTagsRemoved": 0,
+      "serviceTagsModified": 86,
+      "totalPrefixesAdded": 1390,
+      "totalPrefixesRemoved": 411
     },
     "clouds": {
+      "AzureChinaCloud": {
+        "fromChangeNumber": 394,
+        "toChangeNumber": 395,
+        "fromFilename": "ServiceTags_China_20260504.json",
+        "toFilename": "ServiceTags_China_20260511.json"
+      },
+      "AzureUSGovernment": {
+        "fromChangeNumber": 391,
+        "toChangeNumber": 392,
+        "fromFilename": "ServiceTags_AzureGovernment_20260504.json",
+        "toFilename": "ServiceTags_AzureGovernment_20260511.json"
+      },
       "AzureCloud": {
         "fromChangeNumber": 398,
         "toChangeNumber": 399,
         "fromFilename": "ServiceTags_Public_20260427.json",
         "toFilename": "ServiceTags_Public_20260504.json"
-      },
-      "AzureChinaCloud": {
-        "fromChangeNumber": 393,
-        "toChangeNumber": 394,
-        "fromFilename": "ServiceTags_China_20260427.json",
-        "toFilename": "ServiceTags_China_20260504.json"
-      },
-      "AzureUSGovernment": {
-        "fromChangeNumber": 390,
-        "toChangeNumber": 391,
-        "fromFilename": "ServiceTags_AzureGovernment_20260323.json",
-        "toFilename": "ServiceTags_AzureGovernment_20260504.json"
       }
     }
   },
-  "addedTags": [
-    {
-      "name": "Dynamics365ForMarketingEmail",
-      "systemService": "Dynamics365ForMarketingEmail",
-      "region": "",
-      "prefixCount": 2,
-      "prefixes": [
-        "139.217.124.0/27",
-        "163.228.203.128/27"
-      ],
-      "cloud": "AzureChinaCloud"
-    },
-    {
-      "name": "Dynamics365ForMarketingEmail",
-      "systemService": "Dynamics365ForMarketingEmail",
-      "region": "",
-      "prefixCount": 2,
-      "prefixes": [
-        "51.55.171.224/27",
-        "52.243.4.160/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "Dynamics365ForMarketingEmail.USGovTexas",
-      "systemService": "Dynamics365ForMarketingEmail",
-      "region": "usgovtexas",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.243.4.160/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "Dynamics365ForMarketingEmail.USGovVirginia",
-      "systemService": "Dynamics365ForMarketingEmail",
-      "region": "usgovvirginia",
-      "prefixCount": 1,
-      "prefixes": [
-        "51.55.171.224/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    }
-  ],
-  "removedTags": [
-    {
-      "name": "AppService.USGovIowa",
-      "systemService": "AzureAppService",
-      "region": "usgoviowa",
-      "prefixCount": 3,
-      "prefixes": [
-        "20.140.152.224/27",
-        "23.97.28.154/32",
-        "52.127.27.192/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AppServiceManagement.USGovIowa",
-      "systemService": "AzureAppServiceManagement",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "13.72.180.105/32",
-        "23.97.29.209/32"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureArcInfrastructure.USGovIowa",
-      "systemService": "AzureArcInfrastructure",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "20.140.153.144/30",
-        "52.127.27.141/32"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureAttestation.USGovIowa",
-      "systemService": "AzureAttestation",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "20.140.154.84/30",
-        "52.127.29.128/30"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureBackup.USGovIowa",
-      "systemService": "AzureBackup",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "52.127.26.96/27",
-        "52.127.26.128/26"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureBotService.USGovIowa",
-      "systemService": "AzureBotService",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.127.27.136/30"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureCloud.usgoviowa",
-      "systemService": "",
-      "region": "usgoviowa",
-      "prefixCount": 51,
-      "prefixes": [
-        "13.72.168.64/27",
-        "13.72.180.105/32",
-        "13.72.184.23/32",
-        "13.72.184.124/32",
-        "13.72.185.65/32",
-        "13.72.186.25/32",
-        "13.72.189.52/32",
-        "13.72.190.8/32",
-        "13.72.190.110/32",
-        "20.140.40.0/28",
-        "20.140.41.0/24",
-        "20.140.42.0/24",
-        "20.140.152.0/21",
-        "20.141.6.0/24",
-        "23.97.16.0/32",
-        "23.97.16.108/31",
-        "23.97.16.189/32",
-        "23.97.16.251/32",
-        "23.97.18.100/32",
-        "23.97.18.162/32",
-        "23.97.18.212/32",
-        "23.97.18.229/32",
-        "23.97.19.50/32",
-        "23.97.20.94/32",
-        "23.97.22.52/32",
-        "23.97.22.130/32",
-        "23.97.23.124/32",
-        "23.97.28.154/32",
-        "23.97.29.209/32",
-        "23.97.40.64/26",
-        "40.66.2.128/28",
-        "40.66.3.128/27",
-        "40.66.4.128/27",
-        "40.112.38.32/27",
-        "40.112.38.96/27",
-        "40.112.38.160/27",
-        "40.112.47.0/24",
-        "52.126.194.192/26",
-        "52.126.209.0/24",
-        "52.126.216.0/22",
-        "52.126.224.128/26",
-        "52.127.24.0/21",
-        "52.127.82.0/24",
-        "52.127.116.64/26",
-        "52.127.116.128/25",
-        "52.127.117.192/26",
-        "2001:489a:2104:3::/64",
-        "2001:489a:2206:30::/60",
-        "2001:489a:3002:10::/60",
-        "2001:489a:3003::/64",
-        "2001:489a:3003:402::/64"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureCognitiveSearch.USGovIowa",
-      "systemService": "AzureCognitiveSearch",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "20.140.152.32/28",
-        "2001:489a:3003::180/121"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureConnectors.USGovIowa",
-      "systemService": "AzureConnectors",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.127.26.48/28"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureContainerRegistry.USGovIowa",
-      "systemService": "AzureContainerRegistry",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "2001:489a:3003:402::100/122"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureCosmosDB.USGovIowa",
-      "systemService": "AzureCosmosDB",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "20.140.153.160/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureDataExplorerManagement.USGovIowa",
-      "systemService": "AzureDataExplorerManagement",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "2001:489a:3003::100/121"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureEventGrid.USGovIowa",
-      "systemService": "AzureEventGrid",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "20.140.152.128/26"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureIoTHub.USGovIowa",
-      "systemService": "AzureIoTHub",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.127.27.224/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureKeyVault.USGovIowa",
-      "systemService": "AzureKeyVault",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "20.140.154.160/29",
-        "20.140.154.168/30"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureMonitor.USGovIowa",
-      "systemService": "AzureMonitor",
-      "region": "usgoviowa",
-      "prefixCount": 4,
-      "prefixes": [
-        "52.127.26.80/28",
-        "52.127.27.128/29",
-        "2001:489a:3003::/121",
-        "2001:489a:3003:402::80/121"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzurePortal.USGovIowa",
-      "systemService": "AzurePortal",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "20.140.152.104/30",
-        "20.140.153.152/29"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureResourceManager.USGovIowa",
-      "systemService": "AzureResourceManager",
-      "region": "usgoviowa",
-      "prefixCount": 3,
-      "prefixes": [
-        "20.140.156.0/23",
-        "52.127.27.48/28",
-        "52.127.30.0/23"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureSecurityCenter.USGovIowa",
-      "systemService": "AzureSecurityCenter",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.127.29.96/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureSignalR.USGovIowa",
-      "systemService": "AzureSignalR",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "2001:489a:3003::200/120"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "BatchNodeManagement.USGovIowa",
-      "systemService": "BatchNodeManagement",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "23.97.16.108/31",
-        "52.127.26.192/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "EventHub.USGovIowa",
-      "systemService": "AzureEventHub",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.127.26.0/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "GatewayManager.USGovIowa",
-      "systemService": "GatewayManager",
-      "region": "usgoviowa",
-      "prefixCount": 7,
-      "prefixes": [
-        "20.140.152.80/29",
-        "20.140.154.224/27",
-        "23.97.16.189/32",
-        "23.97.16.251/32",
-        "23.97.18.212/32",
-        "23.97.18.229/32",
-        "52.127.26.64/29"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "HDInsight.USGovIowa",
-      "systemService": "HDInsight",
-      "region": "usgoviowa",
-      "prefixCount": 4,
-      "prefixes": [
-        "13.72.184.124/32",
-        "13.72.190.110/32",
-        "20.140.153.136/29",
-        "52.127.26.72/29"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "LogicApps.USGovIowa",
-      "systemService": "LogicApps",
-      "region": "usgoviowa",
-      "prefixCount": 2,
-      "prefixes": [
-        "52.127.29.16/28",
-        "52.127.29.32/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "PowerQueryOnline.USGovIowa",
-      "systemService": "PowerQueryOnline",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "20.140.152.72/31"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "ServiceBus.USGovIowa",
-      "systemService": "AzureServiceBus",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "52.127.26.32/28"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "ServiceFabric.USGovIowa",
-      "systemService": "ServiceFabric",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "13.72.185.65/32"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "Sql.USGovIowa",
-      "systemService": "AzureSQL",
-      "region": "usgoviowa",
-      "prefixCount": 4,
-      "prefixes": [
-        "13.72.189.52/32",
-        "13.72.190.8/32",
-        "52.127.24.0/27",
-        "52.127.25.0/27"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "Storage.USGovIowa",
-      "systemService": "AzureStorage",
-      "region": "usgoviowa",
-      "prefixCount": 8,
-      "prefixes": [
-        "13.72.168.64/27",
-        "20.141.6.0/24",
-        "23.97.40.64/26",
-        "52.126.224.128/26",
-        "52.127.116.64/26",
-        "52.127.116.128/25",
-        "52.127.117.192/26",
-        "2001:489a:3002:10::/60"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "StorageSyncService.USGovIowa",
-      "systemService": "StorageSyncService",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "20.140.152.96/29"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "WindowsVirtualDesktop.USGovIowa",
-      "systemService": "WindowsVirtualDesktop",
-      "region": "usgoviowa",
-      "prefixCount": 1,
-      "prefixes": [
-        "2001:489a:2104:3::/117"
-      ],
-      "cloud": "AzureUSGovernment"
-    }
-  ],
+  "addedTags": [],
+  "removedTags": [],
   "modifiedTags": [
-    {
-      "name": "M365ManagementActivityApi",
-      "systemService": "M365ManagementActivityApi",
-      "region": "",
-      "previousChangeNumber": 5,
-      "currentChangeNumber": 6,
-      "addedPrefixes": [
-        "40.162.63.160/30",
-        "40.162.79.96/30",
-        "2406:e500:2402:4::168/126",
-        "2406:e500:2602:5::2d0/126"
-      ],
-      "removedPrefixes": [],
-      "cloud": "AzureChinaCloud"
-    },
-    {
-      "name": "M365ManagementActivityApiWebhook",
-      "systemService": "M365ManagementActivityApiWebhook",
-      "region": "",
-      "previousChangeNumber": 5,
-      "currentChangeNumber": 6,
-      "addedPrefixes": [
-        "40.162.62.236/30",
-        "40.162.79.60/30",
-        "2406:e500:2402:4::154/126",
-        "2406:e500:2602:5::2ac/126"
-      ],
-      "removedPrefixes": [],
-      "cloud": "AzureChinaCloud"
-    },
     {
       "name": "AzureCloud",
       "systemService": "",
@@ -3178,275 +2699,110 @@
       "cloud": "AzureCloud"
     },
     {
-      "name": "AzureBackup",
-      "systemService": "AzureBackup",
+      "name": "AzureAttestation",
+      "systemService": "AzureAttestation",
       "region": "",
-      "previousChangeNumber": 10,
-      "currentChangeNumber": 11,
+      "previousChangeNumber": 5,
+      "currentChangeNumber": 6,
       "addedPrefixes": [
-        "2001:489a:3103:8::580/121",
-        "2001:489a:3303:5::580/121"
+        "20.140.152.56/29",
+        "20.140.154.216/30",
+        "20.159.252.116/30",
+        "20.159.252.120/29",
+        "52.181.221.48/29",
+        "52.181.221.56/30",
+        "52.243.5.8/29",
+        "52.243.5.16/30"
       ],
       "removedPrefixes": [],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "AzureBackup.USDoDEast",
-      "systemService": "AzureBackup",
-      "region": "usdodeast",
-      "previousChangeNumber": 3,
-      "currentChangeNumber": 4,
-      "addedPrefixes": [
-        "2001:489a:3303:5::580/121"
-      ],
-      "removedPrefixes": [],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureBackup.USGovVirginia",
-      "systemService": "AzureBackup",
-      "region": "usgovvirginia",
+      "name": "AzureAttestation.USDoDCentral",
+      "systemService": "AzureAttestation",
+      "region": "usdodcentral",
       "previousChangeNumber": 2,
       "currentChangeNumber": 3,
       "addedPrefixes": [
-        "2001:489a:3103:8::580/121"
+        "20.159.252.116/30",
+        "20.159.252.120/29"
       ],
       "removedPrefixes": [],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "AzureCloud",
-      "systemService": "",
-      "region": "",
-      "previousChangeNumber": 121,
-      "currentChangeNumber": 122,
+      "name": "AzureAttestation.USDoDEast",
+      "systemService": "AzureAttestation",
+      "region": "usdodeast",
+      "previousChangeNumber": 1,
+      "currentChangeNumber": 2,
       "addedPrefixes": [
-        "51.55.112.0/20",
-        "51.55.128.0/18",
-        "52.243.0.0/19",
-        "62.10.128.0/23",
-        "62.10.130.0/23",
-        "62.10.132.0/24",
-        "62.10.133.0/24",
-        "62.10.134.0/24",
-        "62.10.135.0/24",
-        "62.10.136.0/24",
-        "62.10.137.0/24",
-        "62.10.138.0/24",
-        "62.10.139.0/24",
-        "62.10.140.0/24",
-        "62.10.141.0/24",
-        "62.10.144.0/23",
-        "62.10.146.0/23",
-        "62.10.148.0/24",
-        "62.10.149.0/24",
-        "62.10.150.0/24",
-        "62.10.151.0/24",
-        "62.10.152.0/24",
-        "62.10.153.0/24",
-        "62.10.154.0/24",
-        "62.10.155.0/24",
-        "62.10.156.0/24",
-        "62.10.157.0/24",
-        "2001:489a:2202:8100::/64",
-        "2001:489a:2202:8101::/64",
-        "2001:489a:2202:8800::/63",
-        "2001:489a:2202:8802::/63",
-        "2001:489a:2202:8804::/64",
-        "2001:489a:2202:8805::/64",
-        "2001:489a:2202:9000::/64",
-        "2001:489a:2202:9001::/64",
-        "2001:489a:2202:a000::/64",
-        "2001:489a:2202:a001::/64",
-        "2001:489a:2202:b000::/64",
-        "2001:489a:2202:b001::/64",
-        "2001:489a:2202:c100::/64",
-        "2001:489a:2202:c101::/64",
-        "2001:489a:2202:c800::/63",
-        "2001:489a:2202:c802::/63",
-        "2001:489a:2202:c804::/64",
-        "2001:489a:2202:c807::/64",
-        "2001:489a:2202:d000::/64",
-        "2001:489a:2202:d001::/64",
-        "2001:489a:2202:e000::/64",
-        "2001:489a:2202:e001::/64",
-        "2001:489a:2202:f000::/64",
-        "2001:489a:2202:f001::/64"
-      ],
-      "removedPrefixes": [
-        "51.55.128.0/19"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "AzureCloud.usgovarizona",
-      "systemService": "",
-      "region": "usgovarizona",
-      "previousChangeNumber": 68,
-      "currentChangeNumber": 69,
-      "addedPrefixes": [
-        "51.55.112.0/20",
-        "62.10.130.0/23",
-        "62.10.133.0/24",
-        "62.10.135.0/24",
-        "62.10.137.0/24",
-        "62.10.139.0/24",
-        "62.10.141.0/24",
-        "62.10.144.0/23",
-        "62.10.148.0/24",
-        "62.10.150.0/24",
-        "62.10.152.0/24",
-        "62.10.154.0/24",
-        "62.10.156.0/24",
-        "2001:489a:2202:8101::/64",
-        "2001:489a:2202:8802::/63",
-        "2001:489a:2202:8805::/64",
-        "2001:489a:2202:9001::/64",
-        "2001:489a:2202:a001::/64",
-        "2001:489a:2202:b001::/64",
-        "2001:489a:2202:c100::/64",
-        "2001:489a:2202:c800::/63",
-        "2001:489a:2202:c804::/64",
-        "2001:489a:2202:d000::/64",
-        "2001:489a:2202:e000::/64",
-        "2001:489a:2202:f000::/64"
+        "52.181.221.48/29",
+        "52.181.221.56/30"
       ],
       "removedPrefixes": [],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "AzureCloud.usgovtexas",
-      "systemService": "",
+      "name": "AzureAttestation.USGovTexas",
+      "systemService": "AzureAttestation",
       "region": "usgovtexas",
-      "previousChangeNumber": 59,
-      "currentChangeNumber": 60,
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
       "addedPrefixes": [
-        "52.243.0.0/19",
-        "62.10.146.0/23",
-        "62.10.149.0/24",
-        "62.10.151.0/24",
-        "62.10.153.0/24",
-        "62.10.155.0/24",
-        "62.10.157.0/24",
-        "2001:489a:2202:c101::/64",
-        "2001:489a:2202:c802::/63",
-        "2001:489a:2202:c807::/64",
-        "2001:489a:2202:d001::/64",
-        "2001:489a:2202:e001::/64",
-        "2001:489a:2202:f001::/64"
+        "52.243.5.8/29",
+        "52.243.5.16/30"
       ],
       "removedPrefixes": [],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "AzureCloud.usgovvirginia",
-      "systemService": "",
-      "region": "usgovvirginia",
-      "previousChangeNumber": 66,
-      "currentChangeNumber": 67,
-      "addedPrefixes": [
-        "51.55.128.0/18",
-        "62.10.128.0/23",
-        "62.10.132.0/24",
-        "62.10.134.0/24",
-        "62.10.136.0/24",
-        "62.10.138.0/24",
-        "62.10.140.0/24",
-        "2001:489a:2202:8100::/64",
-        "2001:489a:2202:8800::/63",
-        "2001:489a:2202:8804::/64",
-        "2001:489a:2202:9000::/64",
-        "2001:489a:2202:a000::/64",
-        "2001:489a:2202:b000::/64"
-      ],
+      "name": "AzureCognitiveSearch",
+      "systemService": "AzureCognitiveSearch",
+      "region": "",
+      "previousChangeNumber": 9,
+      "currentChangeNumber": 10,
+      "addedPrefixes": [],
       "removedPrefixes": [
-        "51.55.128.0/19"
+        "52.227.216.86/32",
+        "52.243.155.184/32",
+        "52.244.34.54/32"
       ],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "AzureSiteRecovery",
-      "systemService": "AzureSiteRecovery",
-      "region": "",
-      "previousChangeNumber": 7,
-      "currentChangeNumber": 8,
-      "addedPrefixes": [
-        "20.159.246.32/27",
-        "51.54.218.224/27",
-        "51.54.249.192/27",
-        "51.55.73.128/27",
-        "52.181.68.160/27",
-        "2001:489a:3103:8::620/123",
-        "2001:489a:3203:5::6c0/123",
-        "2001:489a:3303:5::560/123",
-        "2001:489a:3403:9::6e0/123",
-        "2001:489a:3604:9::600/123"
-      ],
-      "removedPrefixes": [],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "EOPExternalPublishedIPs",
-      "systemService": "EOPExtPublished",
-      "region": "",
-      "previousChangeNumber": 3,
-      "currentChangeNumber": 4,
-      "addedPrefixes": [
-        "2001:489a:2202::/49"
-      ],
+      "name": "AzureCognitiveSearch.USGovArizona",
+      "systemService": "AzureCognitiveSearch",
+      "region": "usgovarizona",
+      "previousChangeNumber": 2,
+      "currentChangeNumber": 3,
+      "addedPrefixes": [],
       "removedPrefixes": [
-        "62.10.128.0/19",
-        "2001:489a:2202::/48"
+        "52.244.34.54/32"
       ],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "StorageSyncService",
-      "systemService": "StorageSyncService",
-      "region": "",
+      "name": "AzureCognitiveSearch.USGovTexas",
+      "systemService": "AzureCognitiveSearch",
+      "region": "usgovtexas",
       "previousChangeNumber": 4,
       "currentChangeNumber": 5,
       "addedPrefixes": [],
       "removedPrefixes": [
-        "13.72.17.152/32",
-        "52.238.166.107/32",
-        "52.244.79.140/32"
+        "52.243.155.184/32"
       ],
       "cloud": "AzureUSGovernment"
     },
     {
-      "name": "StorageSyncService.USGovArizona",
-      "systemService": "StorageSyncService",
-      "region": "usgovarizona",
-      "previousChangeNumber": 2,
-      "currentChangeNumber": 3,
-      "addedPrefixes": [],
-      "removedPrefixes": [
-        "52.244.79.140/32"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "StorageSyncService.USGovTexas",
-      "systemService": "StorageSyncService",
-      "region": "usgovtexas",
-      "previousChangeNumber": 2,
-      "currentChangeNumber": 3,
-      "addedPrefixes": [],
-      "removedPrefixes": [
-        "52.238.166.107/32"
-      ],
-      "cloud": "AzureUSGovernment"
-    },
-    {
-      "name": "StorageSyncService.USGovVirginia",
-      "systemService": "StorageSyncService",
+      "name": "AzureCognitiveSearch.USGovVirginia",
+      "systemService": "AzureCognitiveSearch",
       "region": "usgovvirginia",
       "previousChangeNumber": 2,
       "currentChangeNumber": 3,
       "addedPrefixes": [],
       "removedPrefixes": [
-        "13.72.17.152/32"
+        "52.227.216.86/32"
       ],
       "cloud": "AzureUSGovernment"
     }

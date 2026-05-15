@@ -1,5 +1,5 @@
 {
-  "changeNumber": 393,
+  "changeNumber": 394,
   "cloud": "China",
   "values": [
     {
@@ -2302,6 +2302,27 @@
       }
     },
     {
+      "name": "Dynamics365ForMarketingEmail",
+      "id": "Dynamics365ForMarketingEmail",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "regionId": 0,
+        "platform": "Azure",
+        "systemService": "Dynamics365ForMarketingEmail",
+        "addressPrefixes": [
+          "139.217.124.0/27",
+          "163.228.203.128/27"
+        ],
+        "networkFeatures": [
+          "API",
+          "NSG",
+          "UDR",
+          "FW"
+        ]
+      }
+    },
+    {
       "name": "EOPExternalPublishedIPs",
       "id": "EOPExternalPublishedIPs",
       "properties": {
@@ -2575,13 +2596,15 @@
       "name": "M365ManagementActivityApi",
       "id": "M365ManagementActivityApi",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "M365ManagementActivityApi",
         "addressPrefixes": [
           "40.73.141.154/31",
+          "40.162.63.160/30",
+          "40.162.79.96/30",
           "52.130.40.170/31",
           "52.130.112.144/31",
           "52.130.120.4/31",
@@ -2594,7 +2617,9 @@
           "2404:7940:101:2::23c/127",
           "2404:7940:101:3::32c/126",
           "2404:7940:301:2::29c/127",
-          "2404:7940:301:3::3d4/126"
+          "2404:7940:301:3::3d4/126",
+          "2406:e500:2402:4::168/126",
+          "2406:e500:2602:5::2d0/126"
         ],
         "networkFeatures": [
           "API",
@@ -2606,13 +2631,15 @@
       "name": "M365ManagementActivityApiWebhook",
       "id": "M365ManagementActivityApiWebhook",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "M365ManagementActivityApiWebhook",
         "addressPrefixes": [
           "40.73.141.156/30",
+          "40.162.62.236/30",
+          "40.162.79.60/30",
           "40.162.171.111/32",
           "40.162.171.170/31",
           "40.162.171.176/29",
@@ -2631,7 +2658,9 @@
           "2404:7940:101:3::274/128",
           "2404:7940:301:2::29e/127",
           "2404:7940:301:3::2e5/128",
-          "2404:7940:301:3::2e8/126"
+          "2404:7940:301:3::2e8/126",
+          "2406:e500:2402:4::154/126",
+          "2406:e500:2602:5::2ac/126"
         ],
         "networkFeatures": [
           "API",

@@ -1,5 +1,5 @@
 {
-  "changeNumber": 390,
+  "changeNumber": 391,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -661,7 +661,7 @@
       "name": "AzureBackup",
       "id": "AzureBackup",
       "properties": {
-        "changeNumber": 10,
+        "changeNumber": 11,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -695,11 +695,13 @@
           "52.127.58.224/27",
           "52.127.59.0/26",
           "52.235.250.192/26",
+          "2001:489a:3103:8::580/121",
           "2001:489a:3103:402::200/121",
           "2001:489a:3103:802::180/121",
           "2001:489a:3103:c04::100/121",
           "2001:489a:3203:3::280/121",
           "2001:489a:3203:402::200/121",
+          "2001:489a:3303:5::580/121",
           "2001:489a:3303:402::200/121",
           "2001:489a:3303:802::180/121",
           "2001:489a:3303:c02::100/121",
@@ -2201,7 +2203,7 @@
       "name": "AzureSiteRecovery",
       "id": "AzureSiteRecovery",
       "properties": {
-        "changeNumber": 7,
+        "changeNumber": 8,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -2217,8 +2219,12 @@
           "20.140.131.32/28",
           "20.140.152.0/28",
           "20.159.108.24/29",
+          "20.159.246.32/27",
+          "51.54.218.224/27",
           "51.54.235.48/28",
+          "51.54.249.192/27",
           "51.55.17.64/28",
+          "51.55.73.128/27",
           "52.126.205.32/28",
           "52.126.249.176/29",
           "52.127.5.80/28",
@@ -2228,6 +2234,7 @@
           "52.127.45.16/28",
           "52.127.48.96/28",
           "52.127.56.32/28",
+          "52.181.68.160/27",
           "52.181.164.103/32",
           "52.182.95.237/32",
           "52.227.178.114/32",
@@ -2238,20 +2245,25 @@
           "2001:489a:3103::/123",
           "2001:489a:3103:8::2a8/125",
           "2001:489a:3103:8::2c0/123",
+          "2001:489a:3103:8::620/123",
           "2001:489a:3103:402::2d0/125",
           "2001:489a:3103:802::158/125",
           "2001:489a:3103:c04::d8/125",
           "2001:489a:3203::/123",
+          "2001:489a:3203:5::6c0/123",
           "2001:489a:3203:402::2d0/125",
           "2001:489a:3303::/123",
+          "2001:489a:3303:5::560/123",
           "2001:489a:3303:402::2d0/125",
           "2001:489a:3303:802::158/125",
           "2001:489a:3303:c02::d8/125",
           "2001:489a:3403::/123",
+          "2001:489a:3403:9::6e0/123",
           "2001:489a:3403:402::2d0/125",
           "2001:489a:3604::/123",
           "2001:489a:3604:9::f8/125",
           "2001:489a:3604:9::200/123",
+          "2001:489a:3604:9::600/123",
           "2001:489a:3604:402::2d0/125",
           "2001:489a:3604:802::158/125",
           "2001:489a:3604:c02::d8/125"
@@ -2744,10 +2756,31 @@
       }
     },
     {
+      "name": "Dynamics365ForMarketingEmail",
+      "id": "Dynamics365ForMarketingEmail",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "regionId": 0,
+        "platform": "Azure",
+        "systemService": "Dynamics365ForMarketingEmail",
+        "addressPrefixes": [
+          "51.55.171.224/27",
+          "52.243.4.160/27"
+        ],
+        "networkFeatures": [
+          "API",
+          "NSG",
+          "UDR",
+          "FW"
+        ]
+      }
+    },
+    {
       "name": "EOPExternalPublishedIPs",
       "id": "EOPExternalPublishedIPs",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -2757,8 +2790,7 @@
           "23.103.199.0/24",
           "23.103.204.0/22",
           "23.103.208.0/22",
-          "62.10.128.0/19",
-          "2001:489a:2202::/48",
+          "2001:489a:2202::/49",
           "2001:489a:2207::/61",
           "2001:489a:2400:10::/60",
           "2001:489a:2400:20::/60"
@@ -4280,21 +4312,18 @@
       "name": "StorageSyncService",
       "id": "StorageSyncService",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "StorageSyncService",
         "addressPrefixes": [
-          "13.72.17.152/32",
           "20.140.48.216/29",
           "20.140.56.136/29",
           "20.140.64.152/29",
           "20.140.72.152/29",
           "20.140.152.96/29",
           "52.127.49.152/29",
-          "52.238.166.107/32",
-          "52.244.79.140/32",
           "2001:489a:3103::300/123",
           "2001:489a:3103:802::2a0/123",
           "2001:489a:3203::340/123",
@@ -4710,23 +4739,6 @@
       }
     },
     {
-      "name": "AppService.USGovIowa",
-      "id": "AppService.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureAppService",
-        "addressPrefixes": [
-          "20.140.152.224/27",
-          "23.97.28.154/32",
-          "52.127.27.192/27"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AppService.USGovTexas",
       "id": "AppService.USGovTexas",
       "properties": {
@@ -4847,22 +4859,6 @@
           "2001:489a:3604:402::100/122",
           "2001:489a:3604:802::100/122",
           "2001:489a:3604:c02::80/122"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "AppServiceManagement.USGovIowa",
-      "id": "AppServiceManagement.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureAppServiceManagement",
-        "addressPrefixes": [
-          "13.72.180.105/32",
-          "23.97.29.209/32"
         ],
         "networkFeatures": null
       }
@@ -4989,22 +4985,6 @@
       }
     },
     {
-      "name": "AzureArcInfrastructure.USGovIowa",
-      "id": "AzureArcInfrastructure.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureArcInfrastructure",
-        "addressPrefixes": [
-          "20.140.153.144/30",
-          "52.127.27.141/32"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzureArcInfrastructure.USGovTexas",
       "id": "AzureArcInfrastructure.USGovTexas",
       "properties": {
@@ -5104,22 +5084,6 @@
       }
     },
     {
-      "name": "AzureAttestation.USGovIowa",
-      "id": "AzureAttestation.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureAttestation",
-        "addressPrefixes": [
-          "20.140.154.84/30",
-          "52.127.29.128/30"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzureAttestation.USGovTexas",
       "id": "AzureAttestation.USGovTexas",
       "properties": {
@@ -5176,7 +5140,7 @@
       "name": "AzureBackup.USDoDEast",
       "id": "AzureBackup.USDoDEast",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usdodeast",
         "regionId": 45,
         "platform": "Azure",
@@ -5185,6 +5149,7 @@
           "20.140.69.128/26",
           "52.126.202.192/26",
           "52.126.203.0/27",
+          "2001:489a:3303:5::580/121",
           "2001:489a:3303:402::200/121",
           "2001:489a:3303:802::180/121",
           "2001:489a:3303:c02::100/121"
@@ -5218,22 +5183,6 @@
       }
     },
     {
-      "name": "AzureBackup.USGovIowa",
-      "id": "AzureBackup.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureBackup",
-        "addressPrefixes": [
-          "52.127.26.96/27",
-          "52.127.26.128/26"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzureBackup.USGovTexas",
       "id": "AzureBackup.USGovTexas",
       "properties": {
@@ -5256,7 +5205,7 @@
       "name": "AzureBackup.USGovVirginia",
       "id": "AzureBackup.USGovVirginia",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -5272,6 +5221,7 @@
           "52.127.42.192/26",
           "52.127.43.0/27",
           "52.235.250.192/26",
+          "2001:489a:3103:8::580/121",
           "2001:489a:3103:402::200/121",
           "2001:489a:3103:802::180/121",
           "2001:489a:3103:c04::100/121"
@@ -5326,21 +5276,6 @@
           "20.140.48.64/30",
           "52.127.10.84/30",
           "2001:489a:3604::20/123"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "AzureBotService.USGovIowa",
-      "id": "AzureBotService.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureBotService",
-        "addressPrefixes": [
-          "52.127.27.136/30"
         ],
         "networkFeatures": null
       }
@@ -5429,22 +5364,6 @@
           "2001:489a:3604::180/121",
           "2001:489a:3604:7::780/122",
           "2001:489a:3604:7::7c0/123"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "AzureCognitiveSearch.USGovIowa",
-      "id": "AzureCognitiveSearch.USGovIowa",
-      "properties": {
-        "changeNumber": 2,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureCognitiveSearch",
-        "addressPrefixes": [
-          "20.140.152.32/28",
-          "2001:489a:3003::180/121"
         ],
         "networkFeatures": null
       }
@@ -5564,26 +5483,6 @@
           "52.244.64.91/32",
           "2001:489a:3604:3::4c0/122",
           "2001:489a:3604:402::180/122"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
-      "name": "AzureConnectors.USGovIowa",
-      "id": "AzureConnectors.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureConnectors",
-        "addressPrefixes": [
-          "52.127.26.48/28"
         ],
         "networkFeatures": [
           "API",
@@ -5834,24 +5733,6 @@
       }
     },
     {
-      "name": "AzureContainerRegistry.USGovIowa",
-      "id": "AzureContainerRegistry.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureContainerRegistry",
-        "addressPrefixes": [
-          "2001:489a:3003:402::100/122"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG"
-        ]
-      }
-    },
-    {
       "name": "AzureCosmosDB.USDoDCentral",
       "id": "AzureCosmosDB.USDoDCentral",
       "properties": {
@@ -5931,21 +5812,6 @@
           "UDR",
           "FW"
         ]
-      }
-    },
-    {
-      "name": "AzureCosmosDB.USGovIowa",
-      "id": "AzureCosmosDB.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureCosmosDB",
-        "addressPrefixes": [
-          "20.140.153.160/27"
-        ],
-        "networkFeatures": null
       }
     },
     {
@@ -6053,21 +5919,6 @@
           "52.244.33.193/32",
           "2001:489a:3604:3::60/123",
           "2001:489a:3604:402::150/124"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "AzureDataExplorerManagement.USGovIowa",
-      "id": "AzureDataExplorerManagement.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureDataExplorerManagement",
-        "addressPrefixes": [
-          "2001:489a:3003::100/121"
         ],
         "networkFeatures": null
       }
@@ -6215,21 +6066,6 @@
       }
     },
     {
-      "name": "AzureEventGrid.USGovIowa",
-      "id": "AzureEventGrid.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureEventGrid",
-        "addressPrefixes": [
-          "20.140.152.128/26"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzureEventGrid.USGovTexas",
       "id": "AzureEventGrid.USGovTexas",
       "properties": {
@@ -6341,26 +6177,6 @@
           "2001:489a:3604:402::1c0/123",
           "2001:489a:3604:802::160/123",
           "2001:489a:3604:c02::e0/123"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
-      "name": "EventHub.USGovIowa",
-      "id": "EventHub.USGovIowa",
-      "properties": {
-        "changeNumber": 2,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureEventHub",
-        "addressPrefixes": [
-          "52.127.26.0/27"
         ],
         "networkFeatures": [
           "API",
@@ -6494,21 +6310,6 @@
       }
     },
     {
-      "name": "AzureIoTHub.USGovIowa",
-      "id": "AzureIoTHub.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureIoTHub",
-        "addressPrefixes": [
-          "52.127.27.224/27"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzureIoTHub.USGovTexas",
       "id": "AzureIoTHub.USGovTexas",
       "properties": {
@@ -6623,27 +6424,6 @@
           "2001:489a:3604:402::80/125",
           "2001:489a:3604:802::80/125",
           "2001:489a:3604:c02::/125"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
-      "name": "AzureKeyVault.USGovIowa",
-      "id": "AzureKeyVault.USGovIowa",
-      "properties": {
-        "changeNumber": 3,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureKeyVault",
-        "addressPrefixes": [
-          "20.140.154.160/29",
-          "20.140.154.168/30"
         ],
         "networkFeatures": [
           "API",
@@ -6950,26 +6730,6 @@
       }
     },
     {
-      "name": "AzureMonitor.USGovIowa",
-      "id": "AzureMonitor.USGovIowa",
-      "properties": {
-        "changeNumber": 3,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureMonitor",
-        "addressPrefixes": [
-          "52.127.26.80/28",
-          "52.127.27.128/29",
-          "2001:489a:3003::/121",
-          "2001:489a:3003:402::80/121"
-        ],
-        "networkFeatures": [
-          "NSG"
-        ]
-      }
-    },
-    {
       "name": "AzureMonitor.USGovTexas",
       "id": "AzureMonitor.USGovTexas",
       "properties": {
@@ -7130,22 +6890,6 @@
       }
     },
     {
-      "name": "AzurePortal.USGovIowa",
-      "id": "AzurePortal.USGovIowa",
-      "properties": {
-        "changeNumber": 3,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzurePortal",
-        "addressPrefixes": [
-          "20.140.152.104/30",
-          "20.140.153.152/29"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzurePortal.USGovTexas",
       "id": "AzurePortal.USGovTexas",
       "properties": {
@@ -7251,23 +6995,6 @@
           "2001:489a:3604:1::180/122",
           "2001:489a:3604:1::400/120",
           "2001:489a:3604:402::280/122"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "AzureResourceManager.USGovIowa",
-      "id": "AzureResourceManager.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureResourceManager",
-        "addressPrefixes": [
-          "20.140.156.0/23",
-          "52.127.27.48/28",
-          "52.127.30.0/23"
         ],
         "networkFeatures": null
       }
@@ -7423,29 +7150,6 @@
       }
     },
     {
-      "name": "Sql.USGovIowa",
-      "id": "Sql.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureSQL",
-        "addressPrefixes": [
-          "13.72.189.52/32",
-          "13.72.190.8/32",
-          "52.127.24.0/27",
-          "52.127.25.0/27"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
       "name": "Sql.USGovTexas",
       "id": "Sql.USGovTexas",
       "properties": {
@@ -7573,21 +7277,6 @@
       }
     },
     {
-      "name": "AzureSecurityCenter.USGovIowa",
-      "id": "AzureSecurityCenter.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureSecurityCenter",
-        "addressPrefixes": [
-          "52.127.29.96/27"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "AzureSecurityCenter.USGovTexas",
       "id": "AzureSecurityCenter.USGovTexas",
       "properties": {
@@ -7697,24 +7386,6 @@
       }
     },
     {
-      "name": "ServiceBus.USGovIowa",
-      "id": "ServiceBus.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureServiceBus",
-        "addressPrefixes": [
-          "52.127.26.32/28"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG"
-        ]
-      }
-    },
-    {
       "name": "ServiceBus.USGovTexas",
       "id": "ServiceBus.USGovTexas",
       "properties": {
@@ -7794,21 +7465,6 @@
           "52.127.18.224/27",
           "62.10.163.0/26",
           "2001:489a:3604:2::300/120"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "AzureSignalR.USGovIowa",
-      "id": "AzureSignalR.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureSignalR",
-        "addressPrefixes": [
-          "2001:489a:3003::200/120"
         ],
         "networkFeatures": null
       }
@@ -7909,33 +7565,6 @@
           "52.127.119.0/24",
           "52.239.166.0/24",
           "2001:489a:3606::/48"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
-      "name": "Storage.USGovIowa",
-      "id": "Storage.USGovIowa",
-      "properties": {
-        "changeNumber": 8,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "AzureStorage",
-        "addressPrefixes": [
-          "13.72.168.64/27",
-          "20.141.6.0/24",
-          "23.97.40.64/26",
-          "52.126.224.128/26",
-          "52.127.116.64/26",
-          "52.127.116.128/25",
-          "52.127.117.192/26",
-          "2001:489a:3002:10::/60"
         ],
         "networkFeatures": [
           "API",
@@ -8079,25 +7708,6 @@
           "52.244.202.104/32",
           "52.244.206.244/32",
           "2001:489a:3604::340/122"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG"
-        ]
-      }
-    },
-    {
-      "name": "BatchNodeManagement.USGovIowa",
-      "id": "BatchNodeManagement.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "BatchNodeManagement",
-        "addressPrefixes": [
-          "23.97.16.108/31",
-          "52.127.26.192/27"
         ],
         "networkFeatures": [
           "API",
@@ -8292,6 +7902,36 @@
       }
     },
     {
+      "name": "Dynamics365ForMarketingEmail.USGovTexas",
+      "id": "Dynamics365ForMarketingEmail.USGovTexas",
+      "properties": {
+        "changeNumber": 1,
+        "region": "usgovtexas",
+        "regionId": 41,
+        "platform": "Azure",
+        "systemService": "Dynamics365ForMarketingEmail",
+        "addressPrefixes": [
+          "52.243.4.160/27"
+        ],
+        "networkFeatures": null
+      }
+    },
+    {
+      "name": "Dynamics365ForMarketingEmail.USGovVirginia",
+      "id": "Dynamics365ForMarketingEmail.USGovVirginia",
+      "properties": {
+        "changeNumber": 1,
+        "region": "usgovvirginia",
+        "regionId": 42,
+        "platform": "Azure",
+        "systemService": "Dynamics365ForMarketingEmail",
+        "addressPrefixes": [
+          "51.55.171.224/27"
+        ],
+        "networkFeatures": null
+      }
+    },
+    {
       "name": "GatewayManager.USDoDCentral",
       "id": "GatewayManager.USDoDCentral",
       "properties": {
@@ -8345,29 +7985,6 @@
           "20.141.10.224/27",
           "52.127.2.176/29",
           "2001:489a:3604::40/122"
-        ],
-        "networkFeatures": [
-          "NSG"
-        ]
-      }
-    },
-    {
-      "name": "GatewayManager.USGovIowa",
-      "id": "GatewayManager.USGovIowa",
-      "properties": {
-        "changeNumber": 4,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "GatewayManager",
-        "addressPrefixes": [
-          "20.140.152.80/29",
-          "20.140.154.224/27",
-          "23.97.16.189/32",
-          "23.97.16.251/32",
-          "23.97.18.212/32",
-          "23.97.18.229/32",
-          "52.127.26.64/29"
         ],
         "networkFeatures": [
           "NSG"
@@ -8483,29 +8100,6 @@
           "52.244.220.117/32",
           "2001:489a:3604:1::3a0/124",
           "2001:489a:3604:402::320/124"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG",
-          "UDR",
-          "FW"
-        ]
-      }
-    },
-    {
-      "name": "HDInsight.USGovIowa",
-      "id": "HDInsight.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "HDInsight",
-        "addressPrefixes": [
-          "13.72.184.124/32",
-          "13.72.190.110/32",
-          "20.140.153.136/29",
-          "52.127.26.72/29"
         ],
         "networkFeatures": [
           "API",
@@ -8671,22 +8265,6 @@
           "62.10.162.112/29",
           "2001:489a:3604:402::3c0/124",
           "2001:489a:3604:402::3e0/123"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "LogicApps.USGovIowa",
-      "id": "LogicApps.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "LogicApps",
-        "addressPrefixes": [
-          "52.127.29.16/28",
-          "52.127.29.32/27"
         ],
         "networkFeatures": null
       }
@@ -9788,21 +9366,6 @@
       }
     },
     {
-      "name": "PowerQueryOnline.USGovIowa",
-      "id": "PowerQueryOnline.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "PowerQueryOnline",
-        "addressPrefixes": [
-          "20.140.152.72/31"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "PowerQueryOnline.USGovTexas",
       "id": "PowerQueryOnline.USGovTexas",
       "properties": {
@@ -9986,21 +9549,6 @@
       }
     },
     {
-      "name": "ServiceFabric.USGovIowa",
-      "id": "ServiceFabric.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "ServiceFabric",
-        "addressPrefixes": [
-          "13.72.185.65/32"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
       "name": "ServiceFabric.USGovTexas",
       "id": "ServiceFabric.USGovTexas",
       "properties": {
@@ -10076,31 +9624,15 @@
       "name": "StorageSyncService.USGovArizona",
       "id": "StorageSyncService.USGovArizona",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
         "systemService": "StorageSyncService",
         "addressPrefixes": [
           "20.140.48.216/29",
-          "52.244.79.140/32",
           "2001:489a:3604::300/123",
           "2001:489a:3604:802::2a0/123"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "StorageSyncService.USGovIowa",
-      "id": "StorageSyncService.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "StorageSyncService",
-        "addressPrefixes": [
-          "20.140.152.96/29"
         ],
         "networkFeatures": null
       }
@@ -10109,14 +9641,13 @@
       "name": "StorageSyncService.USGovTexas",
       "id": "StorageSyncService.USGovTexas",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
         "systemService": "StorageSyncService",
         "addressPrefixes": [
           "20.140.56.136/29",
-          "52.238.166.107/32",
           "2001:489a:3403::340/123",
           "2001:489a:3403:402::580/123"
         ],
@@ -10127,13 +9658,12 @@
       "name": "StorageSyncService.USGovVirginia",
       "id": "StorageSyncService.USGovVirginia",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
         "systemService": "StorageSyncService",
         "addressPrefixes": [
-          "13.72.17.152/32",
           "52.127.49.152/29",
           "2001:489a:3103::300/123",
           "2001:489a:3103:802::2a0/123"
@@ -10184,21 +9714,6 @@
           "20.159.80.96/28",
           "20.159.80.160/28",
           "2001:489a:2104:2::/117"
-        ],
-        "networkFeatures": null
-      }
-    },
-    {
-      "name": "WindowsVirtualDesktop.USGovIowa",
-      "id": "WindowsVirtualDesktop.USGovIowa",
-      "properties": {
-        "changeNumber": 1,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "WindowsVirtualDesktop",
-        "addressPrefixes": [
-          "2001:489a:2104:3::/117"
         ],
         "networkFeatures": null
       }
@@ -10862,7 +10377,7 @@
       "name": "AzureCloud.usgovarizona",
       "id": "AzureCloud.usgovarizona",
       "properties": {
-        "changeNumber": 68,
+        "changeNumber": 69,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -10931,6 +10446,7 @@
           "51.54.72.0/23",
           "51.54.80.0/23",
           "51.54.224.0/19",
+          "51.55.112.0/20",
           "52.108.140.0/24",
           "52.112.21.0/24",
           "52.114.117.0/24",
@@ -10962,6 +10478,18 @@
           "52.245.6.0/24",
           "52.245.144.0/27",
           "52.245.148.0/23",
+          "62.10.130.0/23",
+          "62.10.133.0/24",
+          "62.10.135.0/24",
+          "62.10.137.0/24",
+          "62.10.139.0/24",
+          "62.10.141.0/24",
+          "62.10.144.0/23",
+          "62.10.148.0/24",
+          "62.10.150.0/24",
+          "62.10.152.0/24",
+          "62.10.154.0/24",
+          "62.10.156.0/24",
           "62.10.160.0/19",
           "62.10.192.0/18",
           "62.11.128.0/18",
@@ -10976,6 +10504,18 @@
           "195.134.243.0/24",
           "2001:489a:2104:2::/64",
           "2001:489a:2105:2::/64",
+          "2001:489a:2202:8101::/64",
+          "2001:489a:2202:8802::/63",
+          "2001:489a:2202:8805::/64",
+          "2001:489a:2202:9001::/64",
+          "2001:489a:2202:a001::/64",
+          "2001:489a:2202:b001::/64",
+          "2001:489a:2202:c100::/64",
+          "2001:489a:2202:c800::/63",
+          "2001:489a:2202:c804::/64",
+          "2001:489a:2202:d000::/64",
+          "2001:489a:2202:e000::/64",
+          "2001:489a:2202:f000::/64",
           "2001:489a:2206:10::/60",
           "2001:489a:2208::/64",
           "2001:489a:2209::/64",
@@ -11017,78 +10557,10 @@
       }
     },
     {
-      "name": "AzureCloud.usgoviowa",
-      "id": "AzureCloud.usgoviowa",
-      "properties": {
-        "changeNumber": 21,
-        "region": "usgoviowa",
-        "regionId": 40,
-        "platform": "Azure",
-        "systemService": "",
-        "addressPrefixes": [
-          "13.72.168.64/27",
-          "13.72.180.105/32",
-          "13.72.184.23/32",
-          "13.72.184.124/32",
-          "13.72.185.65/32",
-          "13.72.186.25/32",
-          "13.72.189.52/32",
-          "13.72.190.8/32",
-          "13.72.190.110/32",
-          "20.140.40.0/28",
-          "20.140.41.0/24",
-          "20.140.42.0/24",
-          "20.140.152.0/21",
-          "20.141.6.0/24",
-          "23.97.16.0/32",
-          "23.97.16.108/31",
-          "23.97.16.189/32",
-          "23.97.16.251/32",
-          "23.97.18.100/32",
-          "23.97.18.162/32",
-          "23.97.18.212/32",
-          "23.97.18.229/32",
-          "23.97.19.50/32",
-          "23.97.20.94/32",
-          "23.97.22.52/32",
-          "23.97.22.130/32",
-          "23.97.23.124/32",
-          "23.97.28.154/32",
-          "23.97.29.209/32",
-          "23.97.40.64/26",
-          "40.66.2.128/28",
-          "40.66.3.128/27",
-          "40.66.4.128/27",
-          "40.112.38.32/27",
-          "40.112.38.96/27",
-          "40.112.38.160/27",
-          "40.112.47.0/24",
-          "52.126.194.192/26",
-          "52.126.209.0/24",
-          "52.126.216.0/22",
-          "52.126.224.128/26",
-          "52.127.24.0/21",
-          "52.127.82.0/24",
-          "52.127.116.64/26",
-          "52.127.116.128/25",
-          "52.127.117.192/26",
-          "2001:489a:2104:3::/64",
-          "2001:489a:2206:30::/60",
-          "2001:489a:3002:10::/60",
-          "2001:489a:3003::/64",
-          "2001:489a:3003:402::/64"
-        ],
-        "networkFeatures": [
-          "API",
-          "NSG"
-        ]
-      }
-    },
-    {
       "name": "AzureCloud.usgovtexas",
       "id": "AzureCloud.usgovtexas",
       "properties": {
-        "changeNumber": 59,
+        "changeNumber": 60,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -11168,12 +10640,19 @@
           "52.238.64.0/18",
           "52.238.128.0/18",
           "52.239.176.0/25",
+          "52.243.0.0/19",
           "52.243.128.0/17",
           "52.245.1.0/24",
           "52.245.4.0/24",
           "52.245.146.0/24",
           "52.245.160.0/19",
           "52.249.96.0/19",
+          "62.10.146.0/23",
+          "62.10.149.0/24",
+          "62.10.151.0/24",
+          "62.10.153.0/24",
+          "62.10.155.0/24",
+          "62.10.157.0/24",
           "62.11.64.0/19",
           "104.210.24.0/24",
           "104.210.27.0/24",
@@ -11193,6 +10672,12 @@
           "2001:489a:2102:3400::/58",
           "2001:489a:2104:4::/64",
           "2001:489a:2105:3::/64",
+          "2001:489a:2202:c101::/64",
+          "2001:489a:2202:c802::/63",
+          "2001:489a:2202:c807::/64",
+          "2001:489a:2202:d001::/64",
+          "2001:489a:2202:e001::/64",
+          "2001:489a:2202:f001::/64",
           "2001:489a:2206::/60",
           "2001:489a:2208:1::/64",
           "2001:489a:2209:1::/64",
@@ -11232,7 +10717,7 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 66,
+        "changeNumber": 67,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -11301,7 +10786,7 @@
           "51.55.64.0/19",
           "51.55.96.0/23",
           "51.55.102.0/23",
-          "51.55.128.0/19",
+          "51.55.128.0/18",
           "52.108.66.0/23",
           "52.126.64.0/18",
           "52.126.192.192/26",
@@ -11331,6 +10816,12 @@
           "52.245.192.0/18",
           "52.247.128.0/18",
           "62.10.0.0/17",
+          "62.10.128.0/23",
+          "62.10.132.0/24",
+          "62.10.134.0/24",
+          "62.10.136.0/24",
+          "62.10.138.0/24",
+          "62.10.140.0/24",
           "62.11.0.0/18",
           "62.11.96.0/19",
           "62.11.224.0/19",
@@ -11341,6 +10832,12 @@
           "2001:489a:2102:3480::/58",
           "2001:489a:2104:5::/64",
           "2001:489a:2105:4::/64",
+          "2001:489a:2202:8100::/64",
+          "2001:489a:2202:8800::/63",
+          "2001:489a:2202:8804::/64",
+          "2001:489a:2202:9000::/64",
+          "2001:489a:2202:a000::/64",
+          "2001:489a:2202:b000::/64",
           "2001:489a:2206:20::/60",
           "2001:489a:2208:2::/64",
           "2001:489a:2209:2::/64",
@@ -11371,7 +10868,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 121,
+        "changeNumber": 122,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -11621,7 +11118,8 @@
           "51.55.98.0/23",
           "51.55.100.0/23",
           "51.55.102.0/23",
-          "51.55.128.0/19",
+          "51.55.112.0/20",
+          "51.55.128.0/18",
           "52.108.64.0/23",
           "52.108.66.0/23",
           "52.108.140.0/24",
@@ -11729,6 +11227,7 @@
           "52.238.128.0/18",
           "52.239.166.0/24",
           "52.239.176.0/25",
+          "52.243.0.0/19",
           "52.243.128.0/17",
           "52.244.0.0/16",
           "52.245.0.0/24",
@@ -11754,6 +11253,30 @@
           "52.247.128.0/18",
           "52.249.96.0/19",
           "62.10.0.0/17",
+          "62.10.128.0/23",
+          "62.10.130.0/23",
+          "62.10.132.0/24",
+          "62.10.133.0/24",
+          "62.10.134.0/24",
+          "62.10.135.0/24",
+          "62.10.136.0/24",
+          "62.10.137.0/24",
+          "62.10.138.0/24",
+          "62.10.139.0/24",
+          "62.10.140.0/24",
+          "62.10.141.0/24",
+          "62.10.144.0/23",
+          "62.10.146.0/23",
+          "62.10.148.0/24",
+          "62.10.149.0/24",
+          "62.10.150.0/24",
+          "62.10.151.0/24",
+          "62.10.152.0/24",
+          "62.10.153.0/24",
+          "62.10.154.0/24",
+          "62.10.155.0/24",
+          "62.10.156.0/24",
+          "62.10.157.0/24",
           "62.10.160.0/19",
           "62.10.192.0/18",
           "62.11.0.0/18",
@@ -11808,6 +11331,30 @@
           "2001:489a:2105:2::/64",
           "2001:489a:2105:3::/64",
           "2001:489a:2105:4::/64",
+          "2001:489a:2202:8100::/64",
+          "2001:489a:2202:8101::/64",
+          "2001:489a:2202:8800::/63",
+          "2001:489a:2202:8802::/63",
+          "2001:489a:2202:8804::/64",
+          "2001:489a:2202:8805::/64",
+          "2001:489a:2202:9000::/64",
+          "2001:489a:2202:9001::/64",
+          "2001:489a:2202:a000::/64",
+          "2001:489a:2202:a001::/64",
+          "2001:489a:2202:b000::/64",
+          "2001:489a:2202:b001::/64",
+          "2001:489a:2202:c100::/64",
+          "2001:489a:2202:c101::/64",
+          "2001:489a:2202:c800::/63",
+          "2001:489a:2202:c802::/63",
+          "2001:489a:2202:c804::/64",
+          "2001:489a:2202:c807::/64",
+          "2001:489a:2202:d000::/64",
+          "2001:489a:2202:d001::/64",
+          "2001:489a:2202:e000::/64",
+          "2001:489a:2202:e001::/64",
+          "2001:489a:2202:f000::/64",
+          "2001:489a:2202:f001::/64",
           "2001:489a:2206::/60",
           "2001:489a:2206:10::/60",
           "2001:489a:2206:20::/60",

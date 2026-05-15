@@ -18550,6 +18550,11 @@
     "roleCount": 14
   },
   {
+    "key": "purestorage.block/storagepools/volumegroups/listconnectionparameters/action",
+    "name": "PureStorage.Block/storagePools/volumeGroups/listConnectionParameters/action",
+    "roleCount": 4
+  },
+  {
     "key": "anyscale.platform/clouds/cloudresources/delete",
     "name": "Anyscale.Platform/clouds/cloudResources/delete",
     "roleCount": 0
@@ -18667,56 +18672,6 @@
   {
     "key": "anyscale.platform/clouds/write",
     "name": "Anyscale.Platform/clouds/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/checknameavailability/action",
-    "name": "Commvault.ContentStore/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/delete",
-    "name": "Commvault.ContentStore/entities/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/read",
-    "name": "Commvault.ContentStore/entities/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/entities/write",
-    "name": "Commvault.ContentStore/entities/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/read",
-    "name": "Commvault.ContentStore/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/locations/operationstatuses/write",
-    "name": "Commvault.ContentStore/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/operations/read",
-    "name": "Commvault.ContentStore/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/register/action",
-    "name": "Commvault.ContentStore/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/registeredsubscriptions/read",
-    "name": "Commvault.ContentStore/registeredSubscriptions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "commvault.contentstore/unregister/action",
-    "name": "Commvault.ContentStore/unregister/action",
     "roleCount": 0
   },
   {
@@ -19900,6 +19855,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.apicenter/services/dataapisettings/read",
+    "name": "Microsoft.ApiCenter/services/dataApiSettings/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/dataapisettings/write",
+    "name": "Microsoft.ApiCenter/services/dataApiSettings/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.apicenter/services/delete",
     "name": "Microsoft.ApiCenter/services/delete",
     "roleCount": 0
@@ -19962,6 +19927,51 @@
   {
     "key": "microsoft.apicenter/services/validatemoveresources/action",
     "name": "Microsoft.ApiCenter/services/validateMoveResources/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/delete",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/read",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/versions/artifacts/delete",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/versions/artifacts/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/versions/artifacts/read",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/versions/artifacts/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/versions/artifacts/write",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/versions/artifacts/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/versions/delete",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/versions/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/versions/read",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/versions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/versions/write",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/versions/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/agents/write",
+    "name": "Microsoft.ApiCenter/services/workspaces/agents/write",
     "roleCount": 0
   },
   {
@@ -20135,21 +20145,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.apicenter/services/workspaces/languagemodels/delete",
-    "name": "Microsoft.ApiCenter/services/workspaces/languageModels/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.apicenter/services/workspaces/languagemodels/read",
-    "name": "Microsoft.ApiCenter/services/workspaces/languageModels/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.apicenter/services/workspaces/languagemodels/write",
-    "name": "Microsoft.ApiCenter/services/workspaces/languageModels/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.apicenter/services/workspaces/linkapisource/action",
     "name": "Microsoft.ApiCenter/services/workspaces/linkApiSource/action",
     "roleCount": 0
@@ -20162,6 +20157,21 @@
   {
     "key": "microsoft.apicenter/services/workspaces/mcpregistries/write",
     "name": "Microsoft.ApiCenter/services/workspaces/mcpRegistries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/models/delete",
+    "name": "Microsoft.ApiCenter/services/workspaces/models/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/models/read",
+    "name": "Microsoft.ApiCenter/services/workspaces/models/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.apicenter/services/workspaces/models/write",
+    "name": "Microsoft.ApiCenter/services/workspaces/models/write",
     "roleCount": 0
   },
   {
@@ -22485,6 +22495,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.app/artifactapps/replicas/read",
+    "name": "Microsoft.App/artifactApps/replicas/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.app/artifactapps/start/action",
     "name": "Microsoft.App/artifactApps/start/action",
     "roleCount": 0
@@ -22507,6 +22522,31 @@
   {
     "key": "microsoft.app/artifacts/read",
     "name": "Microsoft.App/artifacts/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/artifacts/versions/cancel/action",
+    "name": "Microsoft.App/artifacts/versions/cancel/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/artifacts/versions/disable/action",
+    "name": "Microsoft.App/artifacts/versions/disable/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/artifacts/versions/enable/action",
+    "name": "Microsoft.App/artifacts/versions/enable/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/artifacts/versions/operationstatus/read",
+    "name": "Microsoft.App/artifacts/versions/operationStatus/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.app/artifacts/versions/read",
+    "name": "Microsoft.App/artifacts/versions/read",
     "roleCount": 0
   },
   {
@@ -28120,6 +28160,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurearcdata/sqlserverinstances/getbestpracticesassessment/action",
+    "name": "Microsoft.AzureArcData/sqlServerInstances/getBestPracticesAssessment/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurearcdata/sqlserverinstances/getjobs/action",
+    "name": "Microsoft.AzureArcData/sqlServerInstances/getJobs/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurearcdata/sqlserverinstances/getjobsstatus/action",
+    "name": "Microsoft.AzureArcData/sqlServerInstances/getJobsStatus/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurearcdata/sqlserverinstances/runbestpracticeassessment/action",
+    "name": "Microsoft.AzureArcData/sqlServerInstances/runBestPracticeAssessment/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurearcdata/sqlserverlicenses/delete",
     "name": "Microsoft.AzureArcData/sqlServerLicenses/delete",
     "roleCount": 0
@@ -28152,6 +28212,61 @@
   {
     "key": "microsoft.azurebusinesscontinuity/unregister/action",
     "name": "Microsoft.AzureBusinessContinuity/unregister/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/accounts/containers/delete",
+    "name": "Microsoft.AzureContextCache/accounts/containers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/accounts/containers/read",
+    "name": "Microsoft.AzureContextCache/accounts/containers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/accounts/containers/write",
+    "name": "Microsoft.AzureContextCache/accounts/containers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/accounts/delete",
+    "name": "Microsoft.AzureContextCache/accounts/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/accounts/read",
+    "name": "Microsoft.AzureContextCache/accounts/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/accounts/write",
+    "name": "Microsoft.AzureContextCache/accounts/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/locations/operationstatuses/read",
+    "name": "Microsoft.AzureContextCache/locations/operationstatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/locations/operationstatuses/write",
+    "name": "Microsoft.AzureContextCache/locations/operationstatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/operations/read",
+    "name": "Microsoft.AzureContextCache/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/register/action",
+    "name": "Microsoft.AzureContextCache/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurecontextcache/unregister/action",
+    "name": "Microsoft.AzureContextCache/unregister/action",
     "roleCount": 0
   },
   {
@@ -29297,6 +29412,21 @@
   {
     "key": "microsoft.azurestackhci/edgemachines/networkadapters/read",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/NetworkAdapters/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/securitysettings/delete",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/SecuritySettings/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/securitysettings/read",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/SecuritySettings/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/securitysettings/write",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/SecuritySettings/Write",
     "roleCount": 0
   },
   {
@@ -34080,6 +34210,346 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzerresults/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzerresults/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzerresults/files/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzerresults/files/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzerresults/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzerresults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers:analyze/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers:analyze/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers:analyzebinary/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers:analyzebinary/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers:copy/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers:copy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers:grantcopyauthorization/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers:grantCopyAuthorization/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers/results/images/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers/results/images/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers/results/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers/results/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/analyzers/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/analyzers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/batchanalysisjobs/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/batchAnalysisJobs/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/batchanalysisjobs/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/batchAnalysisJobs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/batchanalysisjobs/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/batchAnalysisJobs/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifierresults/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifierresults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifiers:classify/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifiers:classify/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifiers:classifybinary/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifiers:classifybinary/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifiers/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifiers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifiers/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifiers/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifiers/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifiers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/classifiers/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/classifiers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/defaults/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/defaults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/defaults/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/defaults/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/faces:compare/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/faces:compare/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/faces:detect/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/faces:detect/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects:migrate/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects:migrate/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/datasets/files/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/datasets/files/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels:analyze/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels:analyze/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/document/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/document/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/document/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/document/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/ocr/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/ocr/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/labels/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/labels/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/migration/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/migration/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/reference/files:analyze/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/reference/files:analyze/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/reference/files/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/reference/files/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/reference/files/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/reference/files/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/reference/files/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/reference/files/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/reference/files/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/reference/files/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/schema:edit/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/schema:edit/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/schema:suggest/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/schema:suggest/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/schema/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/schema/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/schema/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/schema/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/stats/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/stats/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/test/files:hitl/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/test/files:hitl/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/test/files/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/test/files/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/test/files/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/test/files/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/test/files/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/test/files/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/test/files/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/test/files/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/labelingprojects/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/labelingProjects/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/faces:find/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/faces:find/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/faces/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/faces/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/faces/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/faces/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/faces/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/faces/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/persons:identify/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/persons:identify/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/persons:verify/action",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/persons:verify/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/persons/delete",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/persons/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/persons/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/persons/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/persons/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/persons/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/read",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/analyzers/persondirectories/write",
+    "name": "Microsoft.CognitiveServices/accounts/analyzers/persondirectories/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/anomalydetector/multivariate/detect-batch/read",
     "name": "Microsoft.CognitiveServices/accounts/AnomalyDetector/multivariate/detect-batch/read",
     "roleCount": 0
@@ -35582,356 +36052,6 @@
   {
     "key": "microsoft.cognitiveservices/accounts/customavatar/projects/write",
     "name": "Microsoft.CognitiveServices/accounts/CustomAvatar/projects/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/classify/iterations/image/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/classify/iterations/image/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/classify/iterations/image/nostore/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/classify/iterations/image/nostore/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/classify/iterations/url/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/classify/iterations/url/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/classify/iterations/url/nostore/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/classify/iterations/url/nostore/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/detect/iterations/image/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/detect/iterations/image/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/detect/iterations/image/nostore/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/detect/iterations/image/nostore/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/detect/iterations/url/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/detect/iterations/url/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/detect/iterations/url/nostore/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/detect/iterations/url/nostore/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/domains/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/domains/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/labelproposals/setting/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/labelproposals/setting/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/labelproposals/setting/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/labelproposals/setting/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/project/migrate/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/project/migrate/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/export/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/export/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/files/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/files/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/id/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/id/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/predictions/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/predictions/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/regionproposals/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/regionproposals/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/regions/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/regions/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/regions/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/regions/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/suggested/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/suggested/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/suggested/count/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/suggested/count/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/tagged/count/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/tagged/count/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/tagged/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/tagged/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/tags/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/tags/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/tags/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/tags/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/untagged/count/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/untagged/count/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/untagged/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/untagged/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/images/urls/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/images/urls/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/import/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/import/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/export/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/export/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/export/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/export/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/performance/images/count/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/performance/images/count/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/performance/images/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/performance/images/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/performance/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/performance/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/publish/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/publish/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/publish/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/publish/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/iterations/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/iterations/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/predictions/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/predictions/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/predictions/query/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/predictions/query/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/quicktest/image/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/quicktest/image/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/quicktest/url/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/quicktest/url/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/tags/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/tags/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/tags/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/tags/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/tags/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/tags/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/tags/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/tags/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/tagsandregions/suggestions/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/tagsandregions/suggestions/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/train/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/train/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/train/advanced/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/train/advanced/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/projects/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/projects/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/quota/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/quota/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/quota/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/quota/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/quota/refresh/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/quota/refresh/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/usage/prediction/user/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/usage/prediction/user/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/usage/training/resource/tier/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/usage/training/resource/tier/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/usage/training/user/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/usage/training/user/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/user/action",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/user/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/user/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/user/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/user/state/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/user/state/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/user/tier/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/user/tier/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/users/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/users/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/whitelist/delete",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/whitelist/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/whitelist/read",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/whitelist/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/customvision.prediction/whitelist/write",
-    "name": "Microsoft.CognitiveServices/accounts/CustomVision.Prediction/whitelist/write",
     "roleCount": 0
   },
   {
@@ -39485,6 +39605,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/managedcomputedeployments/delete",
+    "name": "Microsoft.CognitiveServices/accounts/managedComputeDeployments/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/managedcomputedeployments/read",
+    "name": "Microsoft.CognitiveServices/accounts/managedComputeDeployments/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/managedcomputedeployments/write",
+    "name": "Microsoft.CognitiveServices/accounts/managedComputeDeployments/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/managednetworks/batchoutboundrules/action",
     "name": "Microsoft.CognitiveServices/accounts/managedNetworks/batchOutboundRules/action",
     "roleCount": 0
@@ -39797,156 +39932,6 @@
   {
     "key": "microsoft.cognitiveservices/accounts/models/read",
     "name": "Microsoft.CognitiveServices/accounts/models/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/analyzerresults/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/analyzerresults/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/analyzers:copy/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/analyzers:copy/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/analyzers:grantcopyauthorization/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/analyzers:grantCopyAuthorization/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/analyzers/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/analyzers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/analyzers/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/analyzers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/batchanalysisjobs/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/batchAnalysisJobs/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/batchanalysisjobs/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/batchAnalysisJobs/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/classifiers/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/classifiers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/classifiers/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/classifiers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/defaults/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/defaults/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects:migrate/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects:migrate/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/labels/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/labels/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/labels/document/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/labels/document/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/labels/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/labels/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/reference/files:analyze/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/reference/files:analyze/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/reference/files/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/reference/files/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/reference/files/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/reference/files/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/schema:edit/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/schema:edit/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/schema:suggest/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/schema:suggest/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/test/files:hitl/action",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/test/files:hitl/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/test/files/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/test/files/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/test/files/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/test/files/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/labelingprojects/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/labelingProjects/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/persondirectories/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/persondirectories/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/persondirectories/faces/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/persondirectories/faces/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/persondirectories/faces/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/persondirectories/faces/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/persondirectories/persons/delete",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/persondirectories/persons/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/persondirectories/persons/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/persondirectories/persons/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.cognitiveservices/accounts/multimodalintelligence/persondirectories/write",
-    "name": "Microsoft.CognitiveServices/accounts/MultiModalIntelligence/persondirectories/write",
     "roleCount": 0
   },
   {
@@ -41850,6 +41835,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/locations/managedcomputeusages/read",
+    "name": "Microsoft.CognitiveServices/locations/managedComputeUsages/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/locations/modelcapacities/read",
     "name": "Microsoft.CognitiveServices/locations/modelCapacities/read",
     "roleCount": 0
@@ -41912,6 +41902,11 @@
   {
     "key": "microsoft.cognitiveservices/locations/resourcegroups/deletedaccounts/read",
     "name": "Microsoft.CognitiveServices/locations/resourceGroups/deletedAccounts/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/managedcomputecapacities/read",
+    "name": "Microsoft.CognitiveServices/managedComputeCapacities/read",
     "roleCount": 0
   },
   {
@@ -58955,6 +58950,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.documentdb/cassandraclusters/commands/read",
+    "name": "Microsoft.DocumentDB/cassandraClusters/commands/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.documentdb/cassandraclusters/datacenters/delete",
     "name": "Microsoft.DocumentDB/cassandraClusters/dataCenters/delete",
     "roleCount": 0
@@ -60402,6 +60402,66 @@
   {
     "key": "microsoft.documentdb/garnetclusters/acl/reset/action",
     "name": "Microsoft.DocumentDB/garnetClusters/acl/reset/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vadd/write",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vadd/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vcard/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vcard/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vdim/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vdim/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vemb/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vemb/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vgetattr/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vgetattr/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vinfo/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vinfo/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vismember/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vismember/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vlinks/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vlinks/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vrandmember/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vrandmember/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vrem/delete",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vrem/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vsetattr/write",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vsetattr/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/garnetclusters/acl/vsim/read",
+    "name": "Microsoft.DocumentDB/garnetClusters/acl/vsim/read",
     "roleCount": 0
   },
   {
@@ -79395,6 +79455,46 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/authenticationpolicies/delete",
+    "name": "Microsoft.Network/authenticationPolicies/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authenticationpolicies/join/action",
+    "name": "Microsoft.Network/authenticationPolicies/join/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authenticationpolicies/read",
+    "name": "Microsoft.Network/authenticationPolicies/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authenticationpolicies/write",
+    "name": "Microsoft.Network/authenticationPolicies/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authorizationpolicies/delete",
+    "name": "Microsoft.Network/authorizationPolicies/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authorizationpolicies/join/action",
+    "name": "Microsoft.Network/authorizationPolicies/join/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authorizationpolicies/read",
+    "name": "Microsoft.Network/authorizationPolicies/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/authorizationpolicies/write",
+    "name": "Microsoft.Network/authorizationPolicies/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/azurefirewallfqdntags/read",
     "name": "Microsoft.Network/azureFirewallFqdnTags/read",
     "roleCount": 0
@@ -80090,6 +80190,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/expressroutecircuits/authorizations/listkeys/action",
+    "name": "Microsoft.Network/expressRouteCircuits/authorizations/listkeys/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/expressroutecircuits/authorizations/read",
     "name": "Microsoft.Network/expressRouteCircuits/authorizations/read",
     "roleCount": 0
@@ -80355,6 +80460,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/expressroutelags/authorizations/delete",
+    "name": "Microsoft.Network/expressRouteLags/authorizations/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/authorizations/listkeys/action",
+    "name": "Microsoft.Network/expressRouteLags/authorizations/listkeys/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/authorizations/read",
+    "name": "Microsoft.Network/expressRouteLags/authorizations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/authorizations/write",
+    "name": "Microsoft.Network/expressRouteLags/authorizations/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/expressroutelags/delete",
     "name": "Microsoft.Network/expressRouteLags/delete",
     "roleCount": 0
@@ -80367,6 +80492,16 @@
   {
     "key": "microsoft.network/expressroutelags/join/action",
     "name": "Microsoft.Network/expressRouteLags/join/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/links/members/read",
+    "name": "Microsoft.Network/expressRouteLags/links/members/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressroutelags/links/read",
+    "name": "Microsoft.Network/expressRouteLags/links/read",
     "roleCount": 0
   },
   {
@@ -80397,6 +80532,11 @@
   {
     "key": "microsoft.network/expressrouteports/authorizations/getauthorization/action",
     "name": "Microsoft.Network/expressRoutePorts/authorizations/getAuthorization/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/expressrouteports/authorizations/listkeys/action",
+    "name": "Microsoft.Network/expressRoutePorts/authorizations/listkeys/action",
     "roleCount": 0
   },
   {
@@ -86365,6 +86505,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/adgsyslogevent/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/ADGSyslogEvent/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/adreplicationresult/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/ADReplicationResult/read",
     "roleCount": 0
@@ -88197,6 +88342,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/devicecustomprocessevents/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/DeviceCustomProcessEvents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/devicecustomregistryevents/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/DeviceCustomRegistryEvents/read",
     "roleCount": 0
   },
   {
@@ -90482,6 +90632,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/wvdsessionhostmanagement/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/WVDSessionHostManagement/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/ztsjobstatus/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/ZTSJobStatus/read",
     "roleCount": 0
   },
   {
@@ -102640,8 +102795,18 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/clusters/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/clusters/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/clusters/privateendpoints/delete",
     "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/clusters/privateendpoints/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/clusters/privateEndpoints/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -102657,6 +102822,11 @@
   {
     "key": "microsoft.streamanalytics/clusters/write",
     "name": "Microsoft.StreamAnalytics/clusters/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/locations/quotas/read",
+    "name": "Microsoft.StreamAnalytics/locations/quotas/Read",
     "roleCount": 0
   },
   {
@@ -102695,6 +102865,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/streamingjobs/functions/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/functions/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/streamingjobs/functions/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/functions/Read",
     "roleCount": 0
@@ -102725,6 +102900,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/streamingjobs/inputs/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/streamingjobs/inputs/read",
     "name": "Microsoft.StreamAnalytics/streamingjobs/inputs/Read",
     "roleCount": 0
@@ -102745,8 +102925,23 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.streamanalytics/streamingjobs/metricdefinitions/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/metricdefinitions/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/operationresults/Read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/delete",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/outputs/operationresults/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/operationresults/Read",
     "roleCount": 0
   },
   {
@@ -102762,6 +102957,16 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/outputs/write",
     "name": "Microsoft.StreamAnalytics/streamingjobs/outputs/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/providers/microsoft.insights/diagnosticsettings/write",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/providers/Microsoft.Insights/diagnosticSettings/write",
     "roleCount": 0
   },
   {
@@ -102782,6 +102987,11 @@
   {
     "key": "microsoft.streamanalytics/streamingjobs/scale/action",
     "name": "Microsoft.StreamAnalytics/streamingjobs/Scale/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.streamanalytics/streamingjobs/skus/read",
+    "name": "Microsoft.StreamAnalytics/streamingjobs/Skus/Read",
     "roleCount": 0
   },
   {
@@ -102902,6 +103112,11 @@
   {
     "key": "microsoft.supercomputerinfrastructure/register/action",
     "name": "Microsoft.SupercomputerInfrastructure/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.supercomputerinfrastructure/registeredsubscriptions/read",
+    "name": "Microsoft.SupercomputerInfrastructure/registeredSubscriptions/read",
     "roleCount": 0
   },
   {
@@ -109362,11 +109577,6 @@
   {
     "key": "purestorage.block/storagepools/volumegroups/getstatus/action",
     "name": "PureStorage.Block/storagePools/volumeGroups/getStatus/action",
-    "roleCount": 0
-  },
-  {
-    "key": "purestorage.block/storagepools/volumegroups/listconnectionparameters/action",
-    "name": "PureStorage.Block/storagePools/volumeGroups/listConnectionParameters/action",
     "roleCount": 0
   },
   {
