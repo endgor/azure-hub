@@ -283,6 +283,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                         permissions={allActions}
                         otherSet={otherActions}
                         uniqueColor={index === 0 ? 'sky' : 'violet'}
+                        showEmptyGroups={isComparisonMode}
                       />
                     </td>
                     <td className="px-5 py-4 align-top">
@@ -290,6 +291,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                         permissions={allDataActions}
                         otherSet={otherDataActions}
                         uniqueColor={index === 0 ? 'sky' : 'violet'}
+                        showEmptyGroups={isComparisonMode}
                       />
                     </td>
                   </tr>
@@ -304,36 +306,95 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
   );
 }
 
+type PermissionGroup = 'read' | 'write' | 'delete' | 'action' | 'wildcard' | 'other';
+
+const GROUP_ORDER: PermissionGroup[] = ['read', 'write', 'delete', 'action', 'wildcard', 'other'];
+
+const GROUP_META: Record<PermissionGroup, { label: string; accent: string }> = {
+  read:     { label: 'Read',     accent: 'text-slate-500 dark:text-slate-400' },
+  write:    { label: 'Write',    accent: 'text-amber-600 dark:text-amber-400' },
+  delete:   { label: 'Delete',   accent: 'text-rose-600 dark:text-rose-400' },
+  action:   { label: 'Action',   accent: 'text-indigo-600 dark:text-indigo-400' },
+  wildcard: { label: 'Wildcard', accent: 'text-fuchsia-600 dark:text-fuchsia-400' },
+  other:    { label: 'Other',    accent: 'text-slate-500 dark:text-slate-400' },
+};
+
+function classifyPermission(p: string): PermissionGroup {
+  if (p === '*' || p.endsWith('/*')) return 'wildcard';
+  const tail = p.slice(p.lastIndexOf('/') + 1);
+  if (tail === 'read') return 'read';
+  if (tail === 'write') return 'write';
+  if (tail === 'delete') return 'delete';
+  if (tail === 'action') return 'action';
+  return 'other';
+}
+
+function groupPermissions(permissions: string[]): Record<PermissionGroup, string[]> {
+  const groups: Record<PermissionGroup, string[]> = {
+    read: [], write: [], delete: [], action: [], wildcard: [], other: [],
+  };
+  for (const p of permissions) {
+    groups[classifyPermission(p)].push(p);
+  }
+  return groups;
+}
+
 /**
- * Renders a list of permissions, scrolling internally once tall, with
- * an "empty" placeholder when there are none. Dots appear in comparison mode.
+ * Renders a list of permissions bucketed by operation verb (read, write,
+ * delete, action, wildcard, other). In comparison mode, empty groups are
+ * still rendered so the two roles' sections line up vertically.
  */
 function PermissionList({
   permissions,
   otherSet,
   uniqueColor,
+  showEmptyGroups,
 }: {
   permissions: string[];
   otherSet: Set<string> | null;
   uniqueColor: 'sky' | 'violet';
+  showEmptyGroups: boolean;
 }) {
-  if (permissions.length === 0) {
+  if (permissions.length === 0 && !showEmptyGroups) {
     return (
       <span className="text-xs italic text-slate-400 dark:text-slate-500">None</span>
     );
   }
 
+  const groups = groupPermissions(permissions);
+
   return (
-    <ul className="space-y-1.5 max-h-72 overflow-y-auto pr-2">
-      {permissions.map((permission, idx) => (
-        <PermissionRow
-          key={idx}
-          permission={permission}
-          isShared={otherSet ? otherSet.has(permission) : null}
-          uniqueColor={uniqueColor}
-        />
-      ))}
-    </ul>
+    <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2">
+      {GROUP_ORDER.map((group) => {
+        const items = groups[group];
+        if (items.length === 0 && !showEmptyGroups) return null;
+        const { label, accent } = GROUP_META[group];
+        return (
+          <div key={group}>
+            <div className="flex items-baseline gap-1.5 mb-1.5">
+              <span className={`text-[10px] font-semibold uppercase tracking-wider ${accent}`}>
+                {label}
+              </span>
+              <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 tabular-nums">
+                {items.length === 0 ? '—' : items.length}
+              </span>
+            </div>
+            {items.length > 0 && (
+              <ul className="space-y-1.5">
+                {items.map((permission, idx) => (
+                  <PermissionRow
+                    key={idx}
+                    permission={permission}
+                    isShared={otherSet ? otherSet.has(permission) : null}
+                    uniqueColor={uniqueColor}
+                  />
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
