@@ -175,21 +175,27 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
       )}
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl">
+      <div className="overflow-hidden rounded-xl ring-1 ring-slate-200 dark:ring-slate-700/60">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm">
+          <table className="w-full text-left text-sm table-fixed">
+            <colgroup>
+              <col className="w-52" />
+              <col className="w-24" />
+              <col />
+              <col />
+            </colgroup>
             <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
               <tr>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-1/6">
+                <th className="px-5 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
                   Role Name
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-24">
+                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
                   Role Type
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-5/12">
+                <th className="px-5 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
                   Actions
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-5/12">
+                <th className="px-5 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
                   Data Actions
                 </th>
               </tr>
@@ -210,26 +216,27 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                 return (
                   <tr
                     key={role.id}
-                    className={`border-b border-slate-100 dark:border-slate-800 ${
-                      isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'
+                    className={`border-t border-slate-200 dark:border-slate-700/60 ${
+                      isEven ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/60 dark:bg-slate-800/40'
                     }`}
                   >
-                    <td className="px-4 py-3 w-1/6">
-                      <div className="font-medium text-sm text-slate-900 dark:text-slate-100">
+                    <td className="px-5 py-4 align-top">
+                      <div className="font-semibold text-sm text-slate-900 dark:text-slate-100 leading-snug">
                         {role.roleName}
                       </div>
-                      <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 select-all">
+                      <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 mt-1 select-all break-all">
                         {role.name}
                       </div>
                       {role.description && (
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-snug">
                           {expandedDescriptions.has(role.id) ? (
                             <>
                               {role.description}
                               {role.description.length > 80 && (
                                 <button
+                                  type="button"
                                   onClick={() => toggleDescription(role.id)}
-                                  className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
+                                  className="ml-1 inline align-baseline text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
                                 >
                                   Show less
                                 </button>
@@ -240,10 +247,11 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                               {role.description.slice(0, 80)}
                               {role.description.length > 80 && (
                                 <>
-                                  ...
+                                  …
                                   <button
+                                    type="button"
                                     onClick={() => toggleDescription(role.id)}
-                                    className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
+                                    className="ml-1 inline align-baseline text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
                                   >
                                     Show more
                                   </button>
@@ -254,7 +262,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                         </div>
                       )}
                     </td>
-                    <td className="px-4 py-3 w-24">
+                    <td className="px-4 py-4 align-top">
                       <div className="flex flex-col gap-1 items-start">
                         <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
                           role.roleType === 'BuiltInRole'
@@ -270,37 +278,19 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                         )}
                       </div>
                     </td>
-                    <td className="px-4 py-3 w-5/12">
-                      <div className="space-y-1 max-h-60 overflow-y-auto">
-                        {allActions.length === 0 ? (
-                          <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
-                        ) : (
-                          allActions.map((action, idx) => (
-                            <PermissionRow
-                              key={idx}
-                              permission={action}
-                              isShared={otherActions ? otherActions.has(action) : null}
-                              uniqueColor={index === 0 ? 'sky' : 'violet'}
-                            />
-                          ))
-                        )}
-                      </div>
+                    <td className="px-5 py-4 align-top">
+                      <PermissionList
+                        permissions={allActions}
+                        otherSet={otherActions}
+                        uniqueColor={index === 0 ? 'sky' : 'violet'}
+                      />
                     </td>
-                    <td className="px-4 py-3 w-5/12">
-                      <div className="space-y-1 max-h-60 overflow-y-auto">
-                        {allDataActions.length === 0 ? (
-                          <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
-                        ) : (
-                          allDataActions.map((dataAction, idx) => (
-                            <PermissionRow
-                              key={idx}
-                              permission={dataAction}
-                              isShared={otherDataActions ? otherDataActions.has(dataAction) : null}
-                              uniqueColor={index === 0 ? 'sky' : 'violet'}
-                            />
-                          ))
-                        )}
-                      </div>
+                    <td className="px-5 py-4 align-top">
+                      <PermissionList
+                        permissions={allDataActions}
+                        otherSet={otherDataActions}
+                        uniqueColor={index === 0 ? 'sky' : 'violet'}
+                      />
                     </td>
                   </tr>
                 );
@@ -311,6 +301,39 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
       </div>
 
     </div>
+  );
+}
+
+/**
+ * Renders a list of permissions, scrolling internally once tall, with
+ * an "empty" placeholder when there are none. Dots appear in comparison mode.
+ */
+function PermissionList({
+  permissions,
+  otherSet,
+  uniqueColor,
+}: {
+  permissions: string[];
+  otherSet: Set<string> | null;
+  uniqueColor: 'sky' | 'violet';
+}) {
+  if (permissions.length === 0) {
+    return (
+      <span className="text-xs italic text-slate-400 dark:text-slate-500">None</span>
+    );
+  }
+
+  return (
+    <ul className="space-y-1.5 max-h-72 overflow-y-auto pr-2">
+      {permissions.map((permission, idx) => (
+        <PermissionRow
+          key={idx}
+          permission={permission}
+          isShared={otherSet ? otherSet.has(permission) : null}
+          uniqueColor={uniqueColor}
+        />
+      ))}
+    </ul>
   );
 }
 
@@ -329,26 +352,40 @@ function PermissionRow({
   isShared: boolean | null;
   uniqueColor: 'sky' | 'violet';
 }) {
-  if (isShared === null) {
-    return (
-      <div className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
-        {permission}
-      </div>
-    );
-  }
-
-  const dotColor = isShared
-    ? 'bg-emerald-500'
-    : uniqueColor === 'sky'
-      ? 'bg-sky-500'
-      : 'bg-violet-500';
+  const dotColor = isShared === null
+    ? 'bg-slate-300 dark:bg-slate-600'
+    : isShared
+      ? 'bg-emerald-500'
+      : uniqueColor === 'sky'
+        ? 'bg-sky-500'
+        : 'bg-violet-500';
 
   return (
-    <div className="flex items-start gap-2">
-      <span className={`inline-block w-2 h-2 rounded-full ${dotColor} mt-1 flex-shrink-0`}></span>
-      <code className="font-mono text-xs break-all text-slate-700 dark:text-slate-300">
-        {permission}
+    <li className="flex items-start gap-2.5 leading-snug">
+      <span className={`inline-block w-1.5 h-1.5 rounded-full ${dotColor} mt-[7px] flex-shrink-0`}></span>
+      <code className="font-mono text-xs break-words text-slate-700 dark:text-slate-300">
+        {renderPermissionWithBreakHints(permission)}
       </code>
-    </div>
+    </li>
   );
+}
+
+/**
+ * Inserts <wbr> after each "/" so long permission paths prefer to wrap at
+ * segment boundaries instead of breaking mid-word. The original string is
+ * preserved for copy/paste because <wbr> is zero-width.
+ */
+function renderPermissionWithBreakHints(permission: string) {
+  const parts = permission.split('/');
+  return parts.map((part, i) => (
+    <span key={i}>
+      {part}
+      {i < parts.length - 1 && (
+        <>
+          {'/'}
+          <wbr />
+        </>
+      )}
+    </span>
+  ));
 }
