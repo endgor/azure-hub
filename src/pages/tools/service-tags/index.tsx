@@ -237,7 +237,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
                 className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                   cloudFilter === option.value
                     ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                    : 'border border-slate-200/70 bg-transparent text-slate-600 hover:bg-white hover:text-slate-900 dark:border-slate-700/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100'
+                    : 'bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                 }`}
               >
                 {option.label}
@@ -277,7 +277,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
                     <Link
                       key={`${serviceTag.id}-${serviceTag.cloud}`}
                       href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
-                      className="group rounded-lg border border-slate-200/70 bg-transparent px-3 py-2.5 transition hover:border-slate-300 hover:bg-white dark:border-slate-700/60 dark:hover:border-slate-600 dark:hover:bg-slate-900"
+                      className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">

@@ -246,29 +246,46 @@ export default function IpLookupPage() {
             )}
 
             {!initialQuery && !initialRegion && !initialService && (
-              <section className="space-y-3">
-                <div>
+              <section className="rounded-xl bg-white dark:bg-slate-900">
+                <div className="px-4 pt-4 pb-1">
                   <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Try an example</h2>
                   <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                     Click any value to run the lookup — IPs, CIDRs, hostnames, service tags, or Azure regions.
                   </p>
                 </div>
-                <ul className="divide-y divide-slate-200/70 border-y border-slate-200/70 dark:divide-slate-700/60 dark:border-slate-700/60">
+                <ul className="divide-y divide-slate-200/70 p-2 dark:divide-slate-700/60">
                   {SAMPLE_QUERIES.map((item) => (
                     <li key={item.label}>
                       <Link
                         href={{ pathname: '/tools/ip-lookup', query: classifySearchInput(item.example) }}
-                        className="group -mx-2 grid grid-cols-[10rem_1fr] items-baseline gap-x-6 gap-y-1 rounded-md px-2 py-3.5 transition hover:bg-slate-100/70 dark:hover:bg-slate-800/40"
+                        className="group flex items-center gap-4 rounded-md px-2 py-3.5 transition hover:bg-slate-100/70 dark:hover:bg-slate-800/40"
                       >
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                          {item.label}
+                        <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${item.accent}`}>
+                          {item.icon}
                         </span>
-                        <span className="break-all font-mono text-sm font-semibold text-slate-900 group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
-                          {item.example}
-                        </span>
-                        <span className="col-start-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-                          {item.description}
-                        </span>
+                        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                          <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                            {item.label}
+                          </span>
+                          <span className="break-all font-mono text-sm font-semibold text-slate-900 group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+                            {item.example}
+                          </span>
+                          <span className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                            {item.description}
+                          </span>
+                        </div>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.8}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4 flex-shrink-0 -translate-x-2 text-slate-400 opacity-0 transition-all group-hover:translate-x-0 group-hover:text-blue-500 group-hover:opacity-100 dark:group-hover:text-blue-400"
+                          aria-hidden="true"
+                        >
+                          <path d="M9 6l6 6-6 6" />
+                        </svg>
                       </Link>
                     </li>
                   ))}
@@ -290,26 +307,62 @@ const SAMPLE_QUERIES = [
   {
     label: 'IP Address',
     example: '40.112.127.224',
-    description: 'Verify if an IPv4 address belongs to Azure.'
+    description: 'Verify if an IPv4 address belongs to Azure.',
+    accent: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2" />
+        <circle cx="12" cy="12" r="2.5" />
+      </svg>
+    )
   },
   {
     label: 'CIDR Range',
     example: '74.7.51.32/29',
-    description: 'Find Azure service tags covering a CIDR block.'
+    description: 'Find Azure service tags covering a CIDR block.',
+    accent: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M15 4 9 20" />
+        <path d="M5 8.5h3M5 15.5h3M16 8.5h3M16 15.5h3" />
+      </svg>
+    )
   },
   {
     label: 'Hostname (DNS)',
     example: 'management.azure.com',
-    description: 'Resolve hostname to IP and find matching service tags.'
+    description: 'Resolve hostname to IP and find matching service tags.',
+    accent: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" />
+        <path d="M3 12h18M12 3v18" />
+      </svg>
+    )
   },
   {
     label: 'Service Tag',
     example: 'Storage',
-    description: 'Explore addresses assigned to a specific service tag.'
+    description: 'Explore addresses assigned to a specific service tag.',
+    accent: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z" />
+        <circle cx="7.5" cy="7.5" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    )
   },
   {
     label: 'Region',
     example: 'WestEurope',
-    description: 'List ranges available in an Azure region.'
+    description: 'List ranges available in an Azure region.',
+    accent: 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z" />
+        <circle cx="12" cy="9" r="2.5" />
+      </svg>
+    )
   }
-] as const;
+];
