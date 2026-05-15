@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import RecentChangesCard from '@/components/RecentChangesCard';
 import IpLookupResults from '@/components/IpLookupResults';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
+import { classifySearchInput } from '@/lib/utils/searchClassifier';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -244,31 +246,33 @@ export default function IpLookupPage() {
             )}
 
             {!initialQuery && !initialRegion && !initialService && (
-              <section className="space-y-4">
+              <section className="space-y-3">
                 <div>
-                  <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Sample queries</h2>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Try an example</h2>
                   <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                    Try IP addresses, CIDR notation, hostnames, service tags, or Azure regions.
+                    Click any value to run the lookup — IPs, CIDRs, hostnames, service tags, or Azure regions.
                   </p>
                 </div>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="divide-y divide-slate-200/70 border-y border-slate-200/70 dark:divide-slate-700/60 dark:border-slate-700/60">
                   {SAMPLE_QUERIES.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex flex-col space-y-2 rounded-xl bg-white p-4 transition dark:bg-slate-900"
-                    >
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                        {item.label}
-                      </p>
-                      <p className="break-all font-mono text-sm font-semibold text-slate-900 dark:text-slate-100">
-                        {item.example}
-                      </p>
-                      <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-                        {item.description}
-                      </p>
-                    </div>
+                    <li key={item.label}>
+                      <Link
+                        href={{ pathname: '/tools/ip-lookup', query: classifySearchInput(item.example) }}
+                        className="group -mx-2 grid grid-cols-[10rem_1fr] items-baseline gap-x-6 gap-y-1 rounded-md px-2 py-3.5 transition hover:bg-slate-100/70 dark:hover:bg-slate-800/40"
+                      >
+                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                          {item.label}
+                        </span>
+                        <span className="break-all font-mono text-sm font-semibold text-slate-900 group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+                          {item.example}
+                        </span>
+                        <span className="col-start-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                          {item.description}
+                        </span>
+                      </Link>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </section>
             )}
           </div>
@@ -295,7 +299,7 @@ const SAMPLE_QUERIES = [
   },
   {
     label: 'Hostname (DNS)',
-    example: 'myaccount.blob.core.windows.net',
+    example: 'management.azure.com',
     description: 'Resolve hostname to IP and find matching service tags.'
   },
   {
