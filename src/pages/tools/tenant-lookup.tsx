@@ -76,6 +76,7 @@ export default function TenantLookupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<TenantHistoryEntry[]>([]);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -106,6 +107,16 @@ export default function TenantLookupPage() {
       window.localStorage.removeItem(HISTORY_STORAGE_KEY);
     }
     setHistory([]);
+  }, []);
+
+  const handleCopy = useCallback(async (label: string, value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopiedField(label);
+      window.setTimeout(() => setCopiedField(null), 1500);
+    } catch {
+      // Clipboard API unavailable; silently ignore.
+    }
   }, []);
 
   const handleLookup = useCallback(
@@ -242,91 +253,201 @@ export default function TenantLookupPage() {
             placeholder="Enter tenant domain (contoso.com)"
             value={domain}
             onChange={(event) => setDomain(event.target.value)}
-            maxWidth="sm"
+            maxWidth="full"
             isLoading={isLoading}
             onIconClick={performLookup}
           />
         </form>
 
-        {error && (
-          <ErrorBox title="Lookup failed">
-            {error}
-          </ErrorBox>
-        )}
+        <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+          <div className="space-y-6">
+            {error && (
+              <ErrorBox title="Lookup failed">
+                {error}
+              </ErrorBox>
+            )}
 
-        {result && !error && summaryFields.length > 0 && (
-          <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Lookup Results</h2>
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-                {new Date(result.fetchedAt).toLocaleTimeString()}
-              </span>
-            </div>
-
-            <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {summaryFields.map((field) => (
-                <div
-                  key={field.label}
-                  className="rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800"
-                >
-                  <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-                    {field.label}
-                  </dt>
-                  <dd className={`mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100 break-all${field.mono ? ' font-mono' : ''}`}>
-                    {field.value}
-                  </dd>
+            {result && !error && summaryFields.length > 0 && (
+              <div className="rounded-xl bg-white dark:bg-slate-900">
+                <div className="flex items-center justify-between px-4 pt-4 pb-3">
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Lookup results</h2>
+                  <span className="text-xs tabular-nums text-slate-400 dark:text-slate-500">
+                    {new Date(result.fetchedAt).toLocaleTimeString()}
+                  </span>
                 </div>
-              ))}
-            </dl>
-          </div>
-        )}
+                <dl className="divide-y divide-slate-200/70 px-4 pb-2 dark:divide-slate-700/60">
+                  {summaryFields.map((field) => (
+                    <div key={field.label} className="group flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:gap-4">
+                      <dt className="flex-shrink-0 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 sm:w-44">
+                        {field.label}
+                      </dt>
+                      <dd className={`min-w-0 flex-1 break-all text-sm text-slate-900 dark:text-slate-100${field.mono ? ' font-mono' : ' font-medium'}`}>
+                        {field.value}
+                      </dd>
+                      <button
+                        type="button"
+                        onClick={() => void handleCopy(field.label, field.value)}
+                        aria-label={copiedField === field.label ? `${field.label} copied` : `Copy ${field.label}`}
+                        className="flex h-7 w-7 flex-shrink-0 items-center justify-center self-start rounded-md text-slate-400 opacity-60 transition hover:bg-slate-100 hover:text-slate-700 hover:opacity-100 group-hover:opacity-100 dark:hover:bg-slate-800 dark:hover:text-slate-200 sm:self-auto"
+                      >
+                        {copiedField === field.label ? (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-emerald-500" aria-hidden="true">
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+                            <rect x="9" y="9" width="11" height="11" rx="2" />
+                            <path d="M5 15V6a2 2 0 0 1 2-2h9" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )}
 
-
-        {history.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">Recent lookups</h3>
-              <button
-                type="button"
-                onClick={clearHistory}
-                className="text-xs font-semibold text-slate-500 underline decoration-dotted hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-              >
-                Clear
-              </button>
-            </div>
-            <ul className="divide-y divide-slate-200 dark:divide-slate-700 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-600 dark:text-slate-400">
-              {history.map((entry) => (
-                <li
-                  key={entry.domain}
-                  className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDomain(entry.domain);
-                        void handleLookup(entry.domain);
-                      }}
-                      className="text-sm font-semibold text-slate-900 dark:text-slate-100 underline decoration-dotted underline-offset-4 hover:text-sky-600 dark:hover:text-sky-400"
-                    >
-                      {entry.domain}
-                    </button>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      Tenant ID:{' '}
-                      <span className="font-mono text-[11px] tracking-tight">
-                        {entry.tenantId || 'unknown'}
-                      </span>
-                    </span>
-                  </div>
-                  <time className="text-xs text-slate-500 dark:text-slate-400" dateTime={entry.timestamp}>
-                    {new Date(entry.timestamp).toLocaleString()}
-                  </time>
-                </li>
-              ))}
-            </ul>
+            {!error && !result && (
+              <section className="rounded-xl bg-white dark:bg-slate-900">
+                <div className="px-4 pt-4 pb-1">
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Try an example</h2>
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                    Click any domain to look up its tenant.
+                  </p>
+                </div>
+                <ul className="divide-y divide-slate-200/70 p-2 dark:divide-slate-700/60">
+                  {EXAMPLE_DOMAINS.map((item) => (
+                    <li key={item.domain}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDomain(item.domain);
+                          void handleLookup(item.domain);
+                        }}
+                        className="group flex w-full items-center gap-4 rounded-md px-2 py-3.5 text-left transition hover:bg-slate-100/70 dark:hover:bg-slate-800/40"
+                      >
+                        <span className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${item.accent}`}>
+                          {item.icon}
+                        </span>
+                        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                          <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                            {item.label}
+                          </span>
+                          <span className="break-all font-mono text-sm font-semibold text-slate-900 group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+                            {item.domain}
+                          </span>
+                          <span className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                            {item.description}
+                          </span>
+                        </div>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.8}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4 flex-shrink-0 -translate-x-2 text-slate-400 opacity-0 transition-all group-hover:translate-x-0 group-hover:text-blue-500 group-hover:opacity-100 dark:group-hover:text-blue-400"
+                          aria-hidden="true"
+                        >
+                          <path d="M9 6l6 6-6 6" />
+                        </svg>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
           </div>
-        )}
+
+          <aside className="space-y-4">
+            <section className="rounded-xl bg-white p-5 dark:bg-slate-900">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">What you&apos;ll see</h3>
+              <ul className="mt-3 space-y-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                <li>Tenant ID (GUID) and display name</li>
+                <li>Default <code className="font-mono text-[11px] text-slate-700 dark:text-slate-300">*.onmicrosoft.com</code> domain</li>
+                <li>Cloud instance — Public, Government, or China</li>
+                <li>Federation brand and protocol, when applicable</li>
+                <li>OIDC issuer and authorization endpoint</li>
+              </ul>
+            </section>
+
+            {history.length > 0 && (
+              <section className="rounded-xl bg-white dark:bg-slate-900">
+                <div className="flex items-center justify-between px-4 pt-4 pb-2">
+                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Recent lookups</h3>
+                  <button
+                    type="button"
+                    onClick={clearHistory}
+                    className="text-xs font-semibold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                  >
+                    Clear
+                  </button>
+                </div>
+                <ul className="divide-y divide-slate-200/70 px-2 pb-2 dark:divide-slate-700/60">
+                  {history.map((entry) => (
+                    <li key={entry.domain}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDomain(entry.domain);
+                          void handleLookup(entry.domain);
+                        }}
+                        className="group flex w-full flex-col gap-0.5 rounded-md px-2 py-2.5 text-left transition hover:bg-slate-100/70 dark:hover:bg-slate-800/40"
+                      >
+                        <span className="truncate text-sm font-semibold text-slate-900 group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+                          {entry.domain}
+                        </span>
+                        <span className="truncate font-mono text-[10px] text-slate-500 dark:text-slate-400">
+                          {entry.tenantId || 'unknown'}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </aside>
+        </div>
       </section>
     </Layout>
   );
 }
+
+const EXAMPLE_DOMAINS = [
+  {
+    label: 'Microsoft Corp',
+    domain: 'microsoft.com',
+    description: 'Microsoft’s flagship Entra tenant — worldwide scope.',
+    accent: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M3 21h18M5 21V7l7-4 7 4v14" />
+        <path d="M9 10h.01M9 14h.01M9 18h.01M15 10h.01M15 14h.01M15 18h.01" />
+      </svg>
+    )
+  },
+  {
+    label: 'GitHub',
+    domain: 'github.com',
+    description: 'Microsoft-owned developer platform with a distinct tenant.',
+    accent: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M8 6l-5 6 5 6M16 6l5 6-5 6M14 4l-4 16" />
+      </svg>
+    )
+  },
+  {
+    label: 'NASA',
+    domain: 'nasa.gov',
+    description: 'Federal agency tenant — typically Azure Government scope.',
+    accent: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+        <path d="M12 21s8-4 8-10V5l-8-3-8 3v6c0 6 8 10 8 10z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    )
+  }
+];
