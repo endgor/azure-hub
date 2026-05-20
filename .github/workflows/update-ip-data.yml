@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # This is crucial for allowing the workflow to push changes
+      actions: write   # Needed to dispatch the Cloudflare deploy workflow after pushing
     env:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -77,6 +78,12 @@ jobs:
           git add -A
           git status
           git diff --staged --quiet && echo "changes=false" >> $GITHUB_OUTPUT || (git commit -m "chore: update Azure IP and RBAC data" && git push && echo "changes=true" >> $GITHUB_OUTPUT)
+
+      - name: Trigger Cloudflare deploy
+        if: steps.commit.outputs.changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-cloudflare.yml --ref main
 
       - name: Submit URLs to IndexNow
         if: steps.commit.outputs.changes == 'true'
