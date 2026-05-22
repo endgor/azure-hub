@@ -22958,6 +22958,8 @@
           "Microsoft.AzureArcData/*/read",
           "Microsoft.AzureArcData/sqlServerInstances/getTelemetry/action",
           "Microsoft.AzureArcData/sqlServerInstances/availabilityGroups/getDetailView/action",
+          "Microsoft.AzureArcData/sqlServerInstances/getBestPracticesAssessment/action",
+          "Microsoft.AzureArcData/sqlServerInstances/getJobsStatus/action",
           "Microsoft.HybridCompute/machines/read",
           "Microsoft.HybridCompute/machines/extensions/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read"
@@ -22973,8 +22975,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-02T17:12:08.400981+00:00",
-    "permissionCount": 338.3333333333333,
+    "updatedOn": "2026-05-21T08:40:01.095119+00:00",
+    "permissionCount": 340.3333333333333,
     "dataActions": [],
     "notDataActions": []
   },
@@ -38832,6 +38834,44 @@
     "updatedOn": "2026-05-21T00:46:12.741543+00:00",
     "permissionCount": 584.3333333333333,
     "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-05-21T16:04:02.432449+00:00",
+    "description": "Privileged Monitoring Data Reader can query and search the logs it is allowed to view over Log Analytics workspaces and tables, including protected tables",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/dbc9c667-e97f-4491-aee6-90b9cf960190",
+    "name": "dbc9c667-e97f-4491-aee6-90b9cf960190",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.OperationalInsights/workspaces/query/read",
+          "Microsoft.OperationalInsights/workspaces/read",
+          "Microsoft.Insights/Logs/Read"
+        ],
+        "condition": "((!(ActionMatches{'Microsoft.OperationalInsights/workspaces/tables/data/read'})) OR (@Resource[Microsoft.OperationalInsights/workspaces/tables:protectionLevel] ForAllOfAnyValues:StringEquals {'General', 'Protected'})) AND ((!(ActionMatches{'Microsoft.Insights/logs/data/read'})) OR (@Resource[Microsoft.Insights/logs/tables:protectionLevel] ForAllOfAnyValues:StringEquals {'General', 'Protected'}))",
+        "conditionVersion": "2.0",
+        "dataActions": [
+          "Microsoft.OperationalInsights/workspaces/tables/data/read",
+          "Microsoft.Insights/logs/data/read"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Privileged Monitoring Data Reader",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-05-21T16:04:02.432449+00:00",
+    "permissionCount": 5,
+    "dataActions": [
+      "Microsoft.OperationalInsights/workspaces/tables/data/read",
+      "Microsoft.Insights/logs/data/read"
+    ],
     "notDataActions": []
   }
 ]
