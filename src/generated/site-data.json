@@ -1,45 +1,36 @@
 {
   "home": {
-    "lastUpdated": "2026-05-08"
+    "lastUpdated": "2026-06-04"
   },
   "about": {
     "fileMetadata": [
       {
         "cloud": "AzureCloud",
-        "changeNumber": 399,
-        "filename": "ServiceTags_Public_20260504.json",
-        "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20260504.json",
-        "lastRetrieved": "2026-05-08",
-        "previousChangeNumber": 398,
-        "previousFilename": "ServiceTags_Public_20260427.json",
-        "diffAvailable": true
+        "changeNumber": 402,
+        "filename": "ServiceTags_Public_20260525.json",
+        "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20260525.json",
+        "lastRetrieved": "2026-06-04"
       },
       {
         "cloud": "AzureChinaCloud",
-        "changeNumber": 394,
-        "filename": "ServiceTags_China_20260504.json",
-        "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20260504.json",
-        "lastRetrieved": "2026-05-08",
-        "previousChangeNumber": 393,
-        "previousFilename": "ServiceTags_China_20260427.json",
-        "diffAvailable": true
+        "changeNumber": 397,
+        "filename": "ServiceTags_China_20260525.json",
+        "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20260525.json",
+        "lastRetrieved": "2026-06-04"
       },
       {
         "cloud": "AzureUSGovernment",
-        "changeNumber": 391,
-        "filename": "ServiceTags_AzureGovernment_20260504.json",
-        "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20260504.json",
-        "lastRetrieved": "2026-05-08",
-        "previousChangeNumber": 390,
-        "previousFilename": "ServiceTags_AzureGovernment_20260323.json",
-        "diffAvailable": true
+        "changeNumber": 394,
+        "filename": "ServiceTags_AzureGovernment_20260525.json",
+        "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20260525.json",
+        "lastRetrieved": "2026-06-04"
       }
     ],
-    "rbacLastRetrieved": "2026-05-08"
+    "rbacLastRetrieved": "2026-06-04"
   },
   "rbac": {
-    "roleCount": 880,
-    "namespaceCount": 235
+    "roleCount": 893,
+    "namespaceCount": 237
   },
   "entraid": {
     "roleCount": 0,
@@ -74,6 +65,7 @@
       "AzureDeviceUpdate",
       "AzureDigitalTwins",
       "AzureEventGrid",
+      "AzureFrontDoor",
       "AzureHealthcareAPIs",
       "AzureInformationProtection",
       "AzureIoTHub",

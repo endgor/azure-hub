@@ -83,7 +83,9 @@ function loadServiceTagMap(): Map<string, AzureIpAddress[]> {
       for (const prefix of entry.properties.addressPrefixes) {
         const key = `${cloud}|${prefix}`;
         const record: AzureIpAddress = {
-          serviceTagId: base,
+          // Keep the full sub-tag name (e.g. "Storage.WestEurope", "AzureFrontDoor.Backend")
+          // so the table still shows which sub-tag a prefix belongs to after consolidation.
+          serviceTagId: entry.name,
           ipAddressPrefix: prefix,
           region: entry.properties.region || '',
           regionId: entry.properties.regionId || '',
@@ -262,9 +264,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const indexPath = path.join(process.cwd(), 'public', 'data', 'service-tags-index.json');
     const index = JSON.parse(fs.readFileSync(indexPath, 'utf8')) as Array<{ id: string }>;
-    // Only generate base tag pages. Regional variants (IDs with a dot) are consolidated
-    // into their base page and old variant URLs 301-redirect there (see next.config.js).
-    const baseTags = Array.from(new Set(index.map((entry) => entry.id))).filter((id) => !id.includes('.'));
+    // Generate one page per distinct base tag (the part before the first dot). Sub-tags
+    // (regional variants like Storage.WestEurope, or components like AzureFrontDoor.Backend)
+    // are consolidated into their base page and 301-redirect there (see next.config.js).
+    // Using split() also covers families like AzureFrontDoor that have no global entry.
+    const baseTags = Array.from(new Set(index.map((entry) => entry.id.split('.')[0])));
     const paths = baseTags.map((serviceTag) => ({ params: { serviceTag } }));
 
     return {

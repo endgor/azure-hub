@@ -62,8 +62,10 @@ function getBaseServiceTags() {
     const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
     const baseTags = new Set();
     for (const entry of index) {
-      if (entry && typeof entry.id === 'string' && !entry.id.includes('.')) {
-        baseTags.add(entry.id);
+      if (entry && typeof entry.id === 'string') {
+        // Use the base tag (part before the first dot). Sub-tags are consolidated into it,
+        // and this also covers families like AzureFrontDoor that have no global entry.
+        baseTags.add(entry.id.split('.')[0]);
       }
     }
     return Array.from(baseTags).sort();

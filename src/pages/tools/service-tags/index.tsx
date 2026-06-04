@@ -78,15 +78,33 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
     fetchServiceTags();
   }, []);
 
-  // Filter service tags based on search term and cloud filter
-  const filteredServiceTags = useMemo(() => {
+  // Group regional variants (e.g. Storage.WestEurope) into their base tag (Storage).
+  // Variant pages are consolidated into the base page with a region filter, so this
+  // directory lists base tags only and tracks which clouds each one appears in.
+  const baseTags = useMemo(() => {
     if (!data?.serviceTags) return [];
 
-    let filtered = data.serviceTags;
+    const byBase = new Map<string, { id: string; clouds: Set<AzureCloudName> }>();
+    for (const tag of data.serviceTags) {
+      const baseId = tag.id.split('.')[0];
+      let entry = byBase.get(baseId);
+      if (!entry) {
+        entry = { id: baseId, clouds: new Set<AzureCloudName>() };
+        byBase.set(baseId, entry);
+      }
+      entry.clouds.add(tag.cloud);
+    }
+
+    return Array.from(byBase.values()).sort((a, b) => a.id.localeCompare(b.id));
+  }, [data?.serviceTags]);
+
+  // Filter base tags based on search term and cloud filter
+  const filteredServiceTags = useMemo(() => {
+    let filtered = baseTags;
 
     // Apply cloud filter
     if (cloudFilter !== 'all') {
-      filtered = filtered.filter(tag => tag.cloud === cloudFilter);
+      filtered = filtered.filter(tag => tag.clouds.has(cloudFilter));
     }
 
     // Apply search filter
@@ -95,7 +113,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
     }
 
     return filtered;
-  }, [data?.serviceTags, searchTerm, cloudFilter]);
+  }, [baseTags, searchTerm, cloudFilter]);
 
   // Reset "show all" when filters change
   useEffect(() => {
@@ -262,7 +280,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
           <div className="space-y-6">
             <div className="text-sm text-slate-600 dark:text-slate-300">
               Showing <span className="font-semibold text-slate-900 dark:text-slate-100">{filteredServiceTags.length}</span> of{' '}
-              <span className="font-semibold text-slate-900 dark:text-slate-100">{data.serviceTags.length}</span> service tags
+              <span className="font-semibold text-slate-900 dark:text-slate-100">{baseTags.length}</span> service tags
               {searchTerm && (
                 <span className="ml-2 rounded-full border border-sky-200 bg-sky-100 px-3 py-1 text-xs font-semibold uppercase text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
                   Match: “{searchTerm}”
@@ -275,17 +293,23 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {visibleServiceTags.map((serviceTag) => (
                     <Link
-                      key={`${serviceTag.id}-${serviceTag.cloud}`}
-                      href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
+                      key={serviceTag.id}
+                      href={getServiceTagPath(serviceTag.id)}
                       className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">
                           {serviceTag.id}
                         </div>
-                        <span className={`inline-block flex-shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[serviceTag.cloud]}`}>
-                          {CLOUD_LABELS[serviceTag.cloud]}
-                        </span>
+                        <div className="flex flex-shrink-0 items-center gap-1">
+                          {([AzureCloudName.AzureCloud, AzureCloudName.AzureChinaCloud, AzureCloudName.AzureUSGovernment] as const)
+                            .filter((cloud) => serviceTag.clouds.has(cloud))
+                            .map((cloud) => (
+                              <span key={cloud} className={`inline-block rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[cloud]}`}>
+                                {CLOUD_LABELS[cloud]}
+                              </span>
+                            ))}
+                        </div>
                       </div>
                     </Link>
                   ))}

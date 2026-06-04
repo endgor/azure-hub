@@ -289,9 +289,9 @@ function buildServiceTagSummary() {
   const tagSet = new Set<string>();
 
   for (const entry of index) {
-    if (!entry.id.includes('.')) {
-      tagSet.add(entry.id);
-    }
+    // Base tag = part before the first dot. Sub-tags are consolidated into the base page,
+    // and this also covers families like AzureFrontDoor that have no global entry.
+    tagSet.add(entry.id.split('.')[0]);
   }
 
   return {
