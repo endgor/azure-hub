@@ -1,13 +1,17 @@
 /**
- * Next.js treats path segments containing dots as file-like and normalizes them
- * without a trailing slash. Keep URL generation aligned to avoid redirect chains.
+ * Regional service-tag variants (e.g. "Storage.WestEurope") no longer have their own
+ * pages. They are consolidated into the base tag page ("Storage") as a region filter,
+ * so every tag ID — base or regional — resolves to its base page URL. Base tag names
+ * never contain a dot, so the URL always carries a trailing slash (matching the global
+ * trailingSlash config and avoiding redirect chains).
  */
+export function getServiceTagBaseId(serviceTag: string): string {
+  return serviceTag.split('.')[0];
+}
+
 export function getServiceTagPath(serviceTag: string): string {
-  const encodedTag = encodeURIComponent(serviceTag);
-  const hasDot = serviceTag.includes('.');
-  return hasDot
-    ? `/tools/service-tags/${encodedTag}`
-    : `/tools/service-tags/${encodedTag}/`;
+  const baseId = getServiceTagBaseId(serviceTag);
+  return `/tools/service-tags/${encodeURIComponent(baseId)}/`;
 }
 
 export function getServiceTagCanonicalUrl(serviceTag: string): string {

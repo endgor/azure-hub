@@ -11,9 +11,9 @@ import ErrorBox from '@/components/shared/ErrorBox';
 
 interface ServiceTagDetailProps {
   serviceTag: string;
-  isBaseTag: boolean;
   ipRanges: AzureIpAddress[];
   cloudsCovered: AzureCloudName[];
+  regions: string[];
 }
 
 const DEFAULT_PAGE_SIZE = 100;
@@ -43,16 +43,23 @@ const CLOUD_LABELS: Record<string, string> = {
   [AzureCloudName.AzureUSGovernment]: 'Azure Government'
 };
 
-// Build-time only. Indexes every service tag to its IP prefixes across all clouds,
-// cached at module scope so the (large) cloud JSON files are read once per build
-// worker instead of once per generated page. Referenced only from getStaticProps,
-// so Next.js strips this function and its fs/path usage from the client bundle.
+// Build-time only. Indexes every BASE service tag to the merged set of its IP prefixes:
+// the global entry (e.g. "Storage") plus every regional variant ("Storage.WestEurope").
+// Ranges are deduped per (cloud, prefix); a regional entry's region label wins over the
+// unlabeled global entry so the region filter works. Cached at module scope so the (large)
+// cloud JSON files are read once per build worker. Referenced only from getStaticProps, so
+// Next.js strips this function and its fs/path usage from the client bundle.
 let serviceTagMapCache: Map<string, AzureIpAddress[]> | null = null;
+
+function baseIdOf(name: string): string {
+  return name.split('.')[0];
+}
 
 function loadServiceTagMap(): Map<string, AzureIpAddress[]> {
   if (serviceTagMapCache) return serviceTagMapCache;
 
-  const map = new Map<string, AzureIpAddress[]>();
+  // base tag -> ("cloud|prefix" -> range), deduped with regional labels preferred
+  const byBase = new Map<string, Map<string, AzureIpAddress>>();
 
   for (const cloud of ALL_CLOUDS) {
     const filePath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
@@ -64,44 +71,68 @@ function loadServiceTagMap(): Map<string, AzureIpAddress[]> {
     }
 
     for (const entry of data.values) {
-      const ranges = entry.properties.addressPrefixes.map((prefix) => ({
-        serviceTagId: entry.name,
-        ipAddressPrefix: prefix,
-        region: entry.properties.region || '',
-        regionId: entry.properties.regionId || '',
-        systemService: entry.properties.systemService || '',
-        networkFeatures: (entry.properties.networkFeatures || []).join(', '),
-        cloud
-      } satisfies AzureIpAddress));
+      const base = baseIdOf(entry.name);
+      const isRegional = entry.name.includes('.');
 
-      const existing = map.get(entry.name);
-      if (existing) {
-        existing.push(...ranges);
-      } else {
-        map.set(entry.name, ranges);
+      let deduped = byBase.get(base);
+      if (!deduped) {
+        deduped = new Map<string, AzureIpAddress>();
+        byBase.set(base, deduped);
+      }
+
+      for (const prefix of entry.properties.addressPrefixes) {
+        const key = `${cloud}|${prefix}`;
+        const record: AzureIpAddress = {
+          serviceTagId: base,
+          ipAddressPrefix: prefix,
+          region: entry.properties.region || '',
+          regionId: entry.properties.regionId || '',
+          systemService: entry.properties.systemService || '',
+          networkFeatures: (entry.properties.networkFeatures || []).join(', '),
+          cloud
+        };
+
+        const existing = deduped.get(key);
+        if (!existing) {
+          deduped.set(key, record);
+        } else if (isRegional && !existing.region) {
+          // Upgrade an unlabeled global prefix to its regional label
+          deduped.set(key, record);
+        }
       }
     }
   }
 
-  serviceTagMapCache = map;
-  return map;
+  serviceTagMapCache = new Map();
+  for (const [base, deduped] of byBase) {
+    serviceTagMapCache.set(base, Array.from(deduped.values()));
+  }
+  return serviceTagMapCache;
 }
 
-export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, cloudsCovered }: ServiceTagDetailProps) {
+export default function ServiceTagDetail({ serviceTag, ipRanges, cloudsCovered, regions }: ServiceTagDetailProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState<string>('all');
 
-  // Paginate the build-time data (no client fetch — the ranges ship in the HTML)
+  // Region filter is applied at the page level (before pagination) so it works across
+  // the full dataset rather than only the current page.
+  const filteredRanges = useMemo(() => {
+    if (selectedRegion === 'all') return ipRanges;
+    if (selectedRegion === 'global') return ipRanges.filter((r) => !r.region);
+    return ipRanges.filter((r) => r.region === selectedRegion);
+  }, [ipRanges, selectedRegion]);
+
   const paginatedResults = useMemo(() => {
-    if (ipRanges.length === 0) return [];
-    if (isAll) return ipRanges;
+    if (filteredRanges.length === 0) return [];
+    if (isAll) return filteredRanges;
 
     const startIndex = (currentPage - 1) * pageSize;
-    return ipRanges.slice(startIndex, startIndex + pageSize);
-  }, [ipRanges, currentPage, pageSize, isAll]);
+    return filteredRanges.slice(startIndex, startIndex + pageSize);
+  }, [filteredRanges, currentPage, pageSize, isAll]);
 
-  const totalPages = Math.ceil(ipRanges.length / pageSize);
+  const totalPages = Math.ceil(filteredRanges.length / pageSize);
 
   const handlePageSizeChange = (newPageSize: number | 'all') => {
     if (newPageSize === 'all') {
@@ -115,6 +146,12 @@ export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, clou
     }
   };
 
+  const handleRegionChange = (region: string) => {
+    setSelectedRegion(region);
+    setCurrentPage(1);
+    setIsAll(false);
+  };
+
   const canonicalUrl = getServiceTagCanonicalUrl(serviceTag);
 
   const breadcrumbs = [
@@ -125,7 +162,7 @@ export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, clou
 
   const cloudList = cloudsCovered.map((c) => CLOUD_LABELS[c] ?? c).join(', ');
   const summary = ipRanges.length > 0
-    ? `The ${serviceTag} service tag includes ${ipRanges.length.toLocaleString()} IP address ${ipRanges.length === 1 ? 'prefix' : 'prefixes'}${cloudList ? ` published across ${cloudList}` : ''}.`
+    ? `The ${serviceTag} service tag includes ${ipRanges.length.toLocaleString()} IP address ${ipRanges.length === 1 ? 'prefix' : 'prefixes'}${cloudList ? ` published across ${cloudList}` : ''}${regions.length > 0 ? `, spanning ${regions.length} Azure ${regions.length === 1 ? 'region' : 'regions'}` : ''}.`
     : 'IP ranges, Azure services, and network features associated with this service tag.';
 
   return (
@@ -134,7 +171,6 @@ export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, clou
       description={`View all IP ranges and CIDR prefixes for the Azure ${serviceTag} service tag, including regional breakdowns and address counts across all clouds.`}
       canonicalUrl={canonicalUrl}
       breadcrumbs={breadcrumbs}
-      noIndex={!isBaseTag}
     >
       <section className="space-y-8">
         <div className="space-y-2 md:space-y-3">
@@ -154,17 +190,38 @@ export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, clou
           </div>
         </div>
 
+        {/* Region filter — regional variants are consolidated here instead of separate pages */}
+        {regions.length > 0 && (
+          <div className="flex items-center gap-2">
+            <label htmlFor="region-filter" className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              Region
+            </label>
+            <select
+              id="region-filter"
+              value={selectedRegion}
+              onChange={(e) => handleRegionChange(e.target.value)}
+              className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            >
+              <option value="all">All regions</option>
+              <option value="global">Global (unscoped)</option>
+              {regions.map((region) => (
+                <option key={region} value={region}>{region}</option>
+              ))}
+            </select>
+          </div>
+        )}
+
         {/* Results — rendered from build-time data so the IP ranges are present in the HTML */}
-        {ipRanges.length > 0 ? (
+        {filteredRanges.length > 0 ? (
           <Results
             results={paginatedResults}
             query={serviceTag}
-            total={ipRanges.length}
+            total={filteredRanges.length}
             hideCloudFilter
             pagination={totalPages > 1 ? {
               currentPage,
               totalPages,
-              totalItems: ipRanges.length,
+              totalItems: filteredRanges.length,
               pageSize,
               isAll,
               onPageChange: (page) => {
@@ -181,7 +238,9 @@ export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, clou
           />
         ) : (
           <ErrorBox title="No results found">
-            This service tag exists, but no IP ranges are currently published for it.
+            {selectedRegion === 'all'
+              ? 'This service tag exists, but no IP ranges are currently published for it.'
+              : 'No IP ranges are published for this service tag in the selected region.'}
           </ErrorBox>
         )}
 
@@ -203,9 +262,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const indexPath = path.join(process.cwd(), 'public', 'data', 'service-tags-index.json');
     const index = JSON.parse(fs.readFileSync(indexPath, 'utf8')) as Array<{ id: string }>;
-    const paths = Array.from(new Set(index.map((entry) => entry.id))).map((serviceTag) => ({
-      params: { serviceTag }
-    }));
+    // Only generate base tag pages. Regional variants (IDs with a dot) are consolidated
+    // into their base page and old variant URLs 301-redirect there (see next.config.js).
+    const baseTags = Array.from(new Set(index.map((entry) => entry.id))).filter((id) => !id.includes('.'));
+    const paths = baseTags.map((serviceTag) => ({ params: { serviceTag } }));
 
     return {
       paths,
@@ -224,17 +284,23 @@ export const getStaticProps: GetStaticProps<ServiceTagDetailProps> = async ({ pa
   }
 
   const serviceTag = decodeURIComponent(serviceTagParam);
+
+  // A regional variant should never reach here (redirected at the config level), but guard
+  // anyway so a stray dotted path doesn't render an empty page.
+  if (serviceTag.includes('.')) {
+    return { notFound: true };
+  }
+
   const ipRanges = loadServiceTagMap().get(serviceTag) ?? [];
   const cloudsCovered = ALL_CLOUDS.filter((cloud) => ipRanges.some((range) => range.cloud === cloud));
+  const regions = Array.from(new Set(ipRanges.map((range) => range.region).filter(Boolean))).sort();
 
   return {
     props: {
       serviceTag,
-      // Base tags (e.g. "Storage") are unique, content-rich reference pages and are indexed.
-      // Regional variants (e.g. "Storage.WestEurope") are near-duplicates and stay noindexed.
-      isBaseTag: !serviceTag.includes('.'),
       ipRanges,
-      cloudsCovered
+      cloudsCovered,
+      regions
     }
   };
 };

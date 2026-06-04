@@ -93,6 +93,14 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // Regional service-tag variants (e.g. /tools/service-tags/Storage.WestEurope) are
+        // consolidated into the base tag page as a region filter. Redirect any tag segment
+        // containing a dot to its base page. ":base" captures the name up to the first dot.
+        source: '/tools/service-tags/:base([^/.]+).:rest(.*)',
+        destination: '/tools/service-tags/:base/',
+        permanent: true,
+      },
+      {
         source: '/service-tags',
         destination: '/tools/service-tags/',
         permanent: true,
