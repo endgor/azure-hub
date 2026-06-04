@@ -51,6 +51,29 @@ function getGuidePages() {
 }
 
 /**
+ * Gets the base (non-regional) service tag IDs, which are the indexable reference pages.
+ * Regional variants (IDs containing a dot, e.g. "Storage.WestEurope") are noindexed and
+ * therefore excluded from the sitemap.
+ * @returns {string[]} Sorted, de-duplicated base service tag IDs
+ */
+function getBaseServiceTags() {
+  try {
+    const indexPath = path.join(PUBLIC_DATA_DIR, 'service-tags-index.json');
+    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+    const baseTags = new Set();
+    for (const entry of index) {
+      if (entry && typeof entry.id === 'string' && !entry.id.includes('.')) {
+        baseTags.add(entry.id);
+      }
+    }
+    return Array.from(baseTags).sort();
+  } catch {
+    console.warn('Warning: Could not read service-tags-index.json, skipping service tag URLs');
+    return [];
+  }
+}
+
+/**
  * Escapes XML special characters to prevent XML injection
  * @param {string} unsafe - String that may contain XML special characters
  * @returns {string} XML-safe string
@@ -85,6 +108,10 @@ function generateSitemap() {
   // Get all guide pages
   const guidePages = getGuidePages();
   console.log(`Found ${guidePages.length} guide pages`);
+
+  // Get base service tag pages (indexable reference pages)
+  const baseServiceTags = getBaseServiceTags();
+  console.log(`Found ${baseServiceTags.length} base service tag pages`);
 
   // Generate sitemap XML
   try {
@@ -165,6 +192,13 @@ ${guidePages.map(guide => `  <url>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`).join('\n')}
+  <!-- Service Tag Reference Pages (base tags only) -->
+${baseServiceTags.map(tag => `  <url>
+    <loc>${escapeXml(`${BASE_URL}/tools/service-tags/${encodeURIComponent(tag)}/`)}</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>`).join('\n')}
 
 </urlset>`;
 
@@ -177,8 +211,8 @@ ${guidePages.map(guide => `  <url>
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    const totalUrls = 11 + guidePages.length;
-    console.log(`  Total URLs: ${totalUrls} (11 core pages + ${guidePages.length} guides)`);
+    const totalUrls = 11 + guidePages.length + baseServiceTags.length;
+    console.log(`  Total URLs: ${totalUrls} (11 core pages + ${guidePages.length} guides + ${baseServiceTags.length} service tags)`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);

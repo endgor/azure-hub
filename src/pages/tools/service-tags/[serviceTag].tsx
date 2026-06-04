@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
-import Head from 'next/head';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import fs from 'fs';
@@ -8,12 +7,13 @@ import Layout from '@/components/Layout';
 import Results from '@/components/Results';
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import { getServiceTagCanonicalUrl } from '@/lib/serviceTagUrl';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
 interface ServiceTagDetailProps {
   serviceTag: string;
-  initialCloud?: AzureCloudName | null;
+  isBaseTag: boolean;
+  ipRanges: AzureIpAddress[];
+  cloudsCovered: AzureCloudName[];
 }
 
 const DEFAULT_PAGE_SIZE = 100;
@@ -37,85 +37,72 @@ const ALL_CLOUDS: AzureCloudName[] = [
   AzureCloudName.AzureUSGovernment
 ];
 
-async function fetchServiceTagDetailsClient(serviceTag: string): Promise<AzureIpAddress[]> {
-  const cloudResults = await Promise.all(
-    ALL_CLOUDS.map(async (cloud) => {
-      const response = await fetch(`/data/${cloud}.json`);
-      if (!response.ok) {
-        throw new Error(`Failed to load ${cloud} service tag data`);
+const CLOUD_LABELS: Record<string, string> = {
+  [AzureCloudName.AzureCloud]: 'Azure Public',
+  [AzureCloudName.AzureChinaCloud]: 'Azure China',
+  [AzureCloudName.AzureUSGovernment]: 'Azure Government'
+};
+
+// Build-time only. Indexes every service tag to its IP prefixes across all clouds,
+// cached at module scope so the (large) cloud JSON files are read once per build
+// worker instead of once per generated page. Referenced only from getStaticProps,
+// so Next.js strips this function and its fs/path usage from the client bundle.
+let serviceTagMapCache: Map<string, AzureIpAddress[]> | null = null;
+
+function loadServiceTagMap(): Map<string, AzureIpAddress[]> {
+  if (serviceTagMapCache) return serviceTagMapCache;
+
+  const map = new Map<string, AzureIpAddress[]>();
+
+  for (const cloud of ALL_CLOUDS) {
+    const filePath = path.join(process.cwd(), 'public', 'data', `${cloud}.json`);
+    let data: CloudDataFile;
+    try {
+      data = JSON.parse(fs.readFileSync(filePath, 'utf8')) as CloudDataFile;
+    } catch {
+      continue;
+    }
+
+    for (const entry of data.values) {
+      const ranges = entry.properties.addressPrefixes.map((prefix) => ({
+        serviceTagId: entry.name,
+        ipAddressPrefix: prefix,
+        region: entry.properties.region || '',
+        regionId: entry.properties.regionId || '',
+        systemService: entry.properties.systemService || '',
+        networkFeatures: (entry.properties.networkFeatures || []).join(', '),
+        cloud
+      } satisfies AzureIpAddress));
+
+      const existing = map.get(entry.name);
+      if (existing) {
+        existing.push(...ranges);
+      } else {
+        map.set(entry.name, ranges);
       }
+    }
+  }
 
-      const data = (await response.json()) as CloudDataFile;
-      const matches = data.values.filter((entry) => entry.name === serviceTag);
-
-      return matches.flatMap((entry) =>
-        entry.properties.addressPrefixes.map((prefix) => ({
-          serviceTagId: entry.name,
-          ipAddressPrefix: prefix,
-          region: entry.properties.region || '',
-          regionId: entry.properties.regionId || '',
-          systemService: entry.properties.systemService || '',
-          networkFeatures: (entry.properties.networkFeatures || []).join(', '),
-          cloud
-        } satisfies AzureIpAddress))
-      );
-    })
-  );
-
-  return cloudResults.flat();
+  serviceTagMapCache = map;
+  return map;
 }
 
-export default function ServiceTagDetail({ serviceTag, initialCloud }: ServiceTagDetailProps) {
+export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, cloudsCovered }: ServiceTagDetailProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
-  const [ipRanges, setIpRanges] = useState<AzureIpAddress[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let active = true;
-
-    const loadDetails = async () => {
-      setIsLoading(true);
-      setLoadError(null);
-
-      try {
-        const allRanges = await fetchServiceTagDetailsClient(serviceTag);
-        if (!active) return;
-
-        const filteredRanges = initialCloud
-          ? allRanges.filter(ip => ip.cloud === initialCloud)
-          : allRanges;
-
-        setIpRanges(filteredRanges);
-      } catch (error) {
-        if (!active) return;
-        setLoadError(error instanceof Error ? error.message : 'Failed to load service tag details');
-      } finally {
-        if (active) setIsLoading(false);
-      }
-    };
-
-    loadDetails();
-    return () => {
-      active = false;
-    };
-  }, [serviceTag, initialCloud]);
-
-  // Paginate results
+  // Paginate the build-time data (no client fetch — the ranges ship in the HTML)
   const paginatedResults = useMemo(() => {
-    if (!ipRanges || ipRanges.length === 0) return [];
+    if (ipRanges.length === 0) return [];
     if (isAll) return ipRanges;
 
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    return ipRanges.slice(startIndex, endIndex);
+    return ipRanges.slice(startIndex, startIndex + pageSize);
   }, [ipRanges, currentPage, pageSize, isAll]);
 
-  const totalPages = Math.ceil((ipRanges?.length || 0) / pageSize);
+  const totalPages = Math.ceil(ipRanges.length / pageSize);
 
-  // Handle page size change
   const handlePageSizeChange = (newPageSize: number | 'all') => {
     if (newPageSize === 'all') {
       setIsAll(true);
@@ -129,45 +116,26 @@ export default function ServiceTagDetail({ serviceTag, initialCloud }: ServiceTa
   };
 
   const canonicalUrl = getServiceTagCanonicalUrl(serviceTag);
-  // Generate breadcrumb structured data
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://azurehub.org/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Service Tags",
-        "item": "https://azurehub.org/tools/service-tags/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": serviceTag,
-        "item": canonicalUrl
-      }
-    ]
-  };
+
+  const breadcrumbs = [
+    { name: 'Home', url: 'https://azurehub.org/' },
+    { name: 'Service Tags', url: 'https://azurehub.org/tools/service-tags/' },
+    { name: serviceTag, url: canonicalUrl }
+  ];
+
+  const cloudList = cloudsCovered.map((c) => CLOUD_LABELS[c] ?? c).join(', ');
+  const summary = ipRanges.length > 0
+    ? `The ${serviceTag} service tag includes ${ipRanges.length.toLocaleString()} IP address ${ipRanges.length === 1 ? 'prefix' : 'prefixes'}${cloudList ? ` published across ${cloudList}` : ''}.`
+    : 'IP ranges, Azure services, and network features associated with this service tag.';
 
   return (
     <Layout
       title={`Azure Service Tag: ${serviceTag}`}
       description={`View all IP ranges and CIDR prefixes for the Azure ${serviceTag} service tag, including regional breakdowns and address counts across all clouds.`}
       canonicalUrl={canonicalUrl}
-      noIndex
+      breadcrumbs={breadcrumbs}
+      noIndex={!isBaseTag}
     >
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-        />
-      </Head>
       <section className="space-y-8">
         <div className="space-y-2 md:space-y-3">
           <nav className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 md:tracking-[0.3em]" aria-label="Breadcrumb">
@@ -181,27 +149,13 @@ export default function ServiceTagDetail({ serviceTag, initialCloud }: ServiceTa
           <div className="space-y-2 md:space-y-3">
             <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Service Tag: {serviceTag}</h1>
             <p className="text-sm text-slate-600 dark:text-slate-300">
-              IP ranges, Azure services, and network features associated with this service tag.
+              {summary}
             </p>
           </div>
         </div>
 
-        {/* Results */}
-        {isLoading && (
-          <div className="rounded-xl bg-white p-8 dark:bg-slate-900">
-            <LoadingSpinner size="md" label="Loading service tag details..." centered />
-          </div>
-        )}
-
-        {!isLoading && loadError && (
-          <ErrorBox title="Unable to load service tag details">
-            The static service tag page loaded, but the IP range data could not be fetched.
-            <br />
-            <span className="text-xs opacity-80">{loadError}</span>
-          </ErrorBox>
-        )}
-
-        {!isLoading && !loadError && ipRanges.length > 0 && (
+        {/* Results — rendered from build-time data so the IP ranges are present in the HTML */}
+        {ipRanges.length > 0 ? (
           <Results
             results={paginatedResults}
             query={serviceTag}
@@ -225,11 +179,9 @@ export default function ServiceTagDetail({ serviceTag, initialCloud }: ServiceTa
               onPageSizeChange: handlePageSizeChange
             } : undefined}
           />
-        )}
-
-        {!isLoading && !loadError && ipRanges.length === 0 && (
+        ) : (
           <ErrorBox title="No results found">
-            This service tag exists, but no IP ranges matched the selected cloud filter.
+            This service tag exists, but no IP ranges are currently published for it.
           </ErrorBox>
         )}
 
@@ -272,11 +224,17 @@ export const getStaticProps: GetStaticProps<ServiceTagDetailProps> = async ({ pa
   }
 
   const serviceTag = decodeURIComponent(serviceTagParam);
+  const ipRanges = loadServiceTagMap().get(serviceTag) ?? [];
+  const cloudsCovered = ALL_CLOUDS.filter((cloud) => ipRanges.some((range) => range.cloud === cloud));
 
   return {
     props: {
       serviceTag,
-      initialCloud: null
+      // Base tags (e.g. "Storage") are unique, content-rich reference pages and are indexed.
+      // Regional variants (e.g. "Storage.WestEurope") are near-duplicates and stay noindexed.
+      isBaseTag: !serviceTag.includes('.'),
+      ipRanges,
+      cloudsCovered
     }
   };
 };

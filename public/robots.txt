@@ -10,10 +10,10 @@ Disallow: /data/
 # Block crawling of search URLs with query parameters
 Disallow: /tools/ip-lookup/?
 
-# Block service tag detail pages (~5000 noindex pages that waste crawl budget).
-# The Allow rule below is more specific and keeps the index page itself crawlable.
-Disallow: /tools/service-tags/*
-Allow: /tools/service-tags/$
+# Service tag detail pages are intentionally crawlable. Base tags (e.g. /Storage/)
+# are indexable reference pages; regional variants (e.g. /Storage.WestEurope) carry a
+# noindex meta tag. They must stay crawlable so Google can read that noindex — blocking
+# them here would leave them stuck as "crawled, currently not indexed" instead.
 
 # Sitemap
 Sitemap: https://azurehub.org/sitemap.xml

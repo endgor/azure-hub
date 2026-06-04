@@ -20,18 +20,11 @@ const nextConfig = {
 
     return [
       {
-        // Tell crawlers to skip all service tag detail pages via HTTP header
-        // (saves crawl budget vs requiring HTML rendering to discover the meta noindex)
-        source: '/tools/service-tags/:tag([^/]+)',
-        headers: [
-          {
-            key: 'X-Robots-Tag',
-            value: 'noindex, nofollow'
-          }
-        ]
-      },
-      {
-        // Apply security headers to all routes
+        // Apply security headers to all routes.
+        // Note: service-tag indexing is controlled per page via the <meta name="robots">
+        // tag (base tags are indexed, regional variants are noindexed) rather than a
+        // blanket X-Robots-Tag header, so base tags can be indexed and crawlers can
+        // read the noindex on variants instead of being blocked from them.
         source: '/:path*',
         headers: [
           // Strict Transport Security - force HTTPS for 2 years
