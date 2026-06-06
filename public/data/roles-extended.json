@@ -21536,7 +21536,8 @@
         "actions": [
           "Microsoft.Advisor/recommendations/read",
           "Microsoft.Advisor/recommendations/write",
-          "Microsoft.Advisor/recommendations/available/action"
+          "Microsoft.Advisor/recommendations/available/action",
+          "Microsoft.Advisor/conversations/*"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -21549,8 +21550,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-03-18T15:10:32.575411+00:00",
-    "permissionCount": 3,
+    "updatedOn": "2026-06-05T17:02:13.895484+00:00",
+    "permissionCount": 336.3333333333333,
     "dataActions": [],
     "notDataActions": []
   },
