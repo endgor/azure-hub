@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-06-06T02:50:03.095Z",
+    "generatedAt": "2026-06-07T03:33:54.493Z",
     "summary": {
       "serviceTagsAdded": 0,
       "serviceTagsRemoved": 0,
@@ -15,17 +15,17 @@
         "fromFilename": "ServiceTags_Public_20260525.json",
         "toFilename": "ServiceTags_Public_20260601.json"
       },
-      "AzureUSGovernment": {
-        "fromChangeNumber": 394,
-        "toChangeNumber": 395,
-        "fromFilename": "ServiceTags_AzureGovernment_20260525.json",
-        "toFilename": "ServiceTags_AzureGovernment_20260601.json"
-      },
       "AzureChinaCloud": {
         "fromChangeNumber": 395,
         "toChangeNumber": 397,
         "fromFilename": "ServiceTags_China_20260511.json",
         "toFilename": "ServiceTags_China_20260525.json"
+      },
+      "AzureUSGovernment": {
+        "fromChangeNumber": 394,
+        "toChangeNumber": 395,
+        "fromFilename": "ServiceTags_AzureGovernment_20260525.json",
+        "toFilename": "ServiceTags_AzureGovernment_20260601.json"
       }
     }
   },
