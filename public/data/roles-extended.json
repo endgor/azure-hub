@@ -38992,5 +38992,169 @@
     "permissionCount": 5,
     "dataActions": [],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-11T15:25:28.742628+00:00",
+    "description": "Allows read-only access to all objects in an Azure AI Manager namespace, except Secrets, roles, and role bindings. Applying this role at the AI Manager scope will give access across all namespaces.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/9c77f8a7-b0b9-4462-844c-de6e66add8ba",
+    "name": "9c77f8a7-b0b9-4462-844c-de6e66add8ba",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.ContainerService/aiManagers/apps/controllerrevisions/read",
+          "Microsoft.ContainerService/aiManagers/apps/daemonsets/read",
+          "Microsoft.ContainerService/aiManagers/apps/deployments/read",
+          "Microsoft.ContainerService/aiManagers/apps/replicasets/read",
+          "Microsoft.ContainerService/aiManagers/apps/statefulsets/read",
+          "Microsoft.ContainerService/aiManagers/autoscaling/horizontalpodautoscalers/read",
+          "Microsoft.ContainerService/aiManagers/batch/cronjobs/read",
+          "Microsoft.ContainerService/aiManagers/batch/jobs/read",
+          "Microsoft.ContainerService/aiManagers/configmaps/read",
+          "Microsoft.ContainerService/aiManagers/discovery.k8s.io/endpointslices/read",
+          "Microsoft.ContainerService/aiManagers/endpoints/read",
+          "Microsoft.ContainerService/aiManagers/events.k8s.io/events/read",
+          "Microsoft.ContainerService/aiManagers/events/read",
+          "Microsoft.ContainerService/aiManagers/extensions/daemonsets/read",
+          "Microsoft.ContainerService/aiManagers/extensions/deployments/read",
+          "Microsoft.ContainerService/aiManagers/extensions/ingresses/read",
+          "Microsoft.ContainerService/aiManagers/extensions/networkpolicies/read",
+          "Microsoft.ContainerService/aiManagers/extensions/replicasets/read",
+          "Microsoft.ContainerService/aiManagers/limitranges/read",
+          "Microsoft.ContainerService/aiManagers/metrics.k8s.io/pods/read",
+          "Microsoft.ContainerService/aiManagers/metrics.k8s.io/nodes/read",
+          "Microsoft.ContainerService/aiManagers/namespaces/read",
+          "Microsoft.ContainerService/aiManagers/networking.k8s.io/ingresses/read",
+          "Microsoft.ContainerService/aiManagers/networking.k8s.io/networkpolicies/read",
+          "Microsoft.ContainerService/aiManagers/persistentvolumeclaims/read",
+          "Microsoft.ContainerService/aiManagers/pods/read",
+          "Microsoft.ContainerService/aiManagers/policy/poddisruptionbudgets/read",
+          "Microsoft.ContainerService/aiManagers/replicationcontrollers/read",
+          "Microsoft.ContainerService/aiManagers/resourcequotas/read",
+          "Microsoft.ContainerService/aiManagers/serviceaccounts/read",
+          "Microsoft.ContainerService/aiManagers/services/read"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure AIManager and namespace RBAC Reader",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-11T15:25:28.742628+00:00",
+    "permissionCount": 367.3333333333333,
+    "dataActions": [
+      "Microsoft.ContainerService/aiManagers/apps/controllerrevisions/read",
+      "Microsoft.ContainerService/aiManagers/apps/daemonsets/read",
+      "Microsoft.ContainerService/aiManagers/apps/deployments/read",
+      "Microsoft.ContainerService/aiManagers/apps/replicasets/read",
+      "Microsoft.ContainerService/aiManagers/apps/statefulsets/read",
+      "Microsoft.ContainerService/aiManagers/autoscaling/horizontalpodautoscalers/read",
+      "Microsoft.ContainerService/aiManagers/batch/cronjobs/read",
+      "Microsoft.ContainerService/aiManagers/batch/jobs/read",
+      "Microsoft.ContainerService/aiManagers/configmaps/read",
+      "Microsoft.ContainerService/aiManagers/discovery.k8s.io/endpointslices/read",
+      "Microsoft.ContainerService/aiManagers/endpoints/read",
+      "Microsoft.ContainerService/aiManagers/events.k8s.io/events/read",
+      "Microsoft.ContainerService/aiManagers/events/read",
+      "Microsoft.ContainerService/aiManagers/extensions/daemonsets/read",
+      "Microsoft.ContainerService/aiManagers/extensions/deployments/read",
+      "Microsoft.ContainerService/aiManagers/extensions/ingresses/read",
+      "Microsoft.ContainerService/aiManagers/extensions/networkpolicies/read",
+      "Microsoft.ContainerService/aiManagers/extensions/replicasets/read",
+      "Microsoft.ContainerService/aiManagers/limitranges/read",
+      "Microsoft.ContainerService/aiManagers/metrics.k8s.io/pods/read",
+      "Microsoft.ContainerService/aiManagers/metrics.k8s.io/nodes/read",
+      "Microsoft.ContainerService/aiManagers/namespaces/read",
+      "Microsoft.ContainerService/aiManagers/networking.k8s.io/ingresses/read",
+      "Microsoft.ContainerService/aiManagers/networking.k8s.io/networkpolicies/read",
+      "Microsoft.ContainerService/aiManagers/persistentvolumeclaims/read",
+      "Microsoft.ContainerService/aiManagers/pods/read",
+      "Microsoft.ContainerService/aiManagers/policy/poddisruptionbudgets/read",
+      "Microsoft.ContainerService/aiManagers/replicationcontrollers/read",
+      "Microsoft.ContainerService/aiManagers/resourcequotas/read",
+      "Microsoft.ContainerService/aiManagers/serviceaccounts/read",
+      "Microsoft.ContainerService/aiManagers/services/read"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-11T15:25:30.553797+00:00",
+    "description": "Grants read access to Azure resources provided by Kubernetes AI Manager, including aimanagers, deployments, namespace, etc.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/223653d0-bf85-419e-ac7a-a67edf5fc44b",
+    "name": "223653d0-bf85-419e-ac7a-a67edf5fc44b",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.ContainerService/aiManagers/listCredential/action",
+          "Microsoft.ContainerService/aiManagers/namespaces/listCredential/action",
+          "Microsoft.ContainerService/aiManagers/read",
+          "Microsoft.ContainerService/aiManagers/*/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure AIManager User",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-11T15:25:30.553797+00:00",
+    "permissionCount": 253,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-11T15:25:30.553797+00:00",
+    "description": "Grants read/write access to Azure resources provided by Kubernetes AI Manager, including aimanagers, deployments, namespace, etc.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/413f2675-4911-4010-be3b-c720b43a3c59",
+    "name": "413f2675-4911-4010-be3b-c720b43a3c59",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.ContainerService/aiManagers/*",
+          "Microsoft.Resources/deployments/*"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure AIManager Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-11T15:25:30.553797+00:00",
+    "permissionCount": 1334.3333333333333,
+    "dataActions": [],
+    "notDataActions": []
   }
 ]
