@@ -31,7 +31,7 @@
     "exceljs": "^4.4.0",
     "gray-matter": "^4.0.3",
     "ip-cidr": "^4.0.2",
-    "next": "^16.2.6",
+    "next": "^16.2.9",
     "papaparse": "^5.5.3",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
