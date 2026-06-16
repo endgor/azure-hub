@@ -3852,32 +3852,32 @@
   {
     "key": "microsoft.insights/alertrules/write",
     "name": "Microsoft.Insights/AlertRules/Write",
-    "roleCount": 241
+    "roleCount": 239
   },
   {
     "key": "microsoft.insights/alertrules/delete",
     "name": "Microsoft.Insights/AlertRules/Delete",
-    "roleCount": 241
+    "roleCount": 239
   },
   {
     "key": "microsoft.insights/alertrules/activated/action",
     "name": "Microsoft.Insights/AlertRules/Activated/Action",
-    "roleCount": 241
+    "roleCount": 239
   },
   {
     "key": "microsoft.insights/alertrules/resolved/action",
     "name": "Microsoft.Insights/AlertRules/Resolved/Action",
-    "roleCount": 241
+    "roleCount": 239
   },
   {
     "key": "microsoft.insights/alertrules/throttled/action",
     "name": "Microsoft.Insights/AlertRules/Throttled/Action",
-    "roleCount": 241
+    "roleCount": 239
   },
   {
     "key": "microsoft.insights/alertrules/incidents/read",
     "name": "Microsoft.Insights/AlertRules/Incidents/Read",
-    "roleCount": 256
+    "roleCount": 254
   },
   {
     "key": "microsoft.resources/deployments/delete",
@@ -9597,7 +9597,7 @@
   {
     "key": "microsoft.insights/alertrules/",
     "name": "Microsoft.Insights/alertRules/",
-    "roleCount": 229
+    "roleCount": 227
   },
   {
     "key": "microsoft.cloudtest/pools/leases/action",
@@ -30090,6 +30090,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurestackhci/loadbalancers/join/action",
+    "name": "Microsoft.AzureStackHCI/loadBalancers/join/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurestackhci/loadbalancers/read",
     "name": "Microsoft.AzureStackHCI/loadBalancers/Read",
     "roleCount": 0
@@ -32167,61 +32172,6 @@
   {
     "key": "microsoft.billingbenefits/savingsplanorders/savingsplans/write",
     "name": "Microsoft.BillingBenefits/savingsPlanOrders/savingsPlans/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/assessments/delete",
-    "name": "Microsoft.BillingTrust/assessments/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/assessments/listuploadtoken/action",
-    "name": "Microsoft.BillingTrust/assessments/listUploadToken/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/assessments/read",
-    "name": "Microsoft.BillingTrust/assessments/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/assessments/rules/read",
-    "name": "Microsoft.BillingTrust/assessments/rules/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/assessments/rules/write",
-    "name": "Microsoft.BillingTrust/assessments/rules/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/assessments/write",
-    "name": "Microsoft.BillingTrust/assessments/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/locations/operationstatuses/read",
-    "name": "Microsoft.BillingTrust/locations/operationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/locations/operationstatuses/write",
-    "name": "Microsoft.BillingTrust/locations/operationStatuses/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/operations/read",
-    "name": "Microsoft.BillingTrust/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/register/action",
-    "name": "Microsoft.BillingTrust/register/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.billingtrust/unregister/action",
-    "name": "Microsoft.BillingTrust/unregister/action",
     "roleCount": 0
   },
   {
@@ -64760,6 +64710,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.genome/admin/read",
+    "name": "Microsoft.Genome/admin/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.genome/admin/write",
+    "name": "Microsoft.Genome/admin/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.genome/data/read",
     "name": "Microsoft.Genome/data/read",
     "roleCount": 0
@@ -86560,6 +86520,111 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.offazurespringboot/locations/operationstatuses/read",
+    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/locations/operationstatuses/write",
+    "name": "Microsoft.OffAzureSpringBoot/locations/operationStatuses/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/operations/read",
+    "name": "Microsoft.OffAzureSpringBoot/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/register/action",
+    "name": "Microsoft.OffAzureSpringBoot/register/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/errorsummaries/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/errorSummaries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/refreshsite/action",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/refreshSite/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootapps/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootapps/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/springbootservers/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/springbootservers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/delete",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/read",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/summaries/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/summaries/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/springbootsites/write",
+    "name": "Microsoft.OffAzureSpringBoot/springbootsites/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.offazurespringboot/unregister/action",
+    "name": "Microsoft.OffAzureSpringBoot/unregister/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.onlineexperimentation/locations/operationstatuses/read",
     "name": "Microsoft.OnlineExperimentation/Locations/OperationStatuses/read",
     "roleCount": 0
@@ -93477,6 +93542,11 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmappings/backuptriggervalidateoperation/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMappings/backupTriggerValidateOperation/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.recoveryservices/vaults/backupcrosstenantvaultmappings/backupusagesummaries/read",
+    "name": "Microsoft.RecoveryServices/Vaults/backupCrossTenantVaultMappings/backupUsageSummaries/read",
     "roleCount": 0
   },
   {
@@ -110077,21 +110147,6 @@
   {
     "key": "paloaltonetworks.cloudngfw/checknameavailability/action",
     "name": "PaloAltoNetworks.Cloudngfw/checkNameAvailability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "paloaltonetworks.cloudngfw/firewalls/customcaptureconfigurations/delete",
-    "name": "PaloAltoNetworks.Cloudngfw/firewalls/customCaptureConfigurations/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "paloaltonetworks.cloudngfw/firewalls/customcaptureconfigurations/read",
-    "name": "PaloAltoNetworks.Cloudngfw/firewalls/customCaptureConfigurations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "paloaltonetworks.cloudngfw/firewalls/customcaptureconfigurations/write",
-    "name": "PaloAltoNetworks.Cloudngfw/firewalls/customCaptureConfigurations/write",
     "roleCount": 0
   },
   {

@@ -20021,7 +20021,7 @@
           "Microsoft.Storage/storageAccounts/blobServices/read",
           "Microsoft.Storage/storageAccounts/blobServices/write"
         ],
-        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{1e7ca9b1-60d1-4db8-a914-f2ca1ff27c40, d5a91429-5739-47e2-a06b-3470a27159e7})) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{1e7ca9b1-60d1-4db8-a914-f2ca1ff27c40, d5a91429-5739-47e2-a06b-3470a27159e7}))",
+        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{1e7ca9b1-60d1-4db8-a914-f2ca1ff27c40, d5a91429-5739-47e2-a06b-3470a27159e7, cd50fd1f-0421-46f2-8cce-afc587dbcc77, c6c9b2d8-9a5e-4122-85e1-81612a046ab2})) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{1e7ca9b1-60d1-4db8-a914-f2ca1ff27c40, d5a91429-5739-47e2-a06b-3470a27159e7, cd50fd1f-0421-46f2-8cce-afc587dbcc77, c6c9b2d8-9a5e-4122-85e1-81612a046ab2}))",
         "conditionVersion": "2.0",
         "dataActions": [],
         "notActions": [],
@@ -20032,7 +20032,7 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-09-08T15:10:29.413988+00:00",
+    "updatedOn": "2026-06-15T15:05:28.636655+00:00",
     "permissionCount": 1520,
     "dataActions": [],
     "notDataActions": []
@@ -33575,7 +33575,7 @@
       {
         "actions": [
           "Microsoft.Authorization/*/read",
-          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Insights/alertRules/read",
           "Microsoft.App/agents/read",
           "Microsoft.App/agents/*/read",
           "Microsoft.App/agents/write",
@@ -33597,8 +33597,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-01-27T16:25:44.900575+00:00",
-    "permissionCount": 1919.6666666666665,
+    "updatedOn": "2026-06-15T15:05:31.094769+00:00",
+    "permissionCount": 1587.3333333333333,
     "dataActions": [
       "Microsoft.App/agents/*/read",
       "Microsoft.App/agents/*/write",
@@ -33620,7 +33620,7 @@
       {
         "actions": [
           "Microsoft.Authorization/*/read",
-          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Insights/alertRules/read",
           "Microsoft.App/agents/read"
         ],
         "condition": null,
@@ -33645,8 +33645,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-12-11T16:42:41.840385+00:00",
-    "permissionCount": 677.6666666666666,
+    "updatedOn": "2026-06-15T15:05:28.636655+00:00",
+    "permissionCount": 345.3333333333333,
     "dataActions": [
       "Microsoft.App/agents/threads/read",
       "Microsoft.App/agents/graph/read",
