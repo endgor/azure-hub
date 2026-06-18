@@ -34233,22 +34233,32 @@
     "permissions": [
       {
         "actions": [
-          "Microsoft.Authorization/roleAssignments/write"
-        ],
-        "condition": "@Resource[HasObotoken] boolequals true && (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals {de754d53-652d-4c75-a67f-1e48d8b49c97, acdd72a7-3385-48ef-bd42-f606fba81ae7, 494ae006-db33-4328-bf46-533a6560a3ca, 6670b86ea3f74917ac9b5d6ab1be4567, 4fe576fe-1146-4730-92eb-48519fa6bf9f, 32e6a4ec-6095-4e37-b54b-12aa350ba81f, 05b1aaf9-00c9-477b-b0e8-2da660b78c51, b54df9c1-53dc-45cc-a86d-7a83cced2ed0, 3b5a0aa9-eccd-48dc-9011-f2fd03b5e5f9})",
-        "conditionVersion": "2.0",
-        "dataActions": [],
-        "notActions": [],
-        "notDataActions": []
-      },
-      {
-        "actions": [
           "Microsoft.Authorization/*/read",
           "Microsoft.Automation/automationAccounts/runbooks/read",
-          "Microsoft.AzureResilienceManagement/recoveryPlans/*/action",
-          "Microsoft.AzureResilienceManagement/recoveryPlans/*/delete",
-          "Microsoft.AzureResilienceManagement/recoveryPlans/*/read",
-          "Microsoft.AzureResilienceManagement/recoveryPlans/*/write",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/read",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/write",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/delete",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/finalize/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/checkReadiness/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/failover/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/failoverCommit/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/reprotect/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/testFailover/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/testFailoverCleanup/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/validateForOperation/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/validateForFailover/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/validateForFailoverCommit/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/validateForReprotect/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/validateForTestFailover/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/validateForTestFailoverCleanup/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/updateResources/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryResources/read",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/read",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/cancel/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/resume/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/retry/action",
+          "Microsoft.AzureResilienceManagement/recoveryPlans/recoveryJobs/recoveryJobResources/read",
+          "Microsoft.AzureResilienceManagement/locations/OperationStatuses/read",
           "Microsoft.Insights/alertRules/",
           "Microsoft.Management/ServiceGroups/read",
           "Microsoft.Relationships/ServiceGroupMember/read",
@@ -34273,8 +34283,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-04-15T15:17:50.689071+00:00",
-    "permissionCount": 1679.6666666666665,
+    "updatedOn": "2026-06-16T15:19:48.099691+00:00",
+    "permissionCount": 702.6666666666666,
     "dataActions": [],
     "notDataActions": []
   },
@@ -39154,6 +39164,137 @@
     "updatedBy": null,
     "updatedOn": "2026-06-11T15:25:30.553797+00:00",
     "permissionCount": 1334.3333333333333,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-16T15:19:44.997057+00:00",
+    "description": "Allows interacting with Foundry agents at runtime with minimal required permissions.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/142bfaed-a13f-4c2d-bed2-6db62c4a1009",
+    "name": "142bfaed-a13f-4c2d-bed2-6db62c4a1009",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.CognitiveServices/accounts/AIServices/responses/*"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Foundry Project Runtime User",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-16T15:19:44.997057+00:00",
+    "permissionCount": 200,
+    "dataActions": [
+      "Microsoft.CognitiveServices/accounts/AIServices/responses/*"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-16T15:19:44.998056+00:00",
+    "description": "View assessment recommendations, accepted review recommendations, and manage the recommendations lifecycle (mark recommendations as completed, postponed or dismissed, in progress, or not started).",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/f680209a-a2a2-4e0d-aa81-5d2a65c13604",
+    "name": "f680209a-a2a2-4e0d-aa81-5d2a65c13604",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Advisor/recommendations/read",
+          "Microsoft.Advisor/recommendations/write",
+          "Microsoft.Advisor/recommendations/available/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Advisor Recommendations Contributor",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-16T15:19:44.998056+00:00",
+    "permissionCount": 3,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-16T15:19:44.997057+00:00",
+    "description": "Allows interacting with Foundry agents at runtime.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/eed3b665-ab3a-47b6-8f48-c9382fb1dad6",
+    "name": "eed3b665-ab3a-47b6-8f48-c9382fb1dad6",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.CognitiveServices/accounts/AIServices/applications/invoke/action",
+          "Microsoft.CognitiveServices/accounts/AIServices/endpoints/interact/action"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Foundry Agent Consumer",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-16T15:19:44.997057+00:00",
+    "permissionCount": 2,
+    "dataActions": [
+      "Microsoft.CognitiveServices/accounts/AIServices/applications/invoke/action",
+      "Microsoft.CognitiveServices/accounts/AIServices/endpoints/interact/action"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-06-16T15:19:48.099691+00:00",
+    "description": "Allows full administrative access to Azure NetApp Files operations",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/f5db7409-a2c6-4d0c-8cf4-412ac01a38df",
+    "name": "f5db7409-a2c6-4d0c-8cf4-412ac01a38df",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.NetApp/*/read",
+          "Microsoft.NetApp/*/write",
+          "Microsoft.NetApp/*/delete",
+          "Microsoft.NetApp/*/action"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure NetApp Files Administrator",
+    "roleType": "BuiltInRole",
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-06-16T15:19:48.099691+00:00",
+    "permissionCount": 1333.3333333333333,
     "dataActions": [],
     "notDataActions": []
   }
