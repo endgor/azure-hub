@@ -66,7 +66,7 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.61.0",
-    "wrangler": "^4.100.0"
+    "wrangler": "^4.103.0"
   },
   "overrides": {
     "ip-address": "^10.1.1",
