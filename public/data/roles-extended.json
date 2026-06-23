@@ -38162,8 +38162,6 @@
     "permissions": [
       {
         "actions": [
-          "Microsoft.Authorization/roleAssignments/write",
-          "Microsoft.Authorization/roleAssignments/delete",
           "Microsoft.Authorization/*/read",
           "Anyscale.Platform/*/read",
           "Anyscale.Platform/*/write",
@@ -38185,8 +38183,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-05-07T15:30:58.681847+00:00",
-    "permissionCount": 2336.333333333333,
+    "updatedOn": "2026-06-22T15:01:09.867500+00:00",
+    "permissionCount": 2334.333333333333,
     "dataActions": [
       "Anyscale.Platform/admin/action",
       "Anyscale.Platform/*/read",

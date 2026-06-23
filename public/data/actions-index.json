@@ -5777,7 +5777,7 @@
   {
     "key": "microsoft.authorization/roleassignments/delete",
     "name": "Microsoft.Authorization/roleAssignments/delete",
-    "roleCount": 26
+    "roleCount": 25
   },
   {
     "key": "microsoft.management/getentities/action",
@@ -6117,7 +6117,7 @@
   {
     "key": "microsoft.authorization/roleassignments/write",
     "name": "Microsoft.Authorization/roleAssignments/write",
-    "roleCount": 27
+    "roleCount": 26
   },
   {
     "key": "microsoft.logic/workflows/read",
@@ -30090,6 +30090,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurestackhci/edgemachines/refreshsecuritysettings/action",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/RefreshSecuritySettings/Action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurestackhci/edgemachines/securitysettings/delete",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/SecuritySettings/Delete",
     "roleCount": 0
@@ -46340,11 +46345,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.containerservice/aimanagers/inference/action",
-    "name": "Microsoft.ContainerService/aiManagers/inference/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.containerservice/aimanagers/limitranges/delete",
     "name": "Microsoft.ContainerService/aiManagers/limitranges/delete",
     "roleCount": 0
@@ -52065,36 +52065,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.containerservice/nodecustomizations/delete",
-    "name": "Microsoft.ContainerService/nodeCustomizations/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/nodecustomizations/read",
-    "name": "Microsoft.ContainerService/nodeCustomizations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/nodecustomizations/versions/delete",
-    "name": "Microsoft.ContainerService/nodeCustomizations/versions/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/nodecustomizations/versions/read",
-    "name": "Microsoft.ContainerService/nodeCustomizations/versions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/nodecustomizations/versions/write",
-    "name": "Microsoft.ContainerService/nodeCustomizations/versions/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/nodecustomizations/write",
-    "name": "Microsoft.ContainerService/nodeCustomizations/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.containerservice/openshiftclusters/delete",
     "name": "Microsoft.ContainerService/openShiftClusters/delete",
     "roleCount": 0
@@ -52127,36 +52097,6 @@
   {
     "key": "microsoft.containerservice/operations/read",
     "name": "Microsoft.ContainerService/operations/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/delete",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/read",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/versions/delete",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/versions/read",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/versions/write",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/write",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/write",
     "roleCount": 0
   },
   {
@@ -79372,11 +79312,6 @@
   {
     "key": "microsoft.mission/communities/communityendpoints/handleapprovaldeletion/action",
     "name": "Microsoft.Mission/communities/communityEndpoints/handleApprovalDeletion/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.mission/communities/synccommunityendpoints/action",
-    "name": "Microsoft.Mission/communities/syncCommunityEndpoints/action",
     "roleCount": 0
   },
   {
