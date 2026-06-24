@@ -17,7 +17,7 @@
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/read",
     "name": "Microsoft.Resources/subscriptions/resourceGroups/read",
-    "roleCount": 393
+    "roleCount": 396
   },
   {
     "key": "microsoft.containerregistry/registries/sign/write",
@@ -97,7 +97,7 @@
   {
     "key": "microsoft.resources/deployments/read",
     "name": "Microsoft.Resources/deployments/read",
-    "roleCount": 302
+    "roleCount": 305
   },
   {
     "key": "microsoft.insights/generatelivetoken/read",
@@ -207,17 +207,17 @@
   {
     "key": "microsoft.network/virtualnetworks/read",
     "name": "Microsoft.Network/virtualNetworks/read",
-    "roleCount": 61
+    "roleCount": 63
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/read",
     "name": "Microsoft.Network/virtualNetworks/subnets/read",
-    "roleCount": 54
+    "roleCount": 56
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/join/action",
     "name": "Microsoft.Network/virtualNetworks/subnets/join/action",
-    "roleCount": 30
+    "roleCount": 31
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/joinviaserviceendpoint/action",
@@ -237,17 +237,17 @@
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/delete",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/delete",
-    "roleCount": 15
+    "roleCount": 16
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/read",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read",
-    "roleCount": 38
+    "roleCount": 40
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/write",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write",
-    "roleCount": 16
+    "roleCount": 18
   },
   {
     "key": "microsoft.compute/virtualmachines/read",
@@ -267,17 +267,17 @@
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/delete",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/delete",
-    "roleCount": 11
+    "roleCount": 12
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/read",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/read",
-    "roleCount": 44
+    "roleCount": 46
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/write",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/write",
-    "roleCount": 18
+    "roleCount": 20
   },
   {
     "key": "microsoft.containerservice/managedclusters/listclusteradmincredential/action",
@@ -322,67 +322,67 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/refreshcontainers/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/refreshContainers/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupjobsexport/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupJobsExport/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupusagesummaries/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupUsageSummaries/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/monitoringalerts/read",
     "name": "Microsoft.RecoveryServices/Vaults/monitoringAlerts/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.recoveryservices/vaults/read",
     "name": "Microsoft.RecoveryServices/Vaults/read",
-    "roleCount": 28
+    "roleCount": 29
   },
   {
     "key": "microsoft.storage/storageaccounts/read",
     "name": "Microsoft.Storage/storageAccounts/read",
-    "roleCount": 51
+    "roleCount": 52
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupvalidateoperation/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperation/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/write",
     "name": "Microsoft.RecoveryServices/Vaults/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupoperations/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupOperations/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupengines/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupEngines/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectablecontainers/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectableContainers/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.recoveryservices/vaults/operationstatus/read",
     "name": "Microsoft.RecoveryServices/vaults/operationStatus/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/vaults/operationresults/read",
     "name": "Microsoft.RecoveryServices/vaults/operationResults/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/locations/backupstatus/action",
@@ -402,12 +402,12 @@
   {
     "key": "microsoft.recoveryservices/vaults/monitoringalerts/write",
     "name": "Microsoft.RecoveryServices/Vaults/monitoringAlerts/write",
-    "roleCount": 10
+    "roleCount": 11
   },
   {
     "key": "microsoft.recoveryservices/operations/read",
     "name": "Microsoft.RecoveryServices/operations/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.recoveryservices/locations/operationstatus/read",
@@ -417,7 +417,7 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupprotectionintents/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupProtectionIntents/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.dataprotection/locations/getbackupstatus/action",
@@ -572,22 +572,22 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupresourceguardproxies/delete",
     "name": "Microsoft.RecoveryServices/Vaults/backupResourceGuardProxies/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupresourceguardproxies/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupResourceGuardProxies/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupresourceguardproxies/unlockdelete/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupResourceGuardProxies/unlockDelete/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupresourceguardproxies/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupResourceGuardProxies/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.dataprotection/backupvaults/backupresourceguardproxies/read",
@@ -637,122 +637,122 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/operationResults/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/operationsstatus/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/operationsStatus/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/operationResults/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/operationResults/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/operationsstatus/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/operationsStatus/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupjobs/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupJobs/operationResults/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupjobs/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupJobs/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupoperationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupOperationResults/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backuppolicies/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupPolicies/operationResults/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backuppolicies/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupPolicies/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupprotecteditems/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupProtectedItems/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupprotectioncontainers/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupProtectionContainers/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/extendedinformation/read",
     "name": "Microsoft.RecoveryServices/Vaults/extendedInformation/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.recoveryservices/vaults/registeredidentities/operationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/registeredIdentities/operationResults/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.recoveryservices/vaults/registeredidentities/read",
     "name": "Microsoft.RecoveryServices/Vaults/registeredIdentities/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupstorageconfig/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupstorageconfig/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupconfig/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupconfig/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.recoveryservices/vaults/backuppolicies/operations/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupPolicies/operations/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/backupprotectionintent/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/backupProtectionIntent/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/items/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/items/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/usages/read",
     "name": "Microsoft.RecoveryServices/Vaults/usages/read",
-    "roleCount": 28
+    "roleCount": 29
   },
   {
     "key": "microsoft.recoveryservices/locations/backupcrrjobs/action",
@@ -862,7 +862,7 @@
   {
     "key": "microsoft.insights/alertrules/read",
     "name": "Microsoft.Insights/alertRules/read",
-    "roleCount": 273
+    "roleCount": 275
   },
   {
     "key": "microsoft.insights/diagnosticsettings/read",
@@ -887,7 +887,7 @@
   {
     "key": "microsoft.resources/deployments/operations/read",
     "name": "Microsoft.Resources/deployments/operations/read",
-    "roleCount": 291
+    "roleCount": 294
   },
   {
     "key": "microsoft.resources/subscriptions/operationresults/read",
@@ -897,7 +897,7 @@
   {
     "key": "microsoft.resources/subscriptions/read",
     "name": "Microsoft.Resources/subscriptions/read",
-    "roleCount": 101
+    "roleCount": 103
   },
   {
     "key": "microsoft.features/features/read",
@@ -1092,7 +1092,7 @@
   {
     "key": "microsoft.storage/storageaccounts/listkeys/action",
     "name": "Microsoft.Storage/storageAccounts/listKeys/action",
-    "roleCount": 22
+    "roleCount": 24
   },
   {
     "key": "microsoft.eventgrid/topictypes/eventsubscriptions/read",
@@ -1372,7 +1372,7 @@
   {
     "key": "microsoft.storage/storageaccounts/listaccountsas/action",
     "name": "Microsoft.Storage/storageAccounts/ListAccountSas/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.security/iotdefendersettings/packagedownloads/action",
@@ -1437,227 +1437,227 @@
   {
     "key": "microsoft.recoveryservices/vaults/certificates/write",
     "name": "Microsoft.RecoveryServices/Vaults/certificates/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.recoveryservices/vaults/refreshcontainers/read",
     "name": "Microsoft.RecoveryServices/Vaults/refreshContainers/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationevents/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationEvents/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/tokeninfo/read",
     "name": "Microsoft.RecoveryServices/Vaults/tokenInfo/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/vaulttokens/read",
     "name": "Microsoft.RecoveryServices/Vaults/vaultTokens/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/monitoringconfigurations/notificationconfiguration/read",
     "name": "Microsoft.RecoveryServices/Vaults/monitoringConfigurations/notificationConfiguration/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationoperationstatus/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationOperationStatus/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationalertsettings/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationAlertSettings/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/checkconsistency/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/checkConsistency/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/reassociategateway/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/reassociateGateway/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/renewcertificate/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/renewcertificate/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationnetworks/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationNetworks/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationnetworks/replicationnetworkmappings/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationNetworks/replicationNetworkMappings/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotectableitems/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectableItems/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/applyrecoverypoint/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/applyRecoveryPoint/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/failovercommit/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/failoverCommit/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/plannedfailover/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/plannedFailover/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/recoverypoints/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/recoveryPoints/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/repairreplication/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/repairReplication/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/reprotect/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/reProtect/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/switchprotection/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/switchprotection/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/testfailover/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/testFailover/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/testfailovercleanup/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/testFailoverCleanup/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/unplannedfailover/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/unplannedFailover/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotecteditems/updatemobilityservice/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems/updateMobilityService/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationprotectioncontainermappings/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationrecoveryservicesproviders/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationRecoveryServicesProviders/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationrecoveryservicesproviders/refreshprovider/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationRecoveryServicesProviders/refreshProvider/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationstorageclassifications/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationStorageClassifications/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationstorageclassifications/replicationstorageclassificationmappings/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationStorageClassifications/replicationStorageClassificationMappings/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationvcenters/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationvCenters/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationpolicies/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationPolicies/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/failovercommit/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/failoverCommit/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/plannedfailover/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/plannedFailover/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/reprotect/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/reProtect/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/testfailover/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/testFailover/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/testfailovercleanup/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/testFailoverCleanup/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationrecoveryplans/unplannedfailover/action",
     "name": "Microsoft.RecoveryServices/vaults/replicationRecoveryPlans/unplannedFailover/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationvaultsettings/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationVaultSettings/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/storageconfig/read",
     "name": "Microsoft.RecoveryServices/Vaults/storageConfig/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationjobs/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationJobs/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.mixedreality/spatialanchorsaccounts/delete",
@@ -1787,62 +1787,62 @@
   {
     "key": "microsoft.storage/storageaccounts/regeneratekey/action",
     "name": "Microsoft.Storage/storageAccounts/regeneratekey/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/generateuserdelegationkey/action",
     "name": "Microsoft.Storage/storageAccounts/blobServices/generateUserDelegationKey/action",
-    "roleCount": 12
+    "roleCount": 13
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/move/action",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/move/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/add/action",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/add/action",
-    "roleCount": 12
+    "roleCount": 13
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/delete",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/read",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/read",
-    "roleCount": 26
+    "roleCount": 28
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/write",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/messages/delete",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/messages/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/messages/read",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/messages/read",
-    "roleCount": 27
+    "roleCount": 29
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/messages/write",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/messages/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/messages/process/action",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/messages/process/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/queues/messages/add/action",
     "name": "Microsoft.Storage/storageAccounts/queueServices/queues/messages/add/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.compute/disks/write",
@@ -1897,17 +1897,17 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/backupprotectionintent/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/backupProtectionIntent/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.recoveryservices/vaults/backuppolicies/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupPolicies/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.serialconsole/serialports/connect/action",
@@ -1952,32 +1952,32 @@
   {
     "key": "microsoft.hybridcompute/machines/read",
     "name": "Microsoft.HybridCompute/machines/read",
-    "roleCount": 42
+    "roleCount": 43
   },
   {
     "key": "microsoft.hybridcompute/machines/write",
     "name": "Microsoft.HybridCompute/machines/write",
-    "roleCount": 16
+    "roleCount": 17
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/fileshares/files/read",
     "name": "Microsoft.Storage/storageAccounts/fileServices/fileshares/files/read",
-    "roleCount": 34
+    "roleCount": 36
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/fileshares/files/write",
     "name": "Microsoft.Storage/storageAccounts/fileServices/fileshares/files/write",
-    "roleCount": 13
+    "roleCount": 15
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/fileshares/files/delete",
     "name": "Microsoft.Storage/storageAccounts/fileServices/fileshares/files/delete",
-    "roleCount": 11
+    "roleCount": 12
   },
   {
     "key": "microsoft.network/virtualnetworks/join/action",
     "name": "Microsoft.Network/virtualNetworks/join/action",
-    "roleCount": 14
+    "roleCount": 15
   },
   {
     "key": "microsoft.desktopvirtualization/applicationgroups/useapplications/action",
@@ -1992,7 +1992,7 @@
   {
     "key": "microsoft.storage/storageaccounts/fileservices/fileshares/files/modifypermissions/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/fileshares/files/modifypermissions/action",
-    "roleCount": 10
+    "roleCount": 11
   },
   {
     "key": "microsoft.operationsmanagement/solutions/read",
@@ -2072,22 +2072,22 @@
   {
     "key": "microsoft.authorization/policyassignments/read",
     "name": "Microsoft.Authorization/policyAssignments/read",
-    "roleCount": 396
+    "roleCount": 398
   },
   {
     "key": "microsoft.authorization/policydefinitions/read",
     "name": "Microsoft.Authorization/policydefinitions/read",
-    "roleCount": 395
+    "roleCount": 397
   },
   {
     "key": "microsoft.authorization/policyexemptions/read",
     "name": "Microsoft.Authorization/policyexemptions/read",
-    "roleCount": 395
+    "roleCount": 397
   },
   {
     "key": "microsoft.authorization/policysetdefinitions/read",
     "name": "Microsoft.Authorization/policySetDefinitions/read",
-    "roleCount": 396
+    "roleCount": 398
   },
   {
     "key": "microsoft.policyinsights/checkdatapolicycompliance/action",
@@ -2167,7 +2167,7 @@
   {
     "key": "microsoft.resources/deployments/write",
     "name": "Microsoft.Resources/deployments/write",
-    "roleCount": 276
+    "roleCount": 278
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/write",
@@ -2187,7 +2187,7 @@
   {
     "key": "microsoft.kubernetesconfiguration/extensions/read",
     "name": "Microsoft.KubernetesConfiguration/extensions/read",
-    "roleCount": 32
+    "roleCount": 34
   },
   {
     "key": "microsoft.kubernetesconfiguration/extensions/delete",
@@ -2242,12 +2242,12 @@
   {
     "key": "microsoft.authorization/roleassignments/read",
     "name": "Microsoft.Authorization/roleAssignments/read",
-    "roleCount": 422
+    "roleCount": 424
   },
   {
     "key": "microsoft.authorization/roledefinitions/read",
     "name": "Microsoft.Authorization/roleDefinitions/read",
-    "roleCount": 414
+    "roleCount": 416
   },
   {
     "key": "microsoft.cognitiveservices/accounts/qnamaker/knowledgebases/read",
@@ -2692,7 +2692,7 @@
   {
     "key": "microsoft.keyvault/checknameavailability/read",
     "name": "Microsoft.KeyVault/checkNameAvailability/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.keyvault/deletedvaults/read",
@@ -2707,62 +2707,62 @@
   {
     "key": "microsoft.keyvault/vaults/keys/read",
     "name": "Microsoft.KeyVault/vaults/keys/read",
-    "roleCount": 31
+    "roleCount": 32
   },
   {
     "key": "microsoft.keyvault/vaults/keys/update/action",
     "name": "Microsoft.KeyVault/vaults/keys/update/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/backup/action",
     "name": "Microsoft.KeyVault/vaults/keys/backup/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/encrypt/action",
     "name": "Microsoft.KeyVault/vaults/keys/encrypt/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/decrypt/action",
     "name": "Microsoft.KeyVault/vaults/keys/decrypt/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/wrap/action",
     "name": "Microsoft.KeyVault/vaults/keys/wrap/action",
-    "roleCount": 10
+    "roleCount": 11
   },
   {
     "key": "microsoft.keyvault/vaults/keys/unwrap/action",
     "name": "Microsoft.KeyVault/vaults/keys/unwrap/action",
-    "roleCount": 10
+    "roleCount": 11
   },
   {
     "key": "microsoft.keyvault/vaults/keys/sign/action",
     "name": "Microsoft.KeyVault/vaults/keys/sign/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/keys/verify/action",
     "name": "Microsoft.KeyVault/vaults/keys/verify/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.keyvault/vaults/secrets/getsecret/action",
     "name": "Microsoft.KeyVault/vaults/secrets/getSecret/action",
-    "roleCount": 10
+    "roleCount": 11
   },
   {
     "key": "microsoft.keyvault/vaults/secrets/readmetadata/action",
     "name": "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
-    "roleCount": 11
+    "roleCount": 12
   },
   {
     "key": "microsoft.keyvault/vaults/certificatecontacts/write",
     "name": "Microsoft.KeyVault/vaults/certificatecontacts/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.eventgrid/eventsubscriptions/delete",
@@ -3292,22 +3292,22 @@
   {
     "key": "microsoft.support/supporttickets/write",
     "name": "Microsoft.Support/supporttickets/write",
-    "roleCount": 143
+    "roleCount": 146
   },
   {
     "key": "microsoft.authorization/locks/read",
     "name": "Microsoft.Authorization/locks/read",
-    "roleCount": 395
+    "roleCount": 397
   },
   {
     "key": "microsoft.authorization/locks/write",
     "name": "Microsoft.Authorization/locks/write",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.authorization/locks/delete",
     "name": "Microsoft.Authorization/locks/delete",
-    "roleCount": 7
+    "roleCount": 9
   },
   {
     "key": "microsoft.storage/operations/read",
@@ -3317,37 +3317,37 @@
   {
     "key": "microsoft.storage/storageaccounts/objectreplicationpolicies/delete",
     "name": "Microsoft.Storage/storageAccounts/objectReplicationPolicies/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/objectreplicationpolicies/read",
     "name": "Microsoft.Storage/storageAccounts/objectReplicationPolicies/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/objectreplicationpolicies/write",
     "name": "Microsoft.Storage/storageAccounts/objectReplicationPolicies/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/objectreplicationpolicies/restorepointmarkers/write",
     "name": "Microsoft.Storage/storageAccounts/objectReplicationPolicies/restorePointMarkers/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/read",
     "name": "Microsoft.Storage/storageAccounts/blobServices/read",
-    "roleCount": 37
+    "roleCount": 39
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/write",
     "name": "Microsoft.Storage/storageAccounts/blobServices/write",
-    "roleCount": 14
+    "roleCount": 16
   },
   {
     "key": "microsoft.storage/storageaccounts/restoreblobranges/action",
     "name": "Microsoft.Storage/storageAccounts/restoreBlobRanges/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.projectbabylon/accounts/read",
@@ -3432,12 +3432,12 @@
   {
     "key": "microsoft.storage/storageaccounts/write",
     "name": "Microsoft.Storage/storageAccounts/write",
-    "roleCount": 16
+    "roleCount": 17
   },
   {
     "key": "microsoft.storage/storageaccounts/delete",
     "name": "Microsoft.Storage/storageAccounts/delete",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.kubernetes/connectedclusters/delete",
@@ -3702,42 +3702,42 @@
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/read",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/read",
-    "roleCount": 26
+    "roleCount": 28
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/entities/read",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/entities/read",
-    "roleCount": 26
+    "roleCount": 28
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/write",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/delete",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/entities/write",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/entities/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/entities/delete",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/entities/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/entities/add/action",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/entities/add/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/tableservices/tables/entities/update/action",
     "name": "Microsoft.Storage/storageAccounts/tableServices/tables/entities/update/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.healthcareapis/workspaces/dicomservices/resources/read",
@@ -3852,62 +3852,62 @@
   {
     "key": "microsoft.insights/alertrules/write",
     "name": "Microsoft.Insights/AlertRules/Write",
-    "roleCount": 239
+    "roleCount": 241
   },
   {
     "key": "microsoft.insights/alertrules/delete",
     "name": "Microsoft.Insights/AlertRules/Delete",
-    "roleCount": 239
+    "roleCount": 241
   },
   {
     "key": "microsoft.insights/alertrules/activated/action",
     "name": "Microsoft.Insights/AlertRules/Activated/Action",
-    "roleCount": 239
+    "roleCount": 241
   },
   {
     "key": "microsoft.insights/alertrules/resolved/action",
     "name": "Microsoft.Insights/AlertRules/Resolved/Action",
-    "roleCount": 239
+    "roleCount": 241
   },
   {
     "key": "microsoft.insights/alertrules/throttled/action",
     "name": "Microsoft.Insights/AlertRules/Throttled/Action",
-    "roleCount": 239
+    "roleCount": 241
   },
   {
     "key": "microsoft.insights/alertrules/incidents/read",
     "name": "Microsoft.Insights/AlertRules/Incidents/Read",
-    "roleCount": 254
+    "roleCount": 256
   },
   {
     "key": "microsoft.resources/deployments/delete",
     "name": "Microsoft.Resources/deployments/delete",
-    "roleCount": 260
+    "roleCount": 262
   },
   {
     "key": "microsoft.resources/deployments/cancel/action",
     "name": "Microsoft.Resources/deployments/cancel/action",
-    "roleCount": 258
+    "roleCount": 260
   },
   {
     "key": "microsoft.resources/deployments/validate/action",
     "name": "Microsoft.Resources/deployments/validate/action",
-    "roleCount": 261
+    "roleCount": 263
   },
   {
     "key": "microsoft.resources/deployments/whatif/action",
     "name": "Microsoft.Resources/deployments/whatIf/action",
-    "roleCount": 258
+    "roleCount": 260
   },
   {
     "key": "microsoft.resources/deployments/exporttemplate/action",
     "name": "Microsoft.Resources/deployments/exportTemplate/action",
-    "roleCount": 261
+    "roleCount": 263
   },
   {
     "key": "microsoft.resources/deployments/operationstatuses/read",
     "name": "Microsoft.Resources/deployments/operationstatuses/read",
-    "roleCount": 279
+    "roleCount": 282
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/deployments/read",
@@ -3932,7 +3932,7 @@
   {
     "key": "microsoft.hybridcompute/machines/delete",
     "name": "Microsoft.HybridCompute/machines/delete",
-    "roleCount": 14
+    "roleCount": 15
   },
   {
     "key": "microsoft.hybridcompute/machines/upgradeextensions/action",
@@ -4122,7 +4122,7 @@
   {
     "key": "microsoft.extendedlocation/customlocations/read",
     "name": "Microsoft.ExtendedLocation/customLocations/read",
-    "roleCount": 33
+    "roleCount": 35
   },
   {
     "key": "microsoft.extendedlocation/customlocations/deploy/action",
@@ -4322,62 +4322,62 @@
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/backup/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/backup/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/provisioninstantitemrecovery/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/provisionInstantItemRecovery/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/accesstoken/action",
     "name": "Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/accessToken/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/restore/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/restore/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/recoverypoints/revokeinstantitemrecovery/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints/revokeInstantItemRecovery/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/extendedinformation/write",
     "name": "Microsoft.RecoveryServices/Vaults/extendedInformation/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.recoveryservices/vaults/registeredidentities/write",
     "name": "Microsoft.RecoveryServices/Vaults/registeredIdentities/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.recoveryservices/vaults/backuptriggervalidateoperation/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupTriggerValidateOperation/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupvalidateoperationresults/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperationResults/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupvalidateoperationsstatuses/read",
     "name": "Microsoft.RecoveryServices/Vaults/backupValidateOperationsStatuses/read",
-    "roleCount": 22
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/write",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/inquire/action",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/inquire/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.recoveryservices/locations/backupaadproperties/read",
@@ -4517,7 +4517,7 @@
   {
     "key": "microsoft.resourceconnector/appliances/read",
     "name": "Microsoft.ResourceConnector/appliances/read",
-    "roleCount": 22
+    "roleCount": 24
   },
   {
     "key": "microsoft.resourceconnector/appliances/write",
@@ -4692,17 +4692,17 @@
   {
     "key": "microsoft.azurestackhci/clusters/read",
     "name": "Microsoft.AzureStackHCI/Clusters/Read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.azurestackhci/clusters/arcsettings/read",
     "name": "Microsoft.AzureStackHCI/Clusters/ArcSettings/Read",
-    "roleCount": 22
+    "roleCount": 24
   },
   {
     "key": "microsoft.azurestackhci/clusters/arcsettings/extensions/read",
     "name": "Microsoft.AzureStackHCI/Clusters/ArcSettings/Extensions/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/clusters/arcsettings/extensions/write",
@@ -4717,7 +4717,7 @@
   {
     "key": "microsoft.azurestackhci/operations/read",
     "name": "Microsoft.AzureStackHCI/operations/read",
-    "roleCount": 22
+    "roleCount": 24
   },
   {
     "key": "microsoft.connectedvmwarevsphere/virtualmachines/read",
@@ -4837,7 +4837,7 @@
   {
     "key": "microsoft.network/register/action",
     "name": "Microsoft.Network/register/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.network/unregister/action",
@@ -4862,7 +4862,7 @@
   {
     "key": "microsoft.network/virtualnetworks/subnets/write",
     "name": "Microsoft.Network/virtualNetworks/subnets/write",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.network/virtualnetworks/subnets/delete",
@@ -5677,7 +5677,7 @@
   {
     "key": "microsoft.keyvault/vaults/deploy/action",
     "name": "Microsoft.KeyVault/vaults/deploy/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.desktopvirtualization/scalingplans/read",
@@ -5692,7 +5692,7 @@
   {
     "key": "microsoft.azurestackhci/virtualmachineinstances/read",
     "name": "Microsoft.AzureStackHCI/virtualMachineInstances/read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.azurestackhci/virtualmachineinstances/restart/action",
@@ -5777,7 +5777,7 @@
   {
     "key": "microsoft.authorization/roleassignments/delete",
     "name": "Microsoft.Authorization/roleAssignments/delete",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.management/getentities/action",
@@ -6117,7 +6117,7 @@
   {
     "key": "microsoft.authorization/roleassignments/write",
     "name": "Microsoft.Authorization/roleAssignments/write",
-    "roleCount": 26
+    "roleCount": 28
   },
   {
     "key": "microsoft.logic/workflows/read",
@@ -6162,7 +6162,7 @@
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/write",
     "name": "Microsoft.Resources/subscriptions/resourceGroups/write",
-    "roleCount": 18
+    "roleCount": 20
   },
   {
     "key": "microsoft.network/loadbalancers/write",
@@ -6252,12 +6252,12 @@
   {
     "key": "microsoft.network/privateendpoints/read",
     "name": "Microsoft.Network/privateEndpoints/read",
-    "roleCount": 27
+    "roleCount": 28
   },
   {
     "key": "microsoft.network/privateendpoints/write",
     "name": "Microsoft.Network/privateEndpoints/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.network/loadbalancers/frontendipconfigurations/join/action",
@@ -6267,27 +6267,27 @@
   {
     "key": "microsoft.storage/storageaccounts/privateendpointconnectionsapproval/action",
     "name": "Microsoft.Storage/storageAccounts/PrivateEndpointConnectionsApproval/action",
-    "roleCount": 10
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/read",
     "name": "Microsoft.Storage/storageAccounts/fileServices/read",
-    "roleCount": 29
+    "roleCount": 31
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/write",
     "name": "Microsoft.Storage/storageAccounts/fileServices/write",
-    "roleCount": 10
+    "roleCount": 12
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/shares/read",
     "name": "Microsoft.Storage/storageAccounts/fileServices/shares/read",
-    "roleCount": 33
+    "roleCount": 35
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/shares/write",
     "name": "Microsoft.Storage/storageAccounts/fileServices/shares/write",
-    "roleCount": 10
+    "roleCount": 12
   },
   {
     "key": "microsoft.compute/sshpublickeys/read",
@@ -6897,12 +6897,12 @@
   {
     "key": "microsoft.azurestackhci/networksecuritygroups/read",
     "name": "Microsoft.AzureStackHCI/NetworkSecurityGroups/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/networksecuritygroups/securityrules/read",
     "name": "Microsoft.AzureStackHCI/NetworkSecurityGroups/SecurityRules/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/networksecuritygroups/write",
@@ -6932,12 +6932,12 @@
   {
     "key": "microsoft.hybridcompute/register/action",
     "name": "Microsoft.HybridCompute/register/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.guestconfiguration/register/action",
     "name": "Microsoft.GuestConfiguration/register/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.resources/subscriptions/resourcegroups/delete",
@@ -6947,7 +6947,7 @@
   {
     "key": "microsoft.hybridconnectivity/register/action",
     "name": "Microsoft.HybridConnectivity/register/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.resourceconnector/register/action",
@@ -6992,7 +6992,7 @@
   {
     "key": "microsoft.azurestackhci/storagecontainers/read",
     "name": "Microsoft.AzureStackHCI/StorageContainers/Read",
-    "roleCount": 23
+    "roleCount": 25
   },
   {
     "key": "microsoft.hybridcontainerservice/register/action",
@@ -7122,12 +7122,12 @@
   {
     "key": "microsoft.storage/storageaccounts/fileservices/readfilebackupsemantics/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/readFileBackupSemantics/action",
-    "roleCount": 12
+    "roleCount": 13
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/writefilebackupsemantics/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/writeFileBackupSemantics/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.network/locations/operations/read",
@@ -7817,12 +7817,12 @@
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/tags/write",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/write",
-    "roleCount": 12
+    "roleCount": 14
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/tags/read",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read",
-    "roleCount": 28
+    "roleCount": 30
   },
   {
     "key": "microsoft.compute/virtualmachinescalesets/disks/begingetaccess/action",
@@ -8217,7 +8217,7 @@
   {
     "key": "microsoft.azurestackhci/logicalnetworks/read",
     "name": "Microsoft.AzureStackHCI/LogicalNetworks/Read",
-    "roleCount": 22
+    "roleCount": 24
   },
   {
     "key": "microsoft.azurestackhci/logicalnetworks/write",
@@ -8247,7 +8247,7 @@
   {
     "key": "microsoft.azurestackhci/virtualnetworks/read",
     "name": "Microsoft.AzureStackHCI/VirtualNetworks/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/virtualnetworks/join/action",
@@ -8257,12 +8257,12 @@
   {
     "key": "microsoft.azurestackhci/logicalnetworks/join/action",
     "name": "Microsoft.AzureStackHCI/LogicalNetworks/join/action",
-    "roleCount": 4
+    "roleCount": 6
   },
   {
     "key": "microsoft.azurestackhci/galleryimages/read",
     "name": "Microsoft.AzureStackHCI/GalleryImages/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/galleryimages/deploy/action",
@@ -8277,7 +8277,7 @@
   {
     "key": "microsoft.azurestackhci/marketplacegalleryimages/read",
     "name": "Microsoft.AzureStackHCI/MarketplaceGalleryImages/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/marketplacegalleryimages/deploy/action",
@@ -8287,22 +8287,22 @@
   {
     "key": "microsoft.azurestackhci/virtualmachines/read",
     "name": "Microsoft.AzureStackHCI/VirtualMachines/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/virtualmachines/extensions/read",
     "name": "Microsoft.AzureStackHCI/VirtualMachines/Extensions/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/networkinterfaces/read",
     "name": "Microsoft.AzureStackHCI/NetworkInterfaces/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.azurestackhci/virtualharddisks/read",
     "name": "Microsoft.AzureStackHCI/VirtualHardDisks/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.hybridcompute/privatelinkscopes/networksecurityperimeterconfigurations/read",
@@ -8572,27 +8572,27 @@
   {
     "key": "microsoft.keyvault/vaults/read",
     "name": "Microsoft.KeyVault/vaults/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.keyvault/vaults/secrets/setsecret/action",
     "name": "Microsoft.KeyVault/vaults/secrets/setSecret/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.storage/storageaccounts/encryptionscopes/read",
     "name": "Microsoft.Storage/storageAccounts/encryptionScopes/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/encryptionscopes/write",
     "name": "Microsoft.Storage/storageAccounts/encryptionScopes/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.keyvault/vaults/keys/release/action",
     "name": "Microsoft.KeyVault/vaults/keys/release/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.kubernetesruntime/storageclasses/read",
@@ -8612,7 +8612,7 @@
   {
     "key": "microsoft.keyvault/vaults/certificates/read",
     "name": "Microsoft.KeyVault/vaults/certificates/read",
-    "roleCount": 29
+    "roleCount": 30
   },
   {
     "key": "microsoft.appplatform/spring/managedcomponents/logstream/action",
@@ -8672,12 +8672,12 @@
   {
     "key": "microsoft.network/privateendpoints/privatednszonegroups/write",
     "name": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups/write",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.network/privateendpoints/privatednszonegroups/read",
     "name": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups/read",
-    "roleCount": 24
+    "roleCount": 25
   },
   {
     "key": "microsoft.network/privatednszones/read",
@@ -8687,22 +8687,22 @@
   {
     "key": "microsoft.network/privatednszones/write",
     "name": "Microsoft.Network/privateDnsZones/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.network/privatednszones/join/action",
     "name": "Microsoft.Network/privateDnsZones/join/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.network/privatednszones/a/write",
     "name": "Microsoft.Network/privateDnsZones/A/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.network/privatednszones/virtualnetworklinks/write",
     "name": "Microsoft.Network/privateDnsZones/virtualNetworkLinks/write",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.network/privatednszones/virtualnetworklinks/read",
@@ -8752,7 +8752,7 @@
   {
     "key": "microsoft.storage/storageaccounts/fileservices/shares/delete",
     "name": "Microsoft.Storage/storageAccounts/fileServices/shares/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.network/privatednsoperationstatuses/read",
@@ -9127,22 +9127,22 @@
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnectionsapproval/action",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnectionsApproval/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnections/read",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnections/read",
-    "roleCount": 29
+    "roleCount": 30
   },
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnections/write",
     "name": "Microsoft.KeyVault/vaults/privateEndpointConnections/write",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.keyvault/vaults/privatelinkresources/read",
     "name": "Microsoft.KeyVault/vaults/privateLinkResources/read",
-    "roleCount": 29
+    "roleCount": 30
   },
   {
     "key": "microsoft.machinelearningservices/registries/privateendpointconnectionsapproval/action",
@@ -9187,17 +9187,17 @@
   {
     "key": "microsoft.storage/storageaccounts/privateendpointconnections/read",
     "name": "Microsoft.Storage/storageAccounts/privateEndpointConnections/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/privateendpointconnections/write",
     "name": "Microsoft.Storage/storageAccounts/privateEndpointConnections/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/privatelinkresources/read",
     "name": "Microsoft.Storage/storageAccounts/privateLinkResources/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.sql/servers/privateendpointconnectionsapproval/action",
@@ -9597,7 +9597,7 @@
   {
     "key": "microsoft.insights/alertrules/",
     "name": "Microsoft.Insights/alertRules/",
-    "roleCount": 227
+    "roleCount": 229
   },
   {
     "key": "microsoft.cloudtest/pools/leases/action",
@@ -9877,102 +9877,102 @@
   {
     "key": "microsoft.authorization/classicadministrators/operationstatuses/read",
     "name": "Microsoft.Authorization/classicAdministrators/operationstatuses/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/classicadministrators/read",
     "name": "Microsoft.Authorization/classicAdministrators/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/denyassignments/read",
     "name": "Microsoft.Authorization/denyAssignments/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/diagnosticsettings/read",
     "name": "Microsoft.Authorization/diagnosticSettings/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/diagnosticsettingscategories/read",
     "name": "Microsoft.Authorization/diagnosticSettingsCategories/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/operations/read",
     "name": "Microsoft.Authorization/operations/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/permissions/read",
     "name": "Microsoft.Authorization/permissions/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/policyassignments/privatelinkassociations/read",
     "name": "Microsoft.Authorization/policyAssignments/privateLinkAssociations/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/policyassignments/resourcemanagementprivatelinks/read",
     "name": "Microsoft.Authorization/policyAssignments/resourceManagementPrivateLinks/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/policyassignments/resourcemanagementprivatelinks/privateendpointconnectionproxies/read",
     "name": "Microsoft.Authorization/policyAssignments/resourceManagementPrivateLinks/privateEndpointConnectionProxies/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/policyassignments/resourcemanagementprivatelinks/privateendpointconnections/read",
     "name": "Microsoft.Authorization/policyAssignments/resourceManagementPrivateLinks/privateEndpointConnections/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/provideroperations/read",
     "name": "Microsoft.Authorization/providerOperations/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/roleassignmentscheduleinstances/read",
     "name": "Microsoft.Authorization/roleAssignmentScheduleInstances/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/roleassignmentschedulerequests/read",
     "name": "Microsoft.Authorization/roleAssignmentScheduleRequests/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/roleassignmentschedules/read",
     "name": "Microsoft.Authorization/roleAssignmentSchedules/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/roleeligibilityscheduleinstances/read",
     "name": "Microsoft.Authorization/roleEligibilityScheduleInstances/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/roleeligibilityschedulerequests/read",
     "name": "Microsoft.Authorization/roleEligibilityScheduleRequests/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/roleeligibilityschedules/read",
     "name": "Microsoft.Authorization/roleEligibilitySchedules/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/rolemanagementpolicies/read",
     "name": "Microsoft.Authorization/roleManagementPolicies/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.authorization/rolemanagementpolicyassignments/read",
     "name": "Microsoft.Authorization/roleManagementPolicyAssignments/read",
-    "roleCount": 394
+    "roleCount": 396
   },
   {
     "key": "microsoft.managednetworkfabric/networkfabriccontrollers/join/action",
@@ -11325,6 +11325,16 @@
     "roleCount": 4
   },
   {
+    "key": "microsoft.network/privateendpoints/privatelinkserviceproxies/read",
+    "name": "Microsoft.Network/privateEndpoints/privateLinkServiceProxies/read",
+    "roleCount": 22
+  },
+  {
+    "key": "microsoft.network/privateendpoints/privatelinkserviceproxies/delete",
+    "name": "Microsoft.Network/privateEndpoints/privateLinkServiceProxies/delete",
+    "roleCount": 4
+  },
+  {
     "key": "microsoft.healthbot/healthbots/healthsafeguards/clinicalanchoring/process/action",
     "name": "Microsoft.HealthBot/healthBots/HealthSafeguards/ClinicalAnchoring/Process/Action",
     "roleCount": 3
@@ -12237,7 +12247,7 @@
   {
     "key": "microsoft.azurestackhci/devicepools/read",
     "name": "Microsoft.AzureStackHCI/DevicePools/read",
-    "roleCount": 20
+    "roleCount": 22
   },
   {
     "key": "microsoft.azurestackhci/devicepools/claimdevices/action",
@@ -12267,17 +12277,17 @@
   {
     "key": "microsoft.storage/storageaccounts/tableservices/generateuserdelegationkey/action",
     "name": "Microsoft.Storage/storageAccounts/tableServices/generateUserDelegationKey/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/queueservices/generateuserdelegationkey/action",
     "name": "Microsoft.Storage/storageAccounts/queueServices/generateUserDelegationKey/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/generateuserdelegationkey/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/generateUserDelegationKey/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.computeschedule/locations/virtualmachinesexecutecreate/action",
@@ -14822,62 +14832,62 @@
   {
     "key": "microsoft.resources/subscriptions/locations/read",
     "name": "Microsoft.Resources/subscriptions/locations/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.resources/checkresourcename/action",
     "name": "Microsoft.Resources/checkResourceName/action",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.resources/deploymentscripts/write",
     "name": "Microsoft.Resources/deploymentScripts/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.resources/deploymentscripts/read",
     "name": "Microsoft.Resources/deploymentScripts/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.resources/links/write",
     "name": "Microsoft.Resources/links/write",
-    "roleCount": 5
+    "roleCount": 7
   },
   {
     "key": "microsoft.recoveryservices/register/action",
     "name": "Microsoft.RecoveryServices/register/action",
-    "roleCount": 5
+    "roleCount": 6
   },
   {
     "key": "microsoft.datareplication/register/action",
     "name": "Microsoft.DataReplication/register/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.datareplication/replicationvaults/write",
     "name": "Microsoft.DataReplication/replicationVaults/write",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.keyvault/register/action",
     "name": "Microsoft.KeyVault/register/action",
-    "roleCount": 6
+    "roleCount": 7
   },
   {
     "key": "microsoft.azurearcdata/register/action",
     "name": "Microsoft.AzureArcData/register/action",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.resources/links/read",
     "name": "Microsoft.Resources/links/read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationmigrationitems/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/read",
-    "roleCount": 23
+    "roleCount": 24
   },
   {
     "key": "microsoft.hybridconnectivity/endpoints/listingressgatewaycredentials/action",
@@ -16312,12 +16322,12 @@
   {
     "key": "microsoft.storage/storageaccounts/fileservices/takeownership/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/takeOwnership/action",
-    "roleCount": 9
+    "roleCount": 10
   },
   {
     "key": "microsoft.storage/storageaccounts/fileservices/runasbuiltinfileadministrator/action",
     "name": "Microsoft.Storage/storageAccounts/fileServices/runAsBuiltInFileAdministrator/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.edge/connectivitystatuses/delete",
@@ -16397,37 +16407,37 @@
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/runassuperuser/action",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/runAsSuperUser/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.storage/storageaccounts/blobservices/containers/blobs/immutablestorage/runassuperuser/action",
     "name": "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/immutableStorage/runAsSuperUser/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.storage/storageaccounts/reports/read",
     "name": "Microsoft.Storage/storageAccounts/reports/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/storagetaskassignments/read",
     "name": "Microsoft.Storage/storageAccounts/storageTaskAssignments/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/storagetaskassignments/write",
     "name": "Microsoft.Storage/storageAccounts/storageTaskAssignments/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/storagetaskassignments/delete",
     "name": "Microsoft.Storage/storageAccounts/storageTaskAssignments/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/storagetaskassignments/reports/read",
     "name": "Microsoft.Storage/storageAccounts/storageTaskAssignments/reports/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storageactions/storagetasks/read",
@@ -17467,7 +17477,7 @@
   {
     "key": "microsoft.storage/storageaccounts/listservicesas/action",
     "name": "Microsoft.Storage/storageAccounts/listServiceSas/action",
-    "roleCount": 8
+    "roleCount": 9
   },
   {
     "key": "microsoft.storage/locations/datamanagementrpoperationstatuses/read",
@@ -17482,37 +17492,37 @@
   {
     "key": "microsoft.storage/storageaccounts/datashares/read",
     "name": "Microsoft.Storage/storageAccounts/dataShares/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/datashares/delete",
     "name": "Microsoft.Storage/storageAccounts/dataShares/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/datashares/write",
     "name": "Microsoft.Storage/storageAccounts/dataShares/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/connectors/read",
     "name": "Microsoft.Storage/storageAccounts/connectors/read",
-    "roleCount": 25
+    "roleCount": 27
   },
   {
     "key": "microsoft.storage/storageaccounts/connectors/delete",
     "name": "Microsoft.Storage/storageAccounts/connectors/delete",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.storage/storageaccounts/connectors/write",
     "name": "Microsoft.Storage/storageAccounts/connectors/write",
-    "roleCount": 9
+    "roleCount": 11
   },
   {
     "key": "microsoft.storage/storageaccounts/connectors/testexistingconnection/action",
     "name": "Microsoft.Storage/storageAccounts/connectors/testExistingConnection/action",
-    "roleCount": 7
+    "roleCount": 8
   },
   {
     "key": "microsoft.security/apicollections/read",
@@ -18337,7 +18347,7 @@
   {
     "key": "microsoft.azurestackhci/edgemachines/read",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/Read",
-    "roleCount": 21
+    "roleCount": 23
   },
   {
     "key": "microsoft.cognitiveservices/accounts/defenderforaisettings/read",
@@ -18498,6 +18508,16 @@
     "key": "microsoft.cache/operations/read",
     "name": "Microsoft.Cache/operations/read",
     "roleCount": 20
+  },
+  {
+    "key": "microsoft.genome/data/read",
+    "name": "Microsoft.Genome/data/read",
+    "roleCount": 21
+  },
+  {
+    "key": "microsoft.genome/data/write",
+    "name": "Microsoft.Genome/data/write",
+    "roleCount": 5
   },
   {
     "key": "microsoft.compute/virtualmachines/diagnosticruncommands/write",
@@ -19048,6 +19068,16 @@
     "key": "microsoft.resourcebuilder/registeredsubscriptions/read",
     "name": "Microsoft.ResourceBuilder/registeredSubscriptions/read",
     "roleCount": 19
+  },
+  {
+    "key": "microsoft.azurestackhci/virtualmachines/write",
+    "name": "Microsoft.AzureStackHCI/VirtualMachines/Write",
+    "roleCount": 6
+  },
+  {
+    "key": "microsoft.azurestackhci/virtualmachineinstances/write",
+    "name": "Microsoft.AzureStackHCI/VirtualMachineInstances/Write",
+    "roleCount": 6
   },
   {
     "key": "anyscale.platform/clouds/cloudresources/delete",
@@ -30340,11 +30370,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.azurestackhci/virtualmachineinstances/write",
-    "name": "Microsoft.AzureStackHCI/VirtualMachineInstances/Write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.azurestackhci/virtualmachines/delete",
     "name": "Microsoft.AzureStackHCI/VirtualMachines/Delete",
     "roleCount": 0
@@ -30382,11 +30407,6 @@
   {
     "key": "microsoft.azurestackhci/virtualmachines/wacloginasadmin/action",
     "name": "Microsoft.AzureStackHCI/virtualMachines/WACloginAsAdmin/Action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.azurestackhci/virtualmachines/write",
-    "name": "Microsoft.AzureStackHCI/VirtualMachines/Write",
     "roleCount": 0
   },
   {
@@ -46345,6 +46365,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.containerservice/aimanagers/inference/action",
+    "name": "Microsoft.ContainerService/aiManagers/inference/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.containerservice/aimanagers/limitranges/delete",
     "name": "Microsoft.ContainerService/aiManagers/limitranges/delete",
     "roleCount": 0
@@ -52065,6 +52090,36 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.containerservice/nodecustomizations/delete",
+    "name": "Microsoft.ContainerService/nodeCustomizations/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/nodecustomizations/read",
+    "name": "Microsoft.ContainerService/nodeCustomizations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/nodecustomizations/versions/delete",
+    "name": "Microsoft.ContainerService/nodeCustomizations/versions/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/nodecustomizations/versions/read",
+    "name": "Microsoft.ContainerService/nodeCustomizations/versions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/nodecustomizations/versions/write",
+    "name": "Microsoft.ContainerService/nodeCustomizations/versions/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/nodecustomizations/write",
+    "name": "Microsoft.ContainerService/nodeCustomizations/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.containerservice/openshiftclusters/delete",
     "name": "Microsoft.ContainerService/openShiftClusters/delete",
     "roleCount": 0
@@ -52097,6 +52152,36 @@
   {
     "key": "microsoft.containerservice/operations/read",
     "name": "Microsoft.ContainerService/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/delete",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/read",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/versions/delete",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/versions/read",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/versions/write",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/write",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/write",
     "roleCount": 0
   },
   {
@@ -64882,16 +64967,6 @@
   {
     "key": "microsoft.genome/admin/write",
     "name": "Microsoft.Genome/admin/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.genome/data/read",
-    "name": "Microsoft.Genome/data/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.genome/data/write",
-    "name": "Microsoft.Genome/data/write",
     "roleCount": 0
   },
   {
@@ -84010,16 +84085,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/privateendpoints/privatelinkserviceproxies/delete",
-    "name": "Microsoft.Network/privateEndpoints/privateLinkServiceProxies/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/privateendpoints/privatelinkserviceproxies/read",
-    "name": "Microsoft.Network/privateEndpoints/privateLinkServiceProxies/read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/privateendpoints/providers/microsoft.insights/metricdefinitions/read",
     "name": "Microsoft.Network/privateEndpoints/providers/Microsoft.Insights/metricDefinitions/read",
     "roleCount": 0
@@ -87890,6 +87955,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/query/agentsinfo/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/AgentsInfo/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/query/aggregatedsecurityalert/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/AggregatedSecurityAlert/read",
     "roleCount": 0
@@ -89057,6 +89127,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/clouddnsevents/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/CloudDnsEvents/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/cloudhsmhardwareoperationauditlogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/CloudHsmHardwareOperationAuditLogs/read",
     "roleCount": 0
   },
   {
@@ -91057,6 +91132,11 @@
   {
     "key": "microsoft.operationalinsights/workspaces/query/powerplatformdlpactivity/read",
     "name": "Microsoft.OperationalInsights/workspaces/query/PowerPlatformDlpActivity/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.operationalinsights/workspaces/query/preauthenticationdiscoverylogs/read",
+    "name": "Microsoft.OperationalInsights/workspaces/query/PreAuthenticationDiscoveryLogs/read",
     "roleCount": 0
   },
   {
@@ -109762,56 +109842,6 @@
   {
     "key": "microsoft.workloads/registeredsubscriptions/read",
     "name": "Microsoft.Workloads/RegisteredSubscriptions/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/delete",
-    "name": "Microsoft.Workloads/sapDiscoverySites/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/importentities/action",
-    "name": "Microsoft.Workloads/sapDiscoverySites/importEntities/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/read",
-    "name": "Microsoft.Workloads/sapDiscoverySites/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/sapinstances/delete",
-    "name": "Microsoft.Workloads/sapDiscoverySites/sapInstances/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/sapinstances/read",
-    "name": "Microsoft.Workloads/sapDiscoverySites/sapInstances/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/sapinstances/serverinstances/delete",
-    "name": "Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/sapinstances/serverinstances/read",
-    "name": "Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/sapinstances/serverinstances/write",
-    "name": "Microsoft.Workloads/sapDiscoverySites/sapInstances/serverInstances/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/sapinstances/write",
-    "name": "Microsoft.Workloads/sapDiscoverySites/sapInstances/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.workloads/sapdiscoverysites/write",
-    "name": "Microsoft.Workloads/sapDiscoverySites/write",
     "roleCount": 0
   },
   {
