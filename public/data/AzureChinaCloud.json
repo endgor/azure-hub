@@ -1,5 +1,5 @@
 {
-  "changeNumber": 400,
+  "changeNumber": 401,
   "cloud": "China",
   "values": [
     {
@@ -1366,7 +1366,7 @@
       "name": "AzureMonitor",
       "id": "AzureMonitor",
       "properties": {
-        "changeNumber": 25,
+        "changeNumber": 26,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -1504,7 +1504,8 @@
           "2406:e500:2602:2::240/123",
           "2406:e500:2602:3::220/123",
           "2406:e500:2602:3::240/122",
-          "2406:e500:2602:5::a0/123"
+          "2406:e500:2602:5::a0/123",
+          "2406:e500:2602:6::/123"
         ],
         "networkFeatures": [
           "API",
@@ -5877,7 +5878,7 @@
       "name": "AzureMonitor.ChinaNorth3",
       "id": "AzureMonitor.ChinaNorth3",
       "properties": {
-        "changeNumber": 14,
+        "changeNumber": 15,
         "region": "chinanorth3",
         "regionId": 89,
         "platform": "Azure",
@@ -5912,7 +5913,8 @@
           "2406:e500:2602:2::240/123",
           "2406:e500:2602:3::220/123",
           "2406:e500:2602:3::240/122",
-          "2406:e500:2602:5::a0/123"
+          "2406:e500:2602:5::a0/123",
+          "2406:e500:2602:6::/123"
         ],
         "networkFeatures": [
           "NSG"

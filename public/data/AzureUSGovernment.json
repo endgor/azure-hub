@@ -1,5 +1,5 @@
 {
-  "changeNumber": 397,
+  "changeNumber": 398,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -1590,7 +1590,7 @@
       "name": "AzureMonitor",
       "id": "AzureMonitor",
       "properties": {
-        "changeNumber": 38,
+        "changeNumber": 39,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -1657,6 +1657,7 @@
           "51.55.176.192/26",
           "51.55.188.0/27",
           "51.55.193.32/27",
+          "51.55.232.0/26",
           "52.126.203.64/29",
           "52.126.203.192/29",
           "52.126.249.0/27",
@@ -3082,7 +3083,7 @@
       "name": "M365ManagementActivityApi",
       "id": "M365ManagementActivityApi",
       "properties": {
-        "changeNumber": 7,
+        "changeNumber": 8,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -3118,6 +3119,7 @@
           "52.181.181.136/32",
           "52.181.222.252/30",
           "52.227.180.138/32",
+          "52.243.15.8/30",
           "52.243.243.4/30",
           "52.244.236.144/30",
           "52.245.128.32/31",
@@ -3143,6 +3145,7 @@
           "2001:489a:3403:9::a0/125",
           "2001:489a:3403:9::a8/128",
           "2001:489a:3403:9::630/125",
+          "2001:489a:3403:a::7f4/126",
           "2001:489a:3604:3::688/126",
           "2001:489a:3604:9::460/125"
         ],
@@ -6713,7 +6716,7 @@
       "name": "AzureMonitor.USGovArizona",
       "id": "AzureMonitor.USGovArizona",
       "properties": {
-        "changeNumber": 26,
+        "changeNumber": 27,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -6742,6 +6745,7 @@
           "51.54.234.112/28",
           "51.55.126.176/28",
           "51.55.126.192/28",
+          "51.55.232.0/26",
           "52.127.2.232/29",
           "52.127.3.184/29",
           "52.127.10.80/30",
@@ -9916,7 +9920,7 @@
       "name": "AzureMonitor.Core",
       "id": "AzureMonitor.Core",
       "properties": {
-        "changeNumber": 10,
+        "changeNumber": 11,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -9941,6 +9945,7 @@
           "20.159.106.0/27",
           "51.55.176.192/26",
           "51.55.193.32/27",
+          "51.55.232.0/26",
           "52.126.249.0/27",
           "52.127.23.112/29",
           "52.127.55.192/28",
@@ -10437,7 +10442,7 @@
       "name": "AzureCloud.usgovarizona",
       "id": "AzureCloud.usgovarizona",
       "properties": {
-        "changeNumber": 70,
+        "changeNumber": 71,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -10507,6 +10512,7 @@
           "51.54.80.0/23",
           "51.54.224.0/19",
           "51.55.112.0/20",
+          "51.55.224.0/20",
           "52.108.140.0/24",
           "52.112.21.0/24",
           "52.114.117.0/24",
@@ -10933,7 +10939,7 @@
       "name": "AzureCloud",
       "id": "AzureCloud",
       "properties": {
-        "changeNumber": 124,
+        "changeNumber": 125,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -11186,6 +11192,7 @@
           "51.55.112.0/20",
           "51.55.128.0/18",
           "51.55.192.0/19",
+          "51.55.224.0/20",
           "52.108.64.0/23",
           "52.108.66.0/23",
           "52.108.140.0/24",
