@@ -43790,6 +43790,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicy/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicylock/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicyLock/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.compute/unregister/action",
     "name": "Microsoft.Compute/unregister/action",
     "roleCount": 0
@@ -44197,41 +44207,6 @@
   {
     "key": "microsoft.computelimit/locations/operationresults/read",
     "name": "Microsoft.ComputeLimit/locations/operationResults/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/sharedlimitcaps/delete",
-    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/sharedlimitcaps/membercapoverrides/delete",
-    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/sharedlimitcaps/membercapoverrides/read",
-    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/sharedlimitcaps/membercapoverrides/write",
-    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/sharedlimitcaps/read",
-    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/sharedlimitcaps/write",
-    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/vmfamilies/read",
-    "name": "Microsoft.ComputeLimit/locations/vmFamilies/read",
     "roleCount": 0
   },
   {
@@ -52332,6 +52307,11 @@
   {
     "key": "microsoft.costmanagement/calculatecost/read",
     "name": "Microsoft.CostManagement/calculateCost/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.costmanagement/checknameavailability/action",
+    "name": "Microsoft.CostManagement/checkNameAvailability/action",
     "roleCount": 0
   },
   {
@@ -81005,6 +80985,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/azureserviceconnectioncontrollers/delete",
+    "name": "Microsoft.Network/azureserviceconnectioncontrollers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/azureserviceconnectioncontrollers/read",
+    "name": "Microsoft.Network/azureserviceconnectioncontrollers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/azureserviceconnectioncontrollers/write",
+    "name": "Microsoft.Network/azureserviceconnectioncontrollers/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/azurewebcategories/classifyunknown/action",
     "name": "Microsoft.Network/azureWebCategories/classifyUnknown/action",
     "roleCount": 0
@@ -82337,6 +82332,11 @@
   {
     "key": "microsoft.network/interconnectgroups/delete",
     "name": "Microsoft.Network/interconnectGroups/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/interconnectgroups/nodeavailability/action",
+    "name": "Microsoft.Network/interconnectGroups/nodeAvailability/action",
     "roleCount": 0
   },
   {
@@ -84215,6 +84215,71 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/delete",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/endpoints/delete",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/endpoints/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/endpoints/read",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/endpoints/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/endpoints/write",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/endpoints/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/healthpolicies/delete",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/healthPolicies/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/healthpolicies/read",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/healthPolicies/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/healthpolicies/write",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/healthPolicies/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/read",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/validatelink/action",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/validateLink/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/privatetrafficmanagerprofiles/write",
+    "name": "Microsoft.Network/privatetrafficmanagerprofiles/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/probinggateways/delete",
+    "name": "Microsoft.Network/probinggateways/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/probinggateways/read",
+    "name": "Microsoft.Network/probinggateways/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/probinggateways/write",
+    "name": "Microsoft.Network/probinggateways/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.network/publicipaddresses/ddosprotectionstatus/action",
     "name": "Microsoft.Network/publicIPAddresses/ddosProtectionStatus/action",
     "roleCount": 0
@@ -84377,6 +84442,41 @@
   {
     "key": "microsoft.network/serviceendpointpolicies/write",
     "name": "Microsoft.Network/serviceEndpointPolicies/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymaps/delete",
+    "name": "Microsoft.Network/topologymaps/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymaps/read",
+    "name": "Microsoft.Network/topologymaps/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymaps/sites/delete",
+    "name": "Microsoft.Network/topologymaps/sites/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymaps/sites/read",
+    "name": "Microsoft.Network/topologymaps/sites/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymaps/sites/write",
+    "name": "Microsoft.Network/topologymaps/sites/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymaps/write",
+    "name": "Microsoft.Network/topologymaps/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/topologymapsoperations/read",
+    "name": "Microsoft.Network/topologymapsoperations/read",
     "roleCount": 0
   },
   {
@@ -84907,6 +85007,11 @@
   {
     "key": "microsoft.network/virtualnetworks/subnets/effectivesecurityuserrules/read",
     "name": "Microsoft.Network/virtualNetworks/subnets/effectiveSecurityUserRules/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.network/virtualnetworks/subnets/getnetworkpolicies/action",
+    "name": "Microsoft.Network/virtualNetworks/subnets/getNetworkPolicies/action",
     "roleCount": 0
   },
   {
