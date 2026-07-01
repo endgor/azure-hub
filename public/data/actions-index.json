@@ -19090,11 +19090,6 @@
     "roleCount": 20
   },
   {
-    "key": "microsoft.cognitiveservices/accounts/aiservices/applications/invoke/action",
-    "name": "Microsoft.CognitiveServices/accounts/AIServices/applications/invoke/action",
-    "roleCount": 12
-  },
-  {
     "key": "microsoft.cognitiveservices/accounts/aiservices/endpoints/interact/action",
     "name": "Microsoft.CognitiveServices/accounts/AIServices/endpoints/interact/action",
     "roleCount": 12
@@ -35060,6 +35055,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/aiservices/applications/invoke/action",
+    "name": "Microsoft.CognitiveServices/accounts/AIServices/applications/invoke/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/aiservices/assets/delete",
     "name": "Microsoft.CognitiveServices/accounts/AIServices/assets/delete",
     "roleCount": 0
@@ -43815,16 +43815,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.compute/snapshots/updateimmutabilitypolicy/action",
-    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicy/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.compute/snapshots/updateimmutabilitypolicylock/action",
-    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicyLock/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.compute/unregister/action",
     "name": "Microsoft.Compute/unregister/action",
     "roleCount": 0
@@ -52250,6 +52240,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.containerservice/preparedimagespecifications/deploy/action",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/deploy/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.containerservice/preparedimagespecifications/read",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
     "roleCount": 0
@@ -52257,6 +52252,11 @@
   {
     "key": "microsoft.containerservice/preparedimagespecifications/versions/delete",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/versions/deploy/action",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/deploy/action",
     "roleCount": 0
   },
   {
@@ -66531,7 +66531,7 @@
   },
   {
     "key": "microsoft.hybridconnectivity/operations/read",
-    "name": "Microsoft.HybridConnectivity/Operations/read",
+    "name": "Microsoft.HybridConnectivity/operations/read",
     "roleCount": 0
   },
   {
@@ -75630,6 +75630,36 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.managednetworkfabric/edgeconnectors/delete",
+    "name": "Microsoft.ManagedNetworkFabric/edgeConnectors/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/edgeconnectors/read",
+    "name": "Microsoft.ManagedNetworkFabric/edgeConnectors/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/edgeconnectors/write",
+    "name": "Microsoft.ManagedNetworkFabric/edgeConnectors/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/fabrics/delete",
+    "name": "Microsoft.ManagedNetworkFabric/fabrics/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/fabrics/read",
+    "name": "Microsoft.ManagedNetworkFabric/fabrics/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/fabrics/write",
+    "name": "Microsoft.ManagedNetworkFabric/fabrics/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.managednetworkfabric/internetgatewayrules/delete",
     "name": "Microsoft.ManagedNetworkFabric/internetGatewayRules/delete",
     "roleCount": 0
@@ -76215,6 +76245,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.managednetworkfabric/networkbootstrapdevices/runrocommand/action",
+    "name": "Microsoft.ManagedNetworkFabric/networkBootstrapDevices/runRoCommand/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.managednetworkfabric/networkbootstrapdevices/updateadministrativestate/action",
     "name": "Microsoft.ManagedNetworkFabric/networkBootstrapDevices/updateAdministrativeState/action",
     "roleCount": 0
@@ -76327,6 +76362,11 @@
   {
     "key": "microsoft.managednetworkfabric/networkdevices/runrwcommand/action",
     "name": "Microsoft.ManagedNetworkFabric/networkDevices/runRwCommand/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/networkdevices/runvalidation/action",
+    "name": "Microsoft.ManagedNetworkFabric/networkDevices/runValidation/action",
     "roleCount": 0
   },
   {
@@ -76802,6 +76842,11 @@
   {
     "key": "microsoft.managednetworkfabric/networkfabrics/rotatepasswords/action",
     "name": "Microsoft.ManagedNetworkFabric/networkFabrics/rotatePasswords/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.managednetworkfabric/networkfabrics/runvalidation/action",
+    "name": "Microsoft.ManagedNetworkFabric/networkFabrics/runValidation/action",
     "roleCount": 0
   },
   {
@@ -93785,51 +93830,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.recommendationsservice/accounts/delete",
-    "name": "Microsoft.RecommendationsService/accounts/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/modeling/delete",
-    "name": "Microsoft.RecommendationsService/accounts/modeling/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/modeling/read",
-    "name": "Microsoft.RecommendationsService/accounts/modeling/Read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/modeling/write",
-    "name": "Microsoft.RecommendationsService/accounts/modeling/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/read",
-    "name": "Microsoft.RecommendationsService/accounts/Read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/serviceendpoints/delete",
-    "name": "Microsoft.RecommendationsService/accounts/serviceEndpoints/Delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/serviceendpoints/read",
-    "name": "Microsoft.RecommendationsService/accounts/serviceEndpoints/Read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/serviceendpoints/write",
-    "name": "Microsoft.RecommendationsService/accounts/serviceEndpoints/Write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.recommendationsservice/accounts/write",
-    "name": "Microsoft.RecommendationsService/accounts/Write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.recoveryservices/locations/backupcrrjobcancel/action",
     "name": "Microsoft.RecoveryServices/Locations/backupCrrJobCancel/action",
     "roleCount": 0
@@ -95927,6 +95927,16 @@
   {
     "key": "microsoft.search/locations/notifynetworksecurityperimeterupdatesavailable/write",
     "name": "Microsoft.Search/locations/notifyNetworkSecurityPerimeterUpdatesAvailable/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.search/locations/operationresults/read",
+    "name": "Microsoft.Search/locations/operationResults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.search/locations/usages/read",
+    "name": "Microsoft.Search/locations/usages/read",
     "roleCount": 0
   },
   {
@@ -102850,6 +102860,36 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.storage/contextcaches/contextcachecontainers/delete",
+    "name": "Microsoft.Storage/contextCaches/contextCacheContainers/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/contextcaches/contextcachecontainers/read",
+    "name": "Microsoft.Storage/contextCaches/contextCacheContainers/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/contextcaches/contextcachecontainers/write",
+    "name": "Microsoft.Storage/contextCaches/contextCacheContainers/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/contextcaches/delete",
+    "name": "Microsoft.Storage/contextCaches/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/contextcaches/read",
+    "name": "Microsoft.Storage/contextCaches/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/contextcaches/write",
+    "name": "Microsoft.Storage/contextCaches/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.storage/deletedaccounts/read",
     "name": "Microsoft.Storage/deletedAccounts/read",
     "roleCount": 0
@@ -102867,6 +102907,16 @@
   {
     "key": "microsoft.storage/locations/checknameavailability/read",
     "name": "Microsoft.Storage/locations/checknameavailability/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/locations/contextcacherpoperationstatuses/read",
+    "name": "Microsoft.Storage/locations/ContextCacheRPOperationStatuses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/locations/contextcacherpoperationstatuses/write",
+    "name": "Microsoft.Storage/locations/ContextCacheRPOperationStatuses/write",
     "roleCount": 0
   },
   {
@@ -102890,6 +102940,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.storage/providerpermissions/read",
+    "name": "Microsoft.Storage/providerPermissions/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.storage/register/action",
     "name": "Microsoft.Storage/register/action",
     "roleCount": 0
@@ -102900,8 +102955,18 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.storage/resourcetypes/read",
+    "name": "Microsoft.Storage/resourceTypes/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.storage/skus/read",
     "name": "Microsoft.Storage/skus/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/aborthnsonmigration/action",
+    "name": "Microsoft.Storage/storageAccounts/abortHnsOnMigration/action",
     "roleCount": 0
   },
   {
@@ -103092,6 +103157,16 @@
   {
     "key": "microsoft.storage/storageaccounts/encryptionscopes/hoboconfigurations/write",
     "name": "Microsoft.Storage/storageAccounts/encryptionScopes/hoboConfigurations/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/encryptionscopes/sharedidentities/read",
+    "name": "Microsoft.Storage/storageAccounts/encryptionScopes/sharedIdentities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/encryptionscopes/sharedidentities/write",
+    "name": "Microsoft.Storage/storageAccounts/encryptionScopes/sharedIdentities/write",
     "roleCount": 0
   },
   {
@@ -103362,6 +103437,16 @@
   {
     "key": "microsoft.storage/storageaccounts/services/diagnosticsettings/write",
     "name": "Microsoft.Storage/storageAccounts/services/diagnosticSettings/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/sharedidentities/read",
+    "name": "Microsoft.Storage/storageAccounts/sharedIdentities/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.storage/storageaccounts/sharedidentities/write",
+    "name": "Microsoft.Storage/storageAccounts/sharedIdentities/write",
     "roleCount": 0
   },
   {

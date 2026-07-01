@@ -39253,7 +39253,6 @@
         "condition": null,
         "conditionVersion": null,
         "dataActions": [
-          "Microsoft.CognitiveServices/accounts/AIServices/applications/invoke/action",
           "Microsoft.CognitiveServices/accounts/AIServices/endpoints/interact/action"
         ],
         "notActions": [],
@@ -39264,10 +39263,9 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-06-16T15:19:44.997057+00:00",
-    "permissionCount": 2,
+    "updatedOn": "2026-06-30T15:10:23.309352+00:00",
+    "permissionCount": 1,
     "dataActions": [
-      "Microsoft.CognitiveServices/accounts/AIServices/applications/invoke/action",
       "Microsoft.CognitiveServices/accounts/AIServices/endpoints/interact/action"
     ],
     "notDataActions": []
