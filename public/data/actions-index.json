@@ -20455,11 +20455,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.apicenter/services/apis/versions/securityrequirements/getcredentials/action",
-    "name": "Microsoft.ApiCenter/services/apis/versions/securityRequirements/getCredentials/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.apicenter/services/apis/versions/securityrequirements/read",
     "name": "Microsoft.ApiCenter/services/apis/versions/securityRequirements/read",
     "roleCount": 0
@@ -34700,13 +34695,473 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/adddevices/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/addDevices/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/adduserassignments/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/addUserAssignments/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/appdiscovery/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/appDiscovery/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/applications/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/applications/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/assignusers/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/assignUsers/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/checkinclouddevice/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/checkinCloudDevice/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/checkoutclouddevice/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/checkoutCloudDevice/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/create/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/create/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/deleteapp/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/deleteApp/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/deletedevices/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/deleteDevices/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/device/signal/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/device/signal/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/devices/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/devices/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/operations/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/policies/autoscale/status/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/policies/autoscale/status/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/attach/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/attach/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/bulkdelete/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/bulkDelete/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/bulkupdate/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/bulkUpdate/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/create/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/create/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/delete/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/delete/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/deletesnapshot/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/deleteSnapshot/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/detach/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/detach/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/importfromsasurl/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/importFromSasUrl/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/notifyusage/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/notifyUsage/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/operations/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/restoresnapshot/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/restoreSnapshot/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/snapshots/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/snapshots/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/snapshots/sas/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/snapshots/sas/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/takesnapshot/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/takeSnapshot/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/profiles/update/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/profiles/update/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/publishableappsetindex/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/publishableAppSetIndex/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/publishableappsets/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/publishableAppSets/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/putapp/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/putApp/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/removeuserassignments/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/removeUserAssignments/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/removeusers/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/removeUsers/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/resumeprovisioning/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/resumeProvisioning/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/updatecollectionmetadata/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/updateCollectionMetadata/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/updatedevicespecification/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/updateDeviceSpecification/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/userassignments/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/userAssignments/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/users/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/users/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/validateapp/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/validateApp/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/collections/write",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/collections/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.clouddeviceplatform/partnerbusinesses/delete",
     "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/delete",
     "roleCount": 0
   },
   {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/archive/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/archive/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/block/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/block/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/create/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/create/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/deallocate/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/deallocate/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/delete/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/delete/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/deletesnapshot/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/deleteSnapshot/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/diagnoseandrepair/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/diagnoseAndRepair/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/failback/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/failback/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/failover/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/failover/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/hibernate/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/hibernate/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/operations/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/operations/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/operations/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/reset/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/reset/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/restart/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/restart/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/snapshots/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/snapshots/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/snapshots/sasuri/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/snapshots/sasUri/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/start/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/start/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/startsession/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/startSession/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/takesnapshot/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/takeSnapshot/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/unblock/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/unblock/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/update/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/update/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/devices/userassignment/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/devices/userAssignment/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/encryptionsets/create/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/encryptionSets/create/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/encryptionsets/delete/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/encryptionSets/delete/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/encryptionsets/operations/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/encryptionSets/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/encryptionsets/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/encryptionSets/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/encryptionsets/update/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/encryptionSets/update/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/images/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/images/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/images/write",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/images/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/createnetwork/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/createNetwork/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/createnetworksetting/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/createNetworkSetting/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/deletenetwork/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/deleteNetwork/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/operations/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/updatenetwork/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/updateNetwork/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/updatenetworksetting/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/updateNetworkSetting/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/networks/write",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/networks/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.clouddeviceplatform/partnerbusinesses/read",
     "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/resourceisolationgroups/delete",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/resourceIsolationGroups/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/resourceisolationgroups/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/resourceIsolationGroups/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/resourceisolationgroups/write",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/resourceIsolationGroups/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/secrets/create/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/secrets/create/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/secrets/delete/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/secrets/delete/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/secrets/operations/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/secrets/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/secrets/read",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/secrets/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/partnerbusinesses/secrets/update/action",
+    "name": "Microsoft.CloudDevicePlatform/partnerBusinesses/secrets/update/action",
     "roleCount": 0
   },
   {
@@ -35040,6 +35495,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/aiservices/agents/endpoints/useridentityimpersonation/action",
+    "name": "Microsoft.CognitiveServices/accounts/AIServices/agents/endpoints/UserIdentityImpersonation/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/aiservices/agents/state/disable/action",
     "name": "Microsoft.CognitiveServices/accounts/AIServices/agents/state/disable/action",
     "roleCount": 0
@@ -35120,6 +35580,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/aiservices/fine_tuning_deployments/write",
+    "name": "Microsoft.CognitiveServices/accounts/AIServices/fine_tuning_deployments/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/aiservices/fine_tuning/delete",
     "name": "Microsoft.CognitiveServices/accounts/AIServices/fine_tuning/delete",
     "roleCount": 0
@@ -35187,6 +35652,21 @@
   {
     "key": "microsoft.cognitiveservices/accounts/aiservices/managedagentidentityblueprints/write",
     "name": "Microsoft.CognitiveServices/accounts/AIServices/managedAgentIdentityBlueprints/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/aiservices/managedcomputedeployments/delete",
+    "name": "Microsoft.CognitiveServices/accounts/AIServices/managedComputeDeployments/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/aiservices/managedcomputedeployments/read",
+    "name": "Microsoft.CognitiveServices/accounts/AIServices/managedComputeDeployments/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/aiservices/managedcomputedeployments/write",
+    "name": "Microsoft.CognitiveServices/accounts/AIServices/managedComputeDeployments/write",
     "roleCount": 0
   },
   {
@@ -36785,13 +37265,48 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/audio/manifest:bind/action",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/audio/manifest:bind/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/digest:sign/action",
     "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/digest:sign/action",
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/image/manifest:bind/action",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/image/manifest:bind/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/jobs/read",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/jobs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/jobs/write",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/jobs/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/manifest:bind/action",
     "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/manifest:bind/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/operations/read",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/operations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/perceptible:overlay/action",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/perceptible:overlay/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/contentsafety/provenance/video/manifest:bind/action",
+    "name": "Microsoft.CognitiveServices/accounts/ContentSafety/provenance/video/manifest:bind/action",
     "roleCount": 0
   },
   {
@@ -41280,6 +41795,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/accounts/openai/data-generation-jobs/delete",
+    "name": "Microsoft.CognitiveServices/accounts/OpenAI/data-generation-jobs/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/openai/data-generation-jobs/read",
+    "name": "Microsoft.CognitiveServices/accounts/OpenAI/data-generation-jobs/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/openai/data-generation-jobs/write",
+    "name": "Microsoft.CognitiveServices/accounts/OpenAI/data-generation-jobs/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/accounts/openai/data-generations/delete",
     "name": "Microsoft.CognitiveServices/accounts/OpenAI/data-generations/delete",
     "roleCount": 0
@@ -44222,6 +44752,41 @@
   {
     "key": "microsoft.computelimit/locations/operationresults/read",
     "name": "Microsoft.ComputeLimit/locations/operationResults/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/sharedlimitcaps/delete",
+    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/sharedlimitcaps/membercapoverrides/delete",
+    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/sharedlimitcaps/membercapoverrides/read",
+    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/sharedlimitcaps/membercapoverrides/write",
+    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/sharedlimitcaps/read",
+    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/sharedlimitcaps/write",
+    "name": "Microsoft.ComputeLimit/locations/sharedLimitCaps/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/vmfamilies/read",
+    "name": "Microsoft.ComputeLimit/locations/vmFamilies/read",
     "roleCount": 0
   },
   {
@@ -66531,7 +67096,7 @@
   },
   {
     "key": "microsoft.hybridconnectivity/operations/read",
-    "name": "Microsoft.HybridConnectivity/operations/read",
+    "name": "Microsoft.HybridConnectivity/Operations/read",
     "roleCount": 0
   },
   {
@@ -73527,6 +74092,11 @@
   {
     "key": "microsoft.logic/integrationaccounts/agreements/listcontentcallbackurl/action",
     "name": "Microsoft.Logic/integrationAccounts/agreements/listContentCallbackUrl/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.logic/integrationaccounts/agreements/listsecrets/action",
+    "name": "Microsoft.Logic/integrationAccounts/agreements/listSecrets/action",
     "roleCount": 0
   },
   {
@@ -95142,6 +95712,11 @@
   {
     "key": "microsoft.resourcebuilder/workspaces/pipelines/read",
     "name": "Microsoft.ResourceBuilder/workspaces/pipelines/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.resourcebuilder/workspaces/pipelines/triggerrun/action",
+    "name": "Microsoft.ResourceBuilder/workspaces/pipelines/triggerRun/action",
     "roleCount": 0
   },
   {
