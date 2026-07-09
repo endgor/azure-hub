@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-08",
+  "lastUpdated": "2026-07-09",
   "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
   "entries": [
     {
@@ -15,7 +15,7 @@
       "publicDnsForwarders": [
         "api.azureml.ms",
         "notebooks.azure.net",
-        "instances.azureml.ms",
+        "instances.ml.azure.ms",
         "aznbcontent.net",
         "inference.ml.azure.com"
       ],
@@ -1495,7 +1495,7 @@
       "publicDnsForwarders": [
         "api.ml.azure.us",
         "notebooks.usgovcloudapi.net",
-        "instances.azureml.us",
+        "instances.ml.azure.us",
         "aznbcontent.net",
         "inference.ml.azure.us"
       ],

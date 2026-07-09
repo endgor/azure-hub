@@ -15200,8 +15200,7 @@
           "Microsoft.ContainerService/fleets/services/read",
           "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
           "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
-          "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-          "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read"
+          "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read"
         ],
         "notActions": [],
         "notDataActions": []
@@ -15211,8 +15210,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-10-23T18:34:36.152431+00:00",
-    "permissionCount": 368.3333333333333,
+    "updatedOn": "2026-07-08T18:23:39.636529+00:00",
+    "permissionCount": 367.3333333333333,
     "dataActions": [
       "Microsoft.ContainerService/fleets/apps/controllerrevisions/read",
       "Microsoft.ContainerService/fleets/apps/daemonsets/read",
@@ -15241,8 +15240,7 @@
       "Microsoft.ContainerService/fleets/services/read",
       "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
       "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
-      "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-      "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read"
+      "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read"
     ],
     "notDataActions": []
   },
@@ -18594,11 +18592,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Logic Apps Standard Developer (Preview)",
+    "roleName": "Logic Apps Standard Developer",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-03T21:08:10.028477+00:00",
+    "updatedOn": "2026-07-08T21:58:33.875657+00:00",
     "permissionCount": 2932.6666666666665,
     "dataActions": [],
     "notDataActions": []
@@ -18636,11 +18634,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Logic Apps Standard Contributor (Preview)",
+    "roleName": "Logic Apps Standard Contributor",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-03T21:08:12.230795+00:00",
+    "updatedOn": "2026-07-08T21:58:33.875657+00:00",
     "permissionCount": 3503.0000000000005,
     "dataActions": [],
     "notDataActions": []
@@ -18723,11 +18721,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Logic Apps Standard Reader (Preview)",
+    "roleName": "Logic Apps Standard Reader",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-03T21:08:11.472321+00:00",
+    "updatedOn": "2026-07-08T21:58:33.875657+00:00",
     "permissionCount": 1502.9999999999998,
     "dataActions": [],
     "notDataActions": []
@@ -32776,7 +32774,7 @@
       {
         "actions": [
           "Microsoft.Authorization/*/read",
-          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Insights/alertRules/read",
           "Microsoft.App/agents/read"
         ],
         "condition": null,
@@ -32795,8 +32793,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-09-16T15:14:53.239414+00:00",
-    "permissionCount": 671.6666666666666,
+    "updatedOn": "2026-07-08T22:44:33.302442+00:00",
+    "permissionCount": 339.3333333333333,
     "dataActions": [
       "Microsoft.App/agents/threads/read",
       "Microsoft.App/agents/graph/read",
@@ -35235,7 +35233,7 @@
       {
         "actions": [
           "Microsoft.Authorization/*/read",
-          "Microsoft.Insights/alertRules/*",
+          "Microsoft.Insights/alertRules/read",
           "Microsoft.App/agents/read"
         ],
         "condition": null,
@@ -35257,8 +35255,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-10-28T15:14:12.561945+00:00",
-    "permissionCount": 674.6666666666666,
+    "updatedOn": "2026-07-08T22:44:33.302442+00:00",
+    "permissionCount": 342.3333333333333,
     "dataActions": [
       "Microsoft.App/agents/threads/read",
       "Microsoft.App/agents/incidentManagement/read",
