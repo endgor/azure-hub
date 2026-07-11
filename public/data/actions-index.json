@@ -5955,14 +5955,14 @@
     "roleCount": 23
   },
   {
-    "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/works/read",
-    "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read",
-    "roleCount": 23
-  },
-  {
     "key": "microsoft.containerservice/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
     "name": "Microsoft.ContainerService/fleets/authorization.k8s.io/localsubjectaccessreviews/write",
     "roleCount": 5
+  },
+  {
+    "key": "microsoft.containerservice/fleets/placement.kubernetes-fleet.io/works/read",
+    "name": "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read",
+    "roleCount": 22
   },
   {
     "key": "microsoft.containerservice/fleets/apps/daemonsets/write",
@@ -24170,11 +24170,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.app/quotapolicy/write",
-    "name": "Microsoft.App/quotaPolicy/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.app/register/action",
     "name": "microsoft.app/register/action",
     "roleCount": 0
@@ -29997,6 +29992,21 @@
   {
     "key": "microsoft.azurestackhci/clusters/virtualmachinediagnostics/write",
     "name": "Microsoft.AzureStackHCI/clusters/virtualMachineDiagnostics/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/clusters/volumes/jobs/delete",
+    "name": "Microsoft.AzureStackHCI/Clusters/Volumes/Jobs/Delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/clusters/volumes/jobs/read",
+    "name": "Microsoft.AzureStackHCI/Clusters/Volumes/Jobs/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/clusters/volumes/jobs/write",
+    "name": "Microsoft.AzureStackHCI/Clusters/Volumes/Jobs/Write",
     "roleCount": 0
   },
   {
@@ -44580,18 +44590,13 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.computelimit/locations/features/disable/action",
-    "name": "Microsoft.ComputeLimit/locations/features/disable/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.computelimit/locations/features/enable/action",
-    "name": "Microsoft.ComputeLimit/locations/features/enable/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.computelimit/locations/features/read",
     "name": "Microsoft.ComputeLimit/locations/features/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.computelimit/locations/features/write",
+    "name": "Microsoft.ComputeLimit/locations/features/write",
     "roleCount": 0
   },
   {
@@ -49945,6 +49950,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.containerservice/fleets/notify/action",
+    "name": "Microsoft.ContainerService/fleets/notify/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.containerservice/fleets/openapi/v2/read",
     "name": "Microsoft.ContainerService/fleets/openapi/v2/read",
     "roleCount": 0
@@ -50622,6 +50632,11 @@
   {
     "key": "microsoft.containerservice/managedclusters/admissionregistration.k8s.io/validatingwebhookconfigurations/write",
     "name": "Microsoft.ContainerService/managedClusters/admissionregistration.k8s.io/validatingwebhookconfigurations/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/managedclusters/agentpools/listbootstrapdata/action",
+    "name": "Microsoft.ContainerService/managedClusters/agentPools/listBootstrapData/action",
     "roleCount": 0
   },
   {
@@ -52650,6 +52665,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.containerservice/preparedimagespecifications/deploy/action",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/deploy/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.containerservice/preparedimagespecifications/read",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
     "roleCount": 0
@@ -52657,6 +52677,11 @@
   {
     "key": "microsoft.containerservice/preparedimagespecifications/versions/delete",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/versions/deploy/action",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/deploy/action",
     "roleCount": 0
   },
   {
@@ -103335,36 +103360,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.storage/contextcaches/contextcachecontainers/delete",
-    "name": "Microsoft.Storage/contextCaches/contextCacheContainers/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/contextcaches/contextcachecontainers/read",
-    "name": "Microsoft.Storage/contextCaches/contextCacheContainers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/contextcaches/contextcachecontainers/write",
-    "name": "Microsoft.Storage/contextCaches/contextCacheContainers/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/contextcaches/delete",
-    "name": "Microsoft.Storage/contextCaches/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/contextcaches/read",
-    "name": "Microsoft.Storage/contextCaches/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/contextcaches/write",
-    "name": "Microsoft.Storage/contextCaches/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.storage/deletedaccounts/read",
     "name": "Microsoft.Storage/deletedAccounts/read",
     "roleCount": 0
@@ -103382,16 +103377,6 @@
   {
     "key": "microsoft.storage/locations/checknameavailability/read",
     "name": "Microsoft.Storage/locations/checknameavailability/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/locations/contextcacherpoperationstatuses/read",
-    "name": "Microsoft.Storage/locations/ContextCacheRPOperationStatuses/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.storage/locations/contextcacherpoperationstatuses/write",
-    "name": "Microsoft.Storage/locations/ContextCacheRPOperationStatuses/write",
     "roleCount": 0
   },
   {

@@ -14968,8 +14968,7 @@
           "Microsoft.ContainerService/fleets/services/read",
           "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
           "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
-          "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-          "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read"
+          "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read"
         ],
         "notActions": [],
         "notDataActions": []
@@ -14979,8 +14978,8 @@
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-10-25T18:52:27.325384+00:00",
-    "permissionCount": 368.3333333333333,
+    "updatedOn": "2026-07-10T18:45:32.118996+00:00",
+    "permissionCount": 367.3333333333333,
     "dataActions": [
       "Microsoft.ContainerService/fleets/apps/controllerrevisions/read",
       "Microsoft.ContainerService/fleets/apps/daemonsets/read",
@@ -15009,8 +15008,7 @@
       "Microsoft.ContainerService/fleets/services/read",
       "Microsoft.ContainerService/fleets/cluster.kubernetes-fleet.io/internalmemberclusters/read",
       "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverrides/read",
-      "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read",
-      "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/works/read"
+      "Microsoft.ContainerService/fleets/placement.kubernetes-fleet.io/resourceoverridesnapshots/read"
     ],
     "notDataActions": []
   },
@@ -18582,11 +18580,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Logic Apps Standard Contributor (Preview)",
+    "roleName": "Logic Apps Standard Contributor",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-05T21:16:51.684005+00:00",
+    "updatedOn": "2026-07-10T22:17:18.896765+00:00",
     "permissionCount": 3503.0000000000005,
     "dataActions": [],
     "notDataActions": []
@@ -18669,11 +18667,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Logic Apps Standard Reader (Preview)",
+    "roleName": "Logic Apps Standard Reader",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-05T21:16:54.986509+00:00",
+    "updatedOn": "2026-07-10T22:17:18.896765+00:00",
     "permissionCount": 1502.9999999999998,
     "dataActions": [],
     "notDataActions": []
@@ -18723,11 +18721,11 @@
         "notDataActions": []
       }
     ],
-    "roleName": "Logic Apps Standard Developer (Preview)",
+    "roleName": "Logic Apps Standard Developer",
     "roleType": "BuiltInRole",
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-04-05T21:16:54.986509+00:00",
+    "updatedOn": "2026-07-10T22:17:18.896765+00:00",
     "permissionCount": 2932.6666666666665,
     "dataActions": [],
     "notDataActions": []
