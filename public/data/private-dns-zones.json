@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-21",
+  "lastUpdated": "2026-07-22",
   "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
   "entries": [
     {
@@ -448,7 +448,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Sql"
       ],
@@ -463,7 +463,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "MongoDB"
       ],
@@ -478,7 +478,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Cassandra"
       ],
@@ -493,7 +493,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Gremlin"
       ],
@@ -508,7 +508,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Table"
       ],
@@ -523,7 +523,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Analytical"
       ],
@@ -1503,6 +1503,23 @@
       "cloud": "Government"
     },
     {
+      "resourceType": "Microsoft Power BI",
+      "armType": "Microsoft.PowerBI/privateLinkServicesForPowerBI",
+      "subresources": [
+        "tenant"
+      ],
+      "dnsZoneNames": [
+        "privatelink.analysis.usgovcloudapi.net",
+        "privatelink.pbidedicated.usgovcloudapi.net"
+      ],
+      "publicDnsForwarders": [
+        "analysis.usgovcloudapi.net",
+        "pbidedicated.usgovcloudapi.net"
+      ],
+      "category": "AI + Machine Learning",
+      "cloud": "Government"
+    },
+    {
       "resourceType": "Azure Event Hubs",
       "armType": "Microsoft.EventHub/namespaces",
       "subresources": [
@@ -1701,6 +1718,22 @@
       "cloud": "Government"
     },
     {
+      "resourceType": "Azure Kubernetes Service - Kubernetes API",
+      "armType": "Microsoft.ContainerService/managedClusters",
+      "subresources": [
+        "management"
+      ],
+      "dnsZoneNames": [
+        "privatelink.{regionName}.azmk8s.io",
+        "{subzone}.privatelink.{regionName}.azmk8s.io"
+      ],
+      "publicDnsForwarders": [
+        "{regionName}.azmk8s.io"
+      ],
+      "category": "Containers",
+      "cloud": "Government"
+    },
+    {
       "resourceType": "Azure Container Registry",
       "armType": "Microsoft.ContainerRegistry/registries",
       "subresources": [
@@ -1749,7 +1782,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Sql"
       ],
@@ -1764,7 +1797,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "MongoDB"
       ],
@@ -1779,7 +1812,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Cassandra"
       ],
@@ -1794,7 +1827,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Gremlin"
       ],
@@ -1809,7 +1842,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Table"
       ],
@@ -1953,6 +1986,21 @@
       ],
       "publicDnsForwarders": [
         "eventgrid.azure.us"
+      ],
+      "category": "Integration",
+      "cloud": "Government"
+    },
+    {
+      "resourceType": "Azure API Management",
+      "armType": "Microsoft.ApiManagement/service",
+      "subresources": [
+        "Gateway"
+      ],
+      "dnsZoneNames": [
+        "privatelink.azure-api.us"
+      ],
+      "publicDnsForwarders": [
+        "azure-api.us"
       ],
       "category": "Integration",
       "cloud": "Government"
@@ -2298,7 +2346,7 @@
       "cloud": "Government"
     },
     {
-      "resourceType": "Azure Web Apps",
+      "resourceType": "Azure Web Apps / Azure Function Apps",
       "armType": "Microsoft.Web/sites",
       "subresources": [
         "sites"
@@ -2488,7 +2536,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Sql"
       ],
@@ -2503,7 +2551,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "MongoDB"
       ],
@@ -2518,7 +2566,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Cassandra"
       ],
@@ -2533,7 +2581,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Gremlin"
       ],
@@ -2548,7 +2596,7 @@
     },
     {
       "resourceType": "Azure Cosmos DB",
-      "armType": "Microsoft.DocumentDB/databaseAccounts",
+      "armType": "Microsoft.AzureCosmosDB/databaseAccounts",
       "subresources": [
         "Table"
       ],
