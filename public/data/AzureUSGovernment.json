@@ -1,5 +1,5 @@
 {
-  "changeNumber": 402,
+  "changeNumber": 403,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -534,7 +534,7 @@
       "name": "AzureAttestation",
       "id": "AzureAttestation",
       "properties": {
-        "changeNumber": 7,
+        "changeNumber": 8,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -550,25 +550,40 @@
           "20.140.154.216/30",
           "20.159.252.116/30",
           "20.159.252.120/29",
+          "20.159.255.148/30",
+          "20.159.255.152/29",
           "51.54.170.216/29",
           "51.54.231.96/29",
           "51.54.253.24/29",
           "51.54.253.32/30",
           "51.55.174.44/30",
           "51.55.174.48/29",
+          "51.55.196.124/30",
+          "51.55.196.176/29",
+          "51.55.233.4/30",
+          "51.55.233.8/29",
           "52.127.12.48/30",
           "52.127.29.128/30",
           "52.127.38.188/30",
           "52.127.55.156/30",
+          "52.181.56.176/29",
+          "52.181.56.184/30",
           "52.181.221.48/29",
           "52.181.221.56/30",
           "52.243.5.8/29",
           "52.243.5.16/30",
+          "52.243.21.100/30",
+          "52.243.21.104/29",
           "52.245.128.72/30",
           "52.245.136.40/30",
+          "2001:489a:3103:b::250/124",
           "2001:489a:3203:3::200/124",
+          "2001:489a:3203:6::500/124",
+          "2001:489a:3303:6::400/124",
           "2001:489a:3403:5::6b0/124",
-          "2001:489a:3604:2::700/124"
+          "2001:489a:3403:b::430/124",
+          "2001:489a:3604:2::700/124",
+          "2001:489a:3604:b::50/124"
         ],
         "networkFeatures": [
           "API",
@@ -5102,7 +5117,7 @@
       "name": "AzureAttestation.USDoDCentral",
       "id": "AzureAttestation.USDoDCentral",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usdodcentral",
         "regionId": 44,
         "platform": "Azure",
@@ -5111,8 +5126,11 @@
           "20.140.76.172/30",
           "20.159.252.116/30",
           "20.159.252.120/29",
+          "20.159.255.148/30",
+          "20.159.255.152/29",
           "52.245.128.72/30",
-          "2001:489a:3203:3::200/124"
+          "2001:489a:3203:3::200/124",
+          "2001:489a:3203:6::500/124"
         ],
         "networkFeatures": null
       }
@@ -5121,16 +5139,19 @@
       "name": "AzureAttestation.USDoDEast",
       "id": "AzureAttestation.USDoDEast",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usdodeast",
         "regionId": 45,
         "platform": "Azure",
         "systemService": "AzureAttestation",
         "addressPrefixes": [
           "20.140.68.180/30",
+          "52.181.56.176/29",
+          "52.181.56.184/30",
           "52.181.221.48/29",
           "52.181.221.56/30",
-          "52.245.136.40/30"
+          "52.245.136.40/30",
+          "2001:489a:3303:6::400/124"
         ],
         "networkFeatures": null
       }
@@ -5139,7 +5160,7 @@
       "name": "AzureAttestation.USGovArizona",
       "id": "AzureAttestation.USGovArizona",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -5149,8 +5170,11 @@
           "51.54.231.96/29",
           "51.54.253.24/29",
           "51.54.253.32/30",
+          "51.55.233.4/30",
+          "51.55.233.8/29",
           "52.127.12.48/30",
-          "2001:489a:3604:2::700/124"
+          "2001:489a:3604:2::700/124",
+          "2001:489a:3604:b::50/124"
         ],
         "networkFeatures": null
       }
@@ -5159,7 +5183,7 @@
       "name": "AzureAttestation.USGovTexas",
       "id": "AzureAttestation.USGovTexas",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -5169,7 +5193,10 @@
           "52.127.38.188/30",
           "52.243.5.8/29",
           "52.243.5.16/30",
-          "2001:489a:3403:5::6b0/124"
+          "52.243.21.100/30",
+          "52.243.21.104/29",
+          "2001:489a:3403:5::6b0/124",
+          "2001:489a:3403:b::430/124"
         ],
         "networkFeatures": null
       }
@@ -5178,7 +5205,7 @@
       "name": "AzureAttestation.USGovVirginia",
       "id": "AzureAttestation.USGovVirginia",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -5188,7 +5215,10 @@
           "51.54.170.216/29",
           "51.55.174.44/30",
           "51.55.174.48/29",
-          "52.127.55.156/30"
+          "51.55.196.124/30",
+          "51.55.196.176/29",
+          "52.127.55.156/30",
+          "2001:489a:3103:b::250/124"
         ],
         "networkFeatures": null
       }

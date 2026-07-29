@@ -21419,7 +21419,9 @@
           "Microsoft.Network/networkIntentPolicies/join/action",
           "Microsoft.Network/networkSecurityGroups/join/action",
           "Microsoft.Network/routeTables/join/action",
-          "Microsoft.Network/networkManagers/ipamPools/associateResourcesToPool/action"
+          "Microsoft.Network/networkManagers/ipamPools/associateResourcesToPool/action",
+          "Microsoft.Network/privatelinkservices/privateEndpointConnections/delete",
+          "Microsoft.Network/loadBalancers/delete"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -21433,8 +21435,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-11-10T16:07:22.745107+00:00",
-    "permissionCount": 29,
+    "updatedOn": "2026-07-28T15:14:02.558296+00:00",
+    "permissionCount": 31,
     "dataActions": [],
     "notDataActions": []
   },
@@ -27846,7 +27848,7 @@
     ],
     "createdBy": null,
     "createdOn": "2024-11-18T16:11:51.336665+00:00",
-    "description": "Create, read, and modify jobs and other Workspace data. This role is in preview and subject to change.",
+    "description": "Create, read, and modify jobs and other Workspace data.",
     "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/c1410b24-3e69-4857-8f86-4d0a2e603250",
     "name": "c1410b24-3e69-4857-8f86-4d0a2e603250",
     "permissions": [
@@ -27863,7 +27865,8 @@
         "conditionVersion": null,
         "dataActions": [
           "Microsoft.Quantum/Workspaces/jobs/read",
-          "Microsoft.Quantum/Workspaces/jobs/write"
+          "Microsoft.Quantum/Workspaces/jobs/write",
+          "Microsoft.Quantum/Workspaces/chat/action"
         ],
         "notActions": [],
         "notDataActions": []
@@ -27874,11 +27877,12 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-11-18T16:11:51.336665+00:00",
-    "permissionCount": 1005,
+    "updatedOn": "2026-07-28T15:14:02.559297+00:00",
+    "permissionCount": 1006,
     "dataActions": [
       "Microsoft.Quantum/Workspaces/jobs/read",
-      "Microsoft.Quantum/Workspaces/jobs/write"
+      "Microsoft.Quantum/Workspaces/jobs/write",
+      "Microsoft.Quantum/Workspaces/chat/action"
     ],
     "notDataActions": []
   },
@@ -38150,7 +38154,9 @@
       {
         "actions": [
           "Microsoft.DocumentDB/databaseAccounts/preRestore/action",
-          "Microsoft.DocumentDB/databaseAccounts/restore/action"
+          "Microsoft.DocumentDB/databaseAccounts/restore/action",
+          "Microsoft.DocumentDB/databaseAccounts/read",
+          "Microsoft.DocumentDB/locations/operationsStatus/read"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -38164,8 +38170,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-03-06T23:55:51.343605+00:00",
-    "permissionCount": 2,
+    "updatedOn": "2026-07-28T15:14:02.558296+00:00",
+    "permissionCount": 4,
     "dataActions": [],
     "notDataActions": []
   },
@@ -41112,6 +41118,68 @@
     "updatedBy": null,
     "updatedOn": "2026-07-23T11:47:37.216448+00:00",
     "permissionCount": 1,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-07-28T15:14:02.556296+00:00",
+    "description": "Allows read-only access to Prepared Image Specification resources.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/ed915fdf-c373-4707-988e-fb5d15a5a9ec",
+    "name": "ed915fdf-c373-4707-988e-fb5d15a5a9ec",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.ContainerService/preparedImageSpecifications/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Service Prepared Image Specification Reader",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-07-28T15:14:02.556296+00:00",
+    "permissionCount": 1,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-07-28T15:14:02.557296+00:00",
+    "description": "Allows users to create and manage Prepared Image Specification resources.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/4f772c11-8026-4833-859c-5c23e84b5c30",
+    "name": "4f772c11-8026-4833-859c-5c23e84b5c30",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.ContainerService/preparedImageSpecifications/*"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Service Prepared Image Specification Contributor",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-07-28T15:14:02.557296+00:00",
+    "permissionCount": 333.3333333333333,
     "dataActions": [],
     "notDataActions": []
   }

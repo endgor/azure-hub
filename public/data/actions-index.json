@@ -4887,7 +4887,7 @@
   {
     "key": "microsoft.network/loadbalancers/delete",
     "name": "Microsoft.Network/loadBalancers/delete",
-    "roleCount": 4
+    "roleCount": 5
   },
   {
     "key": "microsoft.network/natgateways/join/action",
@@ -8750,6 +8750,11 @@
     "roleCount": 8
   },
   {
+    "key": "microsoft.network/privatelinkservices/privateendpointconnections/delete",
+    "name": "Microsoft.Network/privatelinkservices/privateEndpointConnections/delete",
+    "roleCount": 4
+  },
+  {
     "key": "microsoft.compute/virtualmachinescalesets/virtualmachines/write",
     "name": "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/write",
     "roleCount": 5
@@ -9172,7 +9177,7 @@
   {
     "key": "microsoft.documentdb/databaseaccounts/read",
     "name": "Microsoft.DocumentDB/databaseAccounts/read",
-    "roleCount": 25
+    "roleCount": 26
   },
   {
     "key": "microsoft.keyvault/vaults/privateendpointconnectionsapproval/action",
@@ -11517,6 +11522,11 @@
   {
     "key": "microsoft.quantum/workspaces/jobs/write",
     "name": "Microsoft.Quantum/Workspaces/jobs/write",
+    "roleCount": 3
+  },
+  {
+    "key": "microsoft.quantum/workspaces/chat/action",
+    "name": "Microsoft.Quantum/Workspaces/chat/action",
     "roleCount": 3
   },
   {
@@ -18450,6 +18460,11 @@
     "roleCount": 6
   },
   {
+    "key": "microsoft.documentdb/locations/operationsstatus/read",
+    "name": "Microsoft.DocumentDB/locations/operationsStatus/read",
+    "roleCount": 21
+  },
+  {
     "key": "microsoft.documentdb/databaseaccounts/validateforlongtermprotection/action",
     "name": "Microsoft.DocumentDB/databaseAccounts/validateForLongTermProtection/action",
     "roleCount": 6
@@ -18468,11 +18483,6 @@
     "key": "microsoft.documentdb/databaseaccounts/prebackup/action",
     "name": "Microsoft.DocumentDB/databaseAccounts/preBackup/action",
     "roleCount": 6
-  },
-  {
-    "key": "microsoft.documentdb/locations/operationsstatus/read",
-    "name": "Microsoft.DocumentDB/locations/operationsStatus/read",
-    "roleCount": 20
   },
   {
     "key": "microsoft.azurestackhci/edgemachines/read",
@@ -19283,6 +19293,11 @@
     "key": "microsoft.discovery/tools/read",
     "name": "Microsoft.Discovery/tools/read",
     "roleCount": 22
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/read",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
+    "roleCount": 20
   },
   {
     "key": "anyscale.platform/clouds/cloudresources/delete",
@@ -35567,6 +35582,16 @@
   {
     "key": "microsoft.clouddeviceplatform/sandboxpartners/sandboxes/write",
     "name": "Microsoft.CloudDevicePlatform/sandboxPartners/sandboxes/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/sandboxpartners/volumes/read",
+    "name": "Microsoft.CloudDevicePlatform/sandboxPartners/volumes/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.clouddeviceplatform/sandboxpartners/volumes/write",
+    "name": "Microsoft.CloudDevicePlatform/sandboxPartners/volumes/write",
     "roleCount": 0
   },
   {
@@ -52962,11 +52987,6 @@
   {
     "key": "microsoft.containerservice/preparedimagespecifications/deploy/action",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/deploy/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.containerservice/preparedimagespecifications/read",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
     "roleCount": 0
   },
   {
@@ -85015,11 +85035,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/privatelinkservices/privateendpointconnections/delete",
-    "name": "Microsoft.Network/privateLinkServices/privateEndpointConnections/delete",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/privatelinkservices/providers/microsoft.insights/metricdefinitions/read",
     "name": "Microsoft.Network/privateLinkServices/providers/Microsoft.Insights/metricDefinitions/read",
     "roleCount": 0
@@ -94587,11 +94602,6 @@
   {
     "key": "microsoft.quantum/suiteoffers/read",
     "name": "Microsoft.Quantum/suiteOffers/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.quantum/workspaces/chat/action",
-    "name": "Microsoft.Quantum/Workspaces/chat/action",
     "roleCount": 0
   },
   {
