@@ -35015,6 +35015,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.chaos/locations/workspaceoperationresults/read",
+    "name": "Microsoft.Chaos/locations/workspaceOperationResults/read",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.chaos/operations/read",
     "name": "Microsoft.Chaos/operations/read",
     "roleCount": 0
@@ -35027,6 +35032,26 @@
   {
     "key": "microsoft.chaos/unregister/action",
     "name": "Microsoft.Chaos/unregister/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.chaos/workspaces/discoveries/read",
+    "name": "Microsoft.Chaos/workspaces/discoveries/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.chaos/workspaces/evaluations/read",
+    "name": "Microsoft.Chaos/workspaces/evaluations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.chaos/workspaces/scenarios/configurations/validations/read",
+    "name": "Microsoft.Chaos/workspaces/scenarios/configurations/validations/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.chaos/workspaces/scenarios/runs/cancel/action",
+    "name": "Microsoft.Chaos/workspaces/scenarios/runs/cancel/action",
     "roleCount": 0
   },
   {
@@ -44737,6 +44762,16 @@
   {
     "key": "microsoft.compute/sharedvmimages/write",
     "name": "Microsoft.Compute/sharedVMImages/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicy/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicylock/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicyLock/action",
     "roleCount": 0
   },
   {
@@ -65765,13 +65800,43 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.fileshares/fileshares/files/delete",
+    "name": "Microsoft.FileShares/fileShares/files/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.fileshares/fileshares/files/modifypermissions/action",
+    "name": "Microsoft.FileShares/fileShares/files/modifypermissions/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.fileshares/fileshares/files/read",
+    "name": "Microsoft.FileShares/fileShares/files/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.fileshares/fileshares/files/write",
+    "name": "Microsoft.FileShares/fileShares/files/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.fileshares/fileshares/read",
     "name": "Microsoft.FileShares/fileShares/read",
     "roleCount": 0
   },
   {
+    "key": "microsoft.fileshares/fileshares/readfilebackupsemantics/action",
+    "name": "Microsoft.FileShares/fileShares/readFileBackupSemantics/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.fileshares/fileshares/write",
     "name": "Microsoft.FileShares/fileShares/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.fileshares/fileshares/writefilebackupsemantics/action",
+    "name": "Microsoft.FileShares/fileShares/writeFileBackupSemantics/action",
     "roleCount": 0
   },
   {
@@ -82740,11 +82805,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/expressroutecircuits/routetable/action",
-    "name": "Microsoft.Network/expressRouteCircuits/routeTable/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/expressroutecircuits/stats/read",
     "name": "Microsoft.Network/expressRouteCircuits/stats/read",
     "roleCount": 0
@@ -83060,21 +83120,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/firewallpolicies/kubeselectorgroups/delete",
-    "name": "Microsoft.Network/firewallPolicies/kubeSelectorGroups/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/firewallpolicies/kubeselectorgroups/read",
-    "name": "Microsoft.Network/firewallPolicies/kubeSelectorGroups/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/firewallpolicies/kubeselectorgroups/write",
-    "name": "Microsoft.Network/firewallPolicies/kubeSelectorGroups/write",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/firewallpolicies/pacfile/action",
     "name": "Microsoft.Network/firewallPolicies/pacFile/action",
     "roleCount": 0
@@ -83137,11 +83182,6 @@
   {
     "key": "microsoft.network/firstpartyservicetags/delete",
     "name": "Microsoft.Network/firstPartyServiceTags/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/firstpartyservicetags/join/action",
-    "name": "Microsoft.Network/firstPartyServiceTags/join/action",
     "roleCount": 0
   },
   {
@@ -84875,11 +84915,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.network/networkwatchers/packetcaptures/queryinsight/action",
-    "name": "Microsoft.Network/networkWatchers/packetCaptures/queryInsight/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.network/networkwatchers/packetcaptures/querystatus/action",
     "name": "Microsoft.Network/networkWatchers/packetCaptures/queryStatus/action",
     "roleCount": 0
@@ -84892,11 +84927,6 @@
   {
     "key": "microsoft.network/networkwatchers/packetcaptures/read",
     "name": "Microsoft.Network/networkWatchers/packetCaptures/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/networkwatchers/packetcaptures/startinsight/action",
-    "name": "Microsoft.Network/networkWatchers/packetCaptures/startInsight/action",
     "roleCount": 0
   },
   {
@@ -84957,21 +84987,6 @@
   {
     "key": "microsoft.network/networkwatchers/topology/read",
     "name": "Microsoft.Network/networkWatchers/topology/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/networkwatchers/trafficanalytics/delete",
-    "name": "Microsoft.Network/networkWatchers/trafficAnalytics/delete",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/networkwatchers/trafficanalytics/read",
-    "name": "Microsoft.Network/networkWatchers/trafficAnalytics/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/networkwatchers/trafficanalytics/write",
-    "name": "Microsoft.Network/networkWatchers/trafficAnalytics/write",
     "roleCount": 0
   },
   {
@@ -85217,11 +85232,6 @@
   {
     "key": "microsoft.network/privateendpointredirectmaps/write",
     "name": "Microsoft.Network/privateEndpointRedirectMaps/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.network/privateendpoints/copy/action",
-    "name": "Microsoft.Network/privateEndpoints/copy/action",
     "roleCount": 0
   },
   {
