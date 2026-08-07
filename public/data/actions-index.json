@@ -30525,8 +30525,18 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.azurestackhci/clusters/networkprofiles/delete",
+    "name": "Microsoft.AzureStackHCI/clusters/networkProfiles/Delete",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.azurestackhci/clusters/networkprofiles/read",
     "name": "Microsoft.AzureStackHCI/clusters/networkProfiles/Read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/clusters/networkprofiles/write",
+    "name": "Microsoft.AzureStackHCI/clusters/networkProfiles/Write",
     "roleCount": 0
   },
   {
