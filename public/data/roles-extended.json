@@ -38157,11 +38157,11 @@
     "permissions": [
       {
         "actions": [
-          "Microsoft.DocumentDB/databaseAccounts/validateForLongTermProtection/action",
-          "Microsoft.DocumentDB/databaseAccounts/enableLongTermProtection/action",
-          "Microsoft.DocumentDB/databaseAccounts/disableLongTermProtection/action",
-          "Microsoft.DocumentDB/databaseAccounts/preBackup/action",
-          "Microsoft.DocumentDB/databaseAccounts/backup/action",
+          "Microsoft.DocumentDB/databaseAccounts/validateForLongTermProtection/*",
+          "Microsoft.DocumentDB/databaseAccounts/enableLongTermProtection/*",
+          "Microsoft.DocumentDB/databaseAccounts/disableLongTermProtection/*",
+          "Microsoft.DocumentDB/databaseAccounts/preBackup/*",
+          "Microsoft.DocumentDB/databaseAccounts/backup/*",
           "Microsoft.DocumentDB/databaseAccounts/read",
           "Microsoft.DocumentDB/locations/operationsStatus/read"
         ],
@@ -38177,8 +38177,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-07-27T15:05:20.281842+00:00",
-    "permissionCount": 7,
+    "updatedOn": "2026-08-10T16:35:41.597842+00:00",
+    "permissionCount": 1252,
     "dataActions": [],
     "notDataActions": []
   },
@@ -38194,8 +38194,8 @@
     "permissions": [
       {
         "actions": [
-          "Microsoft.DocumentDB/databaseAccounts/preRestore/action",
-          "Microsoft.DocumentDB/databaseAccounts/restore/action",
+          "Microsoft.DocumentDB/databaseAccounts/preRestore/*",
+          "Microsoft.DocumentDB/databaseAccounts/restore/*",
           "Microsoft.DocumentDB/databaseAccounts/read",
           "Microsoft.DocumentDB/locations/operationsStatus/read"
         ],
@@ -38211,8 +38211,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-07-30T15:37:51.731800+00:00",
-    "permissionCount": 4,
+    "updatedOn": "2026-08-10T16:35:41.597842+00:00",
+    "permissionCount": 502,
     "dataActions": [],
     "notDataActions": []
   },
@@ -41168,7 +41168,8 @@
     "permissions": [
       {
         "actions": [
-          "Microsoft.ContainerService/preparedImageSpecifications/read"
+          "Microsoft.ContainerService/preparedImageSpecifications/read",
+          "Microsoft.ContainerService/preparedImageSpecifications/versions/read"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -41182,8 +41183,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-07-30T15:37:51.760798+00:00",
-    "permissionCount": 1,
+    "updatedOn": "2026-08-10T15:05:10.352578+00:00",
+    "permissionCount": 2,
     "dataActions": [],
     "notDataActions": []
   },

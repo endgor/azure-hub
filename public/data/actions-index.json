@@ -18475,34 +18475,9 @@
     "roleCount": 3
   },
   {
-    "key": "microsoft.documentdb/databaseaccounts/validateforlongtermprotection/action",
-    "name": "Microsoft.DocumentDB/databaseAccounts/validateForLongTermProtection/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.documentdb/databaseaccounts/enablelongtermprotection/action",
-    "name": "Microsoft.DocumentDB/databaseAccounts/enableLongTermProtection/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.documentdb/databaseaccounts/disablelongtermprotection/action",
-    "name": "Microsoft.DocumentDB/databaseAccounts/disableLongTermProtection/action",
-    "roleCount": 6
-  },
-  {
-    "key": "microsoft.documentdb/databaseaccounts/prebackup/action",
-    "name": "Microsoft.DocumentDB/databaseAccounts/preBackup/action",
-    "roleCount": 6
-  },
-  {
     "key": "microsoft.documentdb/locations/operationsstatus/read",
     "name": "Microsoft.DocumentDB/locations/operationsStatus/read",
     "roleCount": 21
-  },
-  {
-    "key": "microsoft.documentdb/databaseaccounts/prerestore/action",
-    "name": "Microsoft.DocumentDB/databaseAccounts/preRestore/action",
-    "roleCount": 6
   },
   {
     "key": "microsoft.azurestackhci/edgemachines/read",
@@ -19312,6 +19287,11 @@
   {
     "key": "microsoft.containerservice/preparedimagespecifications/read",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/read",
+    "roleCount": 20
+  },
+  {
+    "key": "microsoft.containerservice/preparedimagespecifications/versions/read",
+    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/read",
     "roleCount": 20
   },
   {
@@ -23785,11 +23765,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.app/agents/listsecrets/action",
-    "name": "Microsoft.App/agents/listSecrets/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.app/agents/memory/delete",
     "name": "Microsoft.App/agents/memory/delete",
     "roleCount": 0
@@ -24442,11 +24417,6 @@
   {
     "key": "microsoft.app/managedenvironments/certificates/write",
     "name": "microsoft.app/managedenvironments/certificates/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.app/managedenvironments/checkmigrationeligibility/action",
-    "name": "microsoft.app/managedenvironments/checkmigrationeligibility/action",
     "roleCount": 0
   },
   {
@@ -31325,6 +31295,21 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.baremetal/managedconsoleconnections/delete",
+    "name": "Microsoft.BareMetal/ManagedConsoleConnections/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.baremetal/managedconsoleconnections/read",
+    "name": "Microsoft.BareMetal/ManagedConsoleConnections/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.baremetal/managedconsoleconnections/write",
+    "name": "Microsoft.BareMetal/ManagedConsoleConnections/write",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.baremetal/monitoringservers/delete",
     "name": "Microsoft.BareMetal/monitoringServers/delete",
     "roleCount": 0
@@ -36597,6 +36582,21 @@
   {
     "key": "microsoft.cognitiveservices/accounts/anomalydetector/timeseries/last/detect/action",
     "name": "Microsoft.CognitiveServices/accounts/AnomalyDetector/timeseries/last/detect/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/arcdeployments/delete",
+    "name": "Microsoft.CognitiveServices/accounts/arcDeployments/delete",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/arcdeployments/read",
+    "name": "Microsoft.CognitiveServices/accounts/arcDeployments/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/accounts/arcdeployments/write",
+    "name": "Microsoft.CognitiveServices/accounts/arcDeployments/write",
     "roleCount": 0
   },
   {
@@ -44075,13 +44075,33 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/locations/modelcapacities/delete",
+    "name": "Microsoft.CognitiveServices/locations/modelCapacities/delete",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/locations/modelcapacities/read",
     "name": "Microsoft.CognitiveServices/locations/modelCapacities/read",
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/locations/modelcapacities/write",
+    "name": "Microsoft.CognitiveServices/locations/modelCapacities/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/locations/models/delete",
+    "name": "Microsoft.CognitiveServices/locations/models/delete",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/locations/models/read",
     "name": "Microsoft.CognitiveServices/locations/models/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/locations/models/write",
+    "name": "Microsoft.CognitiveServices/locations/models/write",
     "roleCount": 0
   },
   {
@@ -44145,13 +44165,33 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/modelcapacities/delete",
+    "name": "Microsoft.CognitiveServices/modelCapacities/delete",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/modelcapacities/read",
     "name": "Microsoft.CognitiveServices/modelCapacities/read",
     "roleCount": 0
   },
   {
+    "key": "microsoft.cognitiveservices/modelcapacities/write",
+    "name": "Microsoft.CognitiveServices/modelCapacities/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/models/delete",
+    "name": "Microsoft.CognitiveServices/models/delete",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.cognitiveservices/models/read",
     "name": "Microsoft.CognitiveServices/models/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.cognitiveservices/models/write",
+    "name": "Microsoft.CognitiveServices/models/write",
     "roleCount": 0
   },
   {
@@ -44830,6 +44870,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.compute/locations/sharedgallerysubscriptions/sharedgalleries/accept/action",
+    "name": "Microsoft.Compute/locations/sharedGallerySubscriptions/sharedGalleries/accept/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/locations/sharedgallerysubscriptions/sharedgalleries/reject/action",
+    "name": "Microsoft.Compute/locations/sharedGallerySubscriptions/sharedGalleries/reject/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/locations/tenantlevelsharedgallerysubscriptions/sharedgalleries/accept/action",
+    "name": "Microsoft.Compute/locations/tenantLevelSharedGallerySubscriptions/sharedGalleries/accept/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/locations/tenantlevelsharedgallerysubscriptions/sharedgalleries/reject/action",
+    "name": "Microsoft.Compute/locations/tenantLevelSharedGallerySubscriptions/sharedGalleries/reject/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.compute/locations/vmsizerecommendations/generate/action",
     "name": "Microsoft.Compute/locations/vmSizeRecommendations/generate/action",
     "roleCount": 0
@@ -44942,6 +45002,16 @@
   {
     "key": "microsoft.compute/sharedvmimages/write",
     "name": "Microsoft.Compute/sharedVMImages/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicy/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicylock/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicyLock/action",
     "roleCount": 0
   },
   {
@@ -53355,11 +53425,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.containerservice/preparedimagespecifications/versions/read",
-    "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.containerservice/preparedimagespecifications/versions/write",
     "name": "Microsoft.ContainerService/preparedImageSpecifications/versions/write",
     "roleCount": 0
@@ -61735,6 +61800,16 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.documentdb/databaseaccounts/disablelongtermprotection/action",
+    "name": "Microsoft.DocumentDB/databaseAccounts/disableLongTermProtection/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/databaseaccounts/enablelongtermprotection/action",
+    "name": "Microsoft.DocumentDB/databaseAccounts/enableLongTermProtection/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.documentdb/databaseaccounts/failoverprioritychange/action",
     "name": "Microsoft.DocumentDB/databaseAccounts/failoverPriorityChange/action",
     "roleCount": 0
@@ -62117,6 +62192,16 @@
   {
     "key": "microsoft.documentdb/databaseaccounts/percentile/targetregion/metrics/read",
     "name": "Microsoft.DocumentDB/databaseAccounts/percentile/targetRegion/metrics/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/databaseaccounts/prebackup/action",
+    "name": "Microsoft.DocumentDB/databaseAccounts/preBackup/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/databaseaccounts/prerestore/action",
+    "name": "Microsoft.DocumentDB/databaseAccounts/preRestore/action",
     "roleCount": 0
   },
   {
@@ -62527,6 +62612,11 @@
   {
     "key": "microsoft.documentdb/databaseaccounts/usages/read",
     "name": "Microsoft.DocumentDB/databaseAccounts/usages/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.documentdb/databaseaccounts/validateforlongtermprotection/action",
+    "name": "Microsoft.DocumentDB/databaseAccounts/validateForLongTermProtection/action",
     "roleCount": 0
   },
   {
@@ -88620,6 +88710,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.operationalinsights/workspaces/joinperimeter/action",
+    "name": "Microsoft.OperationalInsights/workspaces/joinPerimeter/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.operationalinsights/workspaces/linkedservices/delete",
     "name": "Microsoft.OperationalInsights/workspaces/linkedservices/delete",
     "roleCount": 0
@@ -95290,6 +95385,11 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/configuresourcescan/action",
+    "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/configureSourceScan/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.recoveryservices/vaults/backupfabrics/protectioncontainers/protecteditems/delete",
     "name": "Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/delete",
     "roleCount": 0
@@ -101550,8 +101650,28 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/locktimebasedimmutability/action",
+    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/lockTimeBasedImmutability/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/read",
     "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/read",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/removelegalholdimmutability/action",
+    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/removeLegalHoldImmutability/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/removetimebasedimmutability/action",
+    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/removeTimeBasedImmutability/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/setlegalholdimmutability/action",
+    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/setLegalHoldImmutability/action",
     "roleCount": 0
   },
   {
