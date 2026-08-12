@@ -1,18 +1,17 @@
 {
-  "changeNumber": 403,
+  "changeNumber": 404,
   "cloud": "AzureGovernment",
   "values": [
     {
       "name": "ActionGroup",
       "id": "ActionGroup",
       "properties": {
-        "changeNumber": 8,
+        "changeNumber": 9,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "ActionGroup",
         "addressPrefixes": [
-          "13.72.19.232/32",
           "20.140.104.20/30",
           "20.140.138.56/30",
           "20.141.11.42/31",
@@ -23,7 +22,6 @@
           "52.127.5.156/30",
           "52.127.10.212/30",
           "52.235.253.236/31",
-          "52.244.65.137/32",
           "2001:489a:3103:2::7a4/126",
           "2001:489a:3103:402::178/125",
           "2001:489a:3203::10c/126",
@@ -4562,7 +4560,7 @@
       "name": "ActionGroup.USGovArizona",
       "id": "ActionGroup.USGovArizona",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "usgovarizona",
         "regionId": 39,
         "platform": "Azure",
@@ -4572,7 +4570,6 @@
           "20.141.15.100/30",
           "52.127.5.156/30",
           "52.127.10.212/30",
-          "52.244.65.137/32",
           "2001:489a:3604::114/126",
           "2001:489a:3604:402::178/125"
         ],
@@ -4601,13 +4598,12 @@
       "name": "ActionGroup.USGovVirginia",
       "id": "ActionGroup.USGovVirginia",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
         "systemService": "ActionGroup",
         "addressPrefixes": [
-          "13.72.19.232/32",
           "20.159.4.244/30",
           "52.235.253.236/31",
           "2001:489a:3103:2::7a4/126",
