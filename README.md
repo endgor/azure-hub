@@ -1,4 +1,9 @@
-# Azure Hub
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/logo-wordmark-dark.png">
+    <img src="public/logo-wordmark.png" alt="Azure Hub" width="400">
+  </picture>
+</div>
 
 A collection of tools for Azure administrators and developers: IP lookups, RBAC calculators, subnet planning, and tenant discovery.
 
