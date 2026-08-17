@@ -44960,6 +44960,26 @@
     "roleCount": 0
   },
   {
+    "key": "microsoft.compute/locations/sharedgallerysubscriptions/sharedgalleries/accept/action",
+    "name": "Microsoft.Compute/locations/sharedGallerySubscriptions/sharedGalleries/accept/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/locations/sharedgallerysubscriptions/sharedgalleries/reject/action",
+    "name": "Microsoft.Compute/locations/sharedGallerySubscriptions/sharedGalleries/reject/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/locations/tenantlevelsharedgallerysubscriptions/sharedgalleries/accept/action",
+    "name": "Microsoft.Compute/locations/tenantLevelSharedGallerySubscriptions/sharedGalleries/accept/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/locations/tenantlevelsharedgallerysubscriptions/sharedgalleries/reject/action",
+    "name": "Microsoft.Compute/locations/tenantLevelSharedGallerySubscriptions/sharedGalleries/reject/action",
+    "roleCount": 0
+  },
+  {
     "key": "microsoft.compute/locations/vmsizerecommendations/generate/action",
     "name": "Microsoft.Compute/locations/vmSizeRecommendations/generate/action",
     "roleCount": 0
@@ -45072,6 +45092,16 @@
   {
     "key": "microsoft.compute/sharedvmimages/write",
     "name": "Microsoft.Compute/sharedVMImages/write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicy/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicy/action",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.compute/snapshots/updateimmutabilitypolicylock/action",
+    "name": "Microsoft.Compute/snapshots/updateImmutabilityPolicyLock/action",
     "roleCount": 0
   },
   {
@@ -101755,28 +101785,8 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/locktimebasedimmutability/action",
-    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/lockTimeBasedImmutability/action",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/read",
     "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/read",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/removelegalholdimmutability/action",
-    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/removeLegalHoldImmutability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/removetimebasedimmutability/action",
-    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/removeTimeBasedImmutability/action",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.sql/locations/longtermretentionmanagedinstances/longtermretentiondatabases/longtermretentionmanagedinstancebackups/setlegalholdimmutability/action",
-    "name": "Microsoft.Sql/locations/longTermRetentionManagedInstances/longTermRetentionDatabases/longTermRetentionManagedInstanceBackups/setLegalHoldImmutability/action",
     "roleCount": 0
   },
   {
