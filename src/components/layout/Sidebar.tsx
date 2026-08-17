@@ -52,19 +52,42 @@ export function Sidebar({
         } ${isSidebarCollapsed ? 'md:w-20' : 'md:w-72'}`}
       >
         <div className="flex items-center justify-between gap-3 px-4 py-5">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Azure Hub home">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl">
+          <Link href="/" className="flex min-w-0 items-center" aria-label="Azure Hub home">
+            {/* Icon-only mark while the sidebar is collapsed (desktop only) */}
+            <span
+              className={`h-10 w-10 shrink-0 items-center justify-center ${
+                isSidebarCollapsed ? 'hidden md:flex' : 'hidden'
+              }`}
+            >
               <Image
-                src="/favicons/favicon-32x32.png"
-                alt="Azure Hub logo"
-                width={24}
-                height={24}
+                src="/logo-icon.png"
+                alt="Azure Hub"
+                width={32}
+                height={32}
                 priority
                 unoptimized
               />
             </span>
-            <span className={`whitespace-nowrap text-lg font-semibold tracking-tight ${isSidebarCollapsed ? 'md:hidden' : 'block'}`}>
-              Azure Hub
+            {/* Full wordmark, with a lighter variant for the dark theme */}
+            <span className={`min-w-0 ${isSidebarCollapsed ? 'md:hidden' : ''}`}>
+              <Image
+                src="/logo-wordmark.png"
+                alt="Azure Hub"
+                width={480}
+                height={126}
+                priority
+                unoptimized
+                className="h-9 w-auto dark:hidden"
+              />
+              <Image
+                src="/logo-wordmark-dark.png"
+                alt="Azure Hub"
+                width={480}
+                height={126}
+                priority
+                unoptimized
+                className="hidden h-9 w-auto dark:block"
+              />
             </span>
           </Link>
           {/* Mobile close button */}
