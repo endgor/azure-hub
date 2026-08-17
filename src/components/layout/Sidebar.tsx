@@ -51,8 +51,8 @@ export function Sidebar({
             : 'relative hidden md:flex'
         } ${isSidebarCollapsed ? 'md:w-20' : 'md:w-72'}`}
       >
-        <div className="flex items-center justify-between gap-3 px-4 py-5">
-          <Link href="/" className="flex min-w-0 items-center" aria-label="Azure Hub home">
+        <div className="relative flex items-center justify-center px-4 py-5">
+          <Link href="/" className="flex min-w-0 items-center justify-center" aria-label="Azure Hub home">
             {/* Icon-only mark while the sidebar is collapsed (desktop only) */}
             <span
               className={`h-10 w-10 shrink-0 items-center justify-center ${
@@ -93,7 +93,7 @@ export function Sidebar({
           {/* Mobile close button */}
           <button
             type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 md:hidden dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
+            className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 md:hidden dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
             onClick={onMobileMenuClose}
             aria-label="Close navigation menu"
           >
