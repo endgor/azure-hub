@@ -1,34 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-
-interface GuideMeta {
-  title: string;
-  description: string;
-  category: string;
-  tags: string[];
-  date: string;
-}
-
-interface GuideHeading {
-  id: string;
-  text: string;
-  level: number;
-}
-
-interface Guide {
-  slug: string;
-  category: string;
-  meta: GuideMeta;
-  content: string;
-  headings: GuideHeading[];
-}
-
-interface GuideCategory {
-  name: string;
-  slug: string;
-  description: string;
-  guides: Array<Omit<Guide, 'content' | 'headings'>>;
-}
+import type { Guide, GuideCategory, GuideHeading, GuideMeta } from '@/types/guide';
 
 interface GeneratedSiteData {
   home: {

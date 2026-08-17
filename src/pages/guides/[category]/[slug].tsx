@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import GuideContent from '@/components/GuideContent';
 import GuideTOC from '@/components/GuideTOC';
-import type { Guide } from '@/lib/guides';
+import type { Guide } from '@/types/guide';
 import siteData from '@/generated/site-data.json';
 import type { GeneratedSiteData } from '@/types/generatedSiteData';
 

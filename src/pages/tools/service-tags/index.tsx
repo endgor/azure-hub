@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
-import { getAllServiceTagsWithCloud, ServiceTagIndex } from '@/lib/clientIpIndexService';
+import { loadServiceTagsIndex, ServiceTagIndex } from '@/lib/clientIpIndexService';
 import { AzureCloudName } from '@/types/azure';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
@@ -35,7 +35,7 @@ type CloudFilter = 'all' | AzureCloudName;
  */
 const clientServiceTagsFetcher = async () => {
   try {
-    const serviceTags = await getAllServiceTagsWithCloud();
+    const serviceTags = await loadServiceTagsIndex();
     return { serviceTags };
   } catch (error) {
     throw error;
@@ -218,7 +218,6 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
             <ExportMenu
               options={exportOptions}
               itemCount={data?.serviceTags ? 1 : 0}
-              itemLabel="cloud"
               isExporting={isExporting}
             />
           </div>

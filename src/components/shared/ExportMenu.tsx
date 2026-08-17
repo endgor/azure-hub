@@ -11,7 +11,6 @@ export interface ExportOption {
 interface ExportMenuProps {
   options: ExportOption[];
   itemCount: number;
-  itemLabel: string;
   disabled?: boolean;
   isExporting?: boolean;
 }
@@ -19,7 +18,6 @@ interface ExportMenuProps {
 export default function ExportMenu({
   options,
   itemCount,
-  itemLabel: _itemLabel,
   disabled = false,
   isExporting = false
 }: ExportMenuProps) {

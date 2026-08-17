@@ -315,7 +315,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
             <ExportMenu
               options={exportOptions}
               itemCount={sortedResults.length}
-              itemLabel="record"
             />
           </div>
         </div>
@@ -563,11 +562,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
                           DNS: {result.resolvedFrom} → {result.resolvedIp}
                         </span>
                       </div>
-                    )}
-                    {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && !result.resolvedFrom && (
-                      <span className="inline-block rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-semibold text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
-                        {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
-                      </span>
                     )}
                   </div>
                 </td>

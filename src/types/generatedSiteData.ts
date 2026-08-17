@@ -1,4 +1,4 @@
-import type { Guide, GuideCategory } from '@/lib/guides';
+import type { Guide, GuideCategory } from '@/types/guide';
 import type { AzureFileMetadata } from '@/types/azure';
 
 export interface GeneratedSiteData {

@@ -136,7 +136,7 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
 
         {/* IP Address */}
         <h2 className="mb-5 font-mono text-xl font-semibold text-slate-900 dark:text-slate-100">
-          {primary.resolvedIp || primary.ipAddress || query}
+          {primary.resolvedIp || query}
         </h2>
 
         {/* Metadata grid */}

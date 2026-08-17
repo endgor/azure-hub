@@ -257,7 +257,6 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
         <ExportMenu
           options={exportOptions}
           itemCount={selectedRoles.size}
-          itemLabel="role"
           disabled={selectedRoles.size === 0}
           isExporting={isExporting}
         />
