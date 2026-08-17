@@ -1,9 +1,10 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import type { AzureIpAddress } from '@/types/azure';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 import { prepareDataForExport, exportToCSV, exportToExcel, exportToMarkdown, generateFilename } from '@/lib/exportUtils';
 import { CLOUD_LABELS } from '@/lib/cloudConstants';
+import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import RegionMap from '@/components/RegionMap';
 
 interface IpLookupResultsProps {
@@ -11,9 +12,9 @@ interface IpLookupResultsProps {
   query: string;
 }
 
-function findPrimaryResult(results: AzureIpAddress[]): { primary: AzureIpAddress; additional: AzureIpAddress[] } {
+function findPrimaryResult(results: AzureIpAddress[]): { primary: AzureIpAddress | null; additional: AzureIpAddress[] } {
   if (results.length === 0) {
-    return { primary: results[0], additional: [] };
+    return { primary: null, additional: [] };
   }
 
   // Score each result: prefer results with a region and a more specific (longer prefix) CIDR
@@ -38,9 +39,7 @@ function findPrimaryResult(results: AzureIpAddress[]): { primary: AzureIpAddress
 }
 
 export default function IpLookupResults({ results, query }: IpLookupResultsProps) {
-  const [exportOpen, setExportOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const exportRef = useRef<HTMLDivElement>(null);
 
   const { primary, additional } = findPrimaryResult(results);
 
@@ -50,8 +49,13 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
     if (format === 'csv') await exportToCSV(data, filename);
     else if (format === 'xlsx') await exportToExcel(data, filename);
     else exportToMarkdown(data, filename);
-    setExportOpen(false);
   }, [results, query]);
+
+  const exportOptions = useMemo<ExportOption[]>(() => [
+    { label: 'Comma separated', format: 'csv', extension: '.csv', onClick: () => handleExport('csv') },
+    { label: 'Excel spreadsheet', format: 'xlsx', extension: '.xlsx', onClick: () => handleExport('xlsx') },
+    { label: 'Markdown table', format: 'md', extension: '.md', onClick: () => handleExport('md') }
+  ], [handleExport]);
 
   const handleCopy = useCallback(async () => {
     const lines = results.map(r =>
@@ -82,38 +86,7 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
             )}
           </div>
           <div className="flex items-center gap-1.5">
-            {/* Export dropdown */}
-            <div className="relative" ref={exportRef}>
-              <button
-                type="button"
-                onClick={() => setExportOpen(!exportOpen)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
-                aria-label="Export results"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </button>
-              {exportOpen && (
-                <>
-                  <div className="fixed inset-0 z-10" onClick={() => setExportOpen(false)} />
-                  <div className="absolute right-0 z-20 mt-1 w-44 rounded-lg bg-white py-1 shadow-lg ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
-                    <button onClick={() => handleExport('csv')} className="flex w-full items-center gap-3 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <span className="w-8 shrink-0 text-right text-slate-400">CSV</span>
-                      <span>Comma separated</span>
-                    </button>
-                    <button onClick={() => handleExport('xlsx')} className="flex w-full items-center gap-3 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <span className="w-8 shrink-0 text-right text-slate-400">XLSX</span>
-                      <span>Excel spreadsheet</span>
-                    </button>
-                    <button onClick={() => handleExport('md')} className="flex w-full items-center gap-3 px-3 py-2 text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700">
-                      <span className="w-8 shrink-0 text-right text-slate-400">MD</span>
-                      <span>Markdown table</span>
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
+            <ExportMenu options={exportOptions} itemCount={results.length} />
             {/* Copy button */}
             <button
               type="button"
