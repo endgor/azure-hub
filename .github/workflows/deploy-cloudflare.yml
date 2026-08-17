@@ -47,6 +47,9 @@ jobs:
       - name: Type check
         run: npx tsc --noEmit
 
+      - name: Test
+        run: npm test
+
       - name: Deploy production worker
         if: github.event_name != 'pull_request'
         run: npm run deploy

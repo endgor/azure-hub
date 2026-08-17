@@ -67,7 +67,9 @@ export function prefixToMask(prefix: number): number {
  */
 export function normaliseNetwork(address: number, prefix: number): number {
   const mask = prefixToMask(prefix);
-  return address & mask;
+  // `&` yields a signed int32, which would make 128.0.0.0-and-above networks
+  // negative while toUint32'd sibling nodes stay positive.
+  return toUint32(address & mask);
 }
 
 /**
