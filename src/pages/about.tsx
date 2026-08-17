@@ -23,6 +23,7 @@ function FeedbackForm() {
   const [email, setEmail] = useState('');
   const [type, setType] = useState<string>(FEEDBACK_TYPES[0]);
   const [message, setMessage] = useState('');
+  const [website, setWebsite] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -35,7 +36,13 @@ function FeedbackForm() {
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), type, message: message.trim() }),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          type,
+          message: message.trim(),
+          website,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -77,7 +84,16 @@ function FeedbackForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Honeypot */}
-          <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+          <input
+            type="text"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            className="hidden"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
