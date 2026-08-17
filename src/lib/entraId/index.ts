@@ -2,7 +2,7 @@
  * Entra ID RBAC service - unified exports for backward compatibility.
  *
  * This module re-exports all functions and types from the modular Entra ID library.
- * Existing imports from '@/lib/entraIdRbacService' will continue to work.
+ * Existing imports from '@/lib/entraId' will continue to work.
  */
 
 // Data service exports

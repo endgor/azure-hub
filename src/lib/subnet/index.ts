@@ -2,7 +2,7 @@
  * Subnet calculator module - unified exports for backward compatibility.
  *
  * This module re-exports all functions and types from the modular subnet library.
- * Existing imports from '@/lib/subnetCalculator' will continue to work.
+ * Existing imports from '@/lib/subnet' will continue to work.
  */
 
 // Types and constants
@@ -65,6 +65,5 @@ export {
   ensureLeafInTree
 } from './treeBuilder';
 
-// Existing subnet module exports (already in this directory)
 export * from './treeReconstruction';
 export * from './shareLinkCodec';

@@ -20,7 +20,7 @@ import {
   preloadEntraIDActionsCache,
   getEntraIDRolesDataStatus,
   loadEntraIDRoles
-} from '@/lib/entraIdRbacService';
+} from '@/lib/entraId';
 import type { EntraIDRole, EntraIDLeastPrivilegeResult } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
@@ -400,9 +400,9 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
 
         {roleCount === 0 && (
           <ErrorBox title="Entra ID data not available yet">
-            Built-in Entra ID role data is missing from this deployment. The GitHub refresh workflow now fetches and commits
+            Built-in Entra ID role data is missing from this deployment.
             <code className="mx-1">entraid-roles.json</code>
-            so a fresh run of that workflow should restore this page.
+            is fetched during the build when Azure credentials are configured, so a fresh deploy should restore this page.
           </ErrorBox>
         )}
 

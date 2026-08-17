@@ -67,9 +67,6 @@ jobs:
       - name: Update Azure RBAC data
         run: npm run update-rbac-data
 
-      - name: Update Entra ID roles data
-        run: npm run fetch-entraid-roles
-
       - name: Commit and push if changed
         id: commit
         run: |

@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import type { SubnetTree, LeafSubnet } from '@/lib/subnetCalculator';
+import type { SubnetTree, LeafSubnet } from '@/lib/subnet';
 import {
   NetworkType,
   collectLeaves,
@@ -9,7 +9,7 @@ import {
   joinSubnet,
   normaliseNetwork,
   splitSubnet
-} from '@/lib/subnetCalculator';
+} from '@/lib/subnet';
 
 export interface SubnetTreeState {
   rootId: string;

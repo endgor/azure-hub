@@ -8,7 +8,7 @@
  * The >>> 0 operation converts signed 32-bit integers to unsigned.
  * This is necessary because JavaScript bitwise operations work on signed 32-bit integers.
  */
-const toUint32 = (value: number): number => value >>> 0;
+export const toUint32 = (value: number): number => value >>> 0;
 
 /**
  * Converts IPv4 address string to 32-bit unsigned integer.

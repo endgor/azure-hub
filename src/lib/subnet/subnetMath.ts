@@ -4,11 +4,7 @@
  */
 
 import { NetworkType } from './types';
-
-/**
- * Ensures a number is treated as an unsigned 32-bit integer.
- */
-const toUint32 = (value: number): number => value >>> 0;
+import { prefixToMask, toUint32 } from './ipUtils';
 
 /** Returns total number of addresses in subnet (2^(32-prefix)) */
 export function subnetAddressCount(prefix: number): number {
@@ -25,7 +21,7 @@ export function subnetLastAddress(network: number, prefix: number): number {
 
 /** Alias for prefixToMask - converts prefix to netmask */
 export function subnetNetmask(prefix: number): number {
-  return prefix === 0 ? 0 : prefix === 32 ? 0xffffffff : toUint32(~((1 << (32 - prefix)) - 1));
+  return prefixToMask(prefix);
 }
 
 /**

@@ -8,11 +8,12 @@ interface HomeProps {
   lastUpdated: string | null;
 }
 
+// Keep siteData referenced only inside getStaticProps so Next strips the
+// generated JSON from the client bundle, as every other page does.
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  const { lastUpdated } = (siteData as GeneratedSiteData).home;
   return { props: { lastUpdated } };
 };
-
-const { lastUpdated } = (siteData as GeneratedSiteData).home;
 
 const HERO_TOOL = {
   title: 'IP Lookup',

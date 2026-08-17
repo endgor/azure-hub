@@ -52,10 +52,8 @@ try {
     process.exit(1);
   }
 
-  // No file copying needed since data files are already in public/data directory
-  console.log(`Found ${jsonFiles.length} existing JSON files in public/data directory`);
-  
   console.log('Build script completed successfully.');
 } catch (err) {
   console.error('Error in build script:', err);
+  process.exit(1);
 }

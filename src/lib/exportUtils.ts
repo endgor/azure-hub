@@ -146,9 +146,10 @@ export function generateFilename(query: string, format: 'csv' | 'xlsx' | 'md'): 
 }
 
 /**
- * Sanitizes CSV export values to ensure safe spreadsheet imports.
+ * Sanitizes CSV/Excel export values to ensure safe spreadsheet imports.
+ * Exported so the RBAC and Entra ID exporters apply the same protection.
  */
-function sanitizeCellValue(value: string): string {
+export function sanitizeCellValue(value: string): string {
   if (!value || value.length === 0) return value;
 
   const firstChar = value.charAt(0);

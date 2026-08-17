@@ -1,11 +1,15 @@
 import { useState, useCallback, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import type { AzureIpAddress } from '@/types/azure';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 import { prepareDataForExport, exportToCSV, exportToExcel, exportToMarkdown, generateFilename } from '@/lib/exportUtils';
 import { CLOUD_LABELS } from '@/lib/cloudConstants';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
-import RegionMap from '@/components/RegionMap';
+
+// d3-geo + topojson are only needed once a result carries a known region,
+// so keep them out of the ip-lookup entry bundle.
+const RegionMap = dynamic(() => import('@/components/RegionMap'), { ssr: false });
 
 interface IpLookupResultsProps {
   results: AzureIpAddress[];
