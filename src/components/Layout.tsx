@@ -376,18 +376,25 @@ export default function Layout({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <Link href="/" className="flex items-center gap-2" aria-label="Azure Hub home">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white dark:bg-[#1B1B1C]">
-                  <Image
-                    src="/favicons/favicon-32x32.png"
-                    alt="Azure Hub logo"
-                    width={20}
-                    height={20}
-                    priority
-                    unoptimized
-                  />
-                </span>
-                <span className="text-base font-semibold tracking-tight">Azure Hub</span>
+              <Link href="/" className="flex items-center" aria-label="Azure Hub home">
+                <Image
+                  src="/logo-wordmark.png"
+                  alt="Azure Hub"
+                  width={480}
+                  height={126}
+                  priority
+                  unoptimized
+                  className="h-8 w-auto dark:hidden"
+                />
+                <Image
+                  src="/logo-wordmark-dark.png"
+                  alt="Azure Hub"
+                  width={480}
+                  height={126}
+                  priority
+                  unoptimized
+                  className="hidden h-8 w-auto dark:block"
+                />
               </Link>
               <div className="ml-auto flex items-center gap-2">
                 <Link
