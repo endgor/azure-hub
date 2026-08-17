@@ -48,8 +48,12 @@ jobs:
         if: github.event_name == 'pull_request'
         run: npx opennextjs-cloudflare build
 
+      # Dependabot and fork PRs run without access to repository secrets, so the
+      # preview upload and its sticky comment cannot work there. Skip them rather
+      # than failing the job — `npm ci` plus the OpenNext build above are the real
+      # signal for those PRs.
       - name: Upload preview version
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && env.CLOUDFLARE_API_TOKEN != ''
         id: preview
         uses: cloudflare/wrangler-action@v3
         with:
@@ -57,8 +61,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: versions upload --message "PR #${{ github.event.number }} @ ${{ github.event.pull_request.head.sha }}"
 
+      - name: Note skipped preview upload
+        if: github.event_name == 'pull_request' && env.CLOUDFLARE_API_TOKEN == ''
+        run: echo "::notice::Cloudflare secrets unavailable for this PR, so the preview upload was skipped. The build above still validated the change."
+
       - name: Comment preview URL on PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && env.CLOUDFLARE_API_TOKEN != ''
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: cloudflare-preview
