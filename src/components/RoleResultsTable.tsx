@@ -259,6 +259,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
           itemCount={selectedRoles.size}
           disabled={selectedRoles.size === 0}
           isExporting={isExporting}
+          disabledHint="Select roles to export"
         />
       </div>
 
