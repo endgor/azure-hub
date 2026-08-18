@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { GuideHeading } from '@/lib/guides';
+import type { GuideHeading } from '@/types/guide';
 
 interface GuideTOCProps {
   headings: GuideHeading[];

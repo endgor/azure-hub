@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback, useRef, useEffect, type ReactElement } from 'react';
-import type { LeafSubnet } from '@/lib/subnetCalculator';
-import { NetworkType, inetNtoa } from '@/lib/subnetCalculator';
+import type { LeafSubnet } from '@/lib/subnet';
+import { NetworkType, inetNtoa } from '@/lib/subnet';
 
 interface AddressMapProps {
   basePrefix: number;

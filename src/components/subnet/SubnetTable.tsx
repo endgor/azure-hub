@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
+import type { LeafSubnet, SubnetTree } from '@/lib/subnet';
 import {
   NetworkType,
   getNodePath,
@@ -12,7 +12,7 @@ import {
   usableRangeByType,
   hostCapacity,
   hostCapacityByType
-} from '@/lib/subnetCalculator';
+} from '@/lib/subnet';
 
 interface RenderableRow extends LeafSubnet {
   isLockedVNetParent: boolean;

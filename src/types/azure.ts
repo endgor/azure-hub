@@ -1,6 +1,5 @@
 export interface AzureIpAddress {
   serviceTagId: string;
-  ipAddress?: string;
   ipAddressPrefix: string;
   region: string;
   regionId: string;

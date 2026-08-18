@@ -4,7 +4,7 @@
  */
 
 import { EntraIDRole } from '@/types/rbac';
-import { matchesWildcard } from '@/lib/rbacService';
+import { matchesWildcard } from '@/lib/utils/wildcardMatcher';
 
 /**
  * Checks if an Entra ID role has a specific permission.

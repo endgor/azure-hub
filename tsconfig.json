@@ -44,6 +44,6 @@
     "**/*.spec.tsx",
     "**/test/**",
     "**/__tests__/**",
-    "vitest.config.ts"
+    "vitest.config.mts"
   ]
 }

@@ -376,11 +376,7 @@ async function loadAzureIpData(cloud: AzureCloudName, options?: ServerDataLoadOp
  * Loads IP data from all Azure clouds (Public, China, Government).
  * Each cloud is loaded in parallel for performance.
  */
-async function loadAllCloudsIpData(): Promise<AzureIpAddress[]> {
-  return loadAllCloudsIpDataWithOptions();
-}
-
-async function loadAllCloudsIpDataWithOptions(options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
+async function loadAllCloudsIpData(options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
   const results = await Promise.all(ALL_CLOUDS.map((cloud) => loadAzureIpData(cloud, options)));
   return results.flat();
 }
@@ -390,7 +386,7 @@ async function loadAllCloudsIpDataWithOptions(options?: ServerDataLoadOptions): 
 async function checkIpAddressFallback(ipAddress: string, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
   // Dynamic import to avoid bundling ip-cidr when the index is available
   const IPCIDR = (await import('ip-cidr')).default;
-  const azureIpRanges = await loadAllCloudsIpDataWithOptions(options);
+  const azureIpRanges = await loadAllCloudsIpData(options);
   const matches: AzureIpAddress[] = [];
 
   for (const azureIpRange of azureIpRanges) {
@@ -439,7 +435,7 @@ export async function searchAzureIpAddresses(
     return [];
   }
 
-  const azureIpAddressList = await loadAllCloudsIpDataWithOptions(loadOptions);
+  const azureIpAddressList = await loadAllCloudsIpData(loadOptions);
   if (!azureIpAddressList || azureIpAddressList.length === 0) {
     return [];
   }
@@ -460,23 +456,4 @@ export async function searchAzureIpAddresses(
   }
 
   return results.map(ip => ({ ...ip }));
-}
-
-/**
- * Returns sorted list of all unique service tag names from all clouds.
- */
-export async function getAllServiceTags(): Promise<string[]> {
-  const azureIpData = await loadAllCloudsIpData();
-  const serviceTags = new Set(azureIpData.map(ip => ip.serviceTagId));
-  return Array.from(serviceTags).sort();
-}
-
-/**
- * Retrieves all IP ranges for a specific service tag from all clouds.
- */
-export async function getServiceTagDetails(serviceTag: string): Promise<AzureIpAddress[]> {
-  const azureIpData = await loadAllCloudsIpData();
-  return azureIpData.filter(ip =>
-    ip.serviceTagId.toLowerCase() === serviceTag.toLowerCase()
-  );
 }

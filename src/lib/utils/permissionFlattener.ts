@@ -6,14 +6,6 @@ import type { AzureRole } from '@/types/rbac';
 export type PermissionType = 'Action' | 'Not Action' | 'Data Action' | 'Not Data Action';
 
 /**
- * Flattened permission entry
- */
-export interface FlattenedPermission {
-  type: PermissionType;
-  permission: string;
-}
-
-/**
  * Flattened permissions grouped by type
  */
 export interface FlattenedPermissions {

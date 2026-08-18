@@ -6,9 +6,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   trailingSlash: true,
   reactStrictMode: true,
-  // Performance optimizations
+  // Performance optimizations.
+  // Keep error/warn: the API routes rely on them for Workers observability.
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole:
+      process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false,
   },
   poweredByHeader: false,
   generateEtags: true,

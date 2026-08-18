@@ -116,7 +116,6 @@ export default function SubnetToolbar({
         <ExportMenu
           options={exportOptions}
           itemCount={renderRows.length}
-          itemLabel="subnet"
           isExporting={isExporting}
         />
       </div>

@@ -1,6 +1,7 @@
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import { downloadFile, downloadExcel, downloadCSV, downloadMarkdown } from './downloadUtils';
 import { generateCountFilename } from './filenameUtils';
+import { sanitizeCellValue } from './exportUtils';
 import { getFlattenedPermissions, countTotalPermissions, type PermissionType } from './utils/permissionFlattener';
 
 /**
@@ -143,7 +144,11 @@ export async function exportRolesToCSV(
 
   // Use PapaParse for CSV generation (handles all escaping automatically)
   const Papa = (await import('papaparse')).default;
-  const csv = Papa.unparse(rows);
+  const csv = Papa.unparse(
+    rows.map(row => Object.fromEntries(
+      Object.entries(row).map(([key, value]) => [key, sanitizeCellValue(value)])
+    ))
+  );
   downloadCSV(csv, filename);
 }
 

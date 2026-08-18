@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
+import type { LeafSubnet, SubnetTree } from '@/lib/subnet';
 import { parseShareableSubnetPlan } from '@/lib/shareSubnetPlan';
 import { generateShareLink, copyToClipboard } from '@/lib/subnet/shareLinkCodec';
 import { reconstructTreeFromSharePlan } from '@/lib/subnet/treeReconstruction';

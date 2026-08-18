@@ -9,10 +9,19 @@ const ROLES_FILE = path.join(DATA_DIR, 'roles-extended.json');
 const ACTIONS_INDEX_FILE = path.join(DATA_DIR, 'actions-index.json');
 
 /**
- * Main function
+ * Rebuilds actions-index.json from roles-extended.json alone.
+ *
+ * This produces a ROLE-ONLY index. `npm run update-rbac-data` additionally
+ * merges Azure provider operations (which need an authenticated Azure CLI) and
+ * yields roughly 6x more actions. Running this script over an index built by
+ * update-rbac-data will silently discard those extra actions.
  */
 async function main(): Promise<void> {
   console.log('Starting actions cache generation...\n');
+  console.warn(
+    'NOTE: this rebuilds the index from role definitions only. Use ' +
+    '"npm run update-rbac-data" to include Azure provider operations.\n'
+  );
 
   // Check if roles file exists
   if (!fs.existsSync(ROLES_FILE)) {
@@ -38,7 +47,7 @@ async function main(): Promise<void> {
 
     // Save to file
     console.log(`\nWriting ${actionsCache.length} actions to ${ACTIONS_INDEX_FILE}...`);
-    fs.writeFileSync(ACTIONS_INDEX_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
+    fs.writeFileSync(ACTIONS_INDEX_FILE, JSON.stringify(actionsCache), 'utf8');
     console.log(`✓ Actions cache saved\n`);
 
     console.log(`Actions cache generation completed in ${elapsedTime}s!`);

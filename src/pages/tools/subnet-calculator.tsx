@@ -18,7 +18,7 @@ import {
   inetNtoa,
   isRfc1918Cidr,
   normaliseNetwork
-} from '@/lib/subnetCalculator';
+} from '@/lib/subnet';
 import {
   useSubnetTree,
   useSubnetMetadata,

@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
-import type { GuideCategory } from '@/lib/guides';
+import type { GuideCategory } from '@/types/guide';
 import siteData from '@/generated/site-data.json';
 import type { GeneratedSiteData } from '@/types/generatedSiteData';
 

@@ -8,6 +8,7 @@ declare global {
 
   interface CloudflareEnv {
     TENANT_LOOKUP_RATE_LIMITER?: RateLimit;
+    FEEDBACK_RATE_LIMITER?: RateLimit;
   }
 }
 

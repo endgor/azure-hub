@@ -5,60 +5,17 @@ import Layout from '@/components/Layout';
 import LookupForm from '@/components/LookupForm';
 import RecentChangesCard from '@/components/RecentChangesCard';
 import IpLookupResults from '@/components/IpLookupResults';
-import { buildUrlWithQuery } from '@/lib/queryUtils';
 import { classifySearchInput } from '@/lib/utils/searchClassifier';
 import type { AzureIpAddress } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 
 
-/**
- * Fetches IP lookup data from the server-side API.
- * This eliminates the 4MB+ download of AzureCloud.json to the browser.
- * All CIDR matching and DNS resolution now happens server-side.
- */
-const clientFetcher = async (key: string): Promise<ApiResponse> => {
-  if (!key) {
-    return {
-      results: [],
-      total: 0,
-      notFound: true,
-      message: 'No query provided'
-    };
-  }
-
-  try {
-    // Build API URL from the key (which contains query parameters)
-    const url = new URL(`http://localhost${key}`);
-    const params = new URLSearchParams();
-
-    const ipOrDomain = url.searchParams.get('ipOrDomain');
-    const region = url.searchParams.get('region');
-    const service = url.searchParams.get('service');
-
-    if (ipOrDomain) params.set('ipOrDomain', ipOrDomain);
-    if (region) params.set('region', region);
-    if (service) params.set('service', service);
-
-    // Call server-side API
-    const response = await fetch(`/api/ipLookup?${params.toString()}`);
-
-    if (!response.ok) {
-      if (response.status === 429) {
-        throw new Error('Rate limit exceeded. Please try again later.');
-      }
-      throw new Error('Failed to fetch IP data');
-    }
-
-    const data = await response.json() as ApiResponse;
-    return data;
-  } catch (error) {
-    if (error instanceof Error && error.message === 'Rate limit exceeded. Please try again later.') {
-      throw error;
-    }
-    throw new Error('Failed to load data. Please check your input and try again.');
-  }
-};
+interface LookupParams {
+  ipOrDomain: string;
+  region: string;
+  service: string;
+}
 
 interface ApiResponse {
   results: AzureIpAddress[];
@@ -68,12 +25,33 @@ interface ApiResponse {
     service?: string;
   };
   total: number;
-  page?: number;
-  pageSize?: number;
   error?: string;
   notFound?: boolean;
   message?: string;
 }
+
+/**
+ * Fetches IP lookup data from the server-side API.
+ * This eliminates the 4MB+ download of AzureCloud.json to the browser.
+ * All CIDR matching and DNS resolution happens server-side.
+ */
+const fetchLookup = async ({ ipOrDomain, region, service }: LookupParams): Promise<ApiResponse> => {
+  const params = new URLSearchParams();
+  if (ipOrDomain) params.set('ipOrDomain', ipOrDomain);
+  if (region) params.set('region', region);
+  if (service) params.set('service', service);
+
+  const response = await fetch(`/api/ipLookup?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error(
+      response.status === 429
+        ? 'Too many lookups. Please try again in a minute.'
+        : 'Failed to load data. Please check your input and try again.'
+    );
+  }
+
+  return await response.json() as ApiResponse;
+};
 
 
 export default function IpLookupPage() {
@@ -84,9 +62,7 @@ export default function IpLookupPage() {
   const [queryParams, setQueryParams] = useState({
     initialQuery: '',
     initialRegion: '',
-    initialService: '',
-    initialPage: 1,
-    initialPageSize: 50 as number | 'all'
+    initialService: ''
   });
 
   useEffect(() => {
@@ -94,23 +70,18 @@ export default function IpLookupPage() {
       setQueryParams({
         initialQuery: (router.query.ipOrDomain as string) || '',
         initialRegion: (router.query.region as string) || '',
-        initialService: (router.query.service as string) || '',
-        initialPage: parseInt((router.query.page as string) || '1', 10),
-        initialPageSize:
-          router.query.pageSize === 'all'
-            ? 'all'
-            : parseInt((router.query.pageSize as string) || '50', 10)
+        initialService: (router.query.service as string) || ''
       });
     }
   }, [router.isReady, router.query]);
 
-  const { initialQuery, initialRegion, initialService, initialPage, initialPageSize } = queryParams;
+  const { initialQuery, initialRegion, initialService } = queryParams;
 
   useEffect(() => {
     setError(null);
-  }, [initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
+  }, [initialQuery, initialRegion, initialService]);
 
-  const apiUrl = useMemo(() => {
+  const lookupParams = useMemo<LookupParams | null>(() => {
     if (!router.isReady) return null;
 
     // Don't fetch if there are no search parameters
@@ -118,40 +89,40 @@ export default function IpLookupPage() {
       return null;
     }
 
-    return buildUrlWithQuery('/client/ipAddress', {
-      ipOrDomain: initialQuery,
-      region: initialRegion,
-      service: initialService,
-      page: initialPage,
-      // Only include pageSize if it's 'all' (numeric sizes are handled client-side)
-      pageSize: initialPageSize === 'all' ? 'all' : undefined
-    });
-  }, [router.isReady, initialQuery, initialRegion, initialService, initialPage, initialPageSize]);
+    return { ipOrDomain: initialQuery, region: initialRegion, service: initialService };
+  }, [router.isReady, initialQuery, initialRegion, initialService]);
 
   useEffect(() => {
-    if (!apiUrl) {
+    if (!lookupParams) {
       setData(null);
       setIsLoading(false);
       return;
     }
+
+    let cancelled = false;
 
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const result = await clientFetcher(apiUrl);
-        setData(result);
-      } catch {
-        setError('Failed to load data. Please check your input and try again.');
+        const result = await fetchLookup(lookupParams);
+        if (!cancelled) setData(result);
+      } catch (err) {
+        if (cancelled) return;
+        setError(err instanceof Error ? err.message : 'Failed to load data. Please check your input and try again.');
         setData(null);
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [apiUrl]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lookupParams]);
 
   const isError = error || (data && 'error' in data && !data.notFound);
   const isNotFound = data?.notFound === true;
@@ -237,12 +208,6 @@ export default function IpLookupPage() {
                 results={results}
                 query={pageTitle}
               />
-            )}
-
-            {!isLoading && !isNotFound && !isError && results.length === 0 && (initialQuery || initialRegion || initialService) && (
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700">
-                No Azure IP ranges found matching your search criteria.
-              </div>
             )}
 
             {!initialQuery && !initialRegion && !initialService && (

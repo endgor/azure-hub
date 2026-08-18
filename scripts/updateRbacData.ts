@@ -383,7 +383,7 @@ async function updateRbacData(): Promise<void> {
       operations,
     });
     console.info(`Writing ${actionsCache.length} actions to ${ACTIONS_INDEX_FILE}...`);
-    fs.writeFileSync(ACTIONS_INDEX_FILE, JSON.stringify(actionsCache, null, 2), 'utf8');
+    fs.writeFileSync(ACTIONS_INDEX_FILE, JSON.stringify(actionsCache), 'utf8');
     console.info(`✓ Actions cache saved\n`);
 
     // Fetch and save Entra ID roles

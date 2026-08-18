@@ -135,7 +135,7 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // Load roles for Role Explorer, Role Compare, and Role Creator modes
+  // Load roles for Role Explorer and Role Creator modes
   useEffect(() => {
     if (isRoleExplorerMode || isRoleCreatorMode) {
       const loadRoles = async () => {

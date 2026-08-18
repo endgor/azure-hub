@@ -263,7 +263,6 @@ export default function PrivateDnsZones() {
                 <ExportMenu
                   options={exportOptions}
                   itemCount={filteredEntries.length}
-                  itemLabel="zone"
                   isExporting={isExporting}
                 />
               </div>

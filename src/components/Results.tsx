@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 import { useState, useMemo, memo, useCallback, useRef } from 'react';
@@ -9,6 +10,41 @@ import { buildUrlWithQuery } from '@/lib/queryUtils';
 import { pluralize } from '@/lib/filenameUtils';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
+
+/** Pagination is driven by callbacks on some pages and by links on others. */
+function PageControl({
+  className,
+  onClick,
+  href,
+  children
+}: {
+  className: string;
+  onClick?: () => void;
+  href: string;
+  children: ReactNode;
+}) {
+  return onClick ? (
+    <button onClick={onClick} className={className}>
+      {children}
+    </button>
+  ) : (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+const PAGE_NAV_MOBILE =
+  'rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300';
+
+const PAGE_NAV_DESKTOP = `${PAGE_NAV_MOBILE} dark:hover:border-sky-500 dark:hover:text-sky-400`;
+
+const pageButtonClass = (active: boolean) =>
+  `rounded-lg px-3 py-1.5 text-xs transition ${
+    active
+      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
+      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
+  }`;
 
 interface PaginationButtonsProps {
   currentPage: number;
@@ -53,20 +89,15 @@ const PaginationButtons = memo(function PaginationButtons({
           );
         }
 
-        const buttonClass = `rounded-lg px-3 py-1.5 text-xs transition ${
-          currentPage === page
-            ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
-            : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
-        }`;
-
-        return onPageChange ? (
-          <button key={page} onClick={() => onPageChange(page)} className={buttonClass}>
+        return (
+          <PageControl
+            key={page}
+            className={pageButtonClass(currentPage === page)}
+            onClick={onPageChange ? () => onPageChange(page) : undefined}
+            href={getPageUrl(page)}
+          >
             {page}
-          </button>
-        ) : (
-          <Link key={page} href={getPageUrl(page)} className={buttonClass}>
-            {page}
-          </Link>
+          </PageControl>
         );
       })}
     </>
@@ -162,6 +193,13 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
     });
   }, [pagination?.basePath, pagination?.query]);
 
+  const showPrevious = Boolean(pagination && !pagination.isAll && pagination.currentPage > 1);
+  const showNext = Boolean(
+    pagination && !pagination.isAll && pagination.currentPage < pagination.totalPages
+  );
+  const goToPage = (page: number) =>
+    pagination?.onPageChange ? () => pagination.onPageChange?.(page) : undefined;
+
   // Handle service tag click - memoized to prevent re-renders
   const handleServiceTagClick = useCallback((serviceTagId: string) => {
     router.push(getServiceTagPath(serviceTagId));
@@ -174,7 +212,7 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   }, [sortField, sortDirection]);
   
   // Filter and sort the results - memoized to avoid unnecessary computations
-  const filteredAndSortedResults = useMemo(() => {
+  const sortedResults = useMemo(() => {
     if (!results || results.length === 0) return [];
 
     // First filter by cloud
@@ -191,9 +229,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       return sortDirection === 'asc' ? comparison : -comparison;
     });
   }, [results, sortField, sortDirection, cloudFilter]);
-
-  // For display purposes
-  const sortedResults = filteredAndSortedResults;
 
   // Export options configuration
   const exportOptions = useMemo<ExportOption[]>(() => [
@@ -315,7 +350,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
             <ExportMenu
               options={exportOptions}
               itemCount={sortedResults.length}
-              itemLabel="record"
             />
           </div>
         </div>
@@ -362,61 +396,25 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
 
             {/* Mobile: Arrow navigation */}
             <div className="flex items-center gap-1 md:hidden">
-              {!pagination.isAll && pagination.currentPage > 1 && (
-                pagination.onPageChange ? (
-                  <button
-                    onClick={() => pagination.onPageChange?.(pagination.currentPage - 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
-                  >
-                    ←
-                  </button>
-                ) : (
-                  <Link
-                    href={getPageUrl(pagination.currentPage - 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
-                  >
-                    ←
-                  </Link>
-                )
+              {showPrevious && (
+                <PageControl className={PAGE_NAV_MOBILE} onClick={goToPage(pagination.currentPage - 1)} href={getPageUrl(pagination.currentPage - 1)}>
+                  ←
+                </PageControl>
               )}
 
-              {!pagination.isAll && pagination.currentPage < pagination.totalPages && (
-                pagination.onPageChange ? (
-                  <button
-                    onClick={() => pagination.onPageChange?.(pagination.currentPage + 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
-                  >
-                    →
-                  </button>
-                ) : (
-                  <Link
-                    href={getPageUrl(pagination.currentPage + 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300"
-                  >
-                    →
-                  </Link>
-                )
+              {showNext && (
+                <PageControl className={PAGE_NAV_MOBILE} onClick={goToPage(pagination.currentPage + 1)} href={getPageUrl(pagination.currentPage + 1)}>
+                  →
+                </PageControl>
               )}
             </div>
 
             {/* Desktop: Full pagination controls */}
             <div className="hidden md:flex md:items-center md:gap-1">
-              {!pagination.isAll && pagination.currentPage > 1 && (
-                pagination.onPageChange ? (
-                  <button
-                    onClick={() => pagination.onPageChange?.(pagination.currentPage - 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
-                  >
-                    Previous
-                  </button>
-                ) : (
-                  <Link
-                    href={getPageUrl(pagination.currentPage - 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
-                  >
-                    Previous
-                  </Link>
-                )
+              {showPrevious && (
+                <PageControl className={PAGE_NAV_DESKTOP} onClick={goToPage(pagination.currentPage - 1)} href={getPageUrl(pagination.currentPage - 1)}>
+                  Previous
+                </PageControl>
               )}
 
               {!pagination.isAll && (
@@ -428,46 +426,18 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
                 />
               )}
 
-              {pagination.onPageChange ? (
-                <button
-                  onClick={() => pagination.onPageChange?.('all')}
-                  className={`rounded-lg px-3 py-1.5 text-xs transition ${
-                    pagination.isAll
-                      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
-                      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
-                  }`}
-                >
-                  All
-                </button>
-              ) : (
-                <Link
-                  href={getAllUrl()}
-                  className={`rounded-lg px-3 py-1.5 text-xs transition ${
-                    pagination.isAll
-                      ? 'border border-sky-400 bg-sky-50 text-sky-700 dark:border-sky-500 dark:bg-sky-900/30 dark:text-sky-300'
-                      : 'border border-slate-300 text-slate-600 hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400'
-                  }`}
-                >
-                  All
-                </Link>
-              )}
+              <PageControl
+                className={pageButtonClass(pagination.isAll)}
+                onClick={pagination.onPageChange ? () => pagination.onPageChange?.('all') : undefined}
+                href={getAllUrl()}
+              >
+                All
+              </PageControl>
 
-              {!pagination.isAll && pagination.currentPage < pagination.totalPages && (
-                pagination.onPageChange ? (
-                  <button
-                    onClick={() => pagination.onPageChange?.(pagination.currentPage + 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
-                  >
-                    Next
-                  </button>
-                ) : (
-                  <Link
-                    href={getPageUrl(pagination.currentPage + 1)}
-                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-700 transition hover:border-sky-200 hover:text-sky-700 dark:border-slate-600 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:text-sky-400"
-                  >
-                    Next
-                  </Link>
-                )
+              {showNext && (
+                <PageControl className={PAGE_NAV_DESKTOP} onClick={goToPage(pagination.currentPage + 1)} href={getPageUrl(pagination.currentPage + 1)}>
+                  Next
+                </PageControl>
               )}
             </div>
           </div>
@@ -563,11 +533,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
                           DNS: {result.resolvedFrom} → {result.resolvedIp}
                         </span>
                       </div>
-                    )}
-                    {result.ipAddress && result.ipAddress !== result.ipAddressPrefix && !result.resolvedFrom && (
-                      <span className="inline-block rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs font-semibold text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
-                        {result.ipAddressPrefix.includes('/') ? 'Contains IP' : 'Matches'}: {result.ipAddress}
-                      </span>
                     )}
                   </div>
                 </td>

@@ -1,5 +1,5 @@
-import type { LeafSubnet, SubnetTree } from '@/lib/subnetCalculator';
-import { isRfc1918Cidr, normaliseNetwork } from '@/lib/subnetCalculator';
+import type { LeafSubnet, SubnetTree } from '@/lib/subnet';
+import { isRfc1918Cidr, normaliseNetwork } from '@/lib/subnet';
 
 /**
  * Compressed leaf subnet representation for sharing.

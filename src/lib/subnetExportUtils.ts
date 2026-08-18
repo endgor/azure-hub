@@ -8,7 +8,7 @@ import {
   subnetNetmask,
   usableRange,
   usableRangeAzure
-} from '@/lib/subnetCalculator';
+} from '@/lib/subnet';
 
 export type SubnetExportRow = Record<string, string | number>;
 

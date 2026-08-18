@@ -10,47 +10,11 @@ import {
   fetchUserRealm,
   MissingCredentialsError,
 } from '@/lib/tenant';
+import { getClientIp, isRateLimited } from '@/lib/rateLimit';
 
 type ErrorResponse = { error: string };
 
 const DEFAULT_ALLOWED_ORIGINS = ['http://localhost:3000', 'https://localhost:3000'];
-
-function getClientIp(req: NextApiRequest): string {
-  const cf = req.headers['cf-connecting-ip'];
-  if (typeof cf === 'string' && cf) return cf;
-
-  const fwd = req.headers['x-forwarded-for'];
-  if (typeof fwd === 'string') {
-    const ip = fwd.split(',')[0].trim();
-    if (ip) return ip;
-  }
-
-  return req.socket?.remoteAddress ?? 'unknown';
-}
-
-function getRateLimiterBinding(): RateLimit | null {
-  const globalScope = globalThis as typeof globalThis & {
-    TENANT_LOOKUP_RATE_LIMITER?: RateLimit;
-    [key: symbol]: unknown;
-  };
-  const context = globalScope[Symbol.for('__cloudflare-context__')] as
-    | { env?: { TENANT_LOOKUP_RATE_LIMITER?: RateLimit } }
-    | undefined;
-
-  return context?.env?.TENANT_LOOKUP_RATE_LIMITER ?? globalScope.TENANT_LOOKUP_RATE_LIMITER ?? null;
-}
-
-async function isRateLimited(key: string): Promise<boolean> {
-  try {
-    const limiter = getRateLimiterBinding();
-    if (!limiter) return false;
-    const { success } = await limiter.limit({ key });
-    return !success;
-  } catch {
-    // Binding unavailable or errored: fail open so real traffic isn't blocked.
-    return false;
-  }
-}
 
 function sendJson<T>(
   res: NextApiResponse<T>,
@@ -95,7 +59,7 @@ export default async function handler(
     return;
   }
 
-  if (await isRateLimited(getClientIp(req))) {
+  if (await isRateLimited('TENANT_LOOKUP_RATE_LIMITER', getClientIp(req))) {
     res.setHeader('Retry-After', '60');
     sendJson(
       res,

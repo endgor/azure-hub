@@ -107,8 +107,10 @@ export function cidrToRange(cidr: string): CidrRange {
     if (prefixLen === 32) {
       return { start: ipNum, end: ipNum, isV6: false };
     }
-    // Create mask with prefixLen leading 1s
-    const mask = (~0 << (32 - prefixLen)) >>> 0;
+    // Create mask with prefixLen leading 1s.
+    // JS shift counts are mod 32, so `~0 << 32` would leave every bit set
+    // instead of clearing them; /0 has to be special-cased.
+    const mask = prefixLen === 0 ? 0 : (~0 << (32 - prefixLen)) >>> 0;
     const start = (ipNum & mask) >>> 0;
     const end = (start | (~mask >>> 0)) >>> 0;
     return { start, end, isV6: false };

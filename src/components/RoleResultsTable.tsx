@@ -1,9 +1,19 @@
 import React, { useState, useMemo, memo, useEffect, useCallback } from 'react';
 import type { LeastPrivilegeResult, EntraIDLeastPrivilegeResult } from '@/types/rbac';
-import { exportRolesToAzureJSON, generateRoleExportFilename } from '@/lib/rbacExportUtils';
-import { exportRolesToCSV, exportRolesToExcel, exportRolesToMarkdown } from '@/lib/rbacExportUtils';
+import {
+  exportRolesToAzureJSON,
+  exportRolesToCSV,
+  exportRolesToExcel,
+  exportRolesToMarkdown
+} from '@/lib/rbacExportUtils';
+import {
+  exportEntraIdRolesToJSON,
+  exportEntraIdRolesToCSV,
+  exportEntraIdRolesToExcel,
+  exportEntraIdRolesToMarkdown
+} from '@/lib/entraIdExportUtils';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
-import { pluralize } from '@/lib/filenameUtils';
+import { generateCountFilename, pluralize } from '@/lib/filenameUtils';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -11,6 +21,15 @@ type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
 interface RoleResultsTableProps {
   results: AnyRoleResult[];
   roleSystem: RoleSystemType;
+}
+
+/** Azure and Entra ID results share this table but need different exporters. */
+function isAzureResult(result: AnyRoleResult): result is LeastPrivilegeResult {
+  return 'roleName' in result.role;
+}
+
+function isEntraIdResult(result: AnyRoleResult): result is EntraIDLeastPrivilegeResult {
+  return !('roleName' in result.role);
 }
 
 type SortField = 'roleName' | 'permissionCount' | 'roleType' | 'default';
@@ -117,70 +136,84 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
     return sortedResults.filter(r => selectedRoles.has(r.role.id));
   }, [sortedResults, selectedRoles]);
 
-  const handleJsonExport = useCallback(async () => {
-    if (selectedResults.length === 0) return;
-    setIsExporting(true);
-    try {
-      const filename = generateRoleExportFilename(selectedResults.length);
-      exportRolesToAzureJSON(selectedResults as LeastPrivilegeResult[], filename);
-    } catch {
-      alert('Export failed. Please try again.');
-    } finally {
-      setIsExporting(false);
-    }
-  }, [selectedResults]);
+  const filenamePrefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
 
-  const handleCsvExport = useCallback(async () => {
-    if (selectedResults.length === 0) return;
-    setIsExporting(true);
-    try {
-      const roles = selectedResults.map(r => r.role);
-      const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
-      const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.csv`;
-      await exportRolesToCSV(roles as any[], filename);
-    } catch {
-      alert('Export failed. Please try again.');
-    } finally {
-      setIsExporting(false);
-    }
-  }, [selectedResults, roleSystem]);
+  const azureRoles = useMemo(
+    () => selectedResults.filter(isAzureResult).map(result => result.role),
+    [selectedResults]
+  );
 
-  const handleExcelExport = useCallback(async () => {
-    if (selectedResults.length === 0) return;
-    setIsExporting(true);
-    try {
-      const roles = selectedResults.map(r => r.role);
-      const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
-      const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.xlsx`;
-      await exportRolesToExcel(roles as any[], filename);
-    } catch {
-      alert('Export failed. Please try again.');
-    } finally {
-      setIsExporting(false);
-    }
-  }, [selectedResults, roleSystem]);
+  const entraIdRoles = useMemo(
+    () => selectedResults.filter(isEntraIdResult).map(result => result.role),
+    [selectedResults]
+  );
 
-  const handleMarkdownExport = useCallback(async () => {
-    if (selectedResults.length === 0) return;
-    setIsExporting(true);
-    try {
-      const roles = selectedResults.map(r => r.role);
-      const prefix = roleSystem === 'azure' ? 'azure-rbac' : 'entraid-roles';
-      const filename = `${prefix}_${selectedResults.length}_roles_${new Date().toISOString().slice(0, 10)}.md`;
-      exportRolesToMarkdown(roles as any[], filename);
-    } catch {
-      alert('Export failed. Please try again.');
-    } finally {
-      setIsExporting(false);
-    }
-  }, [selectedResults, roleSystem]);
+  const runExport = useCallback(
+    async (exporter: (filename: string) => void | Promise<void>, extension: string) => {
+      if (selectedResults.length === 0) return;
+      setIsExporting(true);
+      try {
+        await exporter(generateCountFilename(selectedResults.length, extension, filenamePrefix));
+      } catch (error) {
+        console.error('Role export failed:', error);
+        alert('Export failed. Please try again.');
+      } finally {
+        setIsExporting(false);
+      }
+    },
+    [selectedResults.length, filenamePrefix]
+  );
 
-  const exportOptions: ExportOption[] = useMemo(() => [
-    { label: 'JSON file', format: 'json', extension: '.json', onClick: handleJsonExport },
-    { label: 'Comma separated', format: 'csv', extension: '.csv', onClick: handleCsvExport },
-    { label: 'Excel spreadsheet', format: 'excel', extension: '.xlsx', onClick: handleExcelExport },
-    { label: 'Markdown table', format: 'md', extension: '.md', onClick: handleMarkdownExport }
-  ], [handleJsonExport, handleCsvExport, handleExcelExport, handleMarkdownExport]);
+  const exportOptions: ExportOption[] = useMemo(() => {
+    const isAzure = roleSystem === 'azure';
+
+    return [
+      {
+        label: 'JSON file',
+        format: 'json',
+        extension: '.json',
+        onClick: () => runExport(
+          filename => isAzure
+            ? exportRolesToAzureJSON(selectedResults.filter(isAzureResult), filename)
+            : exportEntraIdRolesToJSON(entraIdRoles, filename),
+          'json'
+        )
+      },
+      {
+        label: 'Comma separated',
+        format: 'csv',
+        extension: '.csv',
+        onClick: () => runExport(
+          filename => isAzure
+            ? exportRolesToCSV(azureRoles, filename)
+            : exportEntraIdRolesToCSV(entraIdRoles, filename),
+          'csv'
+        )
+      },
+      {
+        label: 'Excel spreadsheet',
+        format: 'excel',
+        extension: '.xlsx',
+        onClick: () => runExport(
+          filename => isAzure
+            ? exportRolesToExcel(azureRoles, filename)
+            : exportEntraIdRolesToExcel(entraIdRoles, filename),
+          'xlsx'
+        )
+      },
+      {
+        label: 'Markdown table',
+        format: 'md',
+        extension: '.md',
+        onClick: () => runExport(
+          filename => isAzure
+            ? exportRolesToMarkdown(azureRoles, filename)
+            : exportEntraIdRolesToMarkdown(entraIdRoles, filename),
+          'md'
+        )
+      }
+    ];
+  }, [roleSystem, runExport, selectedResults, azureRoles, entraIdRoles]);
 
   const allSelected = sortedResults.length > 0 && selectedRoles.size === sortedResults.length;
   const someSelected = selectedRoles.size > 0 && selectedRoles.size < sortedResults.length;
@@ -224,9 +257,9 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
         <ExportMenu
           options={exportOptions}
           itemCount={selectedRoles.size}
-          itemLabel="role"
           disabled={selectedRoles.size === 0}
           isExporting={isExporting}
+          disabledHint="Select roles to export"
         />
       </div>
 

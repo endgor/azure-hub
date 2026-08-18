@@ -1,5 +1,5 @@
 import { CACHE_TTL_MS } from '@/config/constants';
-import type { IpDiffFile, IpDiffSummary } from '@/types/ipDiff';
+import type { IpDiffFile } from '@/types/ipDiff';
 
 /**
  * Client-side service for loading IP data diff information.
@@ -50,67 +50,4 @@ export async function loadIpDiff(): Promise<IpDiffFile | null> {
     diffCacheExpiry = now + CACHE_TTL_MS; // Prevent rapid retries
     return null;
   }
-}
-
-/**
- * Gets just the summary of the diff without full details.
- * Returns null if no diff is available.
- */
-export async function getDiffSummary(): Promise<IpDiffSummary | null> {
-  const diff = await loadIpDiff();
-  return diff?.meta.summary || null;
-}
-
-/**
- * Checks if a diff is available without loading the full data.
- * Uses cached data if available.
- */
-export async function isDiffAvailable(): Promise<boolean> {
-  const diff = await loadIpDiff();
-  return diff !== null;
-}
-
-/**
- * Gets the version transition info (from -> to changeNumbers).
- * For multi-cloud diffs, returns info from the first available cloud.
- */
-export async function getVersionInfo(): Promise<{
-  fromChangeNumber: number;
-  toChangeNumber: number;
-  generatedAt: string;
-} | null> {
-  const diff = await loadIpDiff();
-  if (!diff) return null;
-
-  // Try to get version info from clouds map first (new multi-cloud format)
-  if (diff.meta.clouds && Object.keys(diff.meta.clouds).length > 0) {
-    const firstCloud = Object.values(diff.meta.clouds)[0];
-    if (firstCloud) {
-      return {
-        fromChangeNumber: firstCloud.fromChangeNumber,
-        toChangeNumber: firstCloud.toChangeNumber,
-        generatedAt: diff.meta.generatedAt,
-      };
-    }
-  }
-
-  // Fall back to legacy single-cloud format
-  if (diff.meta.fromChangeNumber !== undefined && diff.meta.toChangeNumber !== undefined) {
-    return {
-      fromChangeNumber: diff.meta.fromChangeNumber,
-      toChangeNumber: diff.meta.toChangeNumber,
-      generatedAt: diff.meta.generatedAt,
-    };
-  }
-
-  return null;
-}
-
-/**
- * Clears the diff cache, forcing a fresh load on next request.
- */
-export function clearDiffCache(): void {
-  diffCache = null;
-  diffCacheExpiry = 0;
-  diffLoadAttempted = false;
 }

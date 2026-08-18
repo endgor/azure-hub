@@ -3,7 +3,7 @@ import { EntraIDRole } from '@/types/rbac';
 /**
  * Shared Entra ID permission scoring logic.
  * Used by both the build-time script (fetchEntraIdRoles.ts)
- * and runtime client code (entraIdRbacService.ts).
+ * and runtime client code (lib/entraId).
  *
  * Calculates total permission count for an Entra ID role.
  * Used for privilege scoring (lower is more restrictive).

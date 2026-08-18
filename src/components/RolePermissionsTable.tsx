@@ -146,7 +146,6 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
         <ExportMenu
           options={exportOptions}
           itemCount={roles.length}
-          itemLabel="role"
           isExporting={isExporting}
         />
       </div>

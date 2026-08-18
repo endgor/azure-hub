@@ -1,5 +1,6 @@
 import type { EntraIDRole } from '@/types/rbac';
 import { downloadFile, downloadExcel, downloadCSV, downloadMarkdown } from './downloadUtils';
+import { sanitizeCellValue } from './exportUtils';
 
 /**
  * Entra ID role definition format for export
@@ -59,7 +60,7 @@ export async function exportEntraIdRolesToCSV(roles: EntraIDRole[], filename: st
   }
 
   const Papa = (await import('papaparse')).default;
-  const csv = Papa.unparse(rows);
+  const csv = Papa.unparse(rows.map(row => row.map(sanitizeCellValue)));
   downloadCSV(csv, filename);
 }
 
