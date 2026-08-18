@@ -6737,7 +6737,7 @@
   {
     "key": "microsoft.security/securityoperators/read",
     "name": "Microsoft.Security/securityOperators/read",
-    "roleCount": 26
+    "roleCount": 27
   },
   {
     "key": "microsoft.usagebilling/accounts/inputs/send/action",
@@ -7800,16 +7800,6 @@
     "roleCount": 26
   },
   {
-    "key": "microsoft.mission/virtualenclaves/workloads/write",
-    "name": "Microsoft.Mission/virtualEnclaves/workloads/write",
-    "roleCount": 7
-  },
-  {
-    "key": "microsoft.mission/virtualenclaves/workloads/delete",
-    "name": "Microsoft.Mission/virtualEnclaves/workloads/delete",
-    "roleCount": 5
-  },
-  {
     "key": "microsoft.mission/communities/communityendpoints/read",
     "name": "Microsoft.Mission/communities/communityEndpoints/read",
     "roleCount": 25
@@ -8587,6 +8577,16 @@
   {
     "key": "microsoft.hybridcontainerservice/virtualnetworks/delete",
     "name": "Microsoft.HybridContainerService/virtualNetworks/delete",
+    "roleCount": 4
+  },
+  {
+    "key": "microsoft.mission/virtualenclaves/workloads/write",
+    "name": "Microsoft.Mission/virtualEnclaves/workloads/write",
+    "roleCount": 5
+  },
+  {
+    "key": "microsoft.mission/virtualenclaves/workloads/delete",
+    "name": "Microsoft.Mission/virtualEnclaves/workloads/delete",
     "roleCount": 4
   },
   {
@@ -16400,6 +16400,11 @@
     "roleCount": 23
   },
   {
+    "key": "microsoft.migrate/migrateprojects/tasksummary/action",
+    "name": "Microsoft.Migrate/migrateProjects/taskSummary/action",
+    "roleCount": 7
+  },
+  {
     "key": "microsoft.recoveryservices/vaults/replicationfabrics/replicationprotectioncontainers/replicationmigrationitems/read",
     "name": "Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/read",
     "roleCount": 24
@@ -24020,11 +24025,6 @@
     "roleCount": 0
   },
   {
-    "key": "microsoft.app/artifacts/versions/pull/read",
-    "name": "Microsoft.App/artifacts/versions/pull/read",
-    "roleCount": 0
-  },
-  {
     "key": "microsoft.app/artifacts/versions/read",
     "name": "Microsoft.App/artifacts/versions/read",
     "roleCount": 0
@@ -30897,6 +30897,11 @@
   {
     "key": "microsoft.azurestackhci/edgemachines/proxyconfigurations/jobs/write",
     "name": "Microsoft.AzureStackHCI/EdgeMachines/ProxyConfigurations/Jobs/Write",
+    "roleCount": 0
+  },
+  {
+    "key": "microsoft.azurestackhci/edgemachines/refreshapplicableupdates/action",
+    "name": "Microsoft.AzureStackHCI/EdgeMachines/RefreshApplicableUpdates/Action",
     "roleCount": 0
   },
   {
@@ -80792,11 +80797,6 @@
   {
     "key": "microsoft.migrate/migrateprojects/tasks/write",
     "name": "Microsoft.Migrate/migrateProjects/tasks/write",
-    "roleCount": 0
-  },
-  {
-    "key": "microsoft.migrate/migrateprojects/tasksummary/action",
-    "name": "Microsoft.Migrate/migrateProjects/tasksummary/action",
     "roleCount": 0
   },
   {
