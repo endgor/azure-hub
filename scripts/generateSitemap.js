@@ -74,6 +74,21 @@ function getBaseServiceTags() {
 }
 
 /**
+ * Gets every VM SKU that has a generated detail page.
+ * @returns {string[]} Sorted ARM SKU names
+ */
+function getVmPricingSkus() {
+  try {
+    const catalogPath = path.join(PUBLIC_DATA_DIR, 'vm-pricing', 'skus.json');
+    const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
+    return catalog.skus.map(entry => entry.sku).sort();
+  } catch {
+    console.warn('Warning: Could not read vm-pricing/skus.json, skipping VM size URLs');
+    return [];
+  }
+}
+
+/**
  * Escapes XML special characters to prevent XML injection
  * @param {string} unsafe - String that may contain XML special characters
  * @returns {string} XML-safe string
@@ -111,6 +126,7 @@ function generateSitemap() {
 
   // Get base service tag pages (indexable reference pages)
   const baseServiceTags = getBaseServiceTags();
+  const vmPricingSkus = getVmPricingSkus();
   console.log(`Found ${baseServiceTags.length} base service tag pages`);
 
   // Generate sitemap XML
@@ -197,6 +213,13 @@ ${guidePages.map(guide => `  <url>
     <lastmod>${guide.lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>`).join('\n')}
+  <!-- VM Size Pricing Pages -->
+${vmPricingSkus.map(sku => `  <url>
+    <loc>${escapeXml(`${BASE_URL}/tools/vm-pricing/${encodeURIComponent(sku)}/`)}</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>`).join('\n')}
   <!-- Service Tag Reference Pages (base tags only) -->
 ${baseServiceTags.map(tag => `  <url>

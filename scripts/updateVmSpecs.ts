@@ -193,11 +193,10 @@ function isUsableSkuName(sku: string): boolean {
 
 /** Region indexes where a SKU has a listed price, read back from the generated price files. */
 function readPricedRegions(index: VmPricingIndex): Map<string, number[]> {
-  const currency = index.currencies[0].toLowerCase();
   const pricedRegions = new Map<string, number[]>();
 
   index.regions.forEach((region, position) => {
-    const file = path.join(DATA_DIR, currency, `${region.name}.json`);
+    const file = path.join(DATA_DIR, 'prices', `${region.name}.json`);
     if (!fs.existsSync(file)) return;
 
     const prices = (JSON.parse(fs.readFileSync(file, 'utf8')) as { prices: Record<string, unknown> }).prices;

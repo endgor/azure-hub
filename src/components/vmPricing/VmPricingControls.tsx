@@ -1,7 +1,13 @@
 import { useMemo } from 'react';
 import Select, { type SelectOption } from '@/components/shared/Select';
-import { HOURS_PER_MONTH_PRESETS, MAX_HOURS_PER_MONTH, VM_PRICE_MODES, clampHoursPerMonth } from '@/lib/vmPricing/pricing';
-import type { VmCurrency, VmOperatingSystem, VmPriceMode, VmRegionInfo } from '@/types/vmPricing';
+import {
+  HOURS_PER_MONTH_PRESETS,
+  MAX_HOURS_PER_MONTH,
+  VM_PRICE_MODES,
+  clampHoursPerMonth,
+  getCurrencyLabel
+} from '@/lib/vmPricing/pricing';
+import type { VmCurrency, VmCurrencyRate, VmOperatingSystem, VmPriceMode, VmRegionInfo } from '@/types/vmPricing';
 
 export type VmPriceDisplay = 'hourly' | 'monthly';
 
@@ -45,7 +51,7 @@ interface VmPricingControlsProps {
   region: string;
   onRegionChange: (region: string) => void;
   currency: VmCurrency;
-  currencies: VmCurrency[];
+  currencies: VmCurrencyRate[];
   onCurrencyChange: (currency: VmCurrency) => void;
   os: VmOperatingSystem;
   onOsChange: (os: VmOperatingSystem) => void;
@@ -91,8 +97,20 @@ export default function VmPricingControls({
     []
   );
 
+  const currencyOptions = useMemo<SelectOption[]>(
+    () =>
+      [...currencies]
+        .sort((a, b) => a.code.localeCompare(b.code))
+        .map((entry) => ({
+          value: entry.code,
+          label: entry.code,
+          description: getCurrencyLabel(entry.code)
+        })),
+    [currencies]
+  );
+
   return (
-    <div className="flex flex-wrap items-end gap-x-5 gap-y-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+    <div className="flex flex-wrap items-end gap-x-5 gap-y-4 p-4">
       <div className="min-w-[13rem] flex-1 space-y-1.5">
         <span id="vm-region-label" className={labelClass}>
           Region
@@ -173,23 +191,27 @@ export default function VmPricingControls({
               onChange={(value) => onHoursPerMonthChange(clampHoursPerMonth(Number(value)))}
               options={HOURS_PER_MONTH_PRESETS.map((preset) => ({
                 value: String(preset.hours),
-                label: `${preset.label} — ${preset.hours}h`,
+                label: preset.label,
                 description: preset.description
               }))}
-              widthClass="w-36"
-              maxHeightClass="max-h-60"
+              widthClass="w-28"
+              panelWidthClass="w-64"
+              maxHeightClass="max-h-72"
             />
           </div>
         </div>
       )}
 
-      <div className="space-y-1.5">
+      <div className="min-w-[9rem] space-y-1.5">
         <span className={labelClass}>Currency</span>
-        <Segmented
+        <Select
           ariaLabel="Currency"
           value={currency}
           onChange={onCurrencyChange}
-          options={currencies.map((entry) => ({ value: entry, label: entry }))}
+          options={currencyOptions}
+          searchable
+          searchPlaceholder={`Filter ${currencies.length} currencies...`}
+          widthClass="w-full"
         />
       </div>
     </div>

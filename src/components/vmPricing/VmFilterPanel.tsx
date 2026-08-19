@@ -9,7 +9,7 @@ import {
   type PresetCount,
   type VmPriceUnit
 } from '@/hooks/vmPricing/useVmFilters';
-import { CURRENCY_SYMBOLS } from '@/lib/vmPricing/pricing';
+import { getCurrencySymbol } from '@/lib/vmPricing/pricing';
 import type { VmCurrency } from '@/types/vmPricing';
 
 const numberInputClass =
@@ -319,7 +319,7 @@ export default function VmFilterPanel({
     if (filters.maxPrice !== null) {
       chips.push({
         key: 'maxPrice',
-        label: `≤ ${CURRENCY_SYMBOLS[currency]}${filters.maxPrice}/${filters.maxPriceUnit === 'monthly' ? 'mo' : 'hr'}`,
+        label: `≤ ${getCurrencySymbol(currency)}${filters.maxPrice}/${filters.maxPriceUnit === 'monthly' ? 'mo' : 'hr'}`,
         onRemove: () => updateFilter('maxPrice', null)
       });
     }
@@ -328,17 +328,33 @@ export default function VmFilterPanel({
   }, [currency, filters, toggleListValue, updateFilter]);
 
   return (
-    <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-      <div className="flex flex-wrap items-center gap-2">
+    <div className="space-y-3 p-4">
+      <div className="flex flex-wrap items-center gap-3">
         <SearchInput
-          placeholder="Search a size, e.g. D4s_v5"
+          placeholder="Search a VM size, e.g. D4s_v5 or Easv6..."
           value={filters.search}
           onChange={(event) => updateFilter('search', event.target.value)}
-          maxWidth="xs"
-          size="sm"
-          containerClassName="min-w-[12rem]"
+          maxWidth="xl"
+          containerClassName="flex-1 min-w-[16rem]"
         />
 
+        <div className="flex items-center gap-3">
+          <span className="whitespace-nowrap text-xs text-slate-500 dark:text-slate-400">
+            {resultCount.toLocaleString()} of {totalCount.toLocaleString()} sizes
+          </span>
+          {activeFilterCount > 0 && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="whitespace-nowrap text-xs font-medium text-sky-600 underline decoration-dotted underline-offset-2 transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+            >
+              Reset all
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
         <FilterPopover
           label="vCPUs"
           summary={rangeSummary(filters.minVcpus, filters.maxVcpus, 'vCPU')}
@@ -475,20 +491,6 @@ export default function VmFilterPanel({
           </div>
         </FilterPopover>
 
-        <div className="ml-auto flex items-center gap-3 pl-1">
-          <span className="whitespace-nowrap text-xs text-slate-500 dark:text-slate-400">
-            {resultCount.toLocaleString()} of {totalCount.toLocaleString()}
-          </span>
-          {activeFilterCount > 0 && (
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="whitespace-nowrap text-xs font-medium text-sky-600 underline decoration-dotted underline-offset-2 transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
-            >
-              Reset all
-            </button>
-          )}
-        </div>
       </div>
 
       {activeChips.length > 0 && (

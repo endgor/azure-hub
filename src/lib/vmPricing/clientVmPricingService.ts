@@ -1,5 +1,5 @@
 import { CACHE_TTL_MS } from '@/config/constants';
-import type { VmCurrency, VmPricingIndex, VmRegionPrices, VmSkuCatalog, VmSkuSpec } from '@/types/vmPricing';
+import type { VmPricingIndex, VmRegionPrices, VmSkuCatalog, VmSkuSpec } from '@/types/vmPricing';
 
 const BASE_PATH = '/data/vm-pricing';
 
@@ -54,8 +54,9 @@ export async function loadSkuCatalog(): Promise<VmSkuCatalog> {
   });
 }
 
-export async function loadRegionPrices(region: string, currency: VmCurrency): Promise<VmRegionPrices> {
-  const key = `${currency.toLowerCase()}/${region}`;
+/** Prices are stored once in the base currency; conversion happens at render time. */
+export async function loadRegionPrices(region: string): Promise<VmRegionPrices> {
+  const key = `prices/${region}`;
   const now = Date.now();
 
   const cached = regionCache.get(key);
@@ -69,14 +70,11 @@ export async function loadRegionPrices(region: string, currency: VmCurrency): Pr
 }
 
 /** Loads several regions at once for cross-region comparison. */
-export async function loadRegionPricesBatch(
-  regions: string[],
-  currency: VmCurrency
-): Promise<Map<string, VmRegionPrices>> {
+export async function loadRegionPricesBatch(regions: string[]): Promise<Map<string, VmRegionPrices>> {
   const results = await Promise.all(
     regions.map(async (region) => {
       try {
-        return [region, await loadRegionPrices(region, currency)] as const;
+        return [region, await loadRegionPrices(region)] as const;
       } catch {
         return null;
       }

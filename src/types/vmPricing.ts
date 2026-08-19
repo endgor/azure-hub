@@ -33,7 +33,14 @@ export type VmPriceMode =
   | 'savingsPlan1Year'
   | 'savingsPlan3Years';
 
-export type VmCurrency = 'USD' | 'EUR' | 'SEK';
+/** ISO 4217 code; the set is whatever the Retail Prices API supports. */
+export type VmCurrency = string;
+
+export interface VmCurrencyRate {
+  code: VmCurrency;
+  /** Multiply a base-currency price by this to get the price Azure publishes in `code`. */
+  rate: number;
+}
 
 export interface VmSkuSpec {
   /** ARM SKU name, e.g. Standard_D4s_v5 */
@@ -87,7 +94,9 @@ export interface VmRegionInfo {
 
 export interface VmPricingIndex {
   lastUpdated: string;
-  currencies: VmCurrency[];
+  /** Currency the stored prices are in; everything else is derived from a rate. */
+  baseCurrency: VmCurrency;
+  currencies: VmCurrencyRate[];
   regions: VmRegionInfo[];
   skuCount: number;
   priceFields: readonly VmPriceField[];

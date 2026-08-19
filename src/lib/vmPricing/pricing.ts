@@ -14,11 +14,11 @@ export const HOURS_PER_MONTH = 730;
 export const MAX_HOURS_PER_MONTH = 744;
 
 export const HOURS_PER_MONTH_PRESETS: { hours: number; label: string; description: string }[] = [
-  { hours: 730, label: 'Always on', description: '24/7' },
-  { hours: 504, label: 'Weekdays, always on', description: '21 days' },
-  { hours: 176, label: 'Weekday office hours', description: '22 x 8h' },
-  { hours: 88, label: 'Weekday half days', description: '22 x 4h' },
-  { hours: 40, label: 'One week of office hours', description: '5 x 8h' }
+  { hours: 730, label: '730h — Always on', description: 'Every hour of the month' },
+  { hours: 504, label: '504h — Weekdays only', description: '21 days, around the clock' },
+  { hours: 176, label: '176h — Office hours', description: '22 days x 8 hours' },
+  { hours: 88, label: '88h — Half days', description: '22 days x 4 hours' },
+  { hours: 40, label: '40h — One week', description: '5 days x 8 hours' }
 ];
 
 /** Keeps a user-entered runtime inside one real month. */
@@ -126,44 +126,67 @@ export function getSavingsFraction(
   return 1 - resolved.hourly / payg;
 }
 
-const CURRENCY_LOCALES: Record<VmCurrency, string> = {
-  USD: 'en-US',
-  EUR: 'de-DE',
-  SEK: 'sv-SE'
-};
+/** The site is English, so formatting is pinned rather than following the visitor's locale. */
+const PRICE_LOCALE = 'en-US';
 
-export const CURRENCY_SYMBOLS: Record<VmCurrency, string> = {
-  USD: '$',
-  EUR: '€',
-  SEK: 'kr'
-};
+/** Zero-decimal currencies, where Intl would otherwise reject fractional digits. */
+const ZERO_DECIMAL_CURRENCIES = new Set(['JPY', 'KRW', 'CLP', 'VND', 'IDR', 'ISK', 'HUF', 'TWD']);
 
-export function formatHourly(value: number | null, currency: VmCurrency): string {
+export function getCurrencySymbol(currency: VmCurrency): string {
+  try {
+    const parts = new Intl.NumberFormat(PRICE_LOCALE, { style: 'currency', currency }).formatToParts(1);
+    return parts.find((part) => part.type === 'currency')?.value ?? currency;
+  } catch {
+    return currency;
+  }
+}
+
+function formatCurrency(value: number, currency: VmCurrency, digits: number): string {
+  // Intl throws on an unknown code, and a broken page is worse than a plain number.
+  try {
+    return new Intl.NumberFormat(PRICE_LOCALE, {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits
+    }).format(value);
+  } catch {
+    return `${value.toFixed(digits)} ${currency}`;
+  }
+}
+
+export function formatHourly(value: number | null, currency: VmCurrency, rate: number = 1): string {
   if (value === null) return '—';
 
-  const digits = value < 0.01 ? 5 : value < 1 ? 4 : value < 100 ? 3 : 2;
-  return new Intl.NumberFormat(CURRENCY_LOCALES[currency], {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: digits,
-    maximumFractionDigits: digits
-  }).format(value);
+  const converted = value * rate;
+  // Small hourly rates need more decimals to stay distinguishable, but a currency with no
+  // minor unit (JPY, KRW) cannot show them at all.
+  const digits = ZERO_DECIMAL_CURRENCIES.has(currency)
+    ? converted < 10
+      ? 2
+      : 0
+    : converted < 0.01
+      ? 5
+      : converted < 1
+        ? 4
+        : converted < 100
+          ? 3
+          : 2;
+
+  return formatCurrency(converted, currency, digits);
 }
 
 export function formatMonthly(
   hourly: number | null,
   currency: VmCurrency,
-  hoursPerMonth: number = HOURS_PER_MONTH
+  hoursPerMonth: number = HOURS_PER_MONTH,
+  rate: number = 1
 ): string {
   if (hourly === null) return '—';
 
-  const monthly = hourly * hoursPerMonth;
-  return new Intl.NumberFormat(CURRENCY_LOCALES[currency], {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: monthly < 100 ? 2 : 0,
-    maximumFractionDigits: monthly < 100 ? 2 : 0
-  }).format(monthly);
+  const monthly = hourly * hoursPerMonth * rate;
+  const digits = monthly < 100 && !ZERO_DECIMAL_CURRENCIES.has(currency) ? 2 : 0;
+  return formatCurrency(monthly, currency, digits);
 }
 
 export function formatPercent(fraction: number | null): string {
@@ -174,4 +197,14 @@ export function formatPercent(fraction: number | null): string {
 export function formatNumber(value: number | null, suffix = ''): string {
   if (value === null) return '—';
   return `${new Intl.NumberFormat('en-US').format(value)}${suffix}`;
+}
+
+/** Human-readable currency name for the picker, falling back to the bare code. */
+export function getCurrencyLabel(currency: VmCurrency): string {
+  try {
+    const names = new Intl.DisplayNames(['en'], { type: 'currency' });
+    return names.of(currency) ?? currency;
+  } catch {
+    return currency;
+  }
 }

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import Link from 'next/link';
 import Tooltip from '@/components/Tooltip';
 import { formatHourly, formatMonthly, formatNumber, formatPercent } from '@/lib/vmPricing/pricing';
 import type { VmRow, VmSortDirection, VmSortKey } from '@/hooks/vmPricing/useVmFilters';
@@ -18,6 +19,7 @@ interface VmPricingTableProps {
   priceMode: VmPriceMode;
   display: VmPriceDisplay;
   hoursPerMonth: number;
+  currencyRate: number;
   sortKey: VmSortKey;
   sortDirection: VmSortDirection;
   onSort: (key: VmSortKey) => void;
@@ -69,6 +71,7 @@ export default function VmPricingTable({
   priceMode,
   display,
   hoursPerMonth,
+  currencyRate,
   sortKey,
   sortDirection,
   onSort,
@@ -103,7 +106,9 @@ export default function VmPricingTable({
   const showSavings = priceMode !== 'payg';
 
   const formatPrice = (value: number | null): string =>
-    display === 'hourly' ? formatHourly(value, currency) : formatMonthly(value, currency, hoursPerMonth);
+    display === 'hourly'
+      ? formatHourly(value, currency, currencyRate)
+      : formatMonthly(value, currency, hoursPerMonth, currencyRate);
 
   if (rows.length === 0) {
     return (
@@ -188,7 +193,12 @@ export default function VmPricingTable({
                     />
                   </td>
                   <td className="whitespace-nowrap px-3 py-2">
-                    <span className="font-medium text-slate-900 dark:text-slate-100">{spec.size}</span>
+                    <Link
+                      href={`/tools/vm-pricing/${spec.sku}/`}
+                      className="font-medium text-sky-700 underline decoration-transparent transition hover:decoration-current dark:text-sky-300"
+                    >
+                      {spec.size}
+                    </Link>
                     {spec.vcpusAvailable !== null && spec.vcpus !== null && spec.vcpusAvailable < spec.vcpus && (
                       <span className="ml-1.5 align-middle">
                         <Tooltip

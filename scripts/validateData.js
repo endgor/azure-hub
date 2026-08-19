@@ -66,15 +66,9 @@ try {
   }
 
   const vmIndex = JSON.parse(fs.readFileSync(path.join(VM_PRICING_DIR, 'index.json'), 'utf8'));
-  const missingRegionFiles = [];
-  for (const currency of vmIndex.currencies) {
-    for (const region of vmIndex.regions) {
-      const regionFile = path.join(VM_PRICING_DIR, currency.toLowerCase(), `${region.name}.json`);
-      if (!fs.existsSync(regionFile)) {
-        missingRegionFiles.push(`${currency}/${region.name}`);
-      }
-    }
-  }
+  const missingRegionFiles = vmIndex.regions
+    .filter(region => !fs.existsSync(path.join(VM_PRICING_DIR, 'prices', `${region.name}.json`)))
+    .map(region => region.name);
 
   if (missingRegionFiles.length > 0) {
     console.error(`ERROR: VM pricing index lists ${missingRegionFiles.length} region files that do not exist:`);
@@ -83,7 +77,16 @@ try {
     process.exit(1);
   }
 
-  console.log(`VM pricing data OK: ${vmIndex.regions.length} regions x ${vmIndex.currencies.length} currencies`);
+  // Prices are stored in one base currency; everything else is a rate applied in the browser.
+  const baseRate = (vmIndex.currencies || []).find(entry => entry.code === vmIndex.baseCurrency);
+  if (!baseRate || baseRate.rate !== 1) {
+    console.error(`ERROR: VM pricing index is missing a 1.0 rate for its base currency ${vmIndex.baseCurrency}.`);
+    process.exit(1);
+  }
+
+  console.log(
+    `VM pricing data OK: ${vmIndex.regions.length} regions in ${vmIndex.baseCurrency}, ${vmIndex.currencies.length} currencies`
+  );
 
   console.log('Build script completed successfully.');
 } catch (err) {

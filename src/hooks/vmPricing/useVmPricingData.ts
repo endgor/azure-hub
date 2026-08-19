@@ -4,7 +4,7 @@ import {
   loadRegionPrices,
   loadSkuCatalog
 } from '@/lib/vmPricing/clientVmPricingService';
-import type { VmCurrency, VmPricingIndex, VmRegionPrices, VmSkuCatalog, VmSkuSpec } from '@/types/vmPricing';
+import type { VmPricingIndex, VmRegionPrices, VmSkuCatalog, VmSkuSpec } from '@/types/vmPricing';
 
 interface UseVmPricingDataResult {
   index: VmPricingIndex | null;
@@ -20,7 +20,7 @@ interface UseVmPricingDataResult {
   retry: () => void;
 }
 
-export function useVmPricingData(region: string | null, currency: VmCurrency): UseVmPricingDataResult {
+export function useVmPricingData(region: string | null): UseVmPricingDataResult {
   const [index, setIndex] = useState<VmPricingIndex | null>(null);
   const [catalog, setCatalog] = useState<VmSkuCatalog | null>(null);
   const [regionPrices, setRegionPrices] = useState<VmRegionPrices | null>(null);
@@ -63,7 +63,7 @@ export function useVmPricingData(region: string | null, currency: VmCurrency): U
       try {
         setIsLoadingPrices(true);
         setPriceError(null);
-        const prices = await loadRegionPrices(region, currency);
+        const prices = await loadRegionPrices(region);
         if (!cancelled) setRegionPrices(prices);
       } catch (loadError) {
         if (!cancelled) {
@@ -79,7 +79,7 @@ export function useVmPricingData(region: string | null, currency: VmCurrency): U
     return () => {
       cancelled = true;
     };
-  }, [region, currency, attempt]);
+  }, [region, attempt]);
 
   const skuLookup = useMemo(
     () => new Map((catalog?.skus ?? []).map((sku) => [sku.sku, sku])),

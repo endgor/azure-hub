@@ -20,7 +20,7 @@ A collection of tools for Azure administrators and developers: IP lookups, RBAC 
 - **Entra ID Roles** - Analyze Entra ID administrative role permissions
 - **Custom Role Creator** - Build custom RBAC role definitions
 - **Private DNS Zones** - Look up Azure Private Endpoint DNS zone configurations
-- **VM Pricing** - Look up and compare Azure VM prices and specs by region, vCPU, memory, and commitment term
+- **VM Pricing** - Look up and compare Azure VM prices and specs by region, vCPU, memory, and commitment term, in 40+ currencies, with a per-size page showing the cheapest regions
 - **Guides** - Azure guides and tutorials
 
 ## Running Locally

@@ -12,6 +12,7 @@ interface VmComparisonPanelProps {
   priceMode: VmPriceMode;
   display: VmPriceDisplay;
   hoursPerMonth: number;
+  currencyRate: number;
   onRemove: (sku: string) => void;
   onClear: () => void;
   /** Drops the outer card and heading when the dialog already provides them. */
@@ -71,12 +72,15 @@ export default function VmComparisonPanel({
   priceMode,
   display,
   hoursPerMonth,
+  currencyRate,
   onRemove,
   onClear,
   embedded = false
 }: VmComparisonPanelProps) {
   const formatPrice = (value: number | null): string =>
-    display === 'hourly' ? formatHourly(value, currency) : formatMonthly(value, currency, hoursPerMonth);
+    display === 'hourly'
+      ? formatHourly(value, currency, currencyRate)
+      : formatMonthly(value, currency, hoursPerMonth, currencyRate);
 
   const specRows = useMemo<SpecRow[]>(() => {
     const specs = rows.map((row) => row.spec);

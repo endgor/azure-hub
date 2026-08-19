@@ -24,6 +24,8 @@ interface SelectProps {
   ariaLabel?: string;
   /** Width utility for the trigger, e.g. 'w-full' or 'w-48' */
   widthClass?: string;
+  /** Width utility for the option panel, when it needs to be wider than the trigger */
+  panelWidthClass?: string;
   /** Max height utility for the option list */
   maxHeightClass?: string;
 }
@@ -55,6 +57,7 @@ export default function Select({
   id,
   ariaLabel,
   widthClass = 'w-full',
+  panelWidthClass = 'w-full min-w-[13rem]',
   maxHeightClass = 'max-h-72'
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -201,7 +204,9 @@ export default function Select({
       </button>
 
       {isOpen && (
-        <div className="absolute z-30 mt-1 w-full min-w-[13rem] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
+        <div
+          className={`absolute z-30 mt-1 ${panelWidthClass} overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900`}
+        >
           {searchable && (
             <div className="border-b border-slate-100 p-2 dark:border-slate-800">
               <input

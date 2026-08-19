@@ -5,7 +5,9 @@ import {
   getPaygPrice,
   formatHourly,
   formatMonthly,
-  clampHoursPerMonth
+  clampHoursPerMonth,
+  getCurrencySymbol,
+  getCurrencyLabel
 } from './pricing';
 import { VM_PRICE_FIELDS, type PackedVmPrices } from '@/types/vmPricing';
 
@@ -152,5 +154,55 @@ describe('clampHoursPerMonth', () => {
   it('rounds fractions and falls back on nonsense', () => {
     expect(clampHoursPerMonth(40.4)).toBe(40);
     expect(clampHoursPerMonth(Number.NaN)).toBe(730);
+  });
+});
+
+/** Intl separates a currency code from the number with a non-breaking space. */
+function plain(value: string): string {
+  return value.replace(/\u00a0/g, ' ');
+}
+
+describe('currency conversion', () => {
+  // Azure quotes every currency as the USD price times one rate it sets monthly.
+  it('applies the rate to hourly prices', () => {
+    expect(formatHourly(0.23, 'USD', 1)).toBe('$0.2300');
+    expect(formatHourly(0.23, 'EUR', 0.878619)).toBe('€0.2021');
+  });
+
+  it('applies the rate to monthly prices', () => {
+    expect(formatMonthly(1, 'USD', 730, 1)).toBe('$730');
+    // 730 x 9.72535 = 7099.51, and totals above 100 drop the minor unit.
+    expect(plain(formatMonthly(1, 'SEK', 730, 9.72535))).toBe('SEK 7,100');
+  });
+
+  it('defaults to a rate of 1 when none is given', () => {
+    expect(formatHourly(0.23, 'USD')).toBe('$0.2300');
+  });
+
+  it('drops minor units for currencies that have none', () => {
+    // JPY has no subunit, so Intl would reject fractional digits.
+    expect(formatMonthly(1, 'JPY', 730, 163)).toBe('¥118,990');
+    expect(formatHourly(100, 'JPY', 1)).toBe('¥100');
+  });
+
+  it('still formats a well-formed code Intl has no symbol for', () => {
+    expect(plain(formatHourly(1, 'XYZ', 1))).toBe('XYZ 1.000');
+  });
+
+  it('falls back to a plain number for a malformed code', () => {
+    // Intl only accepts three-letter codes and throws on anything else.
+    expect(formatHourly(1, 'XY', 1)).toBe('1.000 XY');
+  });
+});
+
+describe('currency labels', () => {
+  it('resolves a symbol and a name', () => {
+    expect(getCurrencySymbol('USD')).toBe('$');
+    expect(getCurrencyLabel('SEK')).toContain('Swedish');
+  });
+
+  it('falls back to the code when malformed', () => {
+    expect(getCurrencySymbol('XY')).toBe('XY');
+    expect(getCurrencyLabel('XY')).toBe('XY');
   });
 });
