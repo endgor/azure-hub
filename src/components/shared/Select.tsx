@@ -28,6 +28,8 @@ interface SelectProps {
   panelWidthClass?: string;
   /** Max height utility for the option list */
   maxHeightClass?: string;
+  /** Renders the trigger at filter-pill scale, for use alongside FilterPopover */
+  compact?: boolean;
 }
 
 const CHEVRON = (
@@ -58,7 +60,8 @@ export default function Select({
   ariaLabel,
   widthClass = 'w-full',
   panelWidthClass = 'w-full min-w-[13rem]',
-  maxHeightClass = 'max-h-72'
+  maxHeightClass = 'max-h-72',
+  compact = false
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -204,7 +207,7 @@ export default function Select({
         aria-controls={listboxId}
         aria-haspopup="listbox"
         aria-label={ariaLabel}
-        className={`flex w-full items-center justify-between gap-2 rounded-xl border bg-white px-3 py-2 text-left text-sm text-slate-900 transition focus:outline-none focus:ring-2 focus:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-800 dark:text-slate-100 ${
+        className={`flex w-full items-center justify-between gap-2 rounded-xl border bg-white px-3 py-2 text-left text-slate-900 transition ${compact ? 'text-xs' : 'text-sm'} focus:outline-none focus:ring-2 focus:ring-sky-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-800 dark:text-slate-100 ${
           isOpen
             ? 'border-sky-500 dark:border-sky-400'
             : 'border-slate-400 hover:border-slate-500 dark:border-slate-500 dark:hover:border-slate-400'

@@ -230,9 +230,6 @@ export default function VmPricing() {
                 regions={index.regions}
                 region={region}
                 onRegionChange={setRegion}
-                currency={currency}
-                currencies={index.currencies}
-                onCurrencyChange={setCurrency}
                 os={os}
                 onOsChange={setOs}
                 priceMode={priceMode}
@@ -261,6 +258,8 @@ export default function VmPricing() {
                 totalCount={rows.length}
                 unpricedCount={unpricedCount}
                 currency={currency}
+                currencies={index.currencies}
+                onCurrencyChange={setCurrency}
                 hoursPerMonth={hoursPerMonth}
               />
             </div>

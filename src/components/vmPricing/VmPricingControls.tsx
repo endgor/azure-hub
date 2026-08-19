@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import Select, { type SelectOption } from '@/components/shared/Select';
 import HoursPerMonthField from '@/components/vmPricing/HoursPerMonthField';
-import { VM_PRICE_MODES, getCurrencyLabel } from '@/lib/vmPricing/pricing';
-import type { VmCurrency, VmCurrencyRate, VmOperatingSystem, VmPriceMode, VmRegionInfo } from '@/types/vmPricing';
+import { VM_PRICE_MODES } from '@/lib/vmPricing/pricing';
+import type { VmOperatingSystem, VmPriceMode, VmRegionInfo } from '@/types/vmPricing';
 
 export type VmPriceDisplay = 'hourly' | 'monthly';
 
@@ -45,9 +45,6 @@ interface VmPricingControlsProps {
   regions: VmRegionInfo[];
   region: string;
   onRegionChange: (region: string) => void;
-  currency: VmCurrency;
-  currencies: VmCurrencyRate[];
-  onCurrencyChange: (currency: VmCurrency) => void;
   os: VmOperatingSystem;
   onOsChange: (os: VmOperatingSystem) => void;
   priceMode: VmPriceMode;
@@ -62,9 +59,6 @@ export default function VmPricingControls({
   regions,
   region,
   onRegionChange,
-  currency,
-  currencies,
-  onCurrencyChange,
   os,
   onOsChange,
   priceMode,
@@ -90,18 +84,6 @@ export default function VmPricingControls({
   const priceModeOptions = useMemo<SelectOption[]>(
     () => VM_PRICE_MODES.map((mode) => ({ value: mode.value, label: mode.label })),
     []
-  );
-
-  const currencyOptions = useMemo<SelectOption[]>(
-    () =>
-      [...currencies]
-        .sort((a, b) => a.code.localeCompare(b.code))
-        .map((entry) => ({
-          value: entry.code,
-          label: entry.code,
-          description: getCurrencyLabel(entry.code)
-        })),
-    [currencies]
   );
 
   return (
@@ -160,27 +142,12 @@ export default function VmPricingControls({
         />
       </div>
 
-      <div className="min-w-[9rem] space-y-1.5">
-        <span className={labelClass}>Currency</span>
-        <Select
-          ariaLabel="Currency"
-          value={currency}
-          onChange={onCurrencyChange}
-          options={currencyOptions}
-          searchable
-          searchPlaceholder={`Filter ${currencies.length} currencies...`}
-          widthClass="w-full"
-        />
-      </div>
-
-      {display === 'monthly' && (
-        <HoursPerMonthField
-          id="vm-hours-per-month"
-          hoursPerMonth={hoursPerMonth}
-          onChange={onHoursPerMonthChange}
-          labelClass={labelClass}
-        />
-      )}
+      <HoursPerMonthField
+        id="vm-hours-per-month"
+        hoursPerMonth={hoursPerMonth}
+        onChange={onHoursPerMonthChange}
+        labelClass={labelClass}
+      />
     </div>
   );
 }

@@ -307,14 +307,12 @@ export default function VmSkuDetail({
             />
           </div>
 
-          {display === 'monthly' && (
-            <HoursPerMonthField
-              id="vm-detail-hours"
-              hoursPerMonth={hoursPerMonth}
-              onChange={setHoursPerMonth}
-              labelClass={labelClass}
-            />
-          )}
+          <HoursPerMonthField
+            id="vm-detail-hours"
+            hoursPerMonth={hoursPerMonth}
+            onChange={setHoursPerMonth}
+            labelClass={labelClass}
+          />
         </div>
 
         {ranked.length === 0 ? (

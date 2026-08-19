@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import SearchInput from '@/components/shared/SearchInput';
 import FilterPopover from '@/components/shared/FilterPopover';
+import Select, { type SelectOption } from '@/components/shared/Select';
 import {
   VM_FEATURE_OPTIONS,
   type VmFilterState,
@@ -9,8 +10,8 @@ import {
   type PresetCount,
   type VmPriceUnit
 } from '@/hooks/vmPricing/useVmFilters';
-import { getCurrencySymbol } from '@/lib/vmPricing/pricing';
-import type { VmCurrency } from '@/types/vmPricing';
+import { getCurrencyLabel, getCurrencySymbol } from '@/lib/vmPricing/pricing';
+import type { VmCurrency, VmCurrencyRate } from '@/types/vmPricing';
 
 const numberInputClass =
   'w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100';
@@ -225,6 +226,8 @@ interface VmFilterPanelProps {
   /** Sizes the `pricedOnly` gate is hiding, so the gap in "N of M" can be explained. */
   unpricedCount: number;
   currency: VmCurrency;
+  currencies: VmCurrencyRate[];
+  onCurrencyChange: (currency: VmCurrency) => void;
   hoursPerMonth: number;
 }
 
@@ -244,8 +247,22 @@ export default function VmFilterPanel({
   totalCount,
   unpricedCount,
   currency,
+  currencies,
+  onCurrencyChange,
   hoursPerMonth
 }: VmFilterPanelProps) {
+  const currencyOptions = useMemo<SelectOption[]>(
+    () =>
+      [...currencies]
+        .sort((a, b) => a.code.localeCompare(b.code))
+        .map((entry) => ({
+          value: entry.code,
+          label: entry.code,
+          description: getCurrencyLabel(entry.code)
+        })),
+    [currencies]
+  );
+
   const capabilityOptions = useMemo<FacetOption[]>(
     () => [
       ...featureFacets.map((feature) => ({ ...feature, value: `feature:${feature.value}` })),
@@ -508,6 +525,24 @@ export default function VmFilterPanel({
           </div>
         </FilterPopover>
 
+        {/* Currency sits beside Price because the budget above is entered in it. The divider
+            keeps it from reading as a filter — it never counts toward Reset all. */}
+        <span aria-hidden="true" className="mx-1 h-6 w-px bg-slate-200 dark:bg-slate-700" />
+
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs text-slate-500 dark:text-slate-400">Currency</span>
+          <Select
+            ariaLabel="Currency"
+            value={currency}
+            onChange={onCurrencyChange}
+            options={currencyOptions}
+            searchable
+            searchPlaceholder={`Filter ${currencies.length} currencies...`}
+            widthClass="w-24"
+            panelWidthClass="w-64"
+            compact
+          />
+        </div>
       </div>
 
       {activeChips.length > 0 && (
