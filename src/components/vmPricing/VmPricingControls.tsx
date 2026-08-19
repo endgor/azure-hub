@@ -160,15 +160,6 @@ export default function VmPricingControls({
         />
       </div>
 
-      {display === 'monthly' && (
-        <HoursPerMonthField
-          id="vm-hours-per-month"
-          hoursPerMonth={hoursPerMonth}
-          onChange={onHoursPerMonthChange}
-          labelClass={labelClass}
-        />
-      )}
-
       <div className="min-w-[9rem] space-y-1.5">
         <span className={labelClass}>Currency</span>
         <Select
@@ -181,6 +172,15 @@ export default function VmPricingControls({
           widthClass="w-full"
         />
       </div>
+
+      {display === 'monthly' && (
+        <HoursPerMonthField
+          id="vm-hours-per-month"
+          hoursPerMonth={hoursPerMonth}
+          onChange={onHoursPerMonthChange}
+          labelClass={labelClass}
+        />
+      )}
     </div>
   );
 }

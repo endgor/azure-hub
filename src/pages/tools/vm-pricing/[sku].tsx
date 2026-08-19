@@ -295,15 +295,6 @@ export default function VmSkuDetail({
             />
           </div>
 
-          {display === 'monthly' && (
-            <HoursPerMonthField
-              id="vm-detail-hours"
-              hoursPerMonth={hoursPerMonth}
-              onChange={setHoursPerMonth}
-              labelClass={labelClass}
-            />
-          )}
-
           <div className="min-w-[9rem] space-y-1.5">
             <span className={labelClass}>Currency</span>
             <Select
@@ -315,6 +306,15 @@ export default function VmSkuDetail({
               searchPlaceholder={`Filter ${currencies.length} currencies...`}
             />
           </div>
+
+          {display === 'monthly' && (
+            <HoursPerMonthField
+              id="vm-detail-hours"
+              hoursPerMonth={hoursPerMonth}
+              onChange={setHoursPerMonth}
+              labelClass={labelClass}
+            />
+          )}
         </div>
 
         {ranked.length === 0 ? (
