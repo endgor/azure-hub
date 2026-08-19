@@ -58,6 +58,14 @@ jobs:
         if: github.event_name == 'pull_request'
         run: npx opennextjs-cloudflare build
 
+      # `opennextjs-cloudflare deploy` does this for production, but the preview
+      # path calls wrangler directly. Without it the prerendered pages never reach
+      # the assets directory, so every SSG route misses the cache and re-runs
+      # getStaticProps in the worker, which has no filesystem for public/data.
+      - name: Populate prerendered cache into preview assets
+        if: github.event_name == 'pull_request'
+        run: npx opennextjs-cloudflare populateCache local
+
       # Dependabot and fork PRs run without access to repository secrets, so the
       # preview upload and its sticky comment cannot work there. Skip them rather
       # than failing the job — `npm ci` plus the OpenNext build above are the real
