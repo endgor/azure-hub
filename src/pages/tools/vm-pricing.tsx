@@ -12,7 +12,7 @@ import VmComparisonDialog from '@/components/vmPricing/VmComparisonDialog';
 import { useVmPricingData } from '@/hooks/vmPricing/useVmPricingData';
 import { useVmFilters } from '@/hooks/vmPricing/useVmFilters';
 import { useLocalStorageState } from '@/hooks/useLocalStorageState';
-import { getPriceModeLabel, HOURS_PER_MONTH } from '@/lib/vmPricing/pricing';
+import { getPriceModeLabel, HOURS_PER_MONTH, clampHoursPerMonth } from '@/lib/vmPricing/pricing';
 import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/lib/exportUtils';
 import { getDateTimestamp } from '@/lib/filenameUtils';
 import type { VmCurrency, VmOperatingSystem, VmPriceMode } from '@/types/vmPricing';
@@ -27,6 +27,7 @@ export default function VmPricing() {
   const [os, setOs] = useLocalStorageState<VmOperatingSystem>('vm-pricing-os', 'linux');
   const [priceMode, setPriceMode] = useLocalStorageState<VmPriceMode>('vm-pricing-mode', 'payg');
   const [display, setDisplay] = useLocalStorageState<VmPriceDisplay>('vm-pricing-display', 'hourly');
+  const [hoursPerMonth, setHoursPerMonth] = useLocalStorageState<number>('vm-pricing-hours', HOURS_PER_MONTH);
 
   const [selectedSkus, setSelectedSkus] = useState<string[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
@@ -69,12 +70,18 @@ export default function VmPricing() {
     regionPrices,
     os,
     priceMode,
-    regionIndex
+    regionIndex,
+    hoursPerMonth
   });
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
   }, [filters, sortKey, sortDirection, region, currency, os, priceMode]);
+
+  useEffect(() => {
+    const clamped = clampHoursPerMonth(hoursPerMonth);
+    if (clamped !== hoursPerMonth) setHoursPerMonth(clamped);
+  }, [hoursPerMonth, setHoursPerMonth]);
 
   // Never let the dialog reopen on its own once the selection drops below a pair.
   useEffect(() => {
@@ -95,8 +102,9 @@ export default function VmPricing() {
   }, [rows, selectedSkus]);
 
   const prepareExportData = useCallback((): ExportRow[] => {
-    const multiplier = display === 'hourly' ? 1 : HOURS_PER_MONTH;
-    const priceLabel = display === 'hourly' ? `Price/hour (${currency})` : `Price/month (${currency})`;
+    const multiplier = display === 'hourly' ? 1 : hoursPerMonth;
+    const priceLabel =
+      display === 'hourly' ? `Price/hour (${currency})` : `Price/${hoursPerMonth}h month (${currency})`;
 
     return filteredRows.map((row) => ({
       Size: row.spec.size,
@@ -114,7 +122,7 @@ export default function VmPricing() {
       'Operating system': os === 'windows' ? 'Windows' : 'Linux',
       'Pricing model': getPriceModeLabel(priceMode)
     }));
-  }, [filteredRows, display, currency, region, os, priceMode]);
+  }, [filteredRows, display, currency, region, os, priceMode, hoursPerMonth]);
 
   const exportOptions: ExportOption[] = useMemo(() => {
     const baseName = `azure-vm-pricing_${region}_${currency.toLowerCase()}_${getDateTimestamp()}`;
@@ -226,6 +234,8 @@ export default function VmPricing() {
               onPriceModeChange={setPriceMode}
               display={display}
               onDisplayChange={setDisplay}
+              hoursPerMonth={hoursPerMonth}
+              onHoursPerMonthChange={setHoursPerMonth}
             />
 
             <VmFilterPanel
@@ -243,6 +253,7 @@ export default function VmPricing() {
               resultCount={filteredRows.length}
               totalCount={rows.length}
               currency={currency}
+              hoursPerMonth={hoursPerMonth}
             />
 
             <div className="space-y-3">
@@ -279,6 +290,7 @@ export default function VmPricing() {
                   currency={currency}
                   priceMode={priceMode}
                   display={display}
+                  hoursPerMonth={hoursPerMonth}
                   sortKey={sortKey}
                   sortDirection={sortDirection}
                   onSort={toggleSort}
@@ -294,7 +306,8 @@ export default function VmPricing() {
               <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">How these prices work</h2>
               <p>
                 Rates are retail list prices excluding tax, and exclude storage, networking and any Enterprise Agreement
-                or CSP discount. Monthly figures assume {HOURS_PER_MONTH} hours.
+                or CSP discount. Monthly figures assume {hoursPerMonth} running hours
+                {hoursPerMonth === HOURS_PER_MONTH ? ' (an always-on VM)' : ''}.
               </p>
               <p>
                 Reserved instance rates are the upfront term price spread across the term, and are sold per instance
@@ -329,6 +342,7 @@ export default function VmPricing() {
                 os={os}
                 priceMode={priceMode}
                 display={display}
+                hoursPerMonth={hoursPerMonth}
                 onRemove={toggleSelect}
                 onClear={() => setSelectedSkus([])}
               />

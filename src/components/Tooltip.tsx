@@ -47,7 +47,9 @@ export default function Tooltip({ children, content, widthClass = 'w-72' }: Tool
             // Sits the bubble directly above the trigger whatever its height.
             transform: 'translate(-50%, -100%)'
           }}
-          className={`${widthClass} pointer-events-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm normal-case text-slate-700 shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200`}
+          // Table cells set whitespace-nowrap and text alignment, which the bubble would
+          // otherwise inherit and overflow, so those are reset here.
+          className={`${widthClass} pointer-events-none whitespace-normal break-words rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-normal normal-case tracking-normal text-slate-700 shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200`}
         >
           <div className="relative">
             {content}

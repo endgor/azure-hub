@@ -33,9 +33,18 @@ interface UseVmFiltersOptions {
   os: VmOperatingSystem;
   priceMode: VmPriceMode;
   regionIndex: number | null;
+  /** Runtime used to turn a monthly budget filter into an hourly ceiling. */
+  hoursPerMonth: number;
 }
 
-export function useVmFilters({ specs, regionPrices, os, priceMode, regionIndex }: UseVmFiltersOptions) {
+export function useVmFilters({
+  specs,
+  regionPrices,
+  os,
+  priceMode,
+  regionIndex,
+  hoursPerMonth
+}: UseVmFiltersOptions) {
   const [filters, setFilters] = useState<VmFilterState>(EMPTY_VM_FILTERS);
   const [sortKey, setSortKey] = useState<VmSortKey>('price');
   const [sortDirection, setSortDirection] = useState<VmSortDirection>('asc');
@@ -103,7 +112,7 @@ export function useVmFilters({ specs, regionPrices, os, priceMode, regionIndex }
   );
 
   const filteredRows = useMemo(() => {
-    const result = rows.filter((row) => rowMatches(row, filters, null));
+    const result = rows.filter((row) => rowMatches(row, filters, null, hoursPerMonth));
     const direction = sortDirection === 'asc' ? 1 : -1;
 
     const compareNullableNumbers = (a: number | null, b: number | null): number => {
@@ -135,28 +144,34 @@ export function useVmFilters({ specs, regionPrices, os, priceMode, regionIndex }
           return compareNullableNumbers(a.hourly, b.hourly);
       }
     });
-  }, [rows, filters, sortKey, sortDirection]);
+  }, [rows, filters, sortKey, sortDirection, hoursPerMonth]);
 
   const categoryFacets = useMemo(
-    () => buildCategoryFacets(rows, filters, availableCategories),
-    [rows, filters, availableCategories]
+    () => buildCategoryFacets(rows, filters, availableCategories, hoursPerMonth),
+    [rows, filters, availableCategories, hoursPerMonth]
   );
 
   const seriesFacets = useMemo(
-    () => buildSeriesFacets(rows, filters, availableSeries),
-    [rows, filters, availableSeries]
+    () => buildSeriesFacets(rows, filters, availableSeries, hoursPerMonth),
+    [rows, filters, availableSeries, hoursPerMonth]
   );
 
   const architectureFacets = useMemo(
-    () => buildArchitectureFacets(rows, filters, availableArchitectures),
-    [rows, filters, availableArchitectures]
+    () => buildArchitectureFacets(rows, filters, availableArchitectures, hoursPerMonth),
+    [rows, filters, availableArchitectures, hoursPerMonth]
   );
 
   const featureFacets = useMemo(() => buildFeatureFacets(filteredRows), [filteredRows]);
 
-  const vcpuPresetCounts = useMemo(() => buildVcpuPresetCounts(rows, filters), [rows, filters]);
+  const vcpuPresetCounts = useMemo(
+    () => buildVcpuPresetCounts(rows, filters, hoursPerMonth),
+    [rows, filters, hoursPerMonth]
+  );
 
-  const memoryPresetCounts = useMemo(() => buildMemoryPresetCounts(rows, filters), [rows, filters]);
+  const memoryPresetCounts = useMemo(
+    () => buildMemoryPresetCounts(rows, filters, hoursPerMonth),
+    [rows, filters, hoursPerMonth]
+  );
 
   const toggleSort = useCallback((key: VmSortKey) => {
     setSortKey((currentKey) => {

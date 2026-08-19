@@ -223,6 +223,7 @@ interface VmFilterPanelProps {
   resultCount: number;
   totalCount: number;
   currency: VmCurrency;
+  hoursPerMonth: number;
 }
 
 export default function VmFilterPanel({
@@ -239,7 +240,8 @@ export default function VmFilterPanel({
   memoryPresetCounts,
   resultCount,
   totalCount,
-  currency
+  currency,
+  hoursPerMonth
 }: VmFilterPanelProps) {
   const capabilityOptions = useMemo<FacetOption[]>(
     () => [
@@ -447,7 +449,8 @@ export default function VmFilterPanel({
 
             <label className="block space-y-1">
               <span className="block text-[10px] uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                Max {filters.maxPriceUnit === 'monthly' ? 'monthly' : 'hourly'} cost ({currency})
+                Max {filters.maxPriceUnit === 'monthly' ? `monthly cost over ${hoursPerMonth}h` : 'hourly cost'} (
+                {currency})
               </span>
               <input
                 type="number"

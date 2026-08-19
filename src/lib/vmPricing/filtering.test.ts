@@ -212,9 +212,17 @@ describe('facet counts', () => {
 });
 
 describe('max price', () => {
-  it('converts a monthly budget to an hourly ceiling', () => {
-    expect(toHourlyThreshold(730, 'monthly')).toBe(1);
-    expect(toHourlyThreshold(1, 'hourly')).toBe(1);
+  it('converts a monthly budget to an hourly ceiling using the runtime', () => {
+    expect(toHourlyThreshold(730, 'monthly', 730)).toBe(1);
+    expect(toHourlyThreshold(40, 'monthly', 40)).toBe(1);
+    expect(toHourlyThreshold(1, 'hourly', 730)).toBe(1);
+  });
+
+  it('lets a shorter runtime fit a bigger VM inside the same budget', () => {
+    // 0.5/hour is 365 over a full month but only 20 over a 40-hour month.
+    const budget = { maxPrice: 100, maxPriceUnit: 'monthly' as const };
+    expect(ROWS.filter((r) => rowMatches(r, filters(budget), null, 730))).toHaveLength(0);
+    expect(ROWS.filter((r) => rowMatches(r, filters(budget), null, 40))).toHaveLength(5);
   });
 
   it('filters on a monthly budget', () => {

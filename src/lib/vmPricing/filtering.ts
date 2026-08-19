@@ -27,8 +27,8 @@ export const VM_FEATURE_OPTIONS: { value: VmFeature; label: string }[] = [
 
 export type VmPriceUnit = 'hourly' | 'monthly';
 
-/** Azure's billing month, matching HOURS_PER_MONTH in pricing.ts. */
-const HOURS_PER_MONTH = 730;
+/** Mirrors HOURS_PER_MONTH in pricing.ts; only used when a caller omits the runtime. */
+const DEFAULT_HOURS_PER_MONTH = 730;
 
 export const VCPU_PRESETS = [2, 4, 8, 16, 32, 64];
 export const MEMORY_PRESETS = [8, 16, 32, 64, 128, 256];
@@ -140,12 +140,20 @@ export function getEffectiveVcpus(spec: VmSkuSpec): number | null {
  */
 export type ExcludedFacet = 'categories' | 'series' | 'architectures' | 'vcpus' | 'memory' | 'price' | null;
 
-/** Converts a user-entered ceiling into the hourly rate rows are stored in. */
-export function toHourlyThreshold(value: number, unit: VmPriceUnit): number {
-  return unit === 'monthly' ? value / HOURS_PER_MONTH : value;
+/**
+ * Converts a user-entered ceiling into the hourly rate rows are stored in. A monthly
+ * budget depends on how long the VM actually runs, so it divides by that runtime.
+ */
+export function toHourlyThreshold(value: number, unit: VmPriceUnit, hoursPerMonth: number): number {
+  return unit === 'monthly' ? value / hoursPerMonth : value;
 }
 
-export function rowMatches(row: VmRow, filters: VmFilterState, exclude: ExcludedFacet): boolean {
+export function rowMatches(
+  row: VmRow,
+  filters: VmFilterState,
+  exclude: ExcludedFacet,
+  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+): boolean {
   const { spec } = row;
   const vcpus = getEffectiveVcpus(spec);
 
@@ -181,7 +189,7 @@ export function rowMatches(row: VmRow, filters: VmFilterState, exclude: Excluded
 
   if (exclude !== 'price' && filters.maxPrice !== null) {
     if (row.hourly === null) return false;
-    if (row.hourly > toHourlyThreshold(filters.maxPrice, filters.maxPriceUnit)) return false;
+    if (row.hourly > toHourlyThreshold(filters.maxPrice, filters.maxPriceUnit, hoursPerMonth)) return false;
   }
 
   return true;
@@ -202,18 +210,33 @@ function toFacetOptions(values: string[], counts: Map<string, number>): FacetOpt
   return values.map((value) => ({ value, label: value, count: counts.get(value) ?? 0 }));
 }
 
-export function buildCategoryFacets(rows: VmRow[], filters: VmFilterState, values: string[]): FacetOption[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'categories'));
+export function buildCategoryFacets(
+  rows: VmRow[],
+  filters: VmFilterState,
+  values: string[],
+  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+): FacetOption[] {
+  const base = rows.filter((row) => rowMatches(row, filters, 'categories', hoursPerMonth));
   return toFacetOptions(values, countBy(base, (row) => row.spec.category));
 }
 
-export function buildSeriesFacets(rows: VmRow[], filters: VmFilterState, values: string[]): FacetOption[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'series'));
+export function buildSeriesFacets(
+  rows: VmRow[],
+  filters: VmFilterState,
+  values: string[],
+  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+): FacetOption[] {
+  const base = rows.filter((row) => rowMatches(row, filters, 'series', hoursPerMonth));
   return toFacetOptions(values, countBy(base, (row) => row.spec.series));
 }
 
-export function buildArchitectureFacets(rows: VmRow[], filters: VmFilterState, values: string[]): FacetOption[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'architectures'));
+export function buildArchitectureFacets(
+  rows: VmRow[],
+  filters: VmFilterState,
+  values: string[],
+  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+): FacetOption[] {
+  const base = rows.filter((row) => rowMatches(row, filters, 'architectures', hoursPerMonth));
   return toFacetOptions(values, countBy(base, (row) => row.spec.architecture));
 }
 
@@ -226,16 +249,24 @@ export function buildFeatureFacets(filteredRows: VmRow[]): FacetOption[] {
   }));
 }
 
-export function buildVcpuPresetCounts(rows: VmRow[], filters: VmFilterState): PresetCount[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'vcpus'));
+export function buildVcpuPresetCounts(
+  rows: VmRow[],
+  filters: VmFilterState,
+  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+): PresetCount[] {
+  const base = rows.filter((row) => rowMatches(row, filters, 'vcpus', hoursPerMonth));
   return VCPU_PRESETS.map((preset) => ({
     value: preset,
     count: base.filter((row) => getEffectiveVcpus(row.spec) === preset).length
   }));
 }
 
-export function buildMemoryPresetCounts(rows: VmRow[], filters: VmFilterState): PresetCount[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'memory'));
+export function buildMemoryPresetCounts(
+  rows: VmRow[],
+  filters: VmFilterState,
+  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+): PresetCount[] {
+  const base = rows.filter((row) => rowMatches(row, filters, 'memory', hoursPerMonth));
   return MEMORY_PRESETS.map((preset) => ({
     value: preset,
     count: base.filter((row) => row.spec.memoryGB === preset).length

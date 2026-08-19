@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { resolvePrice, getSavingsFraction, getPaygPrice, formatHourly, formatMonthly } from './pricing';
+import {
+  resolvePrice,
+  getSavingsFraction,
+  getPaygPrice,
+  formatHourly,
+  formatMonthly,
+  clampHoursPerMonth
+} from './pricing';
 import { VM_PRICE_FIELDS, type PackedVmPrices } from '@/types/vmPricing';
 
 function pack(values: Partial<Record<(typeof VM_PRICE_FIELDS)[number], number>>): PackedVmPrices {
@@ -101,8 +108,13 @@ describe('formatHourly', () => {
 });
 
 describe('formatMonthly', () => {
-  it('bills 730 hours a month', () => {
+  it('bills 730 hours a month by default', () => {
     expect(formatMonthly(1, 'USD')).toBe('$730');
+  });
+
+  it('bills a custom runtime', () => {
+    expect(formatMonthly(1, 'USD', 40)).toBe('$40.00');
+    expect(formatMonthly(2, 'USD', 176)).toBe('$352');
   });
 
   it('keeps cents on small monthly totals', () => {
@@ -126,5 +138,19 @@ describe('zero-priced meters', () => {
 
   it('does not report a discount against a zero baseline', () => {
     expect(getSavingsFraction(unreleased, 'linux', 'spot')).toBeNull();
+  });
+});
+
+describe('clampHoursPerMonth', () => {
+  it('keeps a runtime inside one real month', () => {
+    expect(clampHoursPerMonth(40)).toBe(40);
+    expect(clampHoursPerMonth(0)).toBe(1);
+    expect(clampHoursPerMonth(-5)).toBe(1);
+    expect(clampHoursPerMonth(10000)).toBe(744);
+  });
+
+  it('rounds fractions and falls back on nonsense', () => {
+    expect(clampHoursPerMonth(40.4)).toBe(40);
+    expect(clampHoursPerMonth(Number.NaN)).toBe(730);
   });
 });

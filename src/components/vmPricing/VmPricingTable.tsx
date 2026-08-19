@@ -17,6 +17,7 @@ interface VmPricingTableProps {
   currency: VmCurrency;
   priceMode: VmPriceMode;
   display: VmPriceDisplay;
+  hoursPerMonth: number;
   sortKey: VmSortKey;
   sortDirection: VmSortDirection;
   onSort: (key: VmSortKey) => void;
@@ -67,6 +68,7 @@ export default function VmPricingTable({
   currency,
   priceMode,
   display,
+  hoursPerMonth,
   sortKey,
   sortDirection,
   onSort,
@@ -83,12 +85,17 @@ export default function VmPricingTable({
       { key: 'memory', label: 'RAM', align: 'right', hint: 'GiB' },
       { key: null, label: 'Temp disk', align: 'right', hint: 'GiB' },
       { key: null, label: 'GPU', align: 'right' },
-      { key: 'price', label: display === 'hourly' ? 'Price / hour' : 'Price / month', align: 'right' },
+      {
+        key: 'price',
+        label: display === 'hourly' ? 'Price / hour' : 'Price / month',
+        align: 'right',
+        hint: display === 'monthly' ? `${hoursPerMonth}h` : undefined
+      },
       { key: 'savings', label: 'vs PAYG', align: 'right' },
       { key: 'pricePerVcpu', label: 'Per vCPU', align: 'right' },
       { key: 'pricePerGB', label: 'Per GiB', align: 'right' }
     ],
-    [display]
+    [display, hoursPerMonth]
   );
 
   const visibleRows = rows.slice(0, visibleCount);
@@ -96,7 +103,7 @@ export default function VmPricingTable({
   const showSavings = priceMode !== 'payg';
 
   const formatPrice = (value: number | null): string =>
-    display === 'hourly' ? formatHourly(value, currency) : formatMonthly(value, currency);
+    display === 'hourly' ? formatHourly(value, currency) : formatMonthly(value, currency, hoursPerMonth);
 
   if (rows.length === 0) {
     return (

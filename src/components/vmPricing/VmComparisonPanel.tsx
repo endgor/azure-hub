@@ -11,6 +11,7 @@ interface VmComparisonPanelProps {
   os: VmOperatingSystem;
   priceMode: VmPriceMode;
   display: VmPriceDisplay;
+  hoursPerMonth: number;
   onRemove: (sku: string) => void;
   onClear: () => void;
   /** Drops the outer card and heading when the dialog already provides them. */
@@ -69,12 +70,13 @@ export default function VmComparisonPanel({
   os,
   priceMode,
   display,
+  hoursPerMonth,
   onRemove,
   onClear,
   embedded = false
 }: VmComparisonPanelProps) {
   const formatPrice = (value: number | null): string =>
-    display === 'hourly' ? formatHourly(value, currency) : formatMonthly(value, currency);
+    display === 'hourly' ? formatHourly(value, currency) : formatMonthly(value, currency, hoursPerMonth);
 
   const specRows = useMemo<SpecRow[]>(() => {
     const specs = rows.map((row) => row.spec);
@@ -268,7 +270,7 @@ export default function VmComparisonPanel({
           <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
             <tr className="bg-slate-50/60 dark:bg-slate-800/30">
               <td className={labelCellClass}>
-                {display === 'hourly' ? 'Price / hour' : 'Price / month'}
+                {display === 'hourly' ? 'Price / hour' : `Price / month (${hoursPerMonth}h)`}
               </td>
               {rows.map((row, index) => {
                 const delta =
@@ -351,7 +353,8 @@ export default function VmComparisonPanel({
 
             <tr className="bg-slate-50/60 dark:bg-slate-800/30">
               <td className={`${labelCellClass} font-semibold`} colSpan={rows.length + 1}>
-                All pricing models ({os === 'windows' ? 'Windows' : 'Linux'}, {display === 'hourly' ? 'per hour' : 'per month'})
+                All pricing models ({os === 'windows' ? 'Windows' : 'Linux'},{' '}
+                {display === 'hourly' ? 'per hour' : `per ${hoursPerMonth}h month`})
               </td>
             </tr>
 

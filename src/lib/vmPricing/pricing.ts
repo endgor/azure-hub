@@ -7,8 +7,25 @@ import {
   type VmResolvedPrice
 } from '@/types/vmPricing';
 
-/** Azure's billing month for list-price estimates. */
+/** Azure's billing month: 730 hours is an always-on VM. */
 export const HOURS_PER_MONTH = 730;
+
+/** Longest possible month, so a custom runtime cannot exceed real elapsed time. */
+export const MAX_HOURS_PER_MONTH = 744;
+
+export const HOURS_PER_MONTH_PRESETS: { hours: number; label: string; description: string }[] = [
+  { hours: 730, label: 'Always on', description: '24/7' },
+  { hours: 504, label: 'Weekdays, always on', description: '21 days' },
+  { hours: 176, label: 'Weekday office hours', description: '22 x 8h' },
+  { hours: 88, label: 'Weekday half days', description: '22 x 4h' },
+  { hours: 40, label: 'One week of office hours', description: '5 x 8h' }
+];
+
+/** Keeps a user-entered runtime inside one real month. */
+export function clampHoursPerMonth(hours: number): number {
+  if (!Number.isFinite(hours)) return HOURS_PER_MONTH;
+  return Math.min(MAX_HOURS_PER_MONTH, Math.max(1, Math.round(hours)));
+}
 
 const FIELD_INDEX = new Map(VM_PRICE_FIELDS.map((field, index) => [field, index]));
 
@@ -133,10 +150,14 @@ export function formatHourly(value: number | null, currency: VmCurrency): string
   }).format(value);
 }
 
-export function formatMonthly(hourly: number | null, currency: VmCurrency): string {
+export function formatMonthly(
+  hourly: number | null,
+  currency: VmCurrency,
+  hoursPerMonth: number = HOURS_PER_MONTH
+): string {
   if (hourly === null) return '—';
 
-  const monthly = hourly * HOURS_PER_MONTH;
+  const monthly = hourly * hoursPerMonth;
   return new Intl.NumberFormat(CURRENCY_LOCALES[currency], {
     style: 'currency',
     currency,
