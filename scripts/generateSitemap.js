@@ -74,6 +74,39 @@ function getBaseServiceTags() {
 }
 
 /**
+ * Gets every VM SKU that has a generated detail page. The catalogue deliberately keeps
+ * sizes Azure lists but does not price, and getStaticPaths skips those, so a SKU only
+ * earns a URL once some region publishes a price for it.
+ * @returns {string[]} Sorted ARM SKU names
+ */
+function getVmPricingSkus() {
+  const dataDir = path.join(PUBLIC_DATA_DIR, 'vm-pricing');
+
+  try {
+    const catalog = JSON.parse(fs.readFileSync(path.join(dataDir, 'skus.json'), 'utf8'));
+    const index = JSON.parse(fs.readFileSync(path.join(dataDir, 'index.json'), 'utf8'));
+    const priced = new Set();
+
+    for (const region of index.regions) {
+      const file = path.join(dataDir, 'prices', `${region.name}.json`);
+      if (!fs.existsSync(file)) continue;
+
+      for (const sku of Object.keys(JSON.parse(fs.readFileSync(file, 'utf8')).prices)) {
+        priced.add(sku);
+      }
+    }
+
+    return catalog.skus
+      .map(entry => entry.sku)
+      .filter(sku => priced.has(sku))
+      .sort();
+  } catch {
+    console.warn('Warning: Could not read VM pricing data, skipping VM size URLs');
+    return [];
+  }
+}
+
+/**
  * Escapes XML special characters to prevent XML injection
  * @param {string} unsafe - String that may contain XML special characters
  * @returns {string} XML-safe string
@@ -111,6 +144,7 @@ function generateSitemap() {
 
   // Get base service tag pages (indexable reference pages)
   const baseServiceTags = getBaseServiceTags();
+  const vmPricingSkus = getVmPricingSkus();
   console.log(`Found ${baseServiceTags.length} base service tag pages`);
 
   // Generate sitemap XML
@@ -174,6 +208,12 @@ function generateSitemap() {
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>${BASE_URL}/tools/vm-pricing/</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>${BASE_URL}/tools/ip-changes/</loc>
     <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>weekly</changefreq>
@@ -191,6 +231,13 @@ ${guidePages.map(guide => `  <url>
     <lastmod>${guide.lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>`).join('\n')}
+  <!-- VM Size Pricing Pages -->
+${vmPricingSkus.map(sku => `  <url>
+    <loc>${escapeXml(`${BASE_URL}/tools/vm-pricing/${encodeURIComponent(sku)}/`)}</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>`).join('\n')}
   <!-- Service Tag Reference Pages (base tags only) -->
 ${baseServiceTags.map(tag => `  <url>

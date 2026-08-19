@@ -48,7 +48,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from 'react';
  * const [count, setCount] = useLocalStorageState('counter', 0, { syncAcrossTabs: true });
  * ```
  */
-function useLocalStorageState<T>(
+export function useLocalStorageState<T>(
   key: string,
   initialValue: T,
   options?: {
