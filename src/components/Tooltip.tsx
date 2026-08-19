@@ -1,37 +1,60 @@
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useId, useRef, useState } from 'react';
 import { useTooltipPosition } from './useTooltipPosition';
 
 interface TooltipProps {
   children: ReactNode;
   content: ReactNode;
+  /** Width utility for the bubble */
+  widthClass?: string;
 }
 
-export default function Tooltip({ children, content }: TooltipProps) {
+export default function Tooltip({ children, content, widthClass = 'w-72' }: TooltipProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const { top, left } = useTooltipPosition(triggerRef);
+  const { top, left } = useTooltipPosition(triggerRef, isOpen);
+  const tooltipId = `${useId()}-tooltip`;
+
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
 
   return (
-    <div className="relative inline-block group">
-      <div ref={triggerRef} className="cursor-help">
+    <div className="relative inline-block">
+      <div
+        ref={triggerRef}
+        tabIndex={0}
+        aria-describedby={isOpen ? tooltipId : undefined}
+        className="cursor-help rounded outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40"
+        onMouseEnter={open}
+        onMouseLeave={close}
+        onFocus={open}
+        onBlur={close}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') close();
+        }}
+      >
         {children}
       </div>
-      <div 
-        style={{
-          zIndex: 9999,
-          position: 'fixed',
-          top: `${top - 120}px`,
-          left: `${left}px`,
-          transform: 'translateX(-50%)'
-        }}
-        className="w-72 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-xl opacity-0 transition-opacity duration-200
-                    group-hover:opacity-100 pointer-events-none normal-case"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="relative">
-          {content}
-          <div className="absolute bottom-[-6px] left-[50%] h-3 w-3 translate-x-[-50%] rotate-45 border border-slate-200 bg-white"></div>
+
+      {isOpen && (
+        <div
+          id={tooltipId}
+          role="tooltip"
+          style={{
+            zIndex: 9999,
+            position: 'fixed',
+            top: `${top}px`,
+            left: `${left}px`,
+            // Sits the bubble directly above the trigger whatever its height.
+            transform: 'translate(-50%, -100%)'
+          }}
+          className={`${widthClass} pointer-events-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm normal-case text-slate-700 shadow-xl dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200`}
+        >
+          <div className="relative">
+            {content}
+            <div className="absolute bottom-[-18px] left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-b border-r border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800" />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

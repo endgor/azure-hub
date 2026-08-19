@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import Tooltip from '@/components/Tooltip';
 import { formatHourly, formatMonthly, formatNumber, formatPercent } from '@/lib/vmPricing/pricing';
 import type { VmRow, VmSortDirection, VmSortKey } from '@/hooks/vmPricing/useVmFilters';
 import type { VmCurrency, VmPriceMode } from '@/types/vmPricing';
@@ -24,6 +25,26 @@ interface VmPricingTableProps {
   visibleCount: number;
   onShowMore: () => void;
 }
+
+const ESTIMATE_NOTE = (
+  <div className="space-y-2">
+    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Estimated rate</p>
+    <p>
+      Azure sells reservations per instance without an OS licence, so it publishes no Windows reserved price. This is
+      the Linux commitment rate plus the Windows pay-as-you-go surcharge.
+    </p>
+  </div>
+);
+
+const SPECS_UNAVAILABLE_NOTE = (
+  <div className="space-y-2">
+    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Specifications unavailable</p>
+    <p>
+      Azure publishes a price for this size but does not list it in the resource SKU catalogue, so vCPU and memory are
+      unknown. Usually a retired, promotional or preview size.
+    </p>
+  </div>
+);
 
 function SortIndicator({ active, direction }: { active: boolean; direction: VmSortDirection }) {
   if (!active) {
@@ -162,19 +183,34 @@ export default function VmPricingTable({
                   <td className="whitespace-nowrap px-3 py-2">
                     <span className="font-medium text-slate-900 dark:text-slate-100">{spec.size}</span>
                     {spec.vcpusAvailable !== null && spec.vcpus !== null && spec.vcpusAvailable < spec.vcpus && (
-                      <span
-                        className="ml-1.5 rounded bg-violet-100 px-1.5 py-0.5 text-[10px] font-medium text-violet-700 dark:bg-violet-500/15 dark:text-violet-300"
-                        title={`Constrained cores: ${spec.vcpusAvailable} of ${spec.vcpus} vCPUs active`}
-                      >
-                        constrained
+                      <span className="ml-1.5 align-middle">
+                        <Tooltip
+                          widthClass="w-64"
+                          content={
+                            <div className="space-y-2">
+                              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                                Constrained cores
+                              </p>
+                              <p>
+                                Runs on {spec.vcpus}-vCPU hardware with only {spec.vcpusAvailable} active, keeping the
+                                full memory and disk throughput while cutting per-core licence costs.
+                              </p>
+                            </div>
+                          }
+                        >
+                          <span className="rounded bg-violet-100 px-1.5 py-0.5 text-[10px] font-medium text-violet-700 dark:bg-violet-500/15 dark:text-violet-300">
+                            constrained
+                          </span>
+                        </Tooltip>
                       </span>
                     )}
                     {spec.specSource === 'unknown' && (
-                      <span
-                        className="ml-1.5 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-700 dark:text-slate-400"
-                        title="Priced by Azure but not listed in the resource SKU catalogue, so specifications are unavailable. Usually a retired, promotional or preview size."
-                      >
-                        specs n/a
+                      <span className="ml-1.5 align-middle">
+                        <Tooltip content={SPECS_UNAVAILABLE_NOTE} widthClass="w-64">
+                          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-700 dark:text-slate-400">
+                            specs n/a
+                          </span>
+                        </Tooltip>
                       </span>
                     )}
                   </td>
@@ -192,15 +228,16 @@ export default function VmPricingTable({
                     {spec.gpuCount ? formatNumber(spec.gpuCount) : '—'}
                   </td>
                   <td className="whitespace-nowrap px-3 py-2 text-right font-medium text-slate-900 dark:text-slate-100">
-                    {formatPrice(row.hourly)}
-                    {row.estimated && (
-                      <span
-                        className="ml-1 cursor-help text-amber-500 dark:text-amber-400"
-                        title="Estimated: reservations exclude the Windows licence, so this is the Linux commitment rate plus the Windows pay-as-you-go surcharge."
-                      >
-                        *
-                      </span>
-                    )}
+                    <span className="inline-flex items-center justify-end gap-0.5">
+                      {formatPrice(row.hourly)}
+                      {row.estimated && (
+                        <Tooltip content={ESTIMATE_NOTE} widthClass="w-64">
+                          <span className="px-1 text-base leading-none text-amber-500 dark:text-amber-400">
+                            *<span className="sr-only">Estimated rate</span>
+                          </span>
+                        </Tooltip>
+                      )}
+                    </span>
                   </td>
                   {showSavings && (
                     <td className="whitespace-nowrap px-3 py-2 text-right">

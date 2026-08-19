@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import Tooltip from '@/components/Tooltip';
 import { formatHourly, formatMonthly, formatNumber, formatPercent, resolvePrice, VM_PRICE_MODES } from '@/lib/vmPricing/pricing';
 import type { VmRow } from '@/hooks/vmPricing/useVmFilters';
 import type { VmCurrency, VmOperatingSystem, VmPriceMode } from '@/types/vmPricing';
@@ -25,6 +26,28 @@ interface SpecRow {
   /** 'high' when a larger number is better, 'low' when smaller is better. */
   better?: 'high' | 'low';
   format?: (value: CellValue) => string;
+}
+
+const ESTIMATE_NOTE = (
+  <div className="space-y-2">
+    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Estimated rate</p>
+    <p>
+      Azure sells reservations per instance without an OS licence, so it publishes no Windows reserved price. This is
+      the Linux commitment rate plus the Windows pay-as-you-go surcharge.
+    </p>
+  </div>
+);
+
+function EstimateMarker() {
+  return (
+    <span className="ml-0.5 align-middle">
+      <Tooltip content={ESTIMATE_NOTE} widthClass="w-64">
+        <span className="px-1 text-base leading-none text-amber-500 dark:text-amber-400">
+          *<span className="sr-only">Estimated rate</span>
+        </span>
+      </Tooltip>
+    </span>
+  );
 }
 
 function BooleanBadge({ value }: { value: boolean }) {
@@ -256,14 +279,7 @@ export default function VmComparisonPanel({
                 return (
                   <td key={row.spec.sku} className="whitespace-nowrap px-3 py-2">
                     <span className="font-semibold text-slate-900 dark:text-slate-100">{formatPrice(row.hourly)}</span>
-                    {row.estimated && (
-                      <span
-                        className="ml-1 cursor-help text-amber-500 dark:text-amber-400"
-                        title="Estimated Windows commitment rate."
-                      >
-                        *
-                      </span>
-                    )}
+                    {row.estimated && <EstimateMarker />}
                     {delta !== null && delta !== 0 && (
                       <span
                         className={`ml-2 text-xs ${
@@ -348,11 +364,7 @@ export default function VmComparisonPanel({
                     className="whitespace-nowrap px-3 py-2 text-slate-600 dark:text-slate-300"
                   >
                     {formatPrice(price?.hourly ?? null)}
-                    {price?.estimated && (
-                      <span className="ml-1 cursor-help text-amber-500 dark:text-amber-400" title="Estimated Windows commitment rate.">
-                        *
-                      </span>
-                    )}
+                    {price?.estimated && <EstimateMarker />}
                   </td>
                 ))}
               </tr>
