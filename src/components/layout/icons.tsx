@@ -7,6 +7,7 @@ export type IconKey =
   | 'privateDns'
   | 'tenant'
   | 'subnet'
+  | 'vmPricing'
   | 'rbac'
   | 'entraId'
   | 'guides'
@@ -63,6 +64,22 @@ export const ICONS: Record<IconKey, (active: boolean) => ReactElement> = {
       <path
         fill="currentColor"
         d="M18 15a3 3 0 00-3 3v1h-.5a.5.5 0 00-.5.5v3a.5.5 0 00.5.5h7a.5.5 0 00.5-.5v-3a.5.5 0 00-.5-.5H21v-1a3 3 0 00-3-3zm-1.5 3a1.5 1.5 0 113 0v1h-3v-1z"
+      />
+    </svg>
+  ),
+  vmPricing: (active: boolean) => (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={`h-5 w-5 transition-colors ${active ? 'text-slate-700 dark:text-slate-300' : 'text-current'}`}
+    >
+      <path
+        fill="currentColor"
+        d="M4 4h16a2 2 0 012 2v7a2 2 0 01-2 2h-6.5l.5 3H16a1 1 0 010 2H8a1 1 0 010-2h2.5l.5-3H4a2 2 0 01-2-2V6a2 2 0 012-2zm0 2v7h16V6H4z"
+      />
+      <path
+        fill="currentColor"
+        d="M12.02 7.5c.4 0 .73.3.73.68v.36c.83.17 1.44.78 1.44 1.53a.7.7 0 01-.73.68.7.7 0 01-.72-.68c0-.2-.3-.4-.72-.4-.42 0-.72.2-.72.4 0 .2.3.4.72.4 1.2 0 2.17.75 2.17 1.76 0 .75-.61 1.36-1.44 1.53v.36a.7.7 0 01-.73.68.7.7 0 01-.72-.68v-.36c-.83-.17-1.45-.78-1.45-1.53a.7.7 0 01.73-.68.7.7 0 01.72.68c0 .2.3.4.72.4.43 0 .73-.2.73-.4 0-.2-.3-.4-.73-.4-1.19 0-2.17-.75-2.17-1.76 0-.75.62-1.36 1.45-1.53v-.36c0-.38.32-.68.72-.68z"
       />
     </svg>
   ),

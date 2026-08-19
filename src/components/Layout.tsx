@@ -60,7 +60,9 @@ const DEFAULT_KEYWORDS = [
   'Azure RBAC roles',
   'Entra ID roles',
   'Microsoft Entra tools',
-  'Azure networking tools'
+  'Azure networking tools',
+  'Azure VM pricing',
+  'Azure VM comparison'
 ];
 
 const NAV_SECTIONS: NavSection[] = [
@@ -96,6 +98,16 @@ const NAV_SECTIONS: NavSection[] = [
         label: 'Subnet Calculator',
         href: '/tools/subnet-calculator/',
         icon: 'subnet'
+      }
+    ]
+  },
+  {
+    label: 'Compute',
+    items: [
+      {
+        label: 'VM Pricing',
+        href: '/tools/vm-pricing/',
+        icon: 'vmPricing'
       }
     ]
   },

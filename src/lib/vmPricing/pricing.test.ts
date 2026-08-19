@@ -1,0 +1,130 @@
+import { describe, it, expect } from 'vitest';
+import { resolvePrice, getSavingsFraction, getPaygPrice, formatHourly, formatMonthly } from './pricing';
+import { VM_PRICE_FIELDS, type PackedVmPrices } from '@/types/vmPricing';
+
+function pack(values: Partial<Record<(typeof VM_PRICE_FIELDS)[number], number>>): PackedVmPrices {
+  return VM_PRICE_FIELDS.map((field) => values[field] ?? null);
+}
+
+// Real Standard_D4s_v5 West Europe USD rates.
+const D4S_V5 = pack({
+  lpayg: 0.23,
+  lspot: 0.042504,
+  llow: 0.046,
+  lri1: 0.141895,
+  lri3: 0.090868,
+  lsp1: 0.1748,
+  lsp3: 0.1265,
+  wpayg: 0.414,
+  wspot: 0.076507,
+  wlow: 0.166,
+  wdev: 0.23
+});
+
+describe('resolvePrice', () => {
+  it('reads Linux consumption rates directly', () => {
+    expect(resolvePrice(D4S_V5, 'linux', 'payg')).toEqual({ hourly: 0.23, estimated: false });
+    expect(resolvePrice(D4S_V5, 'linux', 'spot')).toEqual({ hourly: 0.042504, estimated: false });
+    expect(resolvePrice(D4S_V5, 'linux', 'lowPriority')).toEqual({ hourly: 0.046, estimated: false });
+  });
+
+  it('reads Windows consumption rates directly', () => {
+    expect(resolvePrice(D4S_V5, 'windows', 'payg')).toEqual({ hourly: 0.414, estimated: false });
+    expect(resolvePrice(D4S_V5, 'windows', 'devTest')).toEqual({ hourly: 0.23, estimated: false });
+  });
+
+  it('reads savings plan rates', () => {
+    expect(resolvePrice(D4S_V5, 'linux', 'savingsPlan1Year')?.hourly).toBe(0.1748);
+    expect(resolvePrice(D4S_V5, 'linux', 'savingsPlan3Years')?.hourly).toBe(0.1265);
+  });
+
+  it('returns Linux reservation rates as reported', () => {
+    expect(resolvePrice(D4S_V5, 'linux', 'reservation1Year')).toEqual({ hourly: 0.141895, estimated: false });
+    expect(resolvePrice(D4S_V5, 'linux', 'reservation3Years')).toEqual({ hourly: 0.090868, estimated: false });
+  });
+
+  it('estimates Windows reservation rates as Linux plus the Windows surcharge', () => {
+    const result = resolvePrice(D4S_V5, 'windows', 'reservation1Year');
+    expect(result?.estimated).toBe(true);
+    expect(result?.hourly).toBeCloseTo(0.141895 + (0.414 - 0.23), 9);
+  });
+
+  it('returns null for a missing rate rather than zero', () => {
+    expect(resolvePrice(D4S_V5, 'linux', 'devTest')).toBeNull();
+    expect(resolvePrice(pack({ lpayg: 1 }), 'linux', 'reservation1Year')).toBeNull();
+    expect(resolvePrice(undefined, 'linux', 'payg')).toBeNull();
+  });
+
+  it('tolerates rows whose trailing nulls were trimmed', () => {
+    const trimmed = [0.5, null, null, null, 0.3];
+    expect(resolvePrice(trimmed, 'linux', 'payg')?.hourly).toBe(0.5);
+    expect(resolvePrice(trimmed, 'linux', 'reservation1Year')?.hourly).toBe(0.3);
+    expect(resolvePrice(trimmed, 'windows', 'payg')).toBeNull();
+  });
+});
+
+describe('getPaygPrice', () => {
+  it('picks the rate for the requested OS', () => {
+    expect(getPaygPrice(D4S_V5, 'linux')).toBe(0.23);
+    expect(getPaygPrice(D4S_V5, 'windows')).toBe(0.414);
+  });
+});
+
+describe('getSavingsFraction', () => {
+  it('measures the discount against pay-as-you-go', () => {
+    expect(getSavingsFraction(D4S_V5, 'linux', 'spot')).toBeCloseTo(1 - 0.042504 / 0.23, 9);
+    expect(getSavingsFraction(D4S_V5, 'linux', 'reservation3Years')).toBeCloseTo(1 - 0.090868 / 0.23, 9);
+  });
+
+  it('has nothing to compare for pay-as-you-go itself', () => {
+    expect(getSavingsFraction(D4S_V5, 'linux', 'payg')).toBeNull();
+  });
+
+  it('returns null when either side is missing', () => {
+    expect(getSavingsFraction(D4S_V5, 'linux', 'devTest')).toBeNull();
+    expect(getSavingsFraction(pack({ lspot: 0.1 }), 'linux', 'spot')).toBeNull();
+  });
+});
+
+describe('formatHourly', () => {
+  it('scales precision to the magnitude', () => {
+    expect(formatHourly(0.042504, 'USD')).toBe('$0.0425');
+    expect(formatHourly(0.0004, 'USD')).toBe('$0.00040');
+    expect(formatHourly(0.23, 'USD')).toBe('$0.2300');
+    expect(formatHourly(12.5, 'USD')).toBe('$12.500');
+  });
+
+  it('renders an em dash for a missing price', () => {
+    expect(formatHourly(null, 'USD')).toBe('—');
+    expect(formatMonthly(null, 'SEK')).toBe('—');
+  });
+});
+
+describe('formatMonthly', () => {
+  it('bills 730 hours a month', () => {
+    expect(formatMonthly(1, 'USD')).toBe('$730');
+  });
+
+  it('keeps cents on small monthly totals', () => {
+    expect(formatMonthly(0.01, 'USD')).toBe('$7.30');
+  });
+});
+
+describe('zero-priced meters', () => {
+  // Azure publishes 0.0 for meters with no released price, e.g. unreleased M_v4 sizes.
+  const unreleased = pack({ lpayg: 0, lspot: 0, wpayg: 0.046 });
+
+  it('treats a zero rate as no price at all', () => {
+    expect(resolvePrice(unreleased, 'linux', 'payg')).toBeNull();
+    expect(resolvePrice(unreleased, 'linux', 'spot')).toBeNull();
+    expect(getPaygPrice(unreleased, 'linux')).toBeNull();
+  });
+
+  it('still reads a genuine non-zero rate on the same row', () => {
+    expect(resolvePrice(unreleased, 'windows', 'payg')?.hourly).toBe(0.046);
+  });
+
+  it('does not report a discount against a zero baseline', () => {
+    expect(getSavingsFraction(unreleased, 'linux', 'spot')).toBeNull();
+  });
+});

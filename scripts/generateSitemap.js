@@ -174,6 +174,12 @@ function generateSitemap() {
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>${BASE_URL}/tools/vm-pricing/</loc>
+    <lastmod>${dataLastUpdated}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>${BASE_URL}/tools/ip-changes/</loc>
     <lastmod>${dataLastUpdated}</lastmod>
     <changefreq>weekly</changefreq>
