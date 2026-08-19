@@ -4,13 +4,11 @@ import type { GetStaticPaths, GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
 import Select, { type SelectOption } from '@/components/shared/Select';
 import Tooltip from '@/components/Tooltip';
+import HoursPerMonthField from '@/components/vmPricing/HoursPerMonthField';
+import { useHoursPerMonth } from '@/hooks/vmPricing/useHoursPerMonth';
 import { useLocalStorageState } from '@/hooks/useLocalStorageState';
 import {
-  HOURS_PER_MONTH,
-  HOURS_PER_MONTH_PRESETS,
-  MAX_HOURS_PER_MONTH,
   VM_PRICE_MODES,
-  clampHoursPerMonth,
   formatHourly,
   formatMonthly,
   formatNumber,
@@ -114,7 +112,7 @@ export default function VmSkuDetail({
   const [os, setOs] = useLocalStorageState<VmOperatingSystem>('vm-pricing-os', 'linux');
   const [priceMode, setPriceMode] = useLocalStorageState<VmPriceMode>('vm-pricing-mode', 'payg');
   const [display, setDisplay] = useLocalStorageState<PriceDisplay>('vm-pricing-display', 'hourly');
-  const [hoursPerMonth, setHoursPerMonth] = useLocalStorageState<number>('vm-pricing-hours', HOURS_PER_MONTH);
+  const [hoursPerMonth, setHoursPerMonth] = useHoursPerMonth();
   const [showAllRegions, setShowAllRegions] = useState(false);
 
   const currencyRate = useMemo(
@@ -140,6 +138,17 @@ export default function VmSkuDetail({
 
   const cheapest = ranked[0] ?? null;
   const dearest = ranked[ranked.length - 1] ?? null;
+
+  /** Pinned to the cheapest pay-as-you-go region so the model controls cannot move it. */
+  const modelTableRegion = useMemo(() => {
+    const byPayg = regionPrices
+      .map((entry) => ({ entry, hourly: resolvePrice(entry.prices, 'linux', 'payg')?.hourly ?? null }))
+      .filter((item): item is { entry: VmRegionPrice; hourly: number } => item.hourly !== null)
+      .sort((a, b) => a.hourly - b.hourly);
+
+    return byPayg[0]?.entry ?? regionPrices[0] ?? null;
+  }, [regionPrices]);
+
   const visibleRegions = showAllRegions ? ranked : ranked.slice(0, 15);
 
   const vcpus = spec.vcpusAvailable ?? spec.vcpus;
@@ -287,39 +296,12 @@ export default function VmSkuDetail({
           </div>
 
           {display === 'monthly' && (
-            <div className="space-y-1.5">
-              <label htmlFor="vm-detail-hours" className={labelClass}>
-                Hours per month
-              </label>
-              <div className="flex items-center gap-1.5">
-                <input
-                  id="vm-detail-hours"
-                  type="number"
-                  min={1}
-                  max={MAX_HOURS_PER_MONTH}
-                  value={hoursPerMonth}
-                  onChange={(event) => {
-                    const parsed = Number(event.target.value);
-                    if (Number.isFinite(parsed)) setHoursPerMonth(parsed);
-                  }}
-                  onBlur={(event) => setHoursPerMonth(clampHoursPerMonth(Number(event.target.value)))}
-                  className="w-20 rounded-xl border border-slate-400 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-500 dark:bg-slate-800 dark:text-slate-100"
-                />
-                <Select
-                  ariaLabel="Runtime preset"
-                  value=""
-                  placeholder="Preset"
-                  onChange={(value) => setHoursPerMonth(clampHoursPerMonth(Number(value)))}
-                  options={HOURS_PER_MONTH_PRESETS.map((preset) => ({
-                    value: String(preset.hours),
-                    label: preset.label,
-                    description: preset.description
-                  }))}
-                  widthClass="w-28"
-                  panelWidthClass="w-64"
-                />
-              </div>
-            </div>
+            <HoursPerMonthField
+              id="vm-detail-hours"
+              hoursPerMonth={hoursPerMonth}
+              onChange={setHoursPerMonth}
+              labelClass={labelClass}
+            />
           )}
 
           <div className="min-w-[9rem] space-y-1.5">
@@ -465,7 +447,7 @@ export default function VmSkuDetail({
 
             <div className="space-y-3">
               <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                Every pricing model in {cheapest?.displayName}
+                Every pricing model in {modelTableRegion?.displayName}
               </h2>
               <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
                 <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
@@ -493,8 +475,10 @@ export default function VmSkuDetail({
                   </thead>
                   <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
                     {VM_PRICE_MODES.map((mode) => {
-                      const linux = cheapest ? resolvePrice(cheapest.prices, 'linux', mode.value) : null;
-                      const windows = cheapest ? resolvePrice(cheapest.prices, 'windows', mode.value) : null;
+                      const linux = modelTableRegion ? resolvePrice(modelTableRegion.prices, 'linux', mode.value) : null;
+                      const windows = modelTableRegion
+                        ? resolvePrice(modelTableRegion.prices, 'windows', mode.value)
+                        : null;
 
                       return (
                         <tr
@@ -552,10 +536,11 @@ export default function VmSkuDetail({
             and egress costs.
           </p>
           <p>
-            Reserved instance rates are the upfront term price spread across the term and are sold without an OS
-            licence, so a Windows reserved rate marked{' '}
-            <span className="font-medium text-amber-600 dark:text-amber-400">*</span> is the Linux commitment rate plus
-            the Windows pay-as-you-go surcharge.
+            Reserved instance and savings plan rates are the commitment price spread across the term and are sold
+            without an OS licence. Azure publishes no meter for every combination, so a rate marked{' '}
+            <span className="font-medium text-amber-600 dark:text-amber-400">*</span> is derived: a Windows commitment
+            rate is the Linux rate plus the Windows pay-as-you-go surcharge, and a missing Dev/Test rate is the Linux
+            pay-as-you-go rate, since Dev/Test only discounts the Windows licence.
           </p>
           {currency !== baseCurrency && (
             <p>

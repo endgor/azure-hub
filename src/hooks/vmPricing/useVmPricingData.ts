@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   loadPricingIndex,
   loadRegionPrices,
   loadSkuCatalog
 } from '@/lib/vmPricing/clientVmPricingService';
-import type { VmPricingIndex, VmRegionPrices, VmSkuCatalog, VmSkuSpec } from '@/types/vmPricing';
+import type { VmPricingIndex, VmRegionPrices, VmSkuCatalog } from '@/types/vmPricing';
 
 interface UseVmPricingDataResult {
   index: VmPricingIndex | null;
   catalog: VmSkuCatalog | null;
   regionPrices: VmRegionPrices | null;
-  skuLookup: Map<string, VmSkuSpec>;
   isLoadingCatalogue: boolean;
   isLoadingPrices: boolean;
   /** Fatal: without the catalogue or index there is nothing to render. */
@@ -63,6 +62,8 @@ export function useVmPricingData(region: string | null): UseVmPricingDataResult 
       try {
         setIsLoadingPrices(true);
         setPriceError(null);
+        // The previous region's prices would otherwise sit under the new region's label.
+        setRegionPrices(null);
         const prices = await loadRegionPrices(region);
         if (!cancelled) setRegionPrices(prices);
       } catch (loadError) {
@@ -81,16 +82,10 @@ export function useVmPricingData(region: string | null): UseVmPricingDataResult 
     };
   }, [region, attempt]);
 
-  const skuLookup = useMemo(
-    () => new Map((catalog?.skus ?? []).map((sku) => [sku.sku, sku])),
-    [catalog]
-  );
-
   return {
     index,
     catalog,
     regionPrices,
-    skuLookup,
     isLoadingCatalogue: !index || !catalog,
     isLoadingPrices,
     catalogueError,

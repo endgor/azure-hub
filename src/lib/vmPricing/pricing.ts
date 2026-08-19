@@ -53,15 +53,10 @@ export function getPriceModeLabel(mode: VmPriceMode): string {
   return VM_PRICE_MODES.find((entry) => entry.value === mode)?.label ?? mode;
 }
 
-/** True for modes where a Windows rate has to be estimated from the Linux rate. */
-export function isCommitmentMode(mode: VmPriceMode): boolean {
-  return mode === 'reservation1Year' || mode === 'reservation3Years';
-}
-
 /**
- * Resolves the hourly rate for one SKU. Reservations are sold per instance without a
- * Windows licence, so a Windows reservation rate is the Linux rate plus the Windows
- * pay-as-you-go surcharge and is flagged as an estimate.
+ * Resolves the hourly rate for one SKU. Azure leaves some combinations unpublished:
+ * commitments carry no OS licence, and Dev/Test only waives the Windows one, so those gaps
+ * are filled from the rates Azure does publish and flagged as estimates.
  */
 export function resolvePrice(
   packed: PackedVmPrices | undefined,
@@ -79,28 +74,41 @@ export function resolvePrice(
       return wrap(read(packed, `${prefix}spot`));
     case 'lowPriority':
       return wrap(read(packed, `${prefix}low`));
-    case 'devTest':
-      return wrap(read(packed, `${prefix}dev`));
+    case 'devTest': {
+      const direct = read(packed, `${prefix}dev`);
+      if (direct !== null) return wrap(direct);
+      const linuxPayg = read(packed, 'lpayg');
+      return linuxPayg === null ? null : { hourly: linuxPayg, estimated: true };
+    }
     case 'savingsPlan1Year':
-      return wrap(read(packed, `${prefix}sp1`));
-    case 'savingsPlan3Years':
-      return wrap(read(packed, `${prefix}sp3`));
+    case 'savingsPlan3Years': {
+      const field = mode === 'savingsPlan1Year' ? 'sp1' : 'sp3';
+      const direct = read(packed, `${prefix}${field}`);
+      if (direct !== null) return wrap(direct);
+      if (os === 'linux') return null;
+      return addWindowsSurcharge(packed, read(packed, `l${field}`));
+    }
     case 'reservation1Year':
     case 'reservation3Years': {
       const linuxRate = read(packed, mode === 'reservation1Year' ? 'lri1' : 'lri3');
       if (linuxRate === null) return null;
       if (os === 'linux') return { hourly: linuxRate, estimated: false };
-
-      const windowsPayg = read(packed, 'wpayg');
-      const linuxPayg = read(packed, 'lpayg');
-      if (windowsPayg === null || linuxPayg === null) return null;
-
-      const surcharge = Math.max(0, windowsPayg - linuxPayg);
-      return { hourly: linuxRate + surcharge, estimated: true };
+      return addWindowsSurcharge(packed, linuxRate);
     }
     default:
       return null;
   }
+}
+
+/** Windows commitment rates are quoted without a licence, so the PAYG gap is added back. */
+function addWindowsSurcharge(packed: PackedVmPrices, linuxRate: number | null): VmResolvedPrice | null {
+  if (linuxRate === null) return null;
+
+  const windowsPayg = read(packed, 'wpayg');
+  const linuxPayg = read(packed, 'lpayg');
+  if (windowsPayg === null || linuxPayg === null) return null;
+
+  return { hourly: linuxRate + Math.max(0, windowsPayg - linuxPayg), estimated: true };
 }
 
 function wrap(hourly: number | null): VmResolvedPrice | null {
@@ -129,8 +137,8 @@ export function getSavingsFraction(
 /** The site is English, so formatting is pinned rather than following the visitor's locale. */
 const PRICE_LOCALE = 'en-US';
 
-/** Zero-decimal currencies, where Intl would otherwise reject fractional digits. */
-const ZERO_DECIMAL_CURRENCIES = new Set(['JPY', 'KRW', 'CLP', 'VND', 'IDR', 'ISK', 'HUF', 'TWD']);
+/** Currencies with no minor unit, so a fractional figure would be meaningless. */
+const ZERO_DECIMAL_CURRENCIES = new Set(['JPY', 'KRW', 'CLP', 'VND', 'ISK']);
 
 export function getCurrencySymbol(currency: VmCurrency): string {
   try {

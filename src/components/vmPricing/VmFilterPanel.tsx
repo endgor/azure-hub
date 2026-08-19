@@ -222,6 +222,8 @@ interface VmFilterPanelProps {
   memoryPresetCounts: PresetCount[];
   resultCount: number;
   totalCount: number;
+  /** Sizes the `pricedOnly` gate is hiding, so the gap in "N of M" can be explained. */
+  unpricedCount: number;
   currency: VmCurrency;
   hoursPerMonth: number;
 }
@@ -240,6 +242,7 @@ export default function VmFilterPanel({
   memoryPresetCounts,
   resultCount,
   totalCount,
+  unpricedCount,
   currency,
   hoursPerMonth
 }: VmFilterPanelProps) {
@@ -324,6 +327,14 @@ export default function VmFilterPanel({
       });
     }
 
+    if (!filters.pricedOnly) {
+      chips.push({
+        key: 'pricedOnly',
+        label: 'Including unpriced sizes',
+        onRemove: () => updateFilter('pricedOnly', true)
+      });
+    }
+
     return chips;
   }, [currency, filters, toggleListValue, updateFilter]);
 
@@ -341,6 +352,12 @@ export default function VmFilterPanel({
         <div className="flex items-center gap-3">
           <span className="whitespace-nowrap text-xs text-slate-500 dark:text-slate-400">
             {resultCount.toLocaleString()} of {totalCount.toLocaleString()} sizes
+            {unpricedCount > 0 && (
+              <span className="hidden sm:inline">
+                {' '}
+                · {unpricedCount.toLocaleString()} unpriced hidden
+              </span>
+            )}
           </span>
           {activeFilterCount > 0 && (
             <button

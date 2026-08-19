@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import Tooltip from '@/components/Tooltip';
+import { estimateNote } from './estimateNote';
 import { formatHourly, formatMonthly, formatNumber, formatPercent } from '@/lib/vmPricing/pricing';
 import type { VmRow, VmSortDirection, VmSortKey } from '@/hooks/vmPricing/useVmFilters';
 import type { VmCurrency, VmPriceMode } from '@/types/vmPricing';
@@ -28,16 +29,6 @@ interface VmPricingTableProps {
   visibleCount: number;
   onShowMore: () => void;
 }
-
-const ESTIMATE_NOTE = (
-  <div className="space-y-2">
-    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">Estimated rate</p>
-    <p>
-      Azure sells reservations per instance without an OS licence, so it publishes no Windows reserved price. This is
-      the Linux commitment rate plus the Windows pay-as-you-go surcharge.
-    </p>
-  </div>
-);
 
 const SPECS_UNAVAILABLE_NOTE = (
   <div className="space-y-2">
@@ -104,6 +95,7 @@ export default function VmPricingTable({
   const visibleRows = rows.slice(0, visibleCount);
   const selected = new Set(selectedSkus);
   const showSavings = priceMode !== 'payg';
+  const priceEstimateNote = useMemo(() => estimateNote(priceMode), [priceMode]);
 
   const formatPrice = (value: number | null): string =>
     display === 'hourly'
@@ -248,7 +240,7 @@ export default function VmPricingTable({
                     <span className="inline-flex items-center justify-end gap-0.5">
                       {formatPrice(row.hourly)}
                       {row.estimated && (
-                        <Tooltip content={ESTIMATE_NOTE} widthClass="w-64">
+                        <Tooltip content={priceEstimateNote} widthClass="w-64">
                           <span className="px-1 text-base leading-none text-amber-500 dark:text-amber-400">
                             *<span className="sr-only">Estimated rate</span>
                           </span>

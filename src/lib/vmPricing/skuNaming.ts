@@ -112,22 +112,3 @@ export function getVmCategory(sku: string): string {
 
   return 'Other';
 }
-
-export const VM_CATEGORIES = [
-  'General purpose',
-  'Compute optimized',
-  'Memory optimized',
-  'Storage optimized',
-  'GPU accelerated',
-  'FPGA accelerated',
-  'High performance compute',
-  'Confidential computing',
-  'Other'
-] as const;
-
-/** Family group used for grouping in the UI, e.g. D-family, N-family. */
-export function getVmFamilyGroup(sku: string): string {
-  const { prefix } = parseVmSize(sku);
-  const letter = prefix.charAt(0).toUpperCase();
-  return letter ? `${letter}-family` : 'Other';
-}

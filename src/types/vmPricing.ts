@@ -118,6 +118,6 @@ export interface VmSkuCatalog {
 /** A resolved hourly price plus how it was obtained. */
 export interface VmResolvedPrice {
   hourly: number;
-  /** True when a Windows commitment rate was derived from the Linux rate plus the Windows surcharge. */
+  /** True when Azure publishes no meter for the combination and the rate was derived from another one. */
   estimated: boolean;
 }

@@ -1,5 +1,5 @@
 import { CACHE_TTL_MS } from '@/config/constants';
-import type { VmPricingIndex, VmRegionPrices, VmSkuCatalog, VmSkuSpec } from '@/types/vmPricing';
+import type { VmPricingIndex, VmRegionPrices, VmSkuCatalog } from '@/types/vmPricing';
 
 const BASE_PATH = '/data/vm-pricing';
 
@@ -67,23 +67,4 @@ export async function loadRegionPrices(region: string): Promise<VmRegionPrices> 
     regionCache.set(key, { value, expiry: Date.now() + CACHE_TTL_MS });
     return value;
   });
-}
-
-/** Loads several regions at once for cross-region comparison. */
-export async function loadRegionPricesBatch(regions: string[]): Promise<Map<string, VmRegionPrices>> {
-  const results = await Promise.all(
-    regions.map(async (region) => {
-      try {
-        return [region, await loadRegionPrices(region)] as const;
-      } catch {
-        return null;
-      }
-    })
-  );
-
-  return new Map(results.filter((entry): entry is readonly [string, VmRegionPrices] => entry !== null));
-}
-
-export function buildSkuLookup(catalog: VmSkuCatalog): Map<string, VmSkuSpec> {
-  return new Map(catalog.skus.map((sku) => [sku.sku, sku]));
 }

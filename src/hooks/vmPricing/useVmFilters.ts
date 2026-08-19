@@ -12,6 +12,7 @@ import {
   getEffectiveVcpus,
   rowMatches,
   type VmFilterState,
+  type VmPriceContext,
   type VmRow
 } from '@/lib/vmPricing/filtering';
 import type { VmOperatingSystem, VmPriceMode, VmRegionPrices, VmSkuSpec } from '@/types/vmPricing';
@@ -35,6 +36,8 @@ interface UseVmFiltersOptions {
   regionIndex: number | null;
   /** Runtime used to turn a monthly budget filter into an hourly ceiling. */
   hoursPerMonth: number;
+  /** Rate the displayed currency is derived at, so a budget filter is compared like for like. */
+  currencyRate: number;
 }
 
 export function useVmFilters({
@@ -43,7 +46,8 @@ export function useVmFilters({
   os,
   priceMode,
   regionIndex,
-  hoursPerMonth
+  hoursPerMonth,
+  currencyRate
 }: UseVmFiltersOptions) {
   const [filters, setFilters] = useState<VmFilterState>(EMPTY_VM_FILTERS);
   const [sortKey, setSortKey] = useState<VmSortKey>('price');
@@ -65,6 +69,11 @@ export function useVmFilters({
   );
 
   const resetFilters = useCallback(() => setFilters(EMPTY_VM_FILTERS), []);
+
+  const priceContext = useMemo<VmPriceContext>(
+    () => ({ hoursPerMonth, currencyRate }),
+    [hoursPerMonth, currencyRate]
+  );
 
   /** SKUs offered in the selected region, before the user's filters. */
   const regionalSpecs = useMemo(() => {
@@ -112,7 +121,7 @@ export function useVmFilters({
   );
 
   const filteredRows = useMemo(() => {
-    const result = rows.filter((row) => rowMatches(row, filters, null, hoursPerMonth));
+    const result = rows.filter((row) => rowMatches(row, filters, null, priceContext));
     const direction = sortDirection === 'asc' ? 1 : -1;
 
     const compareNullableNumbers = (a: number | null, b: number | null): number => {
@@ -144,33 +153,33 @@ export function useVmFilters({
           return compareNullableNumbers(a.hourly, b.hourly);
       }
     });
-  }, [rows, filters, sortKey, sortDirection, hoursPerMonth]);
+  }, [rows, filters, sortKey, sortDirection, priceContext]);
 
   const categoryFacets = useMemo(
-    () => buildCategoryFacets(rows, filters, availableCategories, hoursPerMonth),
-    [rows, filters, availableCategories, hoursPerMonth]
+    () => buildCategoryFacets(rows, filters, availableCategories, priceContext),
+    [rows, filters, availableCategories, priceContext]
   );
 
   const seriesFacets = useMemo(
-    () => buildSeriesFacets(rows, filters, availableSeries, hoursPerMonth),
-    [rows, filters, availableSeries, hoursPerMonth]
+    () => buildSeriesFacets(rows, filters, availableSeries, priceContext),
+    [rows, filters, availableSeries, priceContext]
   );
 
   const architectureFacets = useMemo(
-    () => buildArchitectureFacets(rows, filters, availableArchitectures, hoursPerMonth),
-    [rows, filters, availableArchitectures, hoursPerMonth]
+    () => buildArchitectureFacets(rows, filters, availableArchitectures, priceContext),
+    [rows, filters, availableArchitectures, priceContext]
   );
 
   const featureFacets = useMemo(() => buildFeatureFacets(filteredRows), [filteredRows]);
 
   const vcpuPresetCounts = useMemo(
-    () => buildVcpuPresetCounts(rows, filters, hoursPerMonth),
-    [rows, filters, hoursPerMonth]
+    () => buildVcpuPresetCounts(rows, filters, priceContext),
+    [rows, filters, priceContext]
   );
 
   const memoryPresetCounts = useMemo(
-    () => buildMemoryPresetCounts(rows, filters, hoursPerMonth),
-    [rows, filters, hoursPerMonth]
+    () => buildMemoryPresetCounts(rows, filters, priceContext),
+    [rows, filters, priceContext]
   );
 
   const toggleSort = useCallback((key: VmSortKey) => {
@@ -186,6 +195,14 @@ export function useVmFilters({
 
   const activeFilterCount = useMemo(() => countActiveFilters(filters), [filters]);
 
+  /** How many sizes the pricedOnly gate is hiding, measured against every other filter. */
+  const unpricedCount = useMemo(() => {
+    if (!filters.pricedOnly) return 0;
+
+    const withoutGate = { ...filters, pricedOnly: false };
+    return rows.filter((row) => row.hourly === null && rowMatches(row, withoutGate, null, priceContext)).length;
+  }, [rows, filters, priceContext]);
+
   return {
     filters,
     updateFilter,
@@ -194,7 +211,7 @@ export function useVmFilters({
     activeFilterCount,
     rows,
     filteredRows,
-    regionalSpecCount: regionalSpecs.length,
+    unpricedCount,
     availableCategories,
     availableSeries,
     availableArchitectures,

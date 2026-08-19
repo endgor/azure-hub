@@ -1,12 +1,7 @@
 import { useMemo } from 'react';
 import Select, { type SelectOption } from '@/components/shared/Select';
-import {
-  HOURS_PER_MONTH_PRESETS,
-  MAX_HOURS_PER_MONTH,
-  VM_PRICE_MODES,
-  clampHoursPerMonth,
-  getCurrencyLabel
-} from '@/lib/vmPricing/pricing';
+import HoursPerMonthField from '@/components/vmPricing/HoursPerMonthField';
+import { VM_PRICE_MODES, getCurrencyLabel } from '@/lib/vmPricing/pricing';
 import type { VmCurrency, VmCurrencyRate, VmOperatingSystem, VmPriceMode, VmRegionInfo } from '@/types/vmPricing';
 
 export type VmPriceDisplay = 'hourly' | 'monthly';
@@ -166,40 +161,12 @@ export default function VmPricingControls({
       </div>
 
       {display === 'monthly' && (
-        <div className="space-y-1.5">
-          <label htmlFor="vm-hours-per-month" className={labelClass}>
-            Hours per month
-          </label>
-          <div className="flex items-center gap-1.5">
-            <input
-              id="vm-hours-per-month"
-              type="number"
-              min={1}
-              max={MAX_HOURS_PER_MONTH}
-              value={hoursPerMonth}
-              onChange={(event) => {
-                const parsed = Number(event.target.value);
-                if (Number.isFinite(parsed)) onHoursPerMonthChange(parsed);
-              }}
-              onBlur={(event) => onHoursPerMonthChange(clampHoursPerMonth(Number(event.target.value)))}
-              className="w-20 rounded-xl border border-slate-400 bg-white px-3 py-2 text-sm text-slate-900 transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-500 dark:bg-slate-800 dark:text-slate-100"
-            />
-            <Select
-              ariaLabel="Runtime preset"
-              value=""
-              placeholder="Preset"
-              onChange={(value) => onHoursPerMonthChange(clampHoursPerMonth(Number(value)))}
-              options={HOURS_PER_MONTH_PRESETS.map((preset) => ({
-                value: String(preset.hours),
-                label: preset.label,
-                description: preset.description
-              }))}
-              widthClass="w-28"
-              panelWidthClass="w-64"
-              maxHeightClass="max-h-72"
-            />
-          </div>
-        </div>
+        <HoursPerMonthField
+          id="vm-hours-per-month"
+          hoursPerMonth={hoursPerMonth}
+          onChange={onHoursPerMonthChange}
+          labelClass={labelClass}
+        />
       )}
 
       <div className="min-w-[9rem] space-y-1.5">

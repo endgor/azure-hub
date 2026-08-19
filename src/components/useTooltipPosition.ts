@@ -1,4 +1,7 @@
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useLayoutEffect, useState, RefObject } from 'react';
+
+/** useLayoutEffect warns during server rendering, where there is nothing to measure. */
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /**
  * Tracks the viewport position of a tooltip trigger.
@@ -9,7 +12,7 @@ import { useEffect, useState, RefObject } from 'react';
 export function useTooltipPosition(triggerRef: RefObject<HTMLElement | null>, enabled: boolean = true) {
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!enabled) return;
 
     function updatePosition() {

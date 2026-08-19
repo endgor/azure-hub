@@ -74,16 +74,34 @@ function getBaseServiceTags() {
 }
 
 /**
- * Gets every VM SKU that has a generated detail page.
+ * Gets every VM SKU that has a generated detail page. The catalogue deliberately keeps
+ * sizes Azure lists but does not price, and getStaticPaths skips those, so a SKU only
+ * earns a URL once some region publishes a price for it.
  * @returns {string[]} Sorted ARM SKU names
  */
 function getVmPricingSkus() {
+  const dataDir = path.join(PUBLIC_DATA_DIR, 'vm-pricing');
+
   try {
-    const catalogPath = path.join(PUBLIC_DATA_DIR, 'vm-pricing', 'skus.json');
-    const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
-    return catalog.skus.map(entry => entry.sku).sort();
+    const catalog = JSON.parse(fs.readFileSync(path.join(dataDir, 'skus.json'), 'utf8'));
+    const index = JSON.parse(fs.readFileSync(path.join(dataDir, 'index.json'), 'utf8'));
+    const priced = new Set();
+
+    for (const region of index.regions) {
+      const file = path.join(dataDir, 'prices', `${region.name}.json`);
+      if (!fs.existsSync(file)) continue;
+
+      for (const sku of Object.keys(JSON.parse(fs.readFileSync(file, 'utf8')).prices)) {
+        priced.add(sku);
+      }
+    }
+
+    return catalog.skus
+      .map(entry => entry.sku)
+      .filter(sku => priced.has(sku))
+      .sort();
   } catch {
-    console.warn('Warning: Could not read vm-pricing/skus.json, skipping VM size URLs');
+    console.warn('Warning: Could not read VM pricing data, skipping VM size URLs');
     return [];
   }
 }

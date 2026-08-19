@@ -11,8 +11,9 @@ import VmCompareTray from '@/components/vmPricing/VmCompareTray';
 import VmComparisonDialog from '@/components/vmPricing/VmComparisonDialog';
 import { useVmPricingData } from '@/hooks/vmPricing/useVmPricingData';
 import { useVmFilters } from '@/hooks/vmPricing/useVmFilters';
+import { useHoursPerMonth } from '@/hooks/vmPricing/useHoursPerMonth';
 import { useLocalStorageState } from '@/hooks/useLocalStorageState';
-import { getPriceModeLabel, HOURS_PER_MONTH, clampHoursPerMonth } from '@/lib/vmPricing/pricing';
+import { getPriceModeLabel, HOURS_PER_MONTH } from '@/lib/vmPricing/pricing';
 import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/lib/exportUtils';
 import { getDateTimestamp } from '@/lib/filenameUtils';
 import type { VmCurrency, VmOperatingSystem, VmPriceMode } from '@/types/vmPricing';
@@ -27,7 +28,7 @@ export default function VmPricing() {
   const [os, setOs] = useLocalStorageState<VmOperatingSystem>('vm-pricing-os', 'linux');
   const [priceMode, setPriceMode] = useLocalStorageState<VmPriceMode>('vm-pricing-mode', 'payg');
   const [display, setDisplay] = useLocalStorageState<VmPriceDisplay>('vm-pricing-display', 'hourly');
-  const [hoursPerMonth, setHoursPerMonth] = useLocalStorageState<number>('vm-pricing-hours', HOURS_PER_MONTH);
+  const [hoursPerMonth, setHoursPerMonth] = useHoursPerMonth();
 
   const [selectedSkus, setSelectedSkus] = useState<string[]>([]);
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
@@ -62,6 +63,7 @@ export default function VmPricing() {
     activeFilterCount,
     rows,
     filteredRows,
+    unpricedCount,
     categoryFacets,
     seriesFacets,
     architectureFacets,
@@ -77,17 +79,13 @@ export default function VmPricing() {
     os,
     priceMode,
     regionIndex,
-    hoursPerMonth
+    hoursPerMonth,
+    currencyRate
   });
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
   }, [filters, sortKey, sortDirection, region, currency, os, priceMode]);
-
-  useEffect(() => {
-    const clamped = clampHoursPerMonth(hoursPerMonth);
-    if (clamped !== hoursPerMonth) setHoursPerMonth(clamped);
-  }, [hoursPerMonth, setHoursPerMonth]);
 
   // Never let the dialog reopen on its own once the selection drops below a pair.
   useEffect(() => {
@@ -261,6 +259,7 @@ export default function VmPricing() {
                 memoryPresetCounts={memoryPresetCounts}
                 resultCount={filteredRows.length}
                 totalCount={rows.length}
+                unpricedCount={unpricedCount}
                 currency={currency}
                 hoursPerMonth={hoursPerMonth}
               />
@@ -321,10 +320,11 @@ export default function VmPricing() {
                 {hoursPerMonth === HOURS_PER_MONTH ? ' (an always-on VM)' : ''}.
               </p>
               <p>
-                Reserved instance rates are the upfront term price spread across the term, and are sold per instance
-                without an OS licence. A Windows reserved rate marked with{' '}
-                <span className="font-medium text-amber-600 dark:text-amber-400">*</span> is therefore an estimate: the
-                Linux commitment rate plus the Windows pay-as-you-go surcharge.
+                Reserved instance and savings plan rates are the commitment price spread across the term, and are sold
+                without an OS licence. Azure publishes no meter for every combination, so a rate marked with{' '}
+                <span className="font-medium text-amber-600 dark:text-amber-400">*</span> is derived: a Windows
+                commitment rate is the Linux rate plus the Windows pay-as-you-go surcharge, and a missing Dev/Test rate
+                is the Linux pay-as-you-go rate, since Dev/Test only discounts the Windows licence.
               </p>
               <p>
                 Spot prices move with capacity and are a point-in-time snapshot. A listed price does not guarantee quota

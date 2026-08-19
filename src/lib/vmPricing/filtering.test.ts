@@ -212,17 +212,34 @@ describe('facet counts', () => {
 });
 
 describe('max price', () => {
+  const at = (hoursPerMonth: number, currencyRate = 1) => ({ hoursPerMonth, currencyRate });
+
   it('converts a monthly budget to an hourly ceiling using the runtime', () => {
-    expect(toHourlyThreshold(730, 'monthly', 730)).toBe(1);
-    expect(toHourlyThreshold(40, 'monthly', 40)).toBe(1);
-    expect(toHourlyThreshold(1, 'hourly', 730)).toBe(1);
+    expect(toHourlyThreshold(730, 'monthly', at(730))).toBe(1);
+    expect(toHourlyThreshold(40, 'monthly', at(40))).toBe(1);
+    expect(toHourlyThreshold(1, 'hourly', at(730))).toBe(1);
+  });
+
+  it('converts the budget back to the base currency rows are priced in', () => {
+    // 21 SEK/hour at 10.5 SEK to the dollar is a 2 USD/hour ceiling.
+    expect(toHourlyThreshold(21, 'hourly', at(730, 10.5))).toBe(2);
+    expect(toHourlyThreshold(7300, 'monthly', at(730, 10))).toBe(1);
   });
 
   it('lets a shorter runtime fit a bigger VM inside the same budget', () => {
     // 0.5/hour is 365 over a full month but only 20 over a 40-hour month.
     const budget = { maxPrice: 100, maxPriceUnit: 'monthly' as const };
-    expect(ROWS.filter((r) => rowMatches(r, filters(budget), null, 730))).toHaveLength(0);
-    expect(ROWS.filter((r) => rowMatches(r, filters(budget), null, 40))).toHaveLength(5);
+    expect(ROWS.filter((r) => rowMatches(r, filters(budget), null, at(730)))).toHaveLength(0);
+    expect(ROWS.filter((r) => rowMatches(r, filters(budget), null, at(40)))).toHaveLength(5);
+  });
+
+  it('holds a budget to the same real ceiling in any currency', () => {
+    // Every row is 0.5 USD/hour, so 365 USD or 3650 SEK a month is the cutoff either way.
+    const usd = { maxPrice: 400, maxPriceUnit: 'monthly' as const };
+    const sek = { maxPrice: 4000, maxPriceUnit: 'monthly' as const };
+    expect(ROWS.filter((r) => rowMatches(r, filters(usd), null, at(730)))).toHaveLength(5);
+    expect(ROWS.filter((r) => rowMatches(r, filters(sek), null, at(730, 10)))).toHaveLength(5);
+    expect(ROWS.filter((r) => rowMatches(r, filters(usd), null, at(730, 10)))).toHaveLength(0);
   });
 
   it('filters on a monthly budget', () => {
@@ -257,8 +274,9 @@ describe('countActiveFilters', () => {
     expect(countActiveFilters(filters({ search: 'd4s' }))).toBe(1);
   });
 
-  it('does not count pricedOnly, which is on by default', () => {
-    expect(countActiveFilters(filters({ pricedOnly: false }))).toBe(0);
+  it('counts pricedOnly only when it deviates from its default', () => {
+    expect(countActiveFilters(filters({ pricedOnly: true }))).toBe(0);
+    expect(countActiveFilters(filters({ pricedOnly: false }))).toBe(1);
   });
 
   it('counts a max price once, not its unit', () => {

@@ -58,9 +58,23 @@ describe('resolvePrice', () => {
     expect(result?.hourly).toBeCloseTo(0.141895 + (0.414 - 0.23), 9);
   });
 
+  it('estimates Windows savings plan rates the same way', () => {
+    // Azure rarely publishes a Windows savings plan meter.
+    const result = resolvePrice(D4S_V5, 'windows', 'savingsPlan1Year');
+    expect(result?.estimated).toBe(true);
+    expect(result?.hourly).toBeCloseTo(0.1748 + (0.414 - 0.23), 9);
+  });
+
+  it('falls back to the Linux pay-as-you-go rate for an unpublished dev/test meter', () => {
+    // Dev/Test only waives the Windows licence, so Azure publishes no Linux dev/test price.
+    expect(resolvePrice(D4S_V5, 'linux', 'devTest')).toEqual({ hourly: 0.23, estimated: true });
+  });
+
   it('returns null for a missing rate rather than zero', () => {
-    expect(resolvePrice(D4S_V5, 'linux', 'devTest')).toBeNull();
+    expect(resolvePrice(pack({ lspot: 1 }), 'linux', 'devTest')).toBeNull();
     expect(resolvePrice(pack({ lpayg: 1 }), 'linux', 'reservation1Year')).toBeNull();
+    expect(resolvePrice(pack({ lpayg: 1 }), 'linux', 'savingsPlan1Year')).toBeNull();
+    expect(resolvePrice(pack({ lsp1: 1 }), 'windows', 'savingsPlan1Year')).toBeNull();
     expect(resolvePrice(undefined, 'linux', 'payg')).toBeNull();
   });
 
@@ -90,8 +104,12 @@ describe('getSavingsFraction', () => {
   });
 
   it('returns null when either side is missing', () => {
-    expect(getSavingsFraction(D4S_V5, 'linux', 'devTest')).toBeNull();
     expect(getSavingsFraction(pack({ lspot: 0.1 }), 'linux', 'spot')).toBeNull();
+    expect(getSavingsFraction(pack({ lpayg: 0.1 }), 'linux', 'reservation1Year')).toBeNull();
+  });
+
+  it('reports no discount for Linux dev/test, which is the pay-as-you-go rate', () => {
+    expect(getSavingsFraction(D4S_V5, 'linux', 'devTest')).toBe(0);
   });
 });
 

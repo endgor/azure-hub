@@ -27,8 +27,14 @@ export const VM_FEATURE_OPTIONS: { value: VmFeature; label: string }[] = [
 
 export type VmPriceUnit = 'hourly' | 'monthly';
 
-/** Mirrors HOURS_PER_MONTH in pricing.ts; only used when a caller omits the runtime. */
-const DEFAULT_HOURS_PER_MONTH = 730;
+/** Rows hold a base currency hourly rate, so a budget needs both to be compared against one. */
+export interface VmPriceContext {
+  hoursPerMonth: number;
+  currencyRate: number;
+}
+
+/** Mirrors HOURS_PER_MONTH in pricing.ts; only used when a caller omits the context. */
+export const DEFAULT_PRICE_CONTEXT: VmPriceContext = { hoursPerMonth: 730, currencyRate: 1 };
 
 export const VCPU_PRESETS = [2, 4, 8, 16, 32, 64];
 export const MEMORY_PRESETS = [8, 16, 32, 64, 128, 256];
@@ -141,18 +147,19 @@ export function getEffectiveVcpus(spec: VmSkuSpec): number | null {
 export type ExcludedFacet = 'categories' | 'series' | 'architectures' | 'vcpus' | 'memory' | 'price' | null;
 
 /**
- * Converts a user-entered ceiling into the hourly rate rows are stored in. A monthly
- * budget depends on how long the VM actually runs, so it divides by that runtime.
+ * Converts a user-entered ceiling into the base currency hourly rate rows are stored in: a
+ * monthly budget divides by the runtime, and any budget divides by the displayed rate.
  */
-export function toHourlyThreshold(value: number, unit: VmPriceUnit, hoursPerMonth: number): number {
-  return unit === 'monthly' ? value / hoursPerMonth : value;
+export function toHourlyThreshold(value: number, unit: VmPriceUnit, context: VmPriceContext): number {
+  const perHour = unit === 'monthly' ? value / context.hoursPerMonth : value;
+  return perHour / context.currencyRate;
 }
 
 export function rowMatches(
   row: VmRow,
   filters: VmFilterState,
   exclude: ExcludedFacet,
-  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+  context: VmPriceContext = DEFAULT_PRICE_CONTEXT
 ): boolean {
   const { spec } = row;
   const vcpus = getEffectiveVcpus(spec);
@@ -189,7 +196,7 @@ export function rowMatches(
 
   if (exclude !== 'price' && filters.maxPrice !== null) {
     if (row.hourly === null) return false;
-    if (row.hourly > toHourlyThreshold(filters.maxPrice, filters.maxPriceUnit, hoursPerMonth)) return false;
+    if (row.hourly > toHourlyThreshold(filters.maxPrice, filters.maxPriceUnit, context)) return false;
   }
 
   return true;
@@ -214,9 +221,9 @@ export function buildCategoryFacets(
   rows: VmRow[],
   filters: VmFilterState,
   values: string[],
-  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+  context: VmPriceContext = DEFAULT_PRICE_CONTEXT
 ): FacetOption[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'categories', hoursPerMonth));
+  const base = rows.filter((row) => rowMatches(row, filters, 'categories', context));
   return toFacetOptions(values, countBy(base, (row) => row.spec.category));
 }
 
@@ -224,9 +231,9 @@ export function buildSeriesFacets(
   rows: VmRow[],
   filters: VmFilterState,
   values: string[],
-  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+  context: VmPriceContext = DEFAULT_PRICE_CONTEXT
 ): FacetOption[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'series', hoursPerMonth));
+  const base = rows.filter((row) => rowMatches(row, filters, 'series', context));
   return toFacetOptions(values, countBy(base, (row) => row.spec.series));
 }
 
@@ -234,9 +241,9 @@ export function buildArchitectureFacets(
   rows: VmRow[],
   filters: VmFilterState,
   values: string[],
-  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+  context: VmPriceContext = DEFAULT_PRICE_CONTEXT
 ): FacetOption[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'architectures', hoursPerMonth));
+  const base = rows.filter((row) => rowMatches(row, filters, 'architectures', context));
   return toFacetOptions(values, countBy(base, (row) => row.spec.architecture));
 }
 
@@ -252,9 +259,9 @@ export function buildFeatureFacets(filteredRows: VmRow[]): FacetOption[] {
 export function buildVcpuPresetCounts(
   rows: VmRow[],
   filters: VmFilterState,
-  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+  context: VmPriceContext = DEFAULT_PRICE_CONTEXT
 ): PresetCount[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'vcpus', hoursPerMonth));
+  const base = rows.filter((row) => rowMatches(row, filters, 'vcpus', context));
   return VCPU_PRESETS.map((preset) => ({
     value: preset,
     count: base.filter((row) => getEffectiveVcpus(row.spec) === preset).length
@@ -264,9 +271,9 @@ export function buildVcpuPresetCounts(
 export function buildMemoryPresetCounts(
   rows: VmRow[],
   filters: VmFilterState,
-  hoursPerMonth: number = DEFAULT_HOURS_PER_MONTH
+  context: VmPriceContext = DEFAULT_PRICE_CONTEXT
 ): PresetCount[] {
-  const base = rows.filter((row) => rowMatches(row, filters, 'memory', hoursPerMonth));
+  const base = rows.filter((row) => rowMatches(row, filters, 'memory', context));
   return MEMORY_PRESETS.map((preset) => ({
     value: preset,
     count: base.filter((row) => row.spec.memoryGB === preset).length
@@ -285,5 +292,7 @@ export function countActiveFilters(filters: VmFilterState): number {
   if (filters.minMemoryGB !== null) count++;
   if (filters.maxMemoryGB !== null) count++;
   if (filters.maxPrice !== null) count++;
+  // Default is on, so only the unchecked state is a deviation worth resetting.
+  if (!filters.pricedOnly) count++;
   return count;
 }

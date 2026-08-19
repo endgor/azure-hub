@@ -68,6 +68,12 @@ export default function Select({
   const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
+  /** Read inside the open effect without making it re-run when either changes. */
+  const valueRef = useRef(value);
+  valueRef.current = value;
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
   const generatedId = useId();
   const listboxId = `${id ?? generatedId}-listbox`;
 
@@ -110,16 +116,23 @@ export default function Select({
     return result;
   }, [visibleOptions]);
 
+  // Seeded once per opening: re-running on every `visibleOptions` change would undo the
+  // search box moving the highlight to the first match.
   useEffect(() => {
     if (!isOpen) return;
 
-    const selectedIndex = visibleOptions.findIndex((option) => option.value === value);
+    const selectedIndex = optionsRef.current.findIndex((option) => option.value === valueRef.current);
     setHighlighted(selectedIndex === -1 ? 0 : selectedIndex);
 
     if (searchable) {
       searchRef.current?.focus();
     }
-  }, [isOpen, searchable, value, visibleOptions]);
+  }, [isOpen, searchable]);
+
+  /** A narrowing filter must not leave the highlight pointing past the last option. */
+  useEffect(() => {
+    setHighlighted((current) => Math.min(current, Math.max(0, visibleOptions.length - 1)));
+  }, [visibleOptions.length]);
 
   useEffect(() => {
     if (!isOpen) return;
