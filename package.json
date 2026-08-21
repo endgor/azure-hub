@@ -69,7 +69,7 @@
     "tailwindcss": "^4.3.3",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "typescript-eslint": "^8.67.0",
     "vitest": "^4.1.10",
     "wrangler": "^4.120.1"
