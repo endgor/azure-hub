@@ -25,6 +25,7 @@
     "update-vm-pricing": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateVmPricing.ts",
     "update-vm-specs": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateVmSpecs.ts",
     "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts",
+    "bing-stats": "ts-node --project tsconfig.node.json scripts/bingStats.ts",
     "cf-stats": "ts-node --project tsconfig.node.json scripts/cfStats.ts"
   },
   "dependencies": {
