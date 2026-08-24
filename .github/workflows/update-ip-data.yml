@@ -74,6 +74,10 @@ jobs:
       - name: Update Azure VM SKU specs
         run: npm run update-vm-specs
 
+      # Committed file; refresh here or it drifts behind public/data.
+      - name: Regenerate site data
+        run: npm run generate-site-data
+
       - name: Commit and push if changed
         id: commit
         run: |
