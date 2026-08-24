@@ -54,10 +54,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
   const [data, setData] = useState<ServiceTagsResponse | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasMounted, setHasMounted] = useState(false);
   const [showAll, setShowAll] = useState(false);
-
-  useEffect(() => { setHasMounted(true); }, []);
 
   // Fetch service tags on component mount
   useEffect(() => {
@@ -186,8 +183,8 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
 
   return (
     <Layout
-      title="Azure Service Tags - Browse IP Ranges & Network Features"
-      description="Explore Microsoft Azure service tags, discover associated IP ranges, and research network dependencies by cloud region."
+      title="Azure Service Tags - IP Ranges for Every Tag"
+      description={`All ${baseServiceTags.length} Azure service tags with their current IP ranges, regional breakdowns and prefix counts. Refreshed daily from Microsoft's published data.`}
       breadcrumbs={[
         { name: 'Home', url: 'https://azurehub.org/' },
         { name: 'Service Tags', url: 'https://azurehub.org/tools/service-tags/' }
@@ -319,7 +316,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
         )}
         {/* Static directory of base service tags for SEO — rendered as text only.
             Links would create 5000 internal crawl targets to noindex pages and waste crawl budget. */}
-        {baseServiceTags.length > 0 && !searchTerm && !hasMounted && (
+        {baseServiceTags.length > 0 && !searchTerm && (
           <section aria-label="All Azure service tags" className="space-y-3">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
               All service tags ({baseServiceTags.length})

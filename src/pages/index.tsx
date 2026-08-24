@@ -106,8 +106,8 @@ const TOOLS = [
 export default function Home({ lastUpdated }: HomeProps) {
   return (
     <Layout
-      title="Azure Hub - IP Lookup, RBAC & Networking Tools"
-      description="Azure Hub centralizes Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud engineers."
+      title="Azure Hub - Free Browser Tools for Azure Admins"
+      description="A dozen free Azure tools that run in the browser: nothing to install, no sign-in, no account. Pick a tool and get to work."
     >
       <div className="space-y-6">
         {/* Header */}

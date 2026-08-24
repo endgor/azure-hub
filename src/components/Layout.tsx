@@ -48,22 +48,7 @@ interface LayoutProps {
 const DEFAULT_TITLE = 'Azure Hub';
 const DEFAULT_DESCRIPTION =
   'Azure Hub delivers Azure IP lookup, tenant discovery, service tag exploration, and subnet planning tools for cloud architects and administrators.';
-const DEFAULT_KEYWORDS = [
-  'Azure IP lookup',
-  'Azure IP checker',
-  'Azure IP ranges',
-  'Azure tenant lookup',
-  'Azure ID lookup',
-  'Azure subnet calculator',
-  'Azure service tags',
-  'Azure RBAC calculator',
-  'Azure RBAC roles',
-  'Entra ID roles',
-  'Microsoft Entra tools',
-  'Azure networking tools',
-  'Azure VM pricing',
-  'Azure VM comparison'
-];
+const DEFAULT_KEYWORDS = ['Azure tools', 'Azure Hub'];
 
 const NAV_SECTIONS: NavSection[] = [
   {
@@ -194,7 +179,7 @@ export default function Layout({
   }, [router.events]);
 
   const meta = useMemo(() => {
-    const pageTitle = title === DEFAULT_TITLE ? title : `${title} · Azure Hub`;
+    const pageTitle = title.includes(DEFAULT_TITLE) ? title : `${title} · Azure Hub`;
 
     // Use provided canonicalUrl if available (for dynamic routes), otherwise auto-generate
     let finalCanonicalUrl: string;
