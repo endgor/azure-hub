@@ -35,8 +35,8 @@
     "d3-geo": "^3.1.1",
     "exceljs": "^4.4.0",
     "ip-cidr": "^4.0.2",
-    "next": "^16.3.0",
-    "papaparse": "^5.5.4",
+    "next": "^16.3.2",
+    "papaparse": "^5.6.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "rehype-autolink-headings": "^7.1.0",
@@ -54,15 +54,15 @@
   },
   "devDependencies": {
     "@azure/identity": "^4.13.1",
-    "@next/bundle-analyzer": "^16.3.0",
+    "@next/bundle-analyzer": "^16.3.2",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
-    "@types/node": "^25.9.5",
+    "@types/node": "^26.2.0",
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@types/topojson-specification": "^1.0.5",
-    "esbuild": "0.28.1",
+    "esbuild": "0.28.2",
     "eslint": "^10.8.1",
     "eslint-plugin-unused-imports": "^4.4.1",
     "gray-matter": "^4.0.3",
@@ -73,7 +73,7 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0",
     "vitest": "^4.1.10",
-    "wrangler": "^4.120.1"
+    "wrangler": "^4.125.0"
   },
   "overrides": {
     "ip-address": "^10.5.0",
