@@ -52,42 +52,22 @@ export function Sidebar({
         } ${isSidebarCollapsed ? 'md:w-20' : 'md:w-72'}`}
       >
         <div className="relative flex items-center justify-center px-4 py-5">
-          <Link href="/" className="flex min-w-0 items-center justify-center" aria-label="Azure Hub home">
-            {/* Icon-only mark while the sidebar is collapsed (desktop only) */}
+          <Link href="/" className="flex min-w-0 items-center justify-center gap-2.5" aria-label="Azure Hub home">
+            <Image
+              src="/logo-icon.png"
+              alt=""
+              width={72}
+              height={72}
+              priority
+              unoptimized
+              className="h-9 w-9 shrink-0"
+            />
             <span
-              className={`h-10 w-10 shrink-0 items-center justify-center ${
-                isSidebarCollapsed ? 'hidden md:flex' : 'hidden'
+              className={`truncate text-xl font-semibold tracking-tight text-slate-900 dark:text-white ${
+                isSidebarCollapsed ? 'md:hidden' : ''
               }`}
             >
-              <Image
-                src="/logo-icon.png"
-                alt="Azure Hub"
-                width={32}
-                height={32}
-                priority
-                unoptimized
-              />
-            </span>
-            {/* Full wordmark, with a lighter variant for the dark theme */}
-            <span className={`min-w-0 ${isSidebarCollapsed ? 'md:hidden' : ''}`}>
-              <Image
-                src="/logo-wordmark.png"
-                alt="Azure Hub"
-                width={480}
-                height={126}
-                priority
-                unoptimized
-                className="h-9 w-auto dark:hidden"
-              />
-              <Image
-                src="/logo-wordmark-dark.png"
-                alt="Azure Hub"
-                width={480}
-                height={126}
-                priority
-                unoptimized
-                className="hidden h-9 w-auto dark:block"
-              />
+              <span className="text-sky-600">Azure</span> Hub
             </span>
           </Link>
           {/* Mobile close button */}
