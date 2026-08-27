@@ -15181,7 +15181,8 @@
       {
         "actions": [
           "Microsoft.VideoIndexer/*/read",
-          "Microsoft.VideoIndexer/accounts/*/action"
+          "Microsoft.VideoIndexer/accounts/generateRestrictedViewerAccessToken/action",
+          "Microsoft.VideoIndexer/accounts/generateExtensionRestrictedViewerAccessToken/action"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -15189,7 +15190,9 @@
         "notActions": [
           "Microsoft.VideoIndexer/*/write",
           "Microsoft.VideoIndexer/*/delete",
-          "Microsoft.VideoIndexer/accounts/generateAccessToken/action"
+          "Microsoft.VideoIndexer/accounts/generateAccessToken/action",
+          "Microsoft.VideoIndexer/accounts/generateExtensionAccessToken/action",
+          "Microsoft.VideoIndexer/accounts/PrivateEndpointConnectionsApproval/action"
         ],
         "notDataActions": []
       }
@@ -15199,8 +15202,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2022-08-09T20:15:25.560306+00:00",
-    "permissionCount": 581.8333333333333,
+    "updatedOn": "2026-08-26T15:59:55.126642+00:00",
+    "permissionCount": 332.8333333333333,
     "dataActions": [],
     "notDataActions": []
   },
@@ -41515,6 +41518,201 @@
     "permissionCount": 1,
     "dataActions": [
       "Microsoft.App/artifacts/versions/pull/read"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-08-26T15:29:45.677781+00:00",
+    "description": "View discoverable workloads and their resources.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/e4ea5ade-238a-4e4a-9e4d-683d809f7072",
+    "name": "e4ea5ade-238a-4e4a-9e4d-683d809f7072",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Advisor/discoverableWorkloads/read",
+          "Microsoft.Advisor/workloadResourceMappings/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Advisor Discoverable Workload Reader",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-08-26T15:29:45.677781+00:00",
+    "permissionCount": 2,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-08-26T15:59:55.125641+00:00",
+    "description": "Convert discoverable workload into service group.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/98911e7b-8e37-41af-86f4-9258b2a05035",
+    "name": "98911e7b-8e37-41af-86f4-9258b2a05035",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Advisor/discoverableWorkloads/read",
+          "Microsoft.Advisor/workloadResourceMappings/read",
+          "Microsoft.Advisor/discoverableWorkloads/convert/action",
+          "Microsoft.Advisor/discoverableWorkloads/conversionStatus/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Advisor Discoverable Workloads Contributor",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-08-26T15:59:55.125641+00:00",
+    "permissionCount": 4,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-08-26T22:18:26.600231+00:00",
+    "description": "Allows for read, write, and delete access to all files and directories in an Azure file share, overriding the ownership and permissions configured on those files and directories.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/1eedde9e-98e4-4247-8236-e8aa2ffff3b8",
+    "name": "1eedde9e-98e4-4247-8236-e8aa2ffff3b8",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.FileShares/fileShares/files/read",
+          "Microsoft.FileShares/fileShares/files/write",
+          "Microsoft.FileShares/fileShares/files/delete",
+          "Microsoft.FileShares/fileShares/files/modifypermissions/action",
+          "Microsoft.FileShares/fileShares/readFileBackupSemantics/action",
+          "Microsoft.FileShares/fileShares/writeFileBackupSemantics/action"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "File Share Data Privileged Contributor",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-08-26T22:18:26.600231+00:00",
+    "permissionCount": 6,
+    "dataActions": [
+      "Microsoft.FileShares/fileShares/files/read",
+      "Microsoft.FileShares/fileShares/files/write",
+      "Microsoft.FileShares/fileShares/files/delete",
+      "Microsoft.FileShares/fileShares/files/modifypermissions/action",
+      "Microsoft.FileShares/fileShares/readFileBackupSemantics/action",
+      "Microsoft.FileShares/fileShares/writeFileBackupSemantics/action"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-08-26T22:18:26.600231+00:00",
+    "description": "Allows for read access to all files and directories in an Azure file share, overriding the ownership and permissions configured on those files and directories.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/1cfd6744-7b03-40d9-87bd-9f36e42e1df2",
+    "name": "1cfd6744-7b03-40d9-87bd-9f36e42e1df2",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.FileShares/fileShares/files/read",
+          "Microsoft.FileShares/fileShares/readFileBackupSemantics/action"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "File Share Data Privileged Reader",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-08-26T22:18:26.600231+00:00",
+    "permissionCount": 2,
+    "dataActions": [
+      "Microsoft.FileShares/fileShares/files/read",
+      "Microsoft.FileShares/fileShares/readFileBackupSemantics/action"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-08-26T22:18:26.600231+00:00",
+    "description": "Read and manage resources for Cloud Device Platform sandbox partners.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/1a22653f-3441-4c27-8f4a-ba9f93b30e5d",
+    "name": "1a22653f-3441-4c27-8f4a-ba9f93b30e5d",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.CloudDevicePlatform/sandboxPartners/sandboxes/read",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/sandboxes/write",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/policies/read",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/policies/write",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/pools/read",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/pools/write",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/images/read",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/images/write",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/volumes/read",
+          "Microsoft.CloudDevicePlatform/sandboxPartners/volumes/write"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Cloud Device Platform Sandbox Partner Data Contributor",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-08-26T22:18:26.600231+00:00",
+    "permissionCount": 10,
+    "dataActions": [
+      "Microsoft.CloudDevicePlatform/sandboxPartners/sandboxes/read",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/sandboxes/write",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/policies/read",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/policies/write",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/pools/read",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/pools/write",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/images/read",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/images/write",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/volumes/read",
+      "Microsoft.CloudDevicePlatform/sandboxPartners/volumes/write"
     ],
     "notDataActions": []
   }
