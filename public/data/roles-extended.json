@@ -22545,12 +22545,6 @@
           "Microsoft.Network/virtualNetworks/join/action",
           "Microsoft.Network/virtualNetworks/subnets/read",
           "Microsoft.Network/virtualNetworks/subnets/write",
-          "Microsoft.Compute/virtualMachines/read",
-          "Microsoft.Compute/virtualMachines/write",
-          "Microsoft.Compute/virtualMachineScaleSets/read",
-          "Microsoft.Compute/virtualMachineScaleSets/write",
-          "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/write",
-          "Microsoft.Compute/virtualMachineScaleSets/virtualMachines/read",
           "Microsoft.Resources/subscriptions/providers/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read",
           "Microsoft.Network/virtualNetworks/read"
@@ -22567,8 +22561,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-03-21T21:58:56.189772+00:00",
-    "permissionCount": 350.3333333333333,
+    "updatedOn": "2026-08-31T15:05:03.234261+00:00",
+    "permissionCount": 344.3333333333333,
     "dataActions": [],
     "notDataActions": []
   },
@@ -22600,17 +22594,6 @@
         "dataActions": [],
         "notActions": [],
         "notDataActions": []
-      },
-      {
-        "actions": [
-          "Microsoft.Authorization/roleAssignments/write",
-          "Microsoft.Authorization/roleAssignments/delete"
-        ],
-        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{08d4c71acc634ce4a9c85dd251b4d619})) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{08d4c71acc634ce4a9c85dd251b4d619}))",
-        "conditionVersion": "2.0",
-        "dataActions": [],
-        "notActions": [],
-        "notDataActions": []
       }
     ],
     "roleName": "Azure Container Storage Contributor",
@@ -22618,8 +22601,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-03-28T20:02:49.641340+00:00",
-    "permissionCount": 1175.6666666666665,
+    "updatedOn": "2026-08-31T15:05:03.235262+00:00",
+    "permissionCount": 1173.6666666666665,
     "dataActions": [],
     "notDataActions": []
   },
@@ -22656,17 +22639,6 @@
         "dataActions": [],
         "notActions": [],
         "notDataActions": []
-      },
-      {
-        "actions": [
-          "Microsoft.Authorization/roleAssignments/write",
-          "Microsoft.Authorization/roleAssignments/delete"
-        ],
-        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{08d4c71acc634ce4a9c85dd251b4d619})) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{08d4c71acc634ce4a9c85dd251b4d619}))",
-        "conditionVersion": "2.0",
-        "dataActions": [],
-        "notActions": [],
-        "notDataActions": []
       }
     ],
     "roleName": "Azure Container Storage Owner",
@@ -22674,8 +22646,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2024-03-28T20:02:49.641340+00:00",
-    "permissionCount": 2293.333333333333,
+    "updatedOn": "2026-08-31T15:05:03.234261+00:00",
+    "permissionCount": 2291.333333333333,
     "dataActions": [],
     "notDataActions": []
   },
