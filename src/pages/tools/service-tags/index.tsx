@@ -53,8 +53,6 @@ interface ServiceTagsResponse {
   serviceTags: ServiceTagIndex[];
 }
 
-const DEFAULT_VISIBLE_COUNT = 50;
-
 export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTagsPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
@@ -83,23 +81,31 @@ export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTag
   }, []);
 
   // Filter service tags based on search term and cloud filter
-  const filteredServiceTags = useMemo(() => {
+  const cloudFilteredTags = useMemo(() => {
     if (!data?.serviceTags) return [];
+    if (cloudFilter === 'all') return data.serviceTags;
+    return data.serviceTags.filter(tag => tag.cloud === cloudFilter);
+  }, [data?.serviceTags, cloudFilter]);
 
-    let filtered = data.serviceTags;
+  const filteredServiceTags = useMemo(() => {
+    if (!searchTerm.trim()) return cloudFilteredTags;
+    return filterAndSortByQuery(cloudFilteredTags, searchTerm, (tag) => tag.id);
+  }, [cloudFilteredTags, searchTerm]);
 
-    // Apply cloud filter
-    if (cloudFilter !== 'all') {
-      filtered = filtered.filter(tag => tag.cloud === cloudFilter);
+  // How many tags each service covers once its regional variants are counted.
+  const tagsPerService = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const tag of cloudFilteredTags) {
+      const service = tag.id.split('.')[0];
+      counts.set(service, (counts.get(service) ?? 0) + 1);
     }
+    return counts;
+  }, [cloudFilteredTags]);
 
-    // Apply search filter
-    if (searchTerm.trim()) {
-      filtered = filterAndSortByQuery(filtered, searchTerm, (tag) => tag.id);
-    }
-
-    return filtered;
-  }, [data?.serviceTags, searchTerm, cloudFilter]);
+  const visibleServices = useMemo(
+    () => (tagsPerService.size > 0 ? baseServiceTags.filter((tag) => tagsPerService.has(tag)) : baseServiceTags),
+    [baseServiceTags, tagsPerService]
+  );
 
   // Reset "show all" when filters change
   useEffect(() => {
@@ -183,10 +189,7 @@ export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTag
   );
 
   const isSearching = searchTerm.trim().length > 0;
-  const visibleServiceTags = (isSearching || showAll)
-    ? filteredServiceTags
-    : filteredServiceTags.slice(0, DEFAULT_VISIBLE_COUNT);
-  const hasMore = !isSearching && !showAll && filteredServiceTags.length > DEFAULT_VISIBLE_COUNT;
+  const showEveryTag = isSearching || showAll;
 
   return (
     <Layout
@@ -250,60 +253,103 @@ export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTag
           </div>
         </div>
 
-        {isLoading && (
-          <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
-            <LoadingSpinner size="lg" label="Loading service tags..." />
-          </div>
-        )}
-
         {error && (
           <ErrorBox title="Error loading service tags">
             {error.message}
           </ErrorBox>
         )}
 
-        {data && !isLoading && (
-          <div className="space-y-6">
+        {!showEveryTag && !error && (
+          <div className="space-y-4">
             <div className="text-sm text-slate-600 dark:text-slate-300">
-              Showing <span className="font-semibold text-slate-900 dark:text-slate-100">{filteredServiceTags.length}</span> of{' '}
-              <span className="font-semibold text-slate-900 dark:text-slate-100">{data.serviceTags.length}</span> service tags
-              {searchTerm && (
-                <span className="ml-2 rounded-full border border-sky-200 bg-sky-100 px-3 py-1 text-xs font-semibold uppercase text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
-                  Match: “{searchTerm}”
+              <span className="font-semibold text-slate-900 dark:text-slate-100">{visibleServices.length}</span> Azure services
+              {cloudFilteredTags.length > 0 && (
+                <span className="ml-2 text-xs text-slate-400 dark:text-slate-500">
+                  {cloudFilteredTags.length} tags including regional variants
                 </span>
               )}
             </div>
 
-            {filteredServiceTags.length > 0 ? (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {visibleServiceTags.map((serviceTag) => (
-                    <Link
-                      key={`${serviceTag.id}-${serviceTag.cloud}`}
-                      href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
-                      className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200 truncate">
-                          {serviceTag.id}
-                        </div>
-                        <span className={`inline-block flex-shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[serviceTag.cloud]}`}>
-                          {CLOUD_LABELS[serviceTag.cloud]}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-                {hasMore && (
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => setShowAll(true)}
-                      className="rounded-lg bg-white px-5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
-                    >
-                      Show all {filteredServiceTags.length} service tags
-                    </button>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {visibleServices.map((service) => (
+                <Link
+                  key={service}
+                  href={getServiceTagPath(service)}
+                  className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="truncate text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200">
+                      {service}
+                    </div>
+                    {tagsPerService.has(service) && (
+                      <span className="flex-shrink-0 text-[11px] text-slate-400 dark:text-slate-500">
+                        {tagsPerService.get(service)} tags
+                      </span>
+                    )}
                   </div>
-                )}
+                </Link>
+              ))}
+            </div>
+
+            {cloudFilteredTags.length > 0 && (
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setShowAll(true)}
+                  className="rounded-lg bg-white px-5 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                >
+                  Show all {cloudFilteredTags.length} service tags
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {showEveryTag && isLoading && (
+          <div className="flex flex-col items-center gap-4 rounded-xl bg-white p-8 dark:bg-slate-900">
+            <LoadingSpinner size="lg" label="Loading service tags..." />
+          </div>
+        )}
+
+        {showEveryTag && !isLoading && data && (
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+              <span>
+                Showing <span className="font-semibold text-slate-900 dark:text-slate-100">{filteredServiceTags.length}</span> of{' '}
+                <span className="font-semibold text-slate-900 dark:text-slate-100">{data.serviceTags.length}</span> service tags
+              </span>
+              {searchTerm && (
+                <span className="rounded-full border border-sky-200 bg-sky-100 px-3 py-1 text-xs font-semibold uppercase text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-200">
+                  Match: “{searchTerm}”
+                </span>
+              )}
+              {!isSearching && (
+                <button
+                  onClick={() => setShowAll(false)}
+                  className="text-xs text-sky-600 underline decoration-dotted transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+                >
+                  Back to services
+                </button>
+              )}
+            </div>
+
+            {filteredServiceTags.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredServiceTags.map((serviceTag) => (
+                  <Link
+                    key={`${serviceTag.id}-${serviceTag.cloud}`}
+                    href={`${getServiceTagPath(serviceTag.id)}?cloud=${encodeURIComponent(serviceTag.cloud)}`}
+                    className="group rounded-xl bg-white p-4 transition dark:bg-slate-900"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="truncate text-sm font-semibold text-slate-900 transition group-hover:text-sky-700 dark:text-slate-100 dark:group-hover:text-sky-200">
+                        {serviceTag.id}
+                      </div>
+                      <span className={`inline-block flex-shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[serviceTag.cloud]}`}>
+                        {CLOUD_LABELS[serviceTag.cloud]}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
               </div>
             ) : searchTerm ? (
               <div className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-700 dark:border-amber-400/40 dark:bg-amber-400/10 dark:text-amber-200">
@@ -321,25 +367,6 @@ export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTag
               </div>
             )}
           </div>
-        )}
-        {/* Static directory of base service tags for SEO — rendered as text only.
-            Links would create 5000 internal crawl targets to noindex pages and waste crawl budget. */}
-        {baseServiceTags.length > 0 && !searchTerm && (
-          <section aria-label="All Azure service tags" className="space-y-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              All service tags ({baseServiceTags.length})
-            </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              <Link href="/tools/ip-lookup/" className="text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 underline decoration-dotted">Look up a specific IP address</Link>
-            </p>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 text-sm">
-              {baseServiceTags.map((tag) => (
-                <li key={tag} className="text-slate-700 dark:text-slate-300">
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </section>
         )}
       </section>
     </Layout>
