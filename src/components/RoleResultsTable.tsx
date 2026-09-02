@@ -15,6 +15,11 @@ import {
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { generateCountFilename, pluralize } from '@/lib/filenameUtils';
 import { tableBody, tableHeadCell, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
+import PermissionList from '@/components/shared/PermissionList';
+import PermissionSummaryBar from '@/components/shared/PermissionSummaryBar';
+import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
+import { matchesWildcard } from '@/lib/utils/wildcardMatcher';
+import type { PermissionSystem } from '@/lib/utils/permissionGrouping';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -31,6 +36,31 @@ function isAzureResult(result: AnyRoleResult): result is LeastPrivilegeResult {
 
 function isEntraIdResult(result: AnyRoleResult): result is EntraIDLeastPrivilegeResult {
   return !('roleName' in result.role);
+}
+
+interface GrantedPermissions {
+  actions: string[];
+  notActions: string[];
+  dataActions: string[];
+  notDataActions: string[];
+}
+
+/** Flattens a result's role into the four permission buckets, per role system. */
+function getGrantedPermissions(result: AnyRoleResult, roleSystem: RoleSystemType): GrantedPermissions {
+  if (roleSystem === 'azure' && 'permissions' in result.role) {
+    return getFlattenedPermissions(result.role);
+  }
+
+  if ('rolePermissions' in result.role) {
+    return {
+      actions: result.role.rolePermissions.flatMap(rp => rp.allowedResourceActions || []),
+      notActions: [],
+      dataActions: [],
+      notDataActions: [],
+    };
+  }
+
+  return { actions: [], notActions: [], dataActions: [], notDataActions: [] };
 }
 
 type SortField = 'roleName' | 'permissionCount' | 'roleType' | 'default';
@@ -305,6 +335,9 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                 <th className={tableHeadCell}>
                   Matching
                 </th>
+                <th className={tableHeadCell}>
+                  Grants
+                </th>
                 <th className="w-16 px-4 py-3"></th>
               </tr>
             </thead>
@@ -313,6 +346,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                 const isExpanded = expandedRows.has(result.role.id);
                 const roleName = getRoleName(result);
                 const roleTypeDisplay = getRoleTypeDisplay(result);
+                const granted = getGrantedPermissions(result, roleSystem);
 
                 return (
                   <React.Fragment key={result.role.id}>
@@ -363,6 +397,12 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                           )}
                         </div>
                       </td>
+                      <td className="px-4 py-3">
+                        <PermissionSummaryBar
+                          permissions={[...granted.actions, ...granted.dataActions]}
+                          system={roleSystem}
+                        />
+                      </td>
                       <td className="px-4 py-3 w-16">
                         <button
                           onClick={() => toggleRow(result.role.id)}
@@ -384,7 +424,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                     {/* Expanded Details Row */}
                     {isExpanded && (
                       <tr>
-                        <td colSpan={5} className="px-4 py-3">
+                        <td colSpan={6} className="px-4 py-3">
                           <div className="space-y-4">
                             {/* Description */}
                             {result.role.description && (
@@ -398,158 +438,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                               </div>
                             )}
 
-                            {/* Matching Actions */}
-                            <div>
-                              <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-                                Matching Permissions
-                              </h4>
-                              <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800 space-y-3">
-                                {/* Matching Control Plane Actions */}
-                                {result.matchingActions.length > 0 && (
-                                  <div>
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
-                                        Control
-                                      </span>
-                                      <span className="text-xs text-slate-500 dark:text-slate-400">
-                                        {result.matchingActions.length} matching
-                                      </span>
-                                    </div>
-                                    <div className="grid gap-1">
-                                      {result.matchingActions.map((action, idx) => (
-                                        <div key={idx} className="font-mono text-xs text-slate-700 dark:text-slate-300 pl-2">
-                                          {action}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                                {/* Matching Data Plane Actions (Azure only) */}
-                                {roleSystem === 'azure' && 'matchingDataActions' in result && result.matchingDataActions && result.matchingDataActions.length > 0 && (
-                                  <div>
-                                    <div className="flex items-center gap-2 mb-1">
-                                      <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">
-                                        Data
-                                      </span>
-                                      <span className="text-xs text-slate-500 dark:text-slate-400">
-                                        {result.matchingDataActions.length} matching
-                                      </span>
-                                    </div>
-                                    <div className="grid gap-1">
-                                      {result.matchingDataActions.map((action, idx) => (
-                                        <div key={idx} className="font-mono text-xs text-violet-700 dark:text-violet-300 pl-2">
-                                          {action}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* All Granted Permissions - Different for Azure vs Entra ID */}
-                            <div>
-                              <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
-                                All Granted Permissions
-                              </h4>
-                              <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800 max-h-80 overflow-y-auto">
-                                {roleSystem === 'azure' && 'permissions' in result.role ? (
-                                  // Azure RBAC permissions - show all 4 types
-                                  result.role.permissions.map((permission, permIdx) => (
-                                    <div key={permIdx} className="space-y-3">
-                                      {/* Control Plane Actions */}
-                                      {permission.actions.length > 0 && (
-                                        <div>
-                                          <div className="flex items-center gap-2 mb-1">
-                                            <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
-                                              Control
-                                            </span>
-                                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                                              Actions ({permission.actions.length})
-                                            </span>
-                                          </div>
-                                          <div className="grid gap-1 pl-2">
-                                            {permission.actions.map((action, idx) => (
-                                              <div key={idx} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
-                                                + {action}
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      )}
-                                      {/* Control Plane Not Actions */}
-                                      {permission.notActions.length > 0 && (
-                                        <div>
-                                          <div className="flex items-center gap-2 mb-1">
-                                            <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
-                                              Control
-                                            </span>
-                                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                                              Not Actions ({permission.notActions.length})
-                                            </span>
-                                          </div>
-                                          <div className="grid gap-1 pl-2">
-                                            {permission.notActions.map((action, idx) => (
-                                              <div key={idx} className="font-mono text-xs text-rose-700 dark:text-rose-400">
-                                                - {action}
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      )}
-                                      {/* Data Plane Actions */}
-                                      {permission.dataActions && permission.dataActions.length > 0 && (
-                                        <div>
-                                          <div className="flex items-center gap-2 mb-1">
-                                            <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">
-                                              Data
-                                            </span>
-                                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                                              Actions ({permission.dataActions.length})
-                                            </span>
-                                          </div>
-                                          <div className="grid gap-1 pl-2">
-                                            {permission.dataActions.map((action, idx) => (
-                                              <div key={idx} className="font-mono text-xs text-violet-700 dark:text-violet-400">
-                                                + {action}
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      )}
-                                      {/* Data Plane Not Actions */}
-                                      {permission.notDataActions && permission.notDataActions.length > 0 && (
-                                        <div>
-                                          <div className="flex items-center gap-2 mb-1">
-                                            <span className="inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">
-                                              Data
-                                            </span>
-                                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                                              Not Actions ({permission.notDataActions.length})
-                                            </span>
-                                          </div>
-                                          <div className="grid gap-1 pl-2">
-                                            {permission.notDataActions.map((action, idx) => (
-                                              <div key={idx} className="font-mono text-xs text-rose-700 dark:text-rose-400">
-                                                - {action}
-                                              </div>
-                                            ))}
-                                          </div>
-                                        </div>
-                                      )}
-                                    </div>
-                                  ))
-                                ) : roleSystem === 'entraid' && 'rolePermissions' in result.role ? (
-                                  // Entra ID permissions
-                                  result.role.rolePermissions.flatMap(rp => rp.allowedResourceActions || []).map((action, idx) => (
-                                    <div key={idx} className="font-mono text-xs text-emerald-700 dark:text-emerald-400">
-                                      + {action}
-                                    </div>
-                                  ))
-                                ) : null}
-                              </div>
-                            </div>
-
+                            <ExpandedRoleDetails result={result} permissions={granted} roleSystem={roleSystem} />
                             {/* Role ID */}
                             <div>
                               <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">
@@ -574,5 +463,154 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
     </div>
   );
 });
+
+/** Granted patterns that satisfy at least one requested action, including via wildcards. */
+function findMatchedPatterns(grantedPatterns: string[], requestedActions: string[]): Set<string> {
+  const matched = new Set<string>();
+  if (requestedActions.length === 0) return matched;
+
+  for (const pattern of grantedPatterns) {
+    if (requestedActions.some(action => matchesWildcard(pattern, action))) {
+      matched.add(pattern);
+    }
+  }
+
+  return matched;
+}
+
+const planeBadge = 'inline-flex items-center rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide';
+
+function PermissionPlaneSection({
+  badge,
+  badgeClass,
+  granted,
+  denied,
+  matched,
+  onlyMatching,
+  grouping,
+}: {
+  badge: string | null;
+  badgeClass: string;
+  granted: string[];
+  denied: string[];
+  matched: Set<string>;
+  onlyMatching: boolean;
+  grouping: PermissionSystem;
+}) {
+  if (granted.length === 0 && denied.length === 0) return null;
+
+  return (
+    <div className="rounded-lg bg-slate-50 p-3 dark:bg-slate-800 space-y-3">
+      <div className="flex flex-wrap items-center gap-2">
+        {badge && <span className={`${planeBadge} ${badgeClass}`}>{badge}</span>}
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          {granted.length} granted
+        </span>
+      </div>
+
+      {granted.length > 0 && (
+        <PermissionList
+          permissions={granted}
+          grouping={grouping}
+          matched={matched}
+          onlyMatching={onlyMatching}
+        />
+      )}
+
+      {denied.length > 0 && !onlyMatching && (
+        <div className="border-t border-slate-200 pt-3 dark:border-slate-700">
+          <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+            Excluded <span className="tabular-nums font-medium text-slate-400 dark:text-slate-500">{denied.length}</span>
+          </div>
+          <PermissionList
+            permissions={denied}
+            grouping={grouping}
+            tone="deny"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The permission breakdown inside an expanded result row. Matching permissions
+ * are highlighted in place within the full grant list rather than repeated in a
+ * separate list above it.
+ */
+function ExpandedRoleDetails({
+  result,
+  permissions,
+  roleSystem,
+}: {
+  result: AnyRoleResult;
+  permissions: GrantedPermissions;
+  roleSystem: RoleSystemType;
+}) {
+  const [onlyMatching, setOnlyMatching] = useState(false);
+
+  const isAzure = roleSystem === 'azure' && 'permissions' in result.role;
+
+  const matchingDataActions = 'matchingDataActions' in result ? (result.matchingDataActions || []) : [];
+
+  const matchedActions = useMemo(
+    () => findMatchedPatterns(permissions.actions, result.matchingActions),
+    [permissions.actions, result.matchingActions]
+  );
+
+  const matchedDataActions = useMemo(
+    () => findMatchedPatterns(permissions.dataActions, matchingDataActions),
+    [permissions.dataActions, matchingDataActions]
+  );
+
+  const requestedCount = result.matchingActions.length + matchingDataActions.length;
+  const grantedTotal = permissions.actions.length + permissions.dataActions.length;
+
+  return (
+    <div className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          Permissions
+        </h4>
+        {requestedCount > 0 && (
+          <label className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <input
+              type="checkbox"
+              checked={onlyMatching}
+              onChange={() => setOnlyMatching(!onlyMatching)}
+              className="h-3.5 w-3.5 rounded border-slate-300 text-sky-600 focus:ring-2 focus:ring-sky-500/50 dark:border-slate-600 dark:bg-slate-800"
+            />
+            Only matching
+          </label>
+        )}
+      </div>
+
+      <p className="text-xs text-slate-500 dark:text-slate-400">
+        Covers all {requestedCount} requested {pluralize(requestedCount, 'action')} and grants{' '}
+        {grantedTotal} permission {pluralize(grantedTotal, 'entry', 'entries')}.
+      </p>
+
+      <PermissionPlaneSection
+        badge={isAzure ? 'Control' : null}
+        badgeClass="bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300"
+        granted={permissions.actions}
+        denied={permissions.notActions}
+        matched={matchedActions}
+        onlyMatching={onlyMatching}
+        grouping={roleSystem}
+      />
+
+      <PermissionPlaneSection
+        badge="Data"
+        badgeClass="bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300"
+        granted={permissions.dataActions}
+        denied={permissions.notDataActions}
+        matched={matchedDataActions}
+        onlyMatching={onlyMatching}
+        grouping={roleSystem}
+      />
+    </div>
+  );
+}
 
 export default RoleResultsTable;

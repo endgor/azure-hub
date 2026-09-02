@@ -6,6 +6,7 @@ import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { pluralize } from '@/lib/filenameUtils';
 import { tableBody, tableHeadCell, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
+import PermissionList from '@/components/shared/PermissionList';
 
 interface RolePermissionsTableProps {
   roles: AzureRole[];
@@ -270,6 +271,8 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                         otherSet={otherActions}
                         uniqueColor={index === 0 ? 'sky' : 'violet'}
                         showEmptyGroups={isComparisonMode}
+                        collapseAfter={0}
+                        maxHeightClass="max-h-[28rem]"
                       />
                     </td>
                     <td className="px-5 py-4 align-top">
@@ -278,6 +281,8 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                         otherSet={otherDataActions}
                         uniqueColor={index === 0 ? 'sky' : 'violet'}
                         showEmptyGroups={isComparisonMode}
+                        collapseAfter={0}
+                        maxHeightClass="max-h-[28rem]"
                       />
                     </td>
                   </tr>
@@ -290,149 +295,4 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
 
     </div>
   );
-}
-
-type PermissionGroup = 'read' | 'write' | 'delete' | 'action' | 'wildcard' | 'other';
-
-const GROUP_ORDER: PermissionGroup[] = ['read', 'write', 'delete', 'action', 'wildcard', 'other'];
-
-const GROUP_META: Record<PermissionGroup, { label: string; accent: string }> = {
-  read:     { label: 'Read',     accent: 'text-slate-500 dark:text-slate-400' },
-  write:    { label: 'Write',    accent: 'text-amber-600 dark:text-amber-400' },
-  delete:   { label: 'Delete',   accent: 'text-rose-600 dark:text-rose-400' },
-  action:   { label: 'Action',   accent: 'text-indigo-600 dark:text-indigo-400' },
-  wildcard: { label: 'Wildcard', accent: 'text-fuchsia-600 dark:text-fuchsia-400' },
-  other:    { label: 'Other',    accent: 'text-slate-500 dark:text-slate-400' },
-};
-
-function classifyPermission(p: string): PermissionGroup {
-  if (p === '*' || p.endsWith('/*')) return 'wildcard';
-  const tail = p.slice(p.lastIndexOf('/') + 1);
-  if (tail === 'read') return 'read';
-  if (tail === 'write') return 'write';
-  if (tail === 'delete') return 'delete';
-  if (tail === 'action') return 'action';
-  return 'other';
-}
-
-function groupPermissions(permissions: string[]): Record<PermissionGroup, string[]> {
-  const groups: Record<PermissionGroup, string[]> = {
-    read: [], write: [], delete: [], action: [], wildcard: [], other: [],
-  };
-  for (const p of permissions) {
-    groups[classifyPermission(p)].push(p);
-  }
-  return groups;
-}
-
-/**
- * Renders a list of permissions bucketed by operation verb (read, write,
- * delete, action, wildcard, other). In comparison mode, empty groups are
- * still rendered so the two roles' sections line up vertically.
- */
-function PermissionList({
-  permissions,
-  otherSet,
-  uniqueColor,
-  showEmptyGroups,
-}: {
-  permissions: string[];
-  otherSet: Set<string> | null;
-  uniqueColor: 'sky' | 'violet';
-  showEmptyGroups: boolean;
-}) {
-  if (permissions.length === 0 && !showEmptyGroups) {
-    return (
-      <span className="text-xs italic text-slate-400 dark:text-slate-500">None</span>
-    );
-  }
-
-  const groups = groupPermissions(permissions);
-
-  return (
-    <div className="space-y-3 max-h-[28rem] overflow-y-auto pr-2">
-      {GROUP_ORDER.map((group) => {
-        const items = groups[group];
-        if (items.length === 0 && !showEmptyGroups) return null;
-        const { label, accent } = GROUP_META[group];
-        return (
-          <div key={group}>
-            <div className="flex items-baseline gap-1.5 mb-1.5">
-              <span className={`text-[10px] font-semibold uppercase tracking-wider ${accent}`}>
-                {label}
-              </span>
-              <span className="text-[10px] font-medium text-slate-400 dark:text-slate-500 tabular-nums">
-                {items.length === 0 ? '—' : items.length}
-              </span>
-            </div>
-            {items.length > 0 && (
-              <ul className="space-y-1.5">
-                {items.map((permission, idx) => (
-                  <PermissionRow
-                    key={idx}
-                    permission={permission}
-                    isShared={otherSet ? otherSet.has(permission) : null}
-                    uniqueColor={uniqueColor}
-                  />
-                ))}
-              </ul>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-/**
- * A single permission row with an optional comparison indicator dot.
- * - isShared === null: no comparison mode, render plain text
- * - isShared === true: green dot (shared)
- * - isShared === false: colored dot (unique to this role)
- */
-function PermissionRow({
-  permission,
-  isShared,
-  uniqueColor,
-}: {
-  permission: string;
-  isShared: boolean | null;
-  uniqueColor: 'sky' | 'violet';
-}) {
-  const dotColor = isShared === null
-    ? 'bg-slate-300 dark:bg-slate-600'
-    : isShared
-      ? 'bg-emerald-500'
-      : uniqueColor === 'sky'
-        ? 'bg-sky-500'
-        : 'bg-violet-500';
-
-  return (
-    <li className="flex items-start gap-2.5 leading-snug">
-      <span className={`inline-block w-1.5 h-1.5 rounded-full ${dotColor} mt-[7px] flex-shrink-0`}></span>
-      <code className="font-mono text-xs break-words text-slate-700 dark:text-slate-300">
-        {renderPermissionWithBreakHints(permission)}
-      </code>
-    </li>
-  );
-}
-
-/**
- * Inserts <wbr> after each "/" so long permission paths prefer to wrap at
- * segment boundaries instead of breaking mid-word. The original string is
- * preserved for copy/paste because <wbr> is zero-width.
- */
-function renderPermissionWithBreakHints(permission: string) {
-  const parts = permission.split('/');
-  return parts.map((part, i) => (
-    <span key={i}>
-      {part}
-      {i < parts.length - 1 && (
-        <>
-          {'/'}
-          <wbr />
-        </>
-      )}
-    </span>
-  ));
 }

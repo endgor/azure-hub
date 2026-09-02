@@ -5,6 +5,8 @@ import { exportEntraIdRolesToCSV, exportEntraIdRolesToExcel, exportEntraIdRolesT
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { pluralize } from '@/lib/filenameUtils';
 import { tableBody, tableHeadCell, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
+import PermissionList from '@/components/shared/PermissionList';
+import PermissionSummaryBar from '@/components/shared/PermissionSummaryBar';
 
 interface EntraIdRolePermissionsTableProps {
   roles: EntraIDRole[];
@@ -195,16 +197,14 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
 
                   {/* Permissions Column */}
                   <td className="px-4 py-3 align-top">
-                    <div className="space-y-1 max-h-60 overflow-y-auto">
-                      {allPermissions.length === 0 ? (
-                        <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
-                      ) : (
-                        allPermissions.map((permission, idx) => (
-                          <div key={`${permission}-${idx}`} className="font-mono text-xs text-slate-700 dark:text-slate-300 break-all">
-                            {permission}
-                          </div>
-                        ))
-                      )}
+                    <div className="space-y-3">
+                      <PermissionSummaryBar permissions={allPermissions} system="entraid" />
+                      <PermissionList
+                        permissions={allPermissions}
+                        grouping="entraid"
+                        collapseAfter={0}
+                        maxHeightClass="max-h-[28rem]"
+                      />
                     </div>
                   </td>
                 </tr>
@@ -221,7 +221,7 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
         </h3>
         <div className="text-sm text-slate-600 dark:text-slate-300">
           <p>
-            <strong className="text-slate-900 dark:text-slate-100">Permissions:</strong> Actions that the role can perform in Microsoft Entra ID and services that use Entra ID identities
+            <strong className="text-slate-900 dark:text-slate-100">Permissions:</strong> Actions that the role can perform in Microsoft Entra ID and services that use Entra ID identities, grouped by the operation each one performs
           </p>
         </div>
       </div>
