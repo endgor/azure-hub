@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { AzureFileMetadata } from '../types/azure';
+import { tableBody, tableCell, tableClass, tableHeadCell, tableHeadRow, tableRow, tableShell } from '@/components/shared/tableStyles';
 
 interface DefinitionsTableProps {
   metadata: AzureFileMetadata[];
@@ -35,36 +36,36 @@ const DefinitionsTable = memo(function DefinitionsTable({ metadata }: Definition
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-slate-200 text-sm text-slate-600">
-        <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
-          <tr>
-            <th className="px-4 py-3 text-left">Cloud</th>
-            <th className="px-4 py-3 text-left">Change</th>
-            <th className="px-4 py-3 text-left">Download</th>
-            <th className="px-4 py-3 text-left">Last Retrieved</th>
+    <div className={tableShell}>
+      <table className={`${tableClass} text-slate-600 dark:text-slate-300`}>
+        <thead>
+          <tr className={tableHeadRow}>
+            <th className={tableHeadCell}>Cloud</th>
+            <th className={tableHeadCell}>Change</th>
+            <th className={tableHeadCell}>Download</th>
+            <th className={tableHeadCell}>Last Retrieved</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-200 bg-white">
+        <tbody className={tableBody}>
           {metadata
             .sort((a, b) => a.cloud.localeCompare(b.cloud))
-            .map((file, index) => (
-              <tr key={file.cloud} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                <td className="px-4 py-3 font-semibold text-slate-900 break-words">
+            .map((file) => (
+              <tr key={file.cloud} className={tableRow}>
+                <td className={`${tableCell} break-words font-semibold text-slate-900 dark:text-slate-100`}>
                   {getCloudDisplayName(file.cloud)}
                 </td>
-                <td className="px-4 py-3 text-slate-600 break-words">{file.changeNumber}</td>
-                <td className="px-4 py-3 break-words">
+                <td className={`${tableCell} break-words`}>{file.changeNumber}</td>
+                <td className={`${tableCell} break-words`}>
                   <a
                     href={file.downloadUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-semibold text-sky-600 hover:text-sky-700 hover:underline"
+                    className="font-medium text-sky-600 transition hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
                   >
                     {file.filename}
                   </a>
                 </td>
-                <td className="px-4 py-3 text-slate-600 break-words">{formatDate(file.lastRetrieved)}</td>
+                <td className={`${tableCell} break-words`}>{formatDate(file.lastRetrieved)}</td>
               </tr>
             ))}
         </tbody>

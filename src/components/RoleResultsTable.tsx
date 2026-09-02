@@ -14,6 +14,7 @@ import {
 } from '@/lib/entraIdExportUtils';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { generateCountFilename, pluralize } from '@/lib/filenameUtils';
+import { tableBody, tableHeadCell, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -267,8 +268,8 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
       <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-              <tr>
+            <thead>
+              <tr className={tableHeadRow}>
                 <th className="w-12 px-4 py-3">
                   <input
                     type="checkbox"
@@ -283,7 +284,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                     aria-label="Select all roles"
                   />
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">
+                <th className={tableHeadCell}>
                   <button
                     onClick={() => handleSort('roleName')}
                     className="flex items-center hover:text-sky-600 dark:hover:text-sky-400"
@@ -292,7 +293,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                     <SortIcon field="roleName" />
                   </button>
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">
+                <th className={tableHeadCell}>
                   <button
                     onClick={() => handleSort('roleType')}
                     className="flex items-center hover:text-sky-600 dark:hover:text-sky-400"
@@ -301,27 +302,22 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                     <SortIcon field="roleType" />
                   </button>
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300">
+                <th className={tableHeadCell}>
                   Matching
                 </th>
                 <th className="w-16 px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody>
-              {sortedResults.map((result, index) => {
+            <tbody className={tableBody}>
+              {sortedResults.map((result) => {
                 const isExpanded = expandedRows.has(result.role.id);
-                const isEven = index % 2 === 0;
                 const roleName = getRoleName(result);
                 const roleTypeDisplay = getRoleTypeDisplay(result);
 
                 return (
                   <React.Fragment key={result.role.id}>
                     {/* Main Row */}
-                    <tr
-                      className={`border-b border-slate-100 dark:border-slate-800 ${
-                        isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'
-                      }`}
-                    >
+                    <tr className={tableRow}>
                       <td className="px-4 py-3">
                         <input
                           type="checkbox"
@@ -387,11 +383,9 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
 
                     {/* Expanded Details Row */}
                     {isExpanded && (
-                      <tr
-                        className={isEven ? '' : 'bg-slate-50/50 dark:bg-slate-800/50'}
-                      >
-                        <td colSpan={5} className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
-                          <div className="space-y-4 border-t border-slate-200 pt-3 dark:border-slate-700">
+                      <tr>
+                        <td colSpan={5} className="px-4 py-3">
+                          <div className="space-y-4">
                             {/* Description */}
                             {result.role.description && (
                               <div>

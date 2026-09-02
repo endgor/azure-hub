@@ -2,14 +2,13 @@ import type { ReactNode } from 'react';
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import { CLOUD_LABELS_SHORT as CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 import { useState, useMemo, memo, useCallback, useRef } from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Tooltip from './Tooltip';
+import { cellChip, cellChipAccent, cellMuted, cellPrimary, tableBody, tableCell, tableClass, tableHeadCellSortable, tableHeadRow, tableRow } from './shared/tableStyles';
 import ExportMenu, { ExportOption } from './shared/ExportMenu';
 import { buildUrlWithQuery } from '@/lib/queryUtils';
 import { pluralize } from '@/lib/filenameUtils';
 import { useClickOutside } from '@/hooks/useClickOutside';
-import { getServiceTagPath } from '@/lib/serviceTagUrl';
 
 /** Pagination is driven by callbacks on some pages and by links on others. */
 function PageControl({
@@ -163,7 +162,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
   const [isCloudFilterOpen, setIsCloudFilterOpen] = useState(false);
   const cloudFilterRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useClickOutside(cloudFilterRef as React.RefObject<HTMLElement>, () => setIsCloudFilterOpen(false), isCloudFilterOpen);
 
@@ -201,10 +199,6 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
     pagination?.onPageChange ? () => pagination.onPageChange?.(page) : undefined;
 
   // Handle service tag click - memoized to prevent re-renders
-  const handleServiceTagClick = useCallback((serviceTagId: string) => {
-    router.push(getServiceTagPath(serviceTagId));
-  }, [router]);
-  
   // Handle column sort - memoized to prevent re-renders
   const handleSort = useCallback((field: SortField) => {
     setSortField(field);
@@ -283,10 +277,10 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
   
   return (
     <section
-      className="mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900"
+      className="mb-6 overflow-hidden rounded-xl bg-white dark:bg-slate-900"
       aria-label="Search Results"
     >
-      <header className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50 px-4 py-4 md:px-6 md:py-5 dark:border-slate-700 dark:bg-slate-900/60">
+      <header className="flex flex-col gap-3 border-b border-slate-100 px-4 py-4 md:px-6 md:py-5 dark:border-slate-800">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 md:text-xl">Results for {query}</h2>
@@ -445,41 +439,35 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
       </header>
 
       <div className="w-full overflow-x-auto">
-        <table className="relative w-full min-w-full table-auto divide-y divide-slate-200 md:min-w-[800px] dark:divide-slate-700" aria-label="Azure IP Ranges">
-          <thead className="bg-slate-100 dark:bg-slate-900/60">
-            <tr className="text-left text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        <table className={`relative w-full table-auto md:min-w-[800px] ${tableClass}`} aria-label="Azure IP Ranges">
+          <thead>
+            <tr className={tableHeadRow}>
               <th
-                className="hidden w-[8%] px-5 py-4 font-semibold transition hover:bg-slate-200 md:table-cell dark:hover:bg-slate-800"
-                onClick={() => handleSort('cloud')}
-              >
-                Cloud {renderSortIndicator('cloud')}
-              </th>
-              <th
-                className="w-[30%] px-3 py-3 font-semibold transition hover:bg-slate-200 md:w-[18%] md:px-5 md:py-4 dark:hover:bg-slate-800"
+                className={`w-[30%] md:w-[18%] ${tableHeadCellSortable}`}
                 onClick={() => handleSort('serviceTagId')}
               >
                 Service Tag {renderSortIndicator('serviceTagId')}
               </th>
               <th
-                className="w-[35%] px-3 py-3 font-semibold transition hover:bg-slate-200 md:w-[20%] md:px-5 md:py-4 dark:hover:bg-slate-800"
+                className={`w-[35%] md:w-[20%] ${tableHeadCellSortable}`}
                 onClick={() => handleSort('ipAddressPrefix')}
               >
                 IP Range {renderSortIndicator('ipAddressPrefix')}
               </th>
               <th
-                className="hidden w-[15%] px-5 py-4 font-semibold transition hover:bg-slate-200 lg:table-cell dark:hover:bg-slate-800"
+                className={`hidden w-[15%] lg:table-cell ${tableHeadCellSortable}`}
                 onClick={() => handleSort('region')}
               >
                 Region {renderSortIndicator('region')}
               </th>
               <th
-                className="w-[35%] px-3 py-3 font-semibold transition hover:bg-slate-200 md:w-[20%] md:px-5 md:py-4 dark:hover:bg-slate-800"
+                className={`w-[35%] md:w-[20%] ${tableHeadCellSortable}`}
                 onClick={() => handleSort('systemService')}
               >
                 System Service {renderSortIndicator('systemService')}
               </th>
               <th
-                className="relative hidden w-[25%] px-5 py-4 font-semibold transition hover:bg-slate-200 lg:table-cell dark:hover:bg-slate-800"
+                className={`relative hidden w-[25%] lg:table-cell ${tableHeadCellSortable}`}
                 onClick={() => handleSort('networkFeatures')}
               >
                 <div className="flex items-center gap-2">
@@ -500,51 +488,65 @@ const Results = memo(function Results({ results, query, total, hideCloudFilter, 
                   </Tooltip>
                 </div>
               </th>
+              <th
+                className={`hidden w-[8%] md:table-cell ${tableHeadCellSortable}`}
+                onClick={() => handleSort('cloud')}
+              >
+                Cloud {renderSortIndicator('cloud')}
+              </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+          <tbody className={tableBody}>
             {sortedResults.map((result, index) => (
               <tr
                 key={`${result.serviceTagId}-${result.ipAddressPrefix}-${index}`}
-                className={index % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50 dark:bg-slate-900/70'}
+                className={tableRow}
               >
-                <td className="hidden px-5 py-4 text-sm md:table-cell">
-                  {result.cloud && (
-                    <span className={`inline-block rounded-md px-2 py-0.5 text-xs font-medium ${CLOUD_STYLES[result.cloud]}`}>
-                      {CLOUD_LABELS[result.cloud]}
-                    </span>
-                  )}
+                <td className={tableCell}>
+                  <span className={`break-all ${cellPrimary}`}>{result.serviceTagId}</span>
                 </td>
-                <td className="px-3 py-3 text-sm font-semibold text-slate-900 md:px-5 md:py-4 dark:text-slate-100">
-                  <button
-                    onClick={() => handleServiceTagClick(result.serviceTagId)}
-                    className="rounded-md border border-transparent px-2 py-1 text-left text-sky-600 transition hover:border-sky-200 hover:bg-sky-100 hover:text-sky-700 dark:text-sky-300 dark:hover:border-sky-800 dark:hover:bg-sky-900/20 dark:hover:text-sky-200"
-                    title={`View details for ${result.serviceTagId}`}
-                  >
-                    <span className="break-all">{result.serviceTagId}</span>
-                  </button>
-                </td>
-                <td className="px-3 py-3 font-mono text-sm text-slate-900 md:px-5 md:py-4 dark:text-slate-100">
-                  <div className="space-y-2">
-                    <div className="break-all">{result.ipAddressPrefix}</div>
+                <td className={tableCell}>
+                  <div className="space-y-1.5">
+                    <code className={`break-all ${cellChipAccent}`}>{result.ipAddressPrefix}</code>
                     {result.resolvedFrom && result.resolvedIp && (
-                      <div className="space-y-1">
-                        <span className="inline-block rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-200">
-                          DNS: {result.resolvedFrom} → {result.resolvedIp}
-                        </span>
+                      <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                        DNS: {result.resolvedFrom} → {result.resolvedIp}
                       </div>
                     )}
                   </div>
                 </td>
-                <td className="hidden px-5 py-4 text-sm text-slate-600 lg:table-cell dark:text-slate-300">{result.region || '-'}</td>
-                <td className="px-3 py-3 text-sm text-slate-600 md:px-5 md:py-4 dark:text-slate-300">
-                  <div className="break-words">{result.systemService || '-'}</div>
+                <td className={`hidden lg:table-cell ${tableCell} ${cellMuted}`}>{result.region || '-'}</td>
+                <td className={tableCell}>
+                  {result.systemService ? (
+                    <code className={`break-words ${cellChip}`}>{result.systemService}</code>
+                  ) : (
+                    <span className={cellMuted}>-</span>
+                  )}
                   <div className="mt-1 text-xs text-slate-400 lg:hidden dark:text-slate-500">
                     {result.region && <span className="mr-2">Region: {result.region}</span>}
                     {result.networkFeatures && <span>{result.networkFeatures}</span>}
                   </div>
                 </td>
-                <td className="hidden px-5 py-4 text-sm text-slate-600 lg:table-cell dark:text-slate-300">{result.networkFeatures || '-'}</td>
+                <td className={`hidden lg:table-cell ${tableCell}`}>
+                  {result.networkFeatures ? (
+                    <div className="flex flex-wrap gap-1">
+                      {result.networkFeatures.split(',').map((feature) => (
+                        <span key={feature} className={cellChip}>
+                          {feature.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className={cellMuted}>-</span>
+                  )}
+                </td>
+                <td className={`hidden md:table-cell ${tableCell}`}>
+                  {result.cloud && (
+                    <span className={`inline-block whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium ${CLOUD_STYLES[result.cloud]}`}>
+                      {CLOUD_LABELS[result.cloud]}
+                    </span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

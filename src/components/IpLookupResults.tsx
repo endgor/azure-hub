@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import type { AzureIpAddress } from '@/types/azure';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
+import { cellChip, cellChipAccent, cellMuted, tableBody, tableCell, tableClass, tableHeadCell, tableHeadRow, tableRow } from './shared/tableStyles';
 import { prepareDataForExport, exportToCSV, exportToExcel, exportToMarkdown, generateFilename } from '@/lib/exportUtils';
 import { CLOUD_LABELS } from '@/lib/cloudConstants';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
@@ -163,26 +164,40 @@ export default function IpLookupResults({ results, query }: IpLookupResultsProps
             {additional.length} Additional {additional.length === 1 ? 'Match' : 'Matches'}
           </h3>
           <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
-            <table className="w-full text-left text-sm">
+            <table className={`w-full text-left ${tableClass}`}>
               <thead>
-                <tr className="border-b border-slate-100 dark:border-slate-800">
-                  <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Service Tag</th>
-                  <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">IP Range</th>
-                  <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Region</th>
-                  <th className="px-5 py-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">Features</th>
+                <tr className={tableHeadRow}>
+                  <th className={tableHeadCell}>Service Tag</th>
+                  <th className={tableHeadCell}>IP Range</th>
+                  <th className={tableHeadCell}>Region</th>
+                  <th className={tableHeadCell}>Features</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
+              <tbody className={tableBody}>
                 {additional.map((r, i) => (
-                  <tr key={`${r.serviceTagId}-${r.ipAddressPrefix}-${i}`}>
-                    <td className="px-5 py-3">
+                  <tr key={`${r.serviceTagId}-${r.ipAddressPrefix}-${i}`} className={tableRow}>
+                    <td className={tableCell}>
                       <Link href={getServiceTagPath(r.serviceTagId)} className="text-sm font-medium text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300">
                         {r.serviceTagId}
                       </Link>
                     </td>
-                    <td className="px-5 py-3 font-mono text-sm text-slate-700 dark:text-slate-300">{r.ipAddressPrefix}</td>
-                    <td className="px-5 py-3 text-sm text-slate-600 dark:text-slate-400">{r.region || '-'}</td>
-                    <td className="px-5 py-3 text-sm text-slate-600 dark:text-slate-400">{r.networkFeatures || '-'}</td>
+                    <td className={tableCell}>
+                      <code className={`break-all ${cellChipAccent}`}>{r.ipAddressPrefix}</code>
+                    </td>
+                    <td className={`${tableCell} ${cellMuted}`}>{r.region || '-'}</td>
+                    <td className={tableCell}>
+                      {r.networkFeatures ? (
+                        <div className="flex flex-wrap gap-1">
+                          {r.networkFeatures.split(',').map((feature) => (
+                            <span key={feature} className={cellChip}>
+                              {feature.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <span className={cellMuted}>-</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

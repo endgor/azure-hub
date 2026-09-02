@@ -1,4 +1,5 @@
 import { useState, type ReactElement } from 'react';
+import { tableBody, tableHeadCellCompact, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
 
 interface SubnetRecommendation {
   name: string;
@@ -50,23 +51,20 @@ export default function RecommendedSizes(): ReactElement {
       </button>
 
       {isOpen && (
-        <div className="mt-3 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+        <div className="mt-3 overflow-hidden rounded-xl bg-white dark:bg-slate-900">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/50">
-                  <th className="whitespace-nowrap px-3 py-2 font-semibold text-slate-700 dark:text-slate-300">Subnet</th>
-                  <th className="whitespace-nowrap px-3 py-2 text-center font-semibold text-slate-700 dark:text-slate-300">Minimum</th>
-                  <th className="whitespace-nowrap px-3 py-2 text-center font-semibold text-slate-700 dark:text-slate-300">Recommended</th>
-                  <th className="px-3 py-2 font-semibold text-slate-700 dark:text-slate-300">Notes</th>
+                <tr className={tableHeadRow}>
+                  <th className={`whitespace-nowrap ${tableHeadCellCompact}`}>Subnet</th>
+                  <th className={`whitespace-nowrap text-center ${tableHeadCellCompact}`}>Minimum</th>
+                  <th className={`whitespace-nowrap text-center ${tableHeadCellCompact}`}>Recommended</th>
+                  <th className={tableHeadCellCompact}>Notes</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className={tableBody}>
                 {RECOMMENDATIONS.map((rec) => (
-                  <tr
-                    key={rec.name}
-                    className="border-b border-slate-100 last:border-b-0 dark:border-slate-800"
-                  >
+                  <tr key={rec.name} className={tableRow}>
                     <td className="whitespace-nowrap px-3 py-2 font-medium text-slate-900 dark:text-slate-100">
                       {rec.name}
                     </td>

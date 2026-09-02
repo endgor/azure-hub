@@ -10,6 +10,7 @@ import { getDateTimestamp } from '@/lib/filenameUtils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
 import LastUpdated from '@/components/shared/LastUpdated';
+import { cellChip, cellChipAccent, cellMono, cellPrimary, tableBody, tableCell, tableClass, tableHeadCell, tableHeadRow, tableRow, tableShell } from '@/components/shared/tableStyles';
 
 interface DnsZoneEntry {
   resourceType: string;
@@ -355,18 +356,18 @@ export default function PrivateDnsZones() {
                       {category}
                       <span className="ml-2 font-normal text-slate-400 dark:text-slate-500">({categoryEntries.length})</span>
                     </h2>
-                    <div className="overflow-x-auto rounded-xl bg-white dark:bg-slate-900">
-                      <table className="w-full min-w-[62rem] table-fixed text-sm">
+                    <div className={tableShell}>
+                      <table className={`w-full min-w-[62rem] table-fixed ${tableClass}`}>
                         <thead>
-                          <tr className="border-b border-slate-100 text-left text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                            <th className="w-[24%] px-4 py-3 font-medium">Service</th>
-                            <th className="w-[12%] px-4 py-3 font-medium">Subresource</th>
-                            <th className="w-[33%] px-4 py-3 font-medium">Private DNS Zone</th>
-                            <th className="hidden w-[21%] px-4 py-3 font-medium lg:table-cell">Public Forwarders</th>
-                            {cloudFilter === 'all' && <th className="w-[10%] px-4 py-3 font-medium">Cloud</th>}
+                          <tr className={tableHeadRow}>
+                            <th className={`w-[24%] ${tableHeadCell}`}>Service</th>
+                            <th className={`w-[12%] ${tableHeadCell}`}>Subresource</th>
+                            <th className={`w-[33%] ${tableHeadCell}`}>Private DNS Zone</th>
+                            <th className={`hidden w-[21%] lg:table-cell ${tableHeadCell}`}>Public Forwarders</th>
+                            {cloudFilter === 'all' && <th className={`w-[10%] ${tableHeadCell}`}>Cloud</th>}
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
+                        <tbody className={tableBody}>
                           {categoryEntries.map((entry, idx) => {
                             const globalIdx = filteredEntries.indexOf(entry);
                             const isExpanded = expandedRow === globalIdx;
@@ -374,34 +375,34 @@ export default function PrivateDnsZones() {
                             return (
                               <tr
                                 key={`${entry.armType}-${entry.subresources.join('-')}-${entry.cloud}-${idx}`}
-                                className="cursor-pointer transition hover:bg-slate-50 dark:hover:bg-slate-800/50 lg:cursor-default"
+                                className={`cursor-pointer lg:cursor-default ${tableRow}`}
                                 onClick={() => setExpandedRow(isExpanded ? null : globalIdx)}
                               >
-                                <td className="px-4 py-3">
-                                  <div className="font-medium text-slate-900 dark:text-slate-100">
+                                <td className={tableCell}>
+                                  <div className={cellPrimary}>
                                     {entry.resourceType}
                                   </div>
-                                  <div className="mt-0.5 break-words font-mono text-[11px] text-slate-400 dark:text-slate-500">
+                                  <div className={`mt-0.5 break-words ${cellMono}`}>
                                     <Breakable text={entry.armType} />
                                   </div>
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className={tableCell}>
                                   <div className="flex flex-wrap gap-1">
                                     {entry.subresources.map((sub) => (
                                       <code
                                         key={sub}
-                                        className="min-w-0 break-words rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                        className={`min-w-0 break-words ${cellChip}`}
                                       >
                                         {sub}
                                       </code>
                                     ))}
                                   </div>
                                 </td>
-                                <td className="px-4 py-3">
+                                <td className={tableCell}>
                                   <div className="flex flex-col gap-1">
                                     {entry.dnsZoneNames.map((zone) => (
                                       <div key={zone} className="flex items-center">
-                                        <code className="min-w-0 break-words rounded bg-teal-50 px-1.5 py-0.5 text-xs font-medium text-teal-700 dark:bg-teal-500/10 dark:text-teal-300">
+                                        <code className={`min-w-0 break-words ${cellChipAccent}`}>
                                           <Breakable text={zone} />
                                         </code>
                                         <CopyButton text={zone} />
@@ -423,7 +424,7 @@ export default function PrivateDnsZones() {
                                     </div>
                                   )}
                                 </td>
-                                <td className="hidden px-4 py-3 lg:table-cell">
+                                <td className={`hidden lg:table-cell ${tableCell}`}>
                                   <div className="flex flex-col gap-1">
                                     {entry.publicDnsForwarders.map((fwd) => (
                                       <code key={fwd} className="break-words text-xs text-slate-500 dark:text-slate-400">
@@ -433,7 +434,7 @@ export default function PrivateDnsZones() {
                                   </div>
                                 </td>
                                 {cloudFilter === 'all' && (
-                                  <td className="px-4 py-3">
+                                  <td className={tableCell}>
                                     <span
                                       className={`inline-block whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium ${
                                         entry.cloud === 'Commercial'

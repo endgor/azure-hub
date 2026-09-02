@@ -5,6 +5,7 @@ import { isPrivilegedRole } from '@/config/privilegedRoles';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { pluralize } from '@/lib/filenameUtils';
+import { tableBody, tableHeadCell, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
 
 interface RolePermissionsTableProps {
   roles: AzureRole[];
@@ -174,7 +175,7 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
       )}
 
       {/* Table */}
-      <div className="overflow-hidden rounded-xl ring-1 ring-slate-200 dark:ring-slate-700/60">
+      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm table-fixed">
             <colgroup>
@@ -183,25 +184,16 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
               <col />
               <col />
             </colgroup>
-            <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-              <tr>
-                <th className="px-5 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
-                  Role Name
-                </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
-                  Role Type
-                </th>
-                <th className="px-5 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
-                  Actions
-                </th>
-                <th className="px-5 py-3 font-medium text-slate-700 dark:text-slate-300 align-top">
-                  Data Actions
-                </th>
+            <thead>
+              <tr className={tableHeadRow}>
+                <th className={`align-top ${tableHeadCell}`}>Role Name</th>
+                <th className={`align-top ${tableHeadCell}`}>Role Type</th>
+                <th className={`align-top ${tableHeadCell}`}>Actions</th>
+                <th className={`align-top ${tableHeadCell}`}>Data Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={tableBody}>
               {rolesWithFlattenedPermissions.map(({ role, allActions, allDataActions }, index) => {
-                const isEven = index % 2 === 0;
                 const isPrivileged = isPrivilegedRole(role.roleName);
 
                 // For comparison mode, determine which set of shared permissions to check against
@@ -213,13 +205,8 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                   : null;
 
                 return (
-                  <tr
-                    key={role.id}
-                    className={`border-t border-slate-200 dark:border-slate-700/60 ${
-                      isEven ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/60 dark:bg-slate-800/40'
-                    }`}
-                  >
-                    <td className="px-5 py-4 align-top">
+                  <tr key={role.id} className={tableRow}>
+                    <td className="px-4 py-3 align-top">
                       <div className="font-semibold text-sm text-slate-900 dark:text-slate-100 leading-snug">
                         {role.roleName}
                       </div>

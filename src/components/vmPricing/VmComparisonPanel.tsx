@@ -5,6 +5,7 @@ import { formatHourly, formatMonthly, formatNumber, formatPercent, resolvePrice,
 import type { VmRow } from '@/hooks/vmPricing/useVmFilters';
 import type { VmCurrency, VmOperatingSystem, VmPriceMode } from '@/types/vmPricing';
 import type { VmPriceDisplay } from './VmPricingControls';
+import { tableBody, tableClass, tableShell } from '@/components/shared/tableStyles';
 
 interface VmComparisonPanelProps {
   rows: VmRow[];
@@ -229,9 +230,9 @@ export default function VmComparisonPanel({
         </>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-        <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
-          <thead className="bg-slate-50 dark:bg-slate-800/60">
+      <div className={tableShell}>
+        <table className={tableClass}>
+          <thead>
             <tr>
               <th scope="col" className={headerCellClass}>
                 Attribute
@@ -262,7 +263,7 @@ export default function VmComparisonPanel({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+          <tbody className={tableBody}>
             <tr className="bg-slate-50/60 dark:bg-slate-800/30">
               <td className={labelCellClass}>
                 {display === 'hourly' ? 'Price / hour' : `Price / month (${hoursPerMonth}h)`}

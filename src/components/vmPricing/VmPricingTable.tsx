@@ -6,6 +6,7 @@ import { formatHourly, formatMonthly, formatNumber, formatPercent } from '@/lib/
 import type { VmRow, VmSortDirection, VmSortKey } from '@/hooks/vmPricing/useVmFilters';
 import type { VmCurrency, VmPriceMode } from '@/types/vmPricing';
 import type { VmPriceDisplay } from './VmPricingControls';
+import { tableBody, tableClass, tableHeadCellCompact, tableHeadRow, tableShell } from '@/components/shared/tableStyles';
 
 interface Column {
   key: VmSortKey | null;
@@ -112,10 +113,10 @@ export default function VmPricingTable({
 
   return (
     <div className="space-y-3">
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
-        <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
-          <thead className="bg-slate-50 dark:bg-slate-800/60">
-            <tr>
+      <div className={tableShell}>
+        <table className={tableClass}>
+          <thead>
+            <tr className={tableHeadRow}>
               <th scope="col" className="w-10 px-3 py-2.5">
                 <span className="sr-only">Compare</span>
               </th>
@@ -126,7 +127,7 @@ export default function VmPricingTable({
                   <th
                     key={column.label}
                     scope="col"
-                    className={`whitespace-nowrap px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 ${
+                    className={`whitespace-nowrap ${tableHeadCellCompact} ${
                       column.align === 'right' ? 'text-right' : 'text-left'
                     }`}
                     aria-sort={
@@ -141,7 +142,7 @@ export default function VmPricingTable({
                       <button
                         type="button"
                         onClick={() => onSort(column.key as VmSortKey)}
-                        className={`inline-flex items-center gap-1.5 transition hover:text-slate-900 dark:hover:text-slate-100 ${
+                        className={`inline-flex items-center gap-1.5 transition hover:text-slate-700 dark:hover:text-slate-200 ${
                           column.align === 'right' ? 'flex-row-reverse' : ''
                         }`}
                       >
@@ -162,7 +163,7 @@ export default function VmPricingTable({
               })}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
+          <tbody className={tableBody}>
             {visibleRows.map((row) => {
               const { spec } = row;
               const vcpus = spec.vcpusAvailable ?? spec.vcpus;

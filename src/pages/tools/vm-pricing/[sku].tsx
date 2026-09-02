@@ -27,6 +27,7 @@ import {
   type VmRegionPrice
 } from '@/lib/vmPricing/serverVmPricing';
 import type { VmCurrency, VmCurrencyRate, VmOperatingSystem, VmPriceMode, VmSkuSpec } from '@/types/vmPricing';
+import { tableBody, tableClass, tableHeadCellCompact, tableHeadRow, tableShell } from '@/components/shared/tableStyles';
 
 interface VmSkuDetailProps {
   spec: VmSkuSpec;
@@ -363,37 +364,37 @@ export default function VmSkuDetail({
                 Price by region — {os === 'windows' ? 'Windows' : 'Linux'}, {getPriceModeLabel(priceMode)}
               </h2>
 
-              <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
-                <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
-                  <thead className="bg-slate-50 dark:bg-slate-800/60">
-                    <tr>
+              <div className={tableShell}>
+                <table className={tableClass}>
+                  <thead>
+                    <tr className={tableHeadRow}>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-left ${tableHeadCellCompact}`}
                       >
                         Region
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-left ${tableHeadCellCompact}`}
                       >
                         Geography
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-right ${tableHeadCellCompact}`}
                       >
                         {display === 'hourly' ? 'Price / hour' : `Price / month (${hoursPerMonth}h)`}
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-right ${tableHeadCellCompact}`}
                       >
                         vs cheapest
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
+                  <tbody className={tableBody}>
                     {visibleRegions.map((entry, position) => {
                       const delta =
                         cheapest?.hourly && entry.hourly ? (entry.hourly as number) / cheapest.hourly - 1 : null;
@@ -449,31 +450,31 @@ export default function VmSkuDetail({
               <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 Every pricing model in {modelTableRegion?.displayName}
               </h2>
-              <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
-                <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-800">
-                  <thead className="bg-slate-50 dark:bg-slate-800/60">
-                    <tr>
+              <div className={tableShell}>
+                <table className={tableClass}>
+                  <thead>
+                    <tr className={tableHeadRow}>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-left ${tableHeadCellCompact}`}
                       >
                         Pricing model
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-right ${tableHeadCellCompact}`}
                       >
                         Linux
                       </th>
                       <th
                         scope="col"
-                        className="px-3 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
+                        className={`text-right ${tableHeadCellCompact}`}
                       >
                         Windows
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
+                  <tbody className={tableBody}>
                     {VM_PRICE_MODES.map((mode) => {
                       const linux = modelTableRegion ? resolvePrice(modelTableRegion.prices, 'linux', mode.value) : null;
                       const windows = modelTableRegion

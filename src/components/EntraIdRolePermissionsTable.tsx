@@ -4,6 +4,7 @@ import { exportEntraIdRolesToCSV, exportEntraIdRolesToExcel, exportEntraIdRolesT
 
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import { pluralize } from '@/lib/filenameUtils';
+import { tableBody, tableHeadCell, tableHeadRow, tableRow } from '@/components/shared/tableStyles';
 
 interface EntraIdRolePermissionsTableProps {
   roles: EntraIDRole[];
@@ -120,24 +121,24 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
       <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-              <tr>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-1/6">
+            <thead>
+              <tr className={tableHeadRow}>
+                <th className={`w-1/6 ${tableHeadCell}`}>
                   Role Name
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-24">
+                <th className={`w-24 ${tableHeadCell}`}>
                   Role Type
                 </th>
-                <th className="px-4 py-3 font-medium text-slate-700 dark:text-slate-300 w-5/12">
+                <th className={`w-5/12 ${tableHeadCell}`}>
                   Permissions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+            <tbody className={tableBody}>
               {rolesWithFlattenedPermissions.map(({ role, allPermissions }) => (
                 <tr
                   key={role.id}
-                  className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition"
+                  className={tableRow}
                 >
                   {/* Role Name Column */}
                   <td className="px-4 py-3 align-top">
