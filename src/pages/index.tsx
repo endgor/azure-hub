@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
+import LastUpdated from '@/components/shared/LastUpdated';
 import siteData from '@/generated/site-data.json';
 import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
@@ -115,11 +116,9 @@ export default function Home({ lastUpdated }: HomeProps) {
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl">
             Pick a tool and get to work.
           </h1>
-          {lastUpdated && (
-            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
-              Data last updated {lastUpdated}
-            </p>
-          )}
+          <div className="mt-1.5">
+            <LastUpdated date={lastUpdated} />
+          </div>
         </div>
 
         {/* Hero — IP Lookup */}

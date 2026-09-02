@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
 import Select, { type SelectOption } from '@/components/shared/Select';
+import LastUpdated from '@/components/shared/LastUpdated';
 import Tooltip from '@/components/Tooltip';
 import HoursPerMonthField from '@/components/vmPricing/HoursPerMonthField';
 import { useHoursPerMonth } from '@/hooks/vmPricing/useHoursPerMonth';
@@ -222,8 +223,9 @@ export default function VmSkuDetail({
           <p className="text-sm text-slate-600 dark:text-slate-300">
             {spec.series} series · {spec.category} · ARM name{' '}
             <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs dark:bg-slate-800">{spec.sku}</code> · priced in{' '}
-            {ranked.length} region{ranked.length === 1 ? '' : 's'} · updated {lastUpdated}
+            {ranked.length} region{ranked.length === 1 ? '' : 's'}
           </p>
+          <LastUpdated date={lastUpdated} />
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

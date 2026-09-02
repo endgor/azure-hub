@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { Fragment, useState, useMemo, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import SearchInput from '@/components/shared/SearchInput';
@@ -9,6 +9,7 @@ import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/
 import { getDateTimestamp } from '@/lib/filenameUtils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
+import LastUpdated from '@/components/shared/LastUpdated';
 
 interface DnsZoneEntry {
   resourceType: string;
@@ -59,6 +60,21 @@ function CopyButton({ text }: { text: string }) {
         </svg>
       )}
     </button>
+  );
+}
+
+function Breakable({ text }: { text: string }) {
+  const parts = text.split(/(?<=[./-])/);
+
+  return (
+    <>
+      {parts.map((part, idx) => (
+        <Fragment key={`${part}-${idx}`}>
+          {part}
+          {idx < parts.length - 1 && <wbr />}
+        </Fragment>
+      ))}
+    </>
   );
 }
 
@@ -242,6 +258,7 @@ export default function PrivateDnsZones() {
             </Link>
             {' '}for hybrid and cloud-only DNS configuration.
           </p>
+          <LastUpdated date={data?.lastUpdated} />
         </div>
 
         {dataError ? (
@@ -328,9 +345,6 @@ export default function PrivateDnsZones() {
                   Match: &ldquo;{searchTerm}&rdquo;
                 </span>
               )}
-              <span className="ml-2 text-xs text-slate-400 dark:text-slate-500">
-                Updated {data.lastUpdated}
-              </span>
             </div>
 
             {filteredEntries.length > 0 ? (
@@ -342,14 +356,14 @@ export default function PrivateDnsZones() {
                       <span className="ml-2 font-normal text-slate-400 dark:text-slate-500">({categoryEntries.length})</span>
                     </h2>
                     <div className="overflow-x-auto rounded-xl bg-white dark:bg-slate-900">
-                      <table className="min-w-full text-sm">
+                      <table className="w-full min-w-[62rem] table-fixed text-sm">
                         <thead>
                           <tr className="border-b border-slate-100 text-left text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                            <th className="px-4 py-3 font-medium">Service</th>
-                            <th className="px-4 py-3 font-medium">Subresource</th>
-                            <th className="px-4 py-3 font-medium">Private DNS Zone</th>
-                            <th className="hidden px-4 py-3 font-medium lg:table-cell">Public Forwarders</th>
-                            {cloudFilter === 'all' && <th className="px-4 py-3 font-medium">Cloud</th>}
+                            <th className="w-[24%] px-4 py-3 font-medium">Service</th>
+                            <th className="w-[12%] px-4 py-3 font-medium">Subresource</th>
+                            <th className="w-[33%] px-4 py-3 font-medium">Private DNS Zone</th>
+                            <th className="hidden w-[21%] px-4 py-3 font-medium lg:table-cell">Public Forwarders</th>
+                            {cloudFilter === 'all' && <th className="w-[10%] px-4 py-3 font-medium">Cloud</th>}
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
@@ -367,8 +381,8 @@ export default function PrivateDnsZones() {
                                   <div className="font-medium text-slate-900 dark:text-slate-100">
                                     {entry.resourceType}
                                   </div>
-                                  <div className="mt-0.5 font-mono text-[11px] text-slate-400 dark:text-slate-500">
-                                    {entry.armType}
+                                  <div className="mt-0.5 break-words font-mono text-[11px] text-slate-400 dark:text-slate-500">
+                                    <Breakable text={entry.armType} />
                                   </div>
                                 </td>
                                 <td className="px-4 py-3">
@@ -376,7 +390,7 @@ export default function PrivateDnsZones() {
                                     {entry.subresources.map((sub) => (
                                       <code
                                         key={sub}
-                                        className="rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                        className="min-w-0 break-words rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300"
                                       >
                                         {sub}
                                       </code>
@@ -387,8 +401,8 @@ export default function PrivateDnsZones() {
                                   <div className="flex flex-col gap-1">
                                     {entry.dnsZoneNames.map((zone) => (
                                       <div key={zone} className="flex items-center">
-                                        <code className="rounded bg-teal-50 px-1.5 py-0.5 text-xs font-medium text-teal-700 dark:bg-teal-500/10 dark:text-teal-300">
-                                          {zone}
+                                        <code className="min-w-0 break-words rounded bg-teal-50 px-1.5 py-0.5 text-xs font-medium text-teal-700 dark:bg-teal-500/10 dark:text-teal-300">
+                                          <Breakable text={zone} />
                                         </code>
                                         <CopyButton text={zone} />
                                       </div>
@@ -401,8 +415,8 @@ export default function PrivateDnsZones() {
                                       </div>
                                       <div className="mt-1 flex flex-col gap-1">
                                         {entry.publicDnsForwarders.map((fwd) => (
-                                          <code key={fwd} className="text-xs text-slate-500 dark:text-slate-400">
-                                            {fwd}
+                                          <code key={fwd} className="break-words text-xs text-slate-500 dark:text-slate-400">
+                                            <Breakable text={fwd} />
                                           </code>
                                         ))}
                                       </div>
@@ -412,8 +426,8 @@ export default function PrivateDnsZones() {
                                 <td className="hidden px-4 py-3 lg:table-cell">
                                   <div className="flex flex-col gap-1">
                                     {entry.publicDnsForwarders.map((fwd) => (
-                                      <code key={fwd} className="text-xs text-slate-500 dark:text-slate-400">
-                                        {fwd}
+                                      <code key={fwd} className="break-words text-xs text-slate-500 dark:text-slate-400">
+                                        <Breakable text={fwd} />
                                       </code>
                                     ))}
                                   </div>
@@ -421,7 +435,7 @@ export default function PrivateDnsZones() {
                                 {cloudFilter === 'all' && (
                                   <td className="px-4 py-3">
                                     <span
-                                      className={`inline-block rounded-md px-2 py-0.5 text-[11px] font-medium ${
+                                      className={`inline-block whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium ${
                                         entry.cloud === 'Commercial'
                                           ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300'
                                           : entry.cloud === 'Government'

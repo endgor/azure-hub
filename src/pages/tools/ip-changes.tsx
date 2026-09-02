@@ -6,6 +6,7 @@ import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import LastUpdated from '@/components/shared/LastUpdated';
 import { CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 
 const CLOUD_ORDER: AzureCloudName[] = [
@@ -94,6 +95,7 @@ export default function IpChangesPage() {
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Weekly changelog of Azure IP range additions and removals across all clouds.
           </p>
+          <LastUpdated date={diffData?.meta.generatedAt ? new Date(diffData.meta.generatedAt).toLocaleDateString('sv-SE') : null} />
         </div>
 
         {isLoading && (
@@ -130,9 +132,6 @@ export default function IpChangesPage() {
               {/* Summary */}
               <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
                 <span>{totalChanges} service tag{totalChanges !== 1 ? 's' : ''} changed</span>
-                {diffData.meta.generatedAt && (
-                  <span>· Updated {new Date(diffData.meta.generatedAt).toLocaleDateString('sv-SE')}</span>
-                )}
                 <Link href="/tools/ip-lookup/" className="ml-auto text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 underline decoration-dotted text-xs">
                   ← Back to IP Lookup
                 </Link>

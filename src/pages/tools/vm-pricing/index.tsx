@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import Layout from '@/components/Layout';
 import ErrorBox from '@/components/shared/ErrorBox';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import LastUpdated from '@/components/shared/LastUpdated';
 import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import VmPricingControls, { type VmPriceDisplay } from '@/components/vmPricing/VmPricingControls';
 import VmFilterPanel from '@/components/vmPricing/VmFilterPanel';
@@ -197,13 +198,8 @@ export default function VmPricing() {
           <p className="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
             Look up what any Azure VM size costs, filter by the specs you actually need, and compare sizes side by side.
             Prices come from the Azure Retail Prices API and specifications from Azure resource SKUs.
-            {index && (
-              <>
-                {' '}
-                Last updated <span className="font-medium">{index.lastUpdated}</span>.
-              </>
-            )}
           </p>
+          <LastUpdated date={index?.lastUpdated} />
         </div>
 
         {catalogueError ? (

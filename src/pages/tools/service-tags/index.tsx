@@ -13,17 +13,24 @@ import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/
 import { getDateTimestamp } from '@/lib/filenameUtils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
+import LastUpdated from '@/components/shared/LastUpdated';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 import siteData from '@/generated/site-data.json';
 import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface ServiceTagsPageProps {
   baseServiceTags: string[];
+  lastUpdated: string | null;
 }
 
 export const getStaticProps: GetStaticProps<ServiceTagsPageProps> = async () => {
   const data = siteData as GeneratedSiteData;
-  return { props: { baseServiceTags: data.serviceTags.baseServiceTags } };
+  return {
+    props: {
+      baseServiceTags: data.serviceTags.baseServiceTags,
+      lastUpdated: data.home.lastUpdated,
+    },
+  };
 };
 
 /** Cloud filter options */
@@ -48,7 +55,7 @@ interface ServiceTagsResponse {
 
 const DEFAULT_VISIBLE_COUNT = 50;
 
-export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
+export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTagsPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [cloudFilter, setCloudFilter] = useState<CloudFilter>('all');
   const [data, setData] = useState<ServiceTagsResponse | null>(null);
@@ -202,6 +209,7 @@ export default function ServiceTags({ baseServiceTags }: ServiceTagsPageProps) {
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             Browse all Azure service tags with IP address ranges, regional endpoints, and network features. Essential for firewall rules, NSG configuration, and network security planning.
           </p>
+          <LastUpdated date={lastUpdated} />
         </div>
 
         <div className="space-y-3">

@@ -8,12 +8,16 @@ import Results from '@/components/Results';
 import { AzureIpAddress, AzureCloudName } from '@/types/azure';
 import { getServiceTagCanonicalUrl } from '@/lib/serviceTagUrl';
 import ErrorBox from '@/components/shared/ErrorBox';
+import LastUpdated from '@/components/shared/LastUpdated';
+import siteData from '@/generated/site-data.json';
+import type { GeneratedSiteData } from '@/types/generatedSiteData';
 
 interface ServiceTagDetailProps {
   serviceTag: string;
   isBaseTag: boolean;
   ipRanges: AzureIpAddress[];
   cloudsCovered: AzureCloudName[];
+  lastUpdated: string | null;
 }
 
 const DEFAULT_PAGE_SIZE = 100;
@@ -87,7 +91,7 @@ function loadServiceTagMap(): Map<string, AzureIpAddress[]> {
   return map;
 }
 
-export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, cloudsCovered }: ServiceTagDetailProps) {
+export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, cloudsCovered, lastUpdated }: ServiceTagDetailProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const [isAll, setIsAll] = useState(false);
@@ -151,6 +155,7 @@ export default function ServiceTagDetail({ serviceTag, isBaseTag, ipRanges, clou
             <p className="text-sm text-slate-600 dark:text-slate-300">
               {summary}
             </p>
+            <LastUpdated date={lastUpdated} />
           </div>
         </div>
 
@@ -234,7 +239,8 @@ export const getStaticProps: GetStaticProps<ServiceTagDetailProps> = async ({ pa
       // Regional variants (e.g. "Storage.WestEurope") are near-duplicates and stay noindexed.
       isBaseTag: !serviceTag.includes('.'),
       ipRanges,
-      cloudsCovered
+      cloudsCovered,
+      lastUpdated: (siteData as GeneratedSiteData).home.lastUpdated
     }
   };
 };
