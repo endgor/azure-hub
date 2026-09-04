@@ -77,7 +77,7 @@ export default function ExportMenu({
             className={`flex h-8 w-8 items-center justify-center rounded-lg transition disabled:opacity-50 ${
               isOpen
                 ? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
-                : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300'
+                : 'text-slate-400 hover:bg-slate-100 hover:text-sky-600 dark:hover:bg-slate-800 dark:hover:text-sky-400'
             }`}
           >
             {isExporting ? (

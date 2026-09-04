@@ -91,9 +91,9 @@ export default function SubnetToolbar({
   ], [handleExport]);
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-800/60">
       {/* Color Picker */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <ColorPicker
           isColorModeActive={isColorModeActive}
           selectedColorId={selectedColorId}
@@ -103,7 +103,7 @@ export default function SubnetToolbar({
       </div>
 
       {/* Azure Settings and Export */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <AzureImportModal
           isAzureMenuOpen={isAzureMenuOpen}
           useAzureReservations={useAzureReservations}
@@ -122,7 +122,7 @@ export default function SubnetToolbar({
       </div>
 
       {/* Share Button */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <button
           type="button"
           onClick={onShare}
@@ -131,7 +131,7 @@ export default function SubnetToolbar({
               ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
               : shareStatus === 'error'
                 ? 'bg-rose-50 text-rose-500 dark:bg-rose-500/10 dark:text-rose-400'
-                : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300'
+                : 'text-slate-400 hover:bg-slate-100 hover:text-sky-600 dark:hover:bg-slate-800 dark:hover:text-sky-400'
           }`}
           disabled={isGeneratingShare}
           aria-label={

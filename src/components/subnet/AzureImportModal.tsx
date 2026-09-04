@@ -26,17 +26,42 @@ export default function AzureImportModal({
       <button
         type="button"
         onClick={onToggleMenu}
-        className={`flex h-8 w-8 items-center justify-center rounded-lg transition ${
+        className={`group flex h-8 w-8 items-center justify-center rounded-lg transition ${
           isAzureMenuOpen
             ? 'bg-slate-100 text-sky-600 dark:bg-slate-800 dark:text-sky-400'
-            : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300'
+            : 'text-slate-400 hover:bg-slate-100 hover:text-sky-600 dark:hover:bg-slate-800 dark:hover:text-sky-400'
         }`}
         aria-label="Azure Reserved IPs"
         aria-expanded={isAzureMenuOpen}
       >
-        <svg className="h-4 w-4" viewBox="0 0 18 18" aria-hidden>
-          <path fill="currentColor" fillOpacity="0.85" d="M3.5 15L10.5 1.5h4L7 15H3.5z" />
-          <path fill="currentColor" fillOpacity="0.55" d="M7 15h5.5l3-5.5-3-2.5L7 15z" />
+        <svg
+          className={`h-4 w-4 transition group-hover:grayscale-0 group-hover:opacity-100 ${
+            isAzureMenuOpen ? '' : 'grayscale opacity-60'
+          }`}
+          viewBox="0 0 96 96"
+          aria-hidden
+        >
+          <defs>
+            <linearGradient id="azure-a" x1="-1032" x2="-1059" y1="145" y2="65" gradientTransform="matrix(1 0 0 -1 1075 158)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#114a8b" />
+              <stop offset="1" stopColor="#0669bc" />
+            </linearGradient>
+            <linearGradient id="azure-b" x1="-1023" x2="-1029" y1="108" y2="105" gradientTransform="matrix(1 0 0 -1 1075 158)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopOpacity=".3" />
+              <stop offset=".07" stopOpacity=".2" />
+              <stop offset=".32" stopOpacity=".1" />
+              <stop offset=".62" stopOpacity=".05" />
+              <stop offset="1" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="azure-c" x1="-1027" x2="-997" y1="147" y2="68" gradientTransform="matrix(1 0 0 -1 1075 158)" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#3ccbf4" />
+              <stop offset="1" stopColor="#2892df" />
+            </linearGradient>
+          </defs>
+          <path fill="url(#azure-a)" d="M33.3 6h28.5L32.2 93.7a4.5 4.5 0 01-4.3 3.1H5.7a4.5 4.5 0 01-4.3-6L29 9.1A4.5 4.5 0 0133.3 6z" />
+          <path fill="#0078d4" d="M71.2 62.7H26a2.1 2.1 0 00-1.4 3.6l29.1 27.1a4.6 4.6 0 003.1 1.2h25.6z" />
+          <path fill="url(#azure-b)" d="M33.3 6a4.5 4.5 0 00-4.3 3.1L1.4 90.8a4.5 4.5 0 004.3 6h22.8a4.8 4.8 0 003.7-3.1L37.7 77l19.7 18.4a4.6 4.6 0 002.9 1.4h25.6L74.7 64.6l-32.7.1L62 6z" />
+          <path fill="url(#azure-c)" d="M66.6 9.1A4.5 4.5 0 0062.3 6H33.6a4.5 4.5 0 014.3 3.1l27.6 81.7a4.5 4.5 0 01-4.3 6h28.7a4.5 4.5 0 004.3-6z" />
         </svg>
       </button>
 
