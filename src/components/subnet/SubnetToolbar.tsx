@@ -117,6 +117,7 @@ export default function SubnetToolbar({
           options={exportOptions}
           itemCount={renderRows.length}
           isExporting={isExporting}
+          iconOnly
         />
       </div>
 

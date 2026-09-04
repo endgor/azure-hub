@@ -21,6 +21,8 @@ interface ExportMenuProps {
    * to export.
    */
   disabledHint?: string;
+  /** Render as a bare 8x8 icon button to match sibling toolbar icons. */
+  iconOnly?: boolean;
 }
 
 const DownloadIcon = () => (
@@ -34,7 +36,8 @@ export default function ExportMenu({
   itemCount,
   disabled = false,
   isExporting = false,
-  disabledHint
+  disabledHint,
+  iconOnly = false
 }: ExportMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -62,20 +65,43 @@ export default function ExportMenu({
       )}
 
       <div className="relative" ref={dropdownRef}>
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          icon={<DownloadIcon />}
-          isLoading={isExporting}
-          disabled={isDisabled}
-          onClick={() => setIsOpen(!isOpen)}
-          aria-expanded={isOpen}
-          aria-haspopup="true"
-          title={isDisabled ? disabledHint : undefined}
-        >
-          Export
-        </Button>
+        {iconOnly ? (
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            disabled={isDisabled || isExporting}
+            aria-expanded={isOpen}
+            aria-haspopup="true"
+            aria-label="Export"
+            title={isDisabled ? disabledHint : 'Export'}
+            className={`flex h-8 w-8 items-center justify-center rounded-lg transition disabled:opacity-50 ${
+              isOpen
+                ? 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'
+                : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300'
+            }`}
+          >
+            {isExporting ? (
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            ) : (
+              <DownloadIcon />
+            )}
+          </button>
+        ) : (
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            icon={<DownloadIcon />}
+            isLoading={isExporting}
+            disabled={isDisabled}
+            onClick={() => setIsOpen(!isOpen)}
+            aria-expanded={isOpen}
+            aria-haspopup="true"
+            title={isDisabled ? disabledHint : undefined}
+          >
+            Export
+          </Button>
+        )}
 
         {isOpen && (
           <div className="absolute right-0 z-20 mt-1 w-44 rounded-lg bg-white py-1 shadow-lg ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
