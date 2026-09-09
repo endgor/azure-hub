@@ -1,5 +1,5 @@
 {
-  "changeNumber": 407,
+  "changeNumber": 408,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -3151,7 +3151,7 @@
       "name": "M365ManagementActivityApi",
       "id": "M365ManagementActivityApi",
       "properties": {
-        "changeNumber": 8,
+        "changeNumber": 9,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -3183,8 +3183,6 @@
           "52.181.64.151/32",
           "52.181.64.172/30",
           "52.181.67.208/30",
-          "52.181.167.52/32",
-          "52.181.181.136/32",
           "52.181.222.252/30",
           "52.227.180.138/32",
           "52.243.15.8/30",
