@@ -13,9 +13,21 @@ const ACTIONS_INDEX_FILE = path.join(DATA_DIR, 'actions-index.json');
  *
  * This produces a ROLE-ONLY index. `npm run update-rbac-data` additionally
  * merges Azure provider operations (which need an authenticated Azure CLI) and
- * yields roughly 6x more actions. Running this script over an index built by
- * update-rbac-data will silently discard those extra actions.
+ * yields roughly 6x more actions. To stop this script from silently discarding
+ * them, it refuses to overwrite a larger existing index unless --force is passed.
  */
+const FORCE = process.argv.includes('--force');
+
+function existingIndexSize(): number | null {
+  if (!fs.existsSync(ACTIONS_INDEX_FILE)) return null;
+  try {
+    const parsed = JSON.parse(fs.readFileSync(ACTIONS_INDEX_FILE, 'utf8')) as unknown[];
+    return Array.isArray(parsed) ? parsed.length : null;
+  } catch {
+    return null;
+  }
+}
+
 async function main(): Promise<void> {
   console.log('Starting actions cache generation...\n');
   console.warn(
@@ -44,6 +56,17 @@ async function main(): Promise<void> {
       showProgress: true
     });
     const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
+
+    const existingSize = existingIndexSize();
+    if (existingSize !== null && existingSize > actionsCache.length && !FORCE) {
+      console.error(
+        `\nERROR: refusing to overwrite ${ACTIONS_INDEX_FILE} (${existingSize} actions) ` +
+        `with a smaller role-only index (${actionsCache.length} actions).`
+      );
+      console.error('The existing file was most likely built by "npm run update-rbac-data" with provider operations.');
+      console.error('Re-run with --force to overwrite it anyway.');
+      process.exit(1);
+    }
 
     // Save to file
     console.log(`\nWriting ${actionsCache.length} actions to ${ACTIONS_INDEX_FILE}...`);
