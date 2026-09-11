@@ -6,6 +6,7 @@ import { loadIpDiff } from '@/lib/clientIpDiffService';
 import type { IpDiffFile, ModifiedTag, AddedTag, RemovedTag } from '@/types/ipDiff';
 import { AzureCloudName } from '@/types/azure';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import FilterChip from '@/components/shared/FilterChip';
 import LastUpdated from '@/components/shared/LastUpdated';
 import { CLOUD_LABELS, CLOUD_STYLES } from '@/lib/cloudConstants';
 
@@ -115,16 +116,16 @@ export default function IpChangesPage() {
             {/* Version info + cloud filter */}
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-2">
-                <FilterButton active={cloudFilter === 'all'} onClick={() => setCloud('all')}>
+                <FilterChip active={cloudFilter === 'all'} onClick={() => setCloud('all')}>
                   All clouds
-                </FilterButton>
+                </FilterChip>
                 {CLOUD_ORDER.filter((c) => diffData.meta.clouds?.[c]).map((cloud) => {
                   const info = diffData.meta.clouds![cloud]!;
                   return (
-                    <FilterButton key={cloud} active={cloudFilter === cloud} onClick={() => setCloud(cloud)}>
+                    <FilterChip key={cloud} active={cloudFilter === cloud} onClick={() => setCloud(cloud)}>
                       {CLOUD_LABELS[cloud]}{' '}
                       <span className="text-[10px] opacity-60">v{info.fromChangeNumber} → v{info.toChangeNumber}</span>
-                    </FilterButton>
+                    </FilterChip>
                   );
                 })}
               </div>
@@ -179,21 +180,6 @@ export default function IpChangesPage() {
 }
 
 /* ── Subcomponents ── */
-
-function FilterButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-        active
-          ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-          : 'bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
 
 function TagSection({ title, count, variant, children }: {
   title: string;

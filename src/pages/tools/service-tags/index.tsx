@@ -13,6 +13,7 @@ import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/
 import { getDateTimestamp } from '@/lib/filenameUtils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
+import FilterChip from '@/components/shared/FilterChip';
 import LastUpdated from '@/components/shared/LastUpdated';
 import { getServiceTagPath } from '@/lib/serviceTagUrl';
 import siteData from '@/generated/site-data.json';
@@ -238,17 +239,13 @@ export default function ServiceTags({ baseServiceTags, lastUpdated }: ServiceTag
               { value: AzureCloudName.AzureChinaCloud, label: 'China' },
               { value: AzureCloudName.AzureUSGovernment, label: 'Government' }
             ] as const).map((option) => (
-              <button
+              <FilterChip
                 key={option.value}
+                active={cloudFilter === option.value}
                 onClick={() => setCloudFilter(option.value)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-                  cloudFilter === option.value
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                }`}
               >
                 {option.label}
-              </button>
+              </FilterChip>
             ))}
           </div>
         </div>

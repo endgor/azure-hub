@@ -17,7 +17,7 @@ const numberInputClass =
   'w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100';
 
 function presetChipClass(active: boolean, disabled: boolean): string {
-  if (active) return 'rounded-lg px-2 py-1 text-xs font-medium transition bg-slate-900 text-white dark:bg-white dark:text-slate-900';
+  if (active) return 'rounded-lg px-2 py-1 text-xs font-medium transition bg-sky-600 text-white hover:bg-sky-700';
   if (disabled)
     return 'rounded-lg px-2 py-1 text-xs font-medium cursor-not-allowed bg-slate-50 text-slate-300 dark:bg-slate-800/50 dark:text-slate-600';
   return 'rounded-lg px-2 py-1 text-xs font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700';
