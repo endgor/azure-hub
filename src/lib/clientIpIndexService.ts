@@ -1,4 +1,4 @@
-import { CACHE_TTL_MS } from '@/config/constants';
+import { cachedJson } from '@/lib/cachedJson';
 import { AzureCloudName } from '@/types/azure';
 
 /**
@@ -15,28 +15,6 @@ export interface ServiceTagIndex {
   cloud: AzureCloudName;
 }
 
-let serviceTagsIndexCache: ServiceTagIndex[] | null = null;
-let serviceTagsCacheExpiry = 0;
-
-export async function loadServiceTagsIndex(): Promise<ServiceTagIndex[]> {
-  const now = Date.now();
-
-  if (serviceTagsIndexCache && serviceTagsCacheExpiry > now) {
-    return serviceTagsIndexCache;
-  }
-
-  try {
-    const response = await fetch('/data/service-tags-index.json');
-    if (!response.ok) {
-      throw new Error(`Failed to load service tags index: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    serviceTagsIndexCache = data;
-    serviceTagsCacheExpiry = now + CACHE_TTL_MS;
-
-    return data;
-  } catch (error) {
-    throw new Error(`Failed to load service tags index: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
+export function loadServiceTagsIndex(): Promise<ServiceTagIndex[]> {
+  return cachedJson<ServiceTagIndex[]>('/data/service-tags-index.json');
 }

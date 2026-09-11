@@ -116,3 +116,62 @@ export function cidrToRange(cidr: string): CidrRange {
     return { start, end, isV6: false };
   }
 }
+
+/** Convert an unsigned 32-bit integer back to dotted-decimal */
+export function uint32ToIpv4(value: number): string {
+  return `${value >>> 24}.${(value >>> 16) & 255}.${(value >>> 8) & 255}.${value & 255}`;
+}
+
+/** Last address of the IPv4 block that starts at `start` with the given prefix length */
+export function ipv4RangeEnd(start: number, prefixLen: number): number {
+  if (prefixLen >= 32) return start;
+  if (prefixLen <= 0) return 0xffffffff;
+  return (start | (0xffffffff >>> prefixLen)) >>> 0;
+}
+
+/** Last address of the IPv6 block that starts at `startHex` (32 hex chars), as 32 hex chars */
+export function ipv6HexRangeEnd(startHex: string, prefixLen: number): string {
+  const nibbles = startHex.split('');
+  const firstHostNibble = Math.floor(prefixLen / 4);
+  const partialBits = prefixLen % 4;
+
+  if (partialBits > 0 && firstHostNibble < 32) {
+    const mask = (0xf << (4 - partialBits)) & 0xf;
+    const value = parseInt(nibbles[firstHostNibble], 16);
+    nibbles[firstHostNibble] = ((value & mask) | (~mask & 0xf)).toString(16);
+  }
+
+  for (let i = firstHostNibble + (partialBits > 0 ? 1 : 0); i < 32; i++) {
+    nibbles[i] = 'f';
+  }
+
+  return nibbles.join('');
+}
+
+/** Format 32 hex chars as RFC 5952 text: longest zero run collapsed, leftmost wins ties */
+export function hexToIpv6(hex: string): string {
+  const groups: number[] = [];
+  for (let i = 0; i < 8; i++) {
+    groups.push(parseInt(hex.slice(i * 4, i * 4 + 4), 16));
+  }
+
+  let bestStart = -1;
+  let bestLength = 0;
+  for (let i = 0; i < 8; ) {
+    if (groups[i] !== 0) {
+      i++;
+      continue;
+    }
+    let j = i;
+    while (j < 8 && groups[j] === 0) j++;
+    if (j - i > bestLength) {
+      bestLength = j - i;
+      bestStart = i;
+    }
+    i = j;
+  }
+
+  const text = (values: number[]) => values.map((v) => v.toString(16)).join(':');
+  if (bestLength < 2) return text(groups);
+  return `${text(groups.slice(0, bestStart))}::${text(groups.slice(bestStart + bestLength))}`;
+}

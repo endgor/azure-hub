@@ -1,0 +1,5 @@
+# Parsed by Workers Static Assets, not served. Data files change at most once a day
+# (the daily workflow commits and redeploys), so an hour of browser caching is safe
+# and removes a conditional request per file on every page load.
+/data/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400

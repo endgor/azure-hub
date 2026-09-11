@@ -7,7 +7,9 @@ on:
   workflow_dispatch:
     # Allow manual triggering
 
-# This workflow updates both Azure IP ranges and RBAC role definitions
+# This workflow updates both Azure IP ranges and RBAC role definitions.
+# Each fetch step may fail on its own: whatever succeeded is still committed and
+# deployed, and the final step turns the run red so the failure is not missed.
 # Required GitHub secrets:
 # - AZURE_CLIENT_ID
 # - AZURE_CLIENT_SECRET
@@ -41,12 +43,18 @@ jobs:
         run: npm ci
 
       - name: Update Azure IP data
+        id: ip
+        continue-on-error: true
         run: npm run update-ip-data
 
       - name: Update Private DNS zone data
+        id: dns
+        continue-on-error: true
         run: npm run update-private-dns-zones
 
       - name: Update Azure VM pricing data
+        id: vm-pricing
+        continue-on-error: true
         run: npm run update-vm-pricing
 
       - name: Build Azure credentials JSON
@@ -68,10 +76,14 @@ jobs:
           creds: ${{ env.AZURE_CREDENTIALS }}
 
       - name: Update Azure RBAC data
+        id: rbac
+        continue-on-error: true
         run: npm run update-rbac-data
 
       # Needs an authenticated subscription: VM specs come from Microsoft.Compute/skus.
       - name: Update Azure VM SKU specs
+        id: vm-specs
+        continue-on-error: true
         run: npm run update-vm-specs
 
       # Committed file; refresh here or it drifts behind public/data.
@@ -100,3 +112,14 @@ jobs:
       - name: Submit URLs to IndexNow
         if: steps.commit.outputs.changes == 'true'
         run: npm run submit-indexnow -- --changed
+
+      - name: Fail the run if any fetch step failed
+        if: |
+          steps.ip.outcome == 'failure' ||
+          steps.dns.outcome == 'failure' ||
+          steps.vm-pricing.outcome == 'failure' ||
+          steps.rbac.outcome == 'failure' ||
+          steps.vm-specs.outcome == 'failure'
+        run: |
+          echo "::error::One or more data fetch steps failed: ip=${{ steps.ip.outcome }} dns=${{ steps.dns.outcome }} vm-pricing=${{ steps.vm-pricing.outcome }} rbac=${{ steps.rbac.outcome }} vm-specs=${{ steps.vm-specs.outcome }}"
+          exit 1
