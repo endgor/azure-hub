@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import net from 'node:net';
-import { checkIpAddress, searchAzureIpAddresses } from '@/lib/serverIpService';
+import { checkIpAddress, searchAzureIpAddresses, type ServerDataLoadOptions } from '@/lib/serverIpService';
+import { readEdgeCache, writeEdgeCache } from '@/lib/edgeCache';
 import type { AzureIpAddress } from '@/types/azure';
 
 interface IpLookupResponse {
@@ -15,6 +16,10 @@ interface IpLookupResponse {
   notFound?: boolean;
   message?: string;
 }
+
+/** The index only changes with the daily data commit, so an hour of edge caching is safe. */
+const EDGE_CACHE_TTL_SECONDS = 3600;
+const BROWSER_CACHE_SECONDS = 300;
 
 /**
  * Check if a string is an IP address or CIDR notation.
@@ -41,13 +46,13 @@ function isHostname(input: string): boolean {
  * Deduplicate Azure IP address results
  */
 function deduplicateResults(results: AzureIpAddress[]): AzureIpAddress[] {
-  return results.filter(
-    (item, index, array) =>
-      index ===
-      array.findIndex(
-        (t) => t.ipAddressPrefix === item.ipAddressPrefix && t.serviceTagId === item.serviceTagId
-      )
-  );
+  const seen = new Set<string>();
+  return results.filter((item) => {
+    const key = `${item.ipAddressPrefix}|${item.serviceTagId}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function getBaseUrl(req: NextApiRequest): string {
@@ -99,15 +104,74 @@ async function resolveHostname(hostname: string): Promise<string[]> {
   return Array.from(new Set(resolved.flat()));
 }
 
-/**
- * Server-side API endpoint for IP lookups.
- *
- * Benefits over client-side approach:
- * - No 4MB download to browser
- * - Server-side CIDR matching (faster)
- * - Shared cache across all users
- * - Rate limited to prevent abuse
- */
+interface LookupQuery {
+  ipOrDomain?: string;
+  region?: string;
+  service?: string;
+}
+
+/** A free-text term matches either service tags or regions */
+async function searchByName(term: string, loadOptions: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
+  const [serviceResults, regionResults] = await Promise.all([
+    searchAzureIpAddresses({ service: term }, loadOptions),
+    searchAzureIpAddresses({ region: term }, loadOptions)
+  ]);
+  return deduplicateResults([...serviceResults, ...regionResults]);
+}
+
+async function lookupHostname(hostname: string, loadOptions: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
+  let ipAddresses: string[];
+  try {
+    ipAddresses = await resolveHostname(hostname);
+  } catch {
+    return searchByName(hostname, loadOptions);
+  }
+
+  if (ipAddresses.length === 0) {
+    return searchByName(hostname, loadOptions);
+  }
+
+  const perIp = await Promise.all(
+    ipAddresses.map(async (resolvedIp) => {
+      const matches = await checkIpAddress(resolvedIp, loadOptions);
+      return matches.map((match) => ({ ...match, resolvedFrom: hostname, resolvedIp }));
+    })
+  );
+  return perIp.flat();
+}
+
+async function performLookup(query: LookupQuery, loadOptions: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
+  const { ipOrDomain, region, service } = query;
+
+  if (!ipOrDomain) {
+    return searchAzureIpAddresses({ region, service }, loadOptions);
+  }
+  if (isIpOrCidr(ipOrDomain)) {
+    return checkIpAddress(ipOrDomain, loadOptions);
+  }
+  if (isHostname(ipOrDomain)) {
+    return lookupHostname(ipOrDomain, loadOptions);
+  }
+  return searchByName(ipOrDomain, loadOptions);
+}
+
+function buildResponse(results: AzureIpAddress[], query: LookupQuery): IpLookupResponse {
+  if (results.length === 0) {
+    return {
+      notFound: true,
+      message: 'No Azure IP ranges found matching your search criteria',
+      results: [],
+      total: 0,
+      query
+    };
+  }
+  return { results, total: results.length, query };
+}
+
+function queryParam(value: string | string[] | undefined): string | undefined {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IpLookupResponse>
@@ -120,93 +184,42 @@ export default async function handler(
     });
   }
 
-  const { ipOrDomain, region, service } = req.query;
+  const query: LookupQuery = {
+    ipOrDomain: queryParam(req.query.ipOrDomain),
+    region: queryParam(req.query.region),
+    service: queryParam(req.query.service)
+  };
 
   try {
     const baseUrl = getBaseUrl(req);
-    let results: AzureIpAddress[] = [];
+    const loadOptions: ServerDataLoadOptions = { baseUrl };
 
-    if (ipOrDomain && typeof ipOrDomain === 'string') {
-      // Check if it's an IP address or CIDR
-      if (isIpOrCidr(ipOrDomain)) {
-        results = await checkIpAddress(ipOrDomain, { baseUrl });
-      }
-      // Check if it's a hostname that needs DNS resolution
-      else if (isHostname(ipOrDomain)) {
-        try {
-          const ipAddresses = await resolveHostname(ipOrDomain);
+    // DNS answers change independently of our data, so hostname lookups are never cached.
+    const cacheable = !(query.ipOrDomain && isHostname(query.ipOrDomain));
+    const cacheKey = `${baseUrl}/api/ipLookup?${new URLSearchParams(
+      Object.entries(query).filter((entry): entry is [string, string] => Boolean(entry[1]))
+    ).toString()}`;
 
-          if (ipAddresses.length > 0) {
-            // Check each resolved IP in parallel
-            const matchPromises = ipAddresses.map(async (resolvedIp: string) => {
-              const matches = await checkIpAddress(resolvedIp, { baseUrl });
-              // Tag each result with DNS info
-              matches.forEach(match => {
-                match.resolvedFrom = ipOrDomain;
-                match.resolvedIp = resolvedIp;
-              });
-              return matches;
-            });
+    res.setHeader('Cache-Control', `public, max-age=${BROWSER_CACHE_SECONDS}`);
 
-            results = (await Promise.all(matchPromises)).flat();
-          } else {
-            // No DNS results, fall back to service/region search
-            const [serviceResults, regionResults] = await Promise.all([
-              searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
-              searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
-            ]);
-            results = deduplicateResults([...serviceResults, ...regionResults]);
-          }
-        } catch {
-          // DNS lookup failed, fall back to service/region search
-          const [serviceResults, regionResults] = await Promise.all([
-            searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
-            searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
-          ]);
-          results = deduplicateResults([...serviceResults, ...regionResults]);
-        }
+    if (cacheable) {
+      const cached = await readEdgeCache<IpLookupResponse>(cacheKey);
+      if (cached) {
+        res.setHeader('X-Edge-Cache', 'HIT');
+        return res.status(200).json(cached);
       }
-      // Otherwise treat as service/region search
-      else {
-        const [serviceResults, regionResults] = await Promise.all([
-          searchAzureIpAddresses({ service: ipOrDomain }, { baseUrl }),
-          searchAzureIpAddresses({ region: ipOrDomain }, { baseUrl })
-        ]);
-        results = deduplicateResults([...serviceResults, ...regionResults]);
-      }
-    } else {
-      // Search by region and/or service
-      results = await searchAzureIpAddresses({
-        region: typeof region === 'string' ? region : undefined,
-        service: typeof service === 'string' ? service : undefined
-      }, { baseUrl });
     }
 
-    if (results.length === 0) {
-      return res.status(200).json({
-        notFound: true,
-        message: 'No Azure IP ranges found matching your search criteria',
-        results: [],
-        total: 0,
-        query: {
-          ipOrDomain: typeof ipOrDomain === 'string' ? ipOrDomain : undefined,
-          region: typeof region === 'string' ? region : undefined,
-          service: typeof service === 'string' ? service : undefined
-        }
-      });
+    const payload = buildResponse(await performLookup(query, loadOptions), query);
+
+    if (cacheable && (await writeEdgeCache(cacheKey, payload, EDGE_CACHE_TTL_SECONDS))) {
+      res.setHeader('X-Edge-Cache', 'MISS');
     }
 
-    return res.status(200).json({
-      results,
-      total: results.length,
-      query: {
-        ipOrDomain: typeof ipOrDomain === 'string' ? ipOrDomain : undefined,
-        region: typeof region === 'string' ? region : undefined,
-        service: typeof service === 'string' ? service : undefined
-      }
-    });
+    return res.status(200).json(payload);
   } catch (error) {
     console.error('IP lookup error:', error);
+    res.removeHeader('Cache-Control');
     return res.status(500).json({
       results: [],
       total: 0,

@@ -1,30 +1,19 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import { AzureIpAddress, AzureCloudName } from '../types/azure';
-import { matchesSearchTerm } from './utils/searchMatcher';
+import type { AzureIpAddress } from '../types/azure';
 import { CACHE_TTL_MS } from '@/config/constants';
-import { ipv4ToUint32, ipv6ToHex, cidrToRange, isIPv6 } from './ipUtils';
+import {
+  lookupIpInIndex,
+  prepareIpLookupIndex,
+  searchIpIndex,
+  type IpLookupIndexFile,
+  type PreparedIpLookupIndex
+} from './ipLookupIndex';
 
 /**
- * Server-side IP service that loads Azure IP data from disk.
- * Uses a pre-built numeric index for O(log n) IP lookups via binary search.
- *
- * Benefits vs client-side approach:
- * - No large downloads to client (typical response < 10KB vs 4MB)
- * - Binary search on pre-computed numeric ranges (~5ms vs ~1000ms)
- * - Better caching across all users
- * - Reduced mobile data usage
+ * Server-side IP lookups for /api/ipLookup. Everything is answered from the
+ * pre-built lookup index; the raw multi-megabyte cloud files are never read here.
  */
-
-/** Per-cloud cache for Azure IP data (used by search/filter functions) */
-const cloudCache: Map<AzureCloudName, { data: AzureIpAddress[]; expiry: number }> = new Map();
-
-/** All Azure cloud environments to search */
-const ALL_CLOUDS: AzureCloudName[] = [
-  AzureCloudName.AzureCloud,
-  AzureCloudName.AzureChinaCloud,
-  AzureCloudName.AzureUSGovernment
-];
 
 export interface SearchOptions {
   region?: string;
@@ -35,50 +24,10 @@ export interface ServerDataLoadOptions {
   baseUrl?: string;
 }
 
-// --- Lookup Index Types ---
+const INDEX_PATH = '/data/ip-lookup-index.json';
 
-interface MetaEntry {
-  t: string; // serviceTagId
-  r: string; // region
-  ri: string; // regionId
-  s: string; // systemService
-  n: string; // networkFeatures
-  c: string; // cloud name
-}
-
-interface IPv6Entry {
-  s: string; // start hex
-  e: string; // end hex
-  m: number; // meta index
-  c: string; // original CIDR
-}
-
-interface IpLookupIndex {
-  version: number;
-  meta: MetaEntry[];
-  ipv4: number[];
-  ipv4Cidrs: string[];
-  ipv4MaxSpan: number;
-  ipv6: IPv6Entry[];
-  ipv6MinPrefix: number; // smallest prefix length across all IPv6 CIDRs
-}
-
-interface ServiceTagDocument {
-  values?: Array<{
-    name: string;
-    properties?: {
-      addressPrefixes?: string[];
-      systemService?: string;
-      region?: string;
-      regionId?: string | number;
-      networkFeatures?: string[];
-    };
-  }>;
-}
-
-// --- Lookup Index Cache ---
-
-let lookupIndexCache: { data: IpLookupIndex; expiry: number } | null = null;
+let indexCache: { data: PreparedIpLookupIndex; expiry: number } | null = null;
+let indexInflight: Promise<PreparedIpLookupIndex> | null = null;
 
 interface CloudflareAssetsBinding {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
@@ -137,323 +86,40 @@ async function loadJsonAsset<T>(assetPath: string, options?: ServerDataLoadOptio
   return JSON.parse(content) as T;
 }
 
-async function loadLookupIndex(options?: ServerDataLoadOptions): Promise<IpLookupIndex | null> {
+/** Loads and prepares the index once; concurrent callers share the same load. */
+function loadIndex(options?: ServerDataLoadOptions): Promise<PreparedIpLookupIndex> {
   const now = Date.now();
-  if (lookupIndexCache && lookupIndexCache.expiry > now) {
-    return lookupIndexCache.data;
+  if (indexCache && indexCache.expiry > now) {
+    return Promise.resolve(indexCache.data);
+  }
+  if (indexInflight) {
+    return indexInflight;
   }
 
-  try {
-    const data = await loadJsonAsset<IpLookupIndex>('/data/ip-lookup-index.json', options);
-    lookupIndexCache = { data, expiry: now + CACHE_TTL_MS };
-    return data;
-  } catch (error) {
-    console.warn(
-      'Failed to load IP lookup index, falling back to linear scan:',
-      error instanceof Error ? error.message : error
-    );
-    return null;
-  }
+  indexInflight = loadJsonAsset<IpLookupIndexFile>(INDEX_PATH, options)
+    .then((file) => {
+      const data = prepareIpLookupIndex(file);
+      indexCache = { data, expiry: Date.now() + CACHE_TTL_MS };
+      return data;
+    })
+    .finally(() => {
+      indexInflight = null;
+    });
+
+  return indexInflight;
 }
 
-// --- Binary Search Lookup ---
-
-function metaToAzureIpAddress(m: MetaEntry, cidr: string): AzureIpAddress {
-  return {
-    serviceTagId: m.t,
-    ipAddressPrefix: cidr,
-    region: m.r,
-    regionId: m.ri,
-    systemService: m.s,
-    networkFeatures: m.n,
-    cloud: m.c as AzureCloudName,
-  };
-}
-
-/**
- * Binary search: find rightmost index where ipv4[i*3] <= target.
- * Returns -1 if all starts are greater than target.
- */
-function upperBoundIpv4(ipv4: number[], target: number, count: number): number {
-  let lo = 0;
-  let hi = count - 1;
-  let result = -1;
-  while (lo <= hi) {
-    const mid = (lo + hi) >>> 1;
-    if (ipv4[mid * 3] <= target) {
-      result = mid;
-      lo = mid + 1;
-    } else {
-      hi = mid - 1;
-    }
-  }
-  return result;
-}
-
-function lookupIpv4Single(index: IpLookupIndex, ipNum: number): AzureIpAddress[] {
-  const { ipv4, ipv4Cidrs, ipv4MaxSpan, meta } = index;
-  const count = ipv4Cidrs.length;
-  const matches: AzureIpAddress[] = [];
-
-  const rightmost = upperBoundIpv4(ipv4, ipNum, count);
-  if (rightmost < 0) return matches;
-
-  // Scan backward from rightmost, collecting matches
-  for (let i = rightmost; i >= 0; i--) {
-    const start = ipv4[i * 3];
-    const end = ipv4[i * 3 + 1];
-
-    // Early termination: if ipNum - start exceeds max span, no prior range can contain ipNum
-    if (ipNum - start > ipv4MaxSpan) break;
-
-    if (end >= ipNum) {
-      const metaIdx = ipv4[i * 3 + 2];
-      matches.push(metaToAzureIpAddress(meta[metaIdx], ipv4Cidrs[i]));
-    }
-  }
-
-  return matches;
-}
-
-function lookupIpv4Cidr(index: IpLookupIndex, qStart: number, qEnd: number): AzureIpAddress[] {
-  const { ipv4, ipv4Cidrs, ipv4MaxSpan, meta } = index;
-  const count = ipv4Cidrs.length;
-  const matches: AzureIpAddress[] = [];
-
-  // Find Azure ranges that fully contain the queried CIDR: start <= qStart AND end >= qEnd
-  const rightmost = upperBoundIpv4(ipv4, qStart, count);
-  if (rightmost < 0) return matches;
-
-  for (let i = rightmost; i >= 0; i--) {
-    const start = ipv4[i * 3];
-    const end = ipv4[i * 3 + 1];
-
-    if (qStart - start > ipv4MaxSpan) break;
-
-    if (start <= qStart && end >= qEnd) {
-      const metaIdx = ipv4[i * 3 + 2];
-      matches.push(metaToAzureIpAddress(meta[metaIdx], ipv4Cidrs[i]));
-    }
-  }
-
-  return matches;
-}
-
-/**
- * Binary search on IPv6 entries: find rightmost index where entry.s <= target.
- */
-function upperBoundIpv6(entries: IPv6Entry[], target: string): number {
-  let lo = 0;
-  let hi = entries.length - 1;
-  let result = -1;
-  while (lo <= hi) {
-    const mid = (lo + hi) >>> 1;
-    if (entries[mid].s <= target) {
-      result = mid;
-      lo = mid + 1;
-    } else {
-      hi = mid - 1;
-    }
-  }
-  return result;
-}
-
-function lookupIpv6Single(index: IpLookupIndex, ipHex: string): AzureIpAddress[] {
-  const { ipv6, meta, ipv6MinPrefix } = index;
-  const matches: AzureIpAddress[] = [];
-
-  const rightmost = upperBoundIpv6(ipv6, ipHex);
-  if (rightmost < 0) return matches;
-
-  // Early termination: compare the first N hex chars that are guaranteed
-  // fixed within any range, derived from the broadest prefix in the dataset.
-  // For a /N prefix, the first floor(N/4) hex chars of start are invariant.
-  const safeChars = Math.floor(ipv6MinPrefix / 4);
-  const ipPrefix = safeChars > 0 ? ipHex.substring(0, safeChars) : '';
-
-  for (let i = rightmost; i >= 0; i--) {
-    const entry = ipv6[i];
-    if (entry.e >= ipHex) {
-      matches.push(metaToAzureIpAddress(meta[entry.m], entry.c));
-    }
-    if (safeChars > 0 && ipPrefix > entry.s.substring(0, safeChars)) break;
-  }
-
-  return matches;
-}
-
-function lookupIpv6Cidr(index: IpLookupIndex, qStartHex: string, qEndHex: string): AzureIpAddress[] {
-  const { ipv6, meta, ipv6MinPrefix } = index;
-  const matches: AzureIpAddress[] = [];
-
-  const rightmost = upperBoundIpv6(ipv6, qStartHex);
-  if (rightmost < 0) return matches;
-
-  const safeChars = Math.floor(ipv6MinPrefix / 4);
-  const qPrefix = safeChars > 0 ? qStartHex.substring(0, safeChars) : '';
-
-  for (let i = rightmost; i >= 0; i--) {
-    const entry = ipv6[i];
-    if (entry.s <= qStartHex && entry.e >= qEndHex) {
-      matches.push(metaToAzureIpAddress(meta[entry.m], entry.c));
-    }
-    if (safeChars > 0 && qPrefix > entry.s.substring(0, safeChars)) break;
-  }
-
-  return matches;
-}
-
-async function checkIpAddressWithIndex(index: IpLookupIndex, ipAddress: string): Promise<AzureIpAddress[]> {
-  const isCidr = ipAddress.includes('/');
-
-  if (isCidr) {
-    const range = cidrToRange(ipAddress);
-    if (range.isV6) {
-      return lookupIpv6Cidr(index, range.start as string, range.end as string);
-    } else {
-      return lookupIpv4Cidr(index, range.start as number, range.end as number);
-    }
-  }
-
-  if (isIPv6(ipAddress)) {
-    const hex = ipv6ToHex(ipAddress);
-    return lookupIpv6Single(index, hex);
-  } else {
-    const num = ipv4ToUint32(ipAddress);
-    return lookupIpv4Single(index, num);
-  }
-}
-
-// --- Raw Data Functions (used by search/filter/service tags) ---
-
-/**
- * Loads Azure IP data for a specific cloud from the filesystem.
- * Caches in memory for 6 hours to avoid repeated file reads.
- */
-async function loadAzureIpData(cloud: AzureCloudName, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
-  const now = Date.now();
-  const cached = cloudCache.get(cloud);
-
-  if (cached && cached.expiry > now) {
-    return cached.data;
-  }
-
-  try {
-    const data = await loadJsonAsset<ServiceTagDocument>(
-      `/data/${cloud}.json`,
-      options
-    );
-    const ipRanges: AzureIpAddress[] = [];
-
-    if (data.values && Array.isArray(data.values)) {
-      for (const serviceTag of data.values) {
-        const { name: serviceTagId, properties } = serviceTag;
-        const { addressPrefixes = [], systemService, region, regionId, networkFeatures } = properties || {};
-
-        for (const ipRange of addressPrefixes) {
-          ipRanges.push({
-            serviceTagId,
-            ipAddressPrefix: ipRange,
-            region: region || '',
-            regionId: regionId?.toString() || '',
-            systemService: systemService || '',
-            networkFeatures: networkFeatures?.join(', ') || '',
-            cloud
-          });
-        }
-      }
-    }
-
-    cloudCache.set(cloud, { data: ipRanges, expiry: now + CACHE_TTL_MS });
-
-    return ipRanges;
-  } catch (error) {
-    throw new Error(`Failed to load Azure IP data for ${cloud}: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
-}
-
-/**
- * Loads IP data from all Azure clouds (Public, China, Government).
- * Each cloud is loaded in parallel for performance.
- */
-async function loadAllCloudsIpData(options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
-  const results = await Promise.all(ALL_CLOUDS.map((cloud) => loadAzureIpData(cloud, options)));
-  return results.flat();
-}
-
-// --- Fallback: Linear scan using ip-cidr (used if index fails to load) ---
-
-async function checkIpAddressFallback(ipAddress: string, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
-  // Dynamic import to avoid bundling ip-cidr when the index is available
-  const IPCIDR = (await import('ip-cidr')).default;
-  const azureIpRanges = await loadAllCloudsIpData(options);
-  const matches: AzureIpAddress[] = [];
-
-  for (const azureIpRange of azureIpRanges) {
-    try {
-      const cidr = new IPCIDR(azureIpRange.ipAddressPrefix);
-      if (cidr.contains(ipAddress)) {
-        matches.push({ ...azureIpRange });
-      }
-    } catch {
-      continue;
-    }
-  }
-
-  return matches;
-}
-
-// --- Public API ---
-
-/**
- * Checks if an IP address or CIDR belongs to Azure by using the pre-built
- * numeric index with binary search. Falls back to linear IPCIDR scan if
- * the index is unavailable.
- */
+/** Azure ranges containing the given IP address or CIDR block */
 export async function checkIpAddress(ipAddress: string, options?: ServerDataLoadOptions): Promise<AzureIpAddress[]> {
-  const index = await loadLookupIndex(options);
-  if (index) {
-    return checkIpAddressWithIndex(index, ipAddress);
-  }
-  return checkIpAddressFallback(ipAddress, options);
+  const index = await loadIndex(options);
+  return lookupIpInIndex(index, ipAddress);
 }
 
-/**
- * Searches Azure IP ranges by region and/or service name
- * across all Azure clouds (Public, China, Government).
- */
+/** Azure ranges whose service tag matches a region and/or service name, across all clouds */
 export async function searchAzureIpAddresses(
   options: SearchOptions,
   loadOptions?: ServerDataLoadOptions
 ): Promise<AzureIpAddress[]> {
-  const regionFilter = options.region?.trim();
-  const serviceFilter = options.service?.trim();
-  const hasRegionFilter = Boolean(regionFilter);
-  const hasServiceFilter = Boolean(serviceFilter);
-
-  if (!hasRegionFilter && !hasServiceFilter) {
-    return [];
-  }
-
-  const azureIpAddressList = await loadAllCloudsIpData(loadOptions);
-  if (!azureIpAddressList || azureIpAddressList.length === 0) {
-    return [];
-  }
-
-  let results = azureIpAddressList;
-
-  if (hasRegionFilter && regionFilter) {
-    results = results.filter(ip => matchesSearchTerm(ip.region, regionFilter));
-  }
-
-  if (hasServiceFilter && serviceFilter) {
-    results = results.filter(ip => {
-      if (ip.systemService && matchesSearchTerm(ip.systemService, serviceFilter)) {
-        return true;
-      }
-      return matchesSearchTerm(ip.serviceTagId, serviceFilter);
-    });
-  }
-
-  return results.map(ip => ({ ...ip }));
+  const index = await loadIndex(loadOptions);
+  return searchIpIndex(index, options);
 }
