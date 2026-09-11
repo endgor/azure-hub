@@ -41894,5 +41894,74 @@
     "permissionCount": 5,
     "dataActions": [],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-10T15:47:25.710762+00:00",
+    "description": "Allows access and configuration updates to Azure Firewall for Containers.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/3060977b-24b3-41d4-89d2-3c9b2c426041",
+    "name": "3060977b-24b3-41d4-89d2-3c9b2c426041",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Network/azureFirewalls/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Firewall for Containers Configuration Manager",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-10T15:47:25.710762+00:00",
+    "permissionCount": 1,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-10T15:47:25.707761+00:00",
+    "description": "Allows read/write access to all objects in an Azure AI Manager namespace, except Secrets, roles, and role bindings. Applying this role at the AI Manager scope will give access across all namespaces.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/e2845093-d729-45cd-9f6e-a337c027d655",
+    "name": "e2845093-d729-45cd-9f6e-a337c027d655",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Authorization/*/read",
+          "Microsoft.Resources/subscriptions/operationresults/read",
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.ContainerService/aiManagers/*"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure AIManager and namespace RBAC Admin",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-10T15:47:25.707761+00:00",
+    "permissionCount": 669.6666666666666,
+    "dataActions": [
+      "Microsoft.ContainerService/aiManagers/*"
+    ],
+    "notDataActions": []
   }
 ]
