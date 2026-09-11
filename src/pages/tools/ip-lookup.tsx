@@ -171,7 +171,7 @@ export default function IpLookupPage() {
           </p>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">Azure IP Lookup</h1>
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
-            Search Azure public IP ranges across all service tags and regions. Lookup IP addresses, CIDR blocks, or hostnames to identify Azure services and network boundaries.
+            Search Azure public IP ranges across all service tags and regions. Look up an IP address, CIDR block, or FQDN such as mystorage.file.core.windows.net to identify the Azure service and network boundary behind it.
           </p>
         </div>
 

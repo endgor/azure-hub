@@ -59,14 +59,14 @@ const LookupForm = memo(function LookupForm({
     return (
       <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Azure IP Lookup">
         <label className="sr-only" htmlFor="search-query">
-          Search Azure IP addresses, services, or regions
+          Search Azure IP addresses, FQDNs, services, or regions
         </label>
         <SearchInput
           id="search-query"
           name="search-query"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search IP, CIDR (e.g. 4.149.64.0/19), Service (e.g. ActionGroup), or Region..."
+          placeholder="Search IP, CIDR (e.g. 4.149.64.0/19), FQDN (e.g. mystorage.blob.core.windows.net), Service (e.g. ActionGroup), or Region..."
           maxWidth="full"
           isLoading={isLoading}
           aria-label="Search query"
