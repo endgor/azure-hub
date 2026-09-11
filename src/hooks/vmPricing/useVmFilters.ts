@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
-import { resolvePrice, getSavingsFraction } from '@/lib/vmPricing/pricing';
 import {
   EMPTY_VM_FILTERS,
+  buildVmRow,
+  compareVmRows,
   buildArchitectureFacets,
   buildCategoryFacets,
   buildFeatureFacets,
@@ -9,11 +10,12 @@ import {
   buildSeriesFacets,
   buildVcpuPresetCounts,
   countActiveFilters,
-  getEffectiveVcpus,
   rowMatches,
   type VmFilterState,
   type VmPriceContext,
-  type VmRow
+  type VmRow,
+  type VmSortDirection,
+  type VmSortKey
 } from '@/lib/vmPricing/filtering';
 import type { VmOperatingSystem, VmPriceMode, VmRegionPrices, VmSkuSpec } from '@/types/vmPricing';
 
@@ -23,10 +25,16 @@ export {
   VCPU_PRESETS,
   MEMORY_PRESETS
 } from '@/lib/vmPricing/filtering';
-export type { VmFilterState, VmFeature, VmRow, FacetOption, PresetCount, VmPriceUnit } from '@/lib/vmPricing/filtering';
-
-export type VmSortKey = 'sku' | 'series' | 'vcpus' | 'memory' | 'price' | 'pricePerVcpu' | 'pricePerGB' | 'savings';
-export type VmSortDirection = 'asc' | 'desc';
+export type {
+  VmFilterState,
+  VmFeature,
+  VmRow,
+  FacetOption,
+  PresetCount,
+  VmPriceUnit,
+  VmSortKey,
+  VmSortDirection
+} from '@/lib/vmPricing/filtering';
 
 interface UseVmFiltersOptions {
   specs: VmSkuSpec[];
@@ -83,23 +91,7 @@ export function useVmFilters({
 
   const rows = useMemo<VmRow[]>(() => {
     const prices = regionPrices?.prices;
-
-    return regionalSpecs.map((spec) => {
-      const packed = prices?.[spec.sku];
-      const resolved = resolvePrice(packed, os, priceMode);
-      const hourly = resolved?.hourly ?? null;
-      const vcpus = getEffectiveVcpus(spec);
-
-      return {
-        spec,
-        packed,
-        hourly,
-        estimated: resolved?.estimated ?? false,
-        savings: getSavingsFraction(packed, os, priceMode),
-        pricePerVcpu: hourly !== null && vcpus ? hourly / vcpus : null,
-        pricePerGB: hourly !== null && spec.memoryGB ? hourly / spec.memoryGB : null
-      };
-    });
+    return regionalSpecs.map((spec) => buildVmRow(spec, prices?.[spec.sku], os, priceMode));
   }, [regionalSpecs, regionPrices, os, priceMode]);
 
   const availableCategories = useMemo(
@@ -120,40 +112,10 @@ export function useVmFilters({
     [regionalSpecs]
   );
 
-  const filteredRows = useMemo(() => {
-    const result = rows.filter((row) => rowMatches(row, filters, null, priceContext));
-    const direction = sortDirection === 'asc' ? 1 : -1;
-
-    const compareNullableNumbers = (a: number | null, b: number | null): number => {
-      // Unpriced or unknown values always sort last, whichever direction is active.
-      if (a === null && b === null) return 0;
-      if (a === null) return 1;
-      if (b === null) return -1;
-      return (a - b) * direction;
-    };
-
-    return result.sort((a, b) => {
-      switch (sortKey) {
-        case 'sku':
-          return a.spec.sku.localeCompare(b.spec.sku) * direction;
-        case 'series':
-          return (a.spec.series.localeCompare(b.spec.series) || a.spec.sku.localeCompare(b.spec.sku)) * direction;
-        case 'vcpus':
-          return compareNullableNumbers(getEffectiveVcpus(a.spec), getEffectiveVcpus(b.spec));
-        case 'memory':
-          return compareNullableNumbers(a.spec.memoryGB, b.spec.memoryGB);
-        case 'pricePerVcpu':
-          return compareNullableNumbers(a.pricePerVcpu, b.pricePerVcpu);
-        case 'pricePerGB':
-          return compareNullableNumbers(a.pricePerGB, b.pricePerGB);
-        case 'savings':
-          return compareNullableNumbers(a.savings, b.savings);
-        case 'price':
-        default:
-          return compareNullableNumbers(a.hourly, b.hourly);
-      }
-    });
-  }, [rows, filters, sortKey, sortDirection, priceContext]);
+  const filteredRows = useMemo(
+    () => rows.filter((row) => rowMatches(row, filters, null, priceContext)).sort(compareVmRows(sortKey, sortDirection)),
+    [rows, filters, sortKey, sortDirection, priceContext]
+  );
 
   const categoryFacets = useMemo(
     () => buildCategoryFacets(rows, filters, availableCategories, priceContext),

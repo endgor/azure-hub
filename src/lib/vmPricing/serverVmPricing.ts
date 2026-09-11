@@ -25,6 +25,7 @@ interface PricingData {
   catalog: VmSkuCatalog;
   /** SKU name to its prices in every region that lists it */
   bySku: Map<string, VmRegionPrice[]>;
+  byRegion: Map<string, Record<string, PackedVmPrices>>;
 }
 
 let cache: PricingData | null = null;
@@ -39,12 +40,14 @@ function load(): PricingData {
   const index = readJson<VmPricingIndex>(path.join(DATA_DIR, 'index.json'));
   const catalog = readJson<VmSkuCatalog>(path.join(DATA_DIR, 'skus.json'));
   const bySku = new Map<string, VmRegionPrice[]>();
+  const byRegion = new Map<string, Record<string, PackedVmPrices>>();
 
   for (const region of index.regions) {
     const file = path.join(DATA_DIR, 'prices', `${region.name}.json`);
     if (!fs.existsSync(file)) continue;
 
     const { prices } = readJson<{ prices: Record<string, PackedVmPrices> }>(file);
+    byRegion.set(region.name, prices);
 
     for (const [sku, packed] of Object.entries(prices)) {
       const entry: VmRegionPrice = {
@@ -64,12 +67,20 @@ function load(): PricingData {
     }
   }
 
-  cache = { index, catalog, bySku };
+  cache = { index, catalog, bySku, byRegion };
   return cache;
 }
 
 export function getPricingIndex(): VmPricingIndex {
   return load().index;
+}
+
+export function getSkuCatalog(): VmSkuCatalog {
+  return load().catalog;
+}
+
+export function getRegionPrices(region: string): Record<string, PackedVmPrices> | null {
+  return load().byRegion.get(region) ?? null;
 }
 
 /** Every SKU that has both a catalogue entry and at least one price. */

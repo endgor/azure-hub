@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { GetStaticProps } from 'next';
 import Layout from '@/components/Layout';
 import ErrorBox from '@/components/shared/ErrorBox';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
@@ -7,6 +8,7 @@ import ExportMenu, { type ExportOption } from '@/components/shared/ExportMenu';
 import VmPricingControls, { type VmPriceDisplay } from '@/components/vmPricing/VmPricingControls';
 import VmFilterPanel from '@/components/vmPricing/VmFilterPanel';
 import VmPricingTable from '@/components/vmPricing/VmPricingTable';
+import VmPricingStaticTable, { type VmStaticRow } from '@/components/vmPricing/VmPricingStaticTable';
 import VmComparisonPanel from '@/components/vmPricing/VmComparisonPanel';
 import VmCompareTray from '@/components/vmPricing/VmCompareTray';
 import VmComparisonDialog from '@/components/vmPricing/VmComparisonDialog';
@@ -15,6 +17,8 @@ import { useVmFilters } from '@/hooks/vmPricing/useVmFilters';
 import { useHoursPerMonth } from '@/hooks/vmPricing/useHoursPerMonth';
 import { useLocalStorageState } from '@/hooks/useLocalStorageState';
 import { getPriceModeLabel, HOURS_PER_MONTH } from '@/lib/vmPricing/pricing';
+import { EMPTY_VM_FILTERS, buildVmRow, compareVmRows, getEffectiveVcpus, rowMatches } from '@/lib/vmPricing/filtering';
+import { getDetailPageSkus, getPricingIndex, getRegionPrices, getSkuCatalog } from '@/lib/vmPricing/serverVmPricing';
 import { exportToCSV, exportToExcel, exportToMarkdown, type ExportRow } from '@/lib/exportUtils';
 import { getDateTimestamp } from '@/lib/filenameUtils';
 import type { VmCurrency, VmOperatingSystem, VmPriceMode } from '@/types/vmPricing';
@@ -23,7 +27,24 @@ const DEFAULT_REGION = 'westeurope';
 const PAGE_SIZE = 50;
 const MAX_COMPARISON = 4;
 
-export default function VmPricing() {
+interface VmPricingProps {
+  lastUpdated: string;
+  /** The default first-load view, prerendered so the HTML carries real rows and links. */
+  staticRows: VmStaticRow[];
+  staticCaption: string;
+  staticTotalCount: number;
+  skuCount: number;
+  regionCount: number;
+}
+
+export default function VmPricing({
+  lastUpdated,
+  staticRows,
+  staticCaption,
+  staticTotalCount,
+  skuCount,
+  regionCount
+}: VmPricingProps) {
   const [region, setRegion] = useLocalStorageState<string>('vm-pricing-region', DEFAULT_REGION);
   const [currency, setCurrency] = useLocalStorageState<VmCurrency>('vm-pricing-currency', 'USD');
   const [os, setOs] = useLocalStorageState<VmOperatingSystem>('vm-pricing-os', 'linux');
@@ -199,7 +220,12 @@ export default function VmPricing() {
             Look up what any Azure VM size costs, filter by the specs you actually need, and compare sizes side by side.
             Prices come from the Azure Retail Prices API and specifications from Azure resource SKUs.
           </p>
-          <LastUpdated date={index?.lastUpdated} />
+          <p className="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
+            The table covers {skuCount.toLocaleString('en-US')} VM sizes across {regionCount} Azure regions. Every size
+            has its own page listing its specifications and its Linux and Windows price in each region where it is
+            offered, for every pricing model.
+          </p>
+          <LastUpdated date={index?.lastUpdated ?? lastUpdated} />
         </div>
 
         {catalogueError ? (
@@ -216,9 +242,7 @@ export default function VmPricing() {
             </div>
           </ErrorBox>
         ) : isLoadingCatalogue || !index ? (
-          <div className="rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
-            <LoadingSpinner label="Loading VM catalogue..." />
-          </div>
+          <VmPricingStaticTable rows={staticRows} caption={staticCaption} totalCount={staticTotalCount} />
         ) : (
           <>
             <div className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
@@ -285,9 +309,13 @@ export default function VmPricing() {
                   </div>
                 </ErrorBox>
               ) : isLoadingPrices && !regionPrices ? (
-                <div className="rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
-                  <LoadingSpinner label={`Loading prices for ${activeRegion?.displayName ?? region}...`} />
-                </div>
+                region === DEFAULT_REGION ? (
+                  <VmPricingStaticTable rows={staticRows} caption={staticCaption} totalCount={staticTotalCount} />
+                ) : (
+                  <div className="rounded-2xl border border-slate-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-900">
+                    <LoadingSpinner label={`Loading prices for ${activeRegion?.displayName ?? region}...`} />
+                  </div>
+                )
               ) : (
                 <VmPricingTable
                   rows={filteredRows}
@@ -367,3 +395,39 @@ export default function VmPricing() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps<VmPricingProps> = async () => {
+  const index = getPricingIndex();
+  const prices = getRegionPrices(DEFAULT_REGION);
+  const regionIndex = index.regions.findIndex((entry) => entry.name === DEFAULT_REGION);
+  const region = index.regions[regionIndex];
+
+  const rows = getSkuCatalog()
+    .skus.filter((spec) => regionIndex === -1 || spec.regions.includes(regionIndex))
+    .map((spec) => buildVmRow(spec, prices?.[spec.sku], 'linux', 'payg'))
+    .filter((row) => rowMatches(row, EMPTY_VM_FILTERS, null))
+    .sort(compareVmRows('price', 'asc'));
+
+  return {
+    props: {
+      lastUpdated: index.lastUpdated,
+      staticRows: rows.slice(0, PAGE_SIZE).map(({ spec, hourly, estimated }) => ({
+        sku: spec.sku,
+        size: spec.size,
+        series: spec.series,
+        category: spec.category,
+        vcpus: getEffectiveVcpus(spec),
+        memoryGB: spec.memoryGB,
+        tempDiskGB: spec.tempDiskGB,
+        gpuCount: spec.gpuCount,
+        architecture: spec.architecture,
+        hourly,
+        estimated
+      })),
+      staticCaption: `${region?.displayName ?? DEFAULT_REGION} · Linux · ${getPriceModeLabel('payg')} · USD`,
+      staticTotalCount: rows.length,
+      skuCount: getDetailPageSkus().length,
+      regionCount: index.regions.length
+    }
+  };
+};
