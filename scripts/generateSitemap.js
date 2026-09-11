@@ -107,6 +107,21 @@ function getVmPricingSkus() {
 }
 
 /**
+ * Loads per-page lastmod dates maintained by scripts/trackContentChanges.ts. Without it every
+ * SKU and service tag URL falls back to the daily data refresh date.
+ * @returns {{vmSkus: Record<string, {lastmod: string}>, serviceTags: Record<string, {lastmod: string}>}}
+ */
+function getContentChanges() {
+  try {
+    const manifest = JSON.parse(fs.readFileSync(path.join(PUBLIC_DATA_DIR, 'content-changes.json'), 'utf8'));
+    return { vmSkus: manifest.vmSkus || {}, serviceTags: manifest.serviceTags || {} };
+  } catch {
+    console.warn('Warning: Could not read content-changes.json, using data refresh date for detail page lastmod');
+    return { vmSkus: {}, serviceTags: {} };
+  }
+}
+
+/**
  * Escapes XML special characters to prevent XML injection
  * @param {string} unsafe - String that may contain XML special characters
  * @returns {string} XML-safe string
@@ -145,7 +160,10 @@ function generateSitemap() {
   // Get base service tag pages (indexable reference pages)
   const baseServiceTags = getBaseServiceTags();
   const vmPricingSkus = getVmPricingSkus();
+  const contentChanges = getContentChanges();
+  const lastmodFor = entry => (entry && entry.lastmod ? new Date(entry.lastmod).toISOString() : dataLastUpdated);
   console.log(`Found ${baseServiceTags.length} base service tag pages`);
+  console.log(`Found ${vmPricingSkus.length} VM size pricing pages`);
 
   // Generate sitemap XML
   try {
@@ -235,14 +253,14 @@ ${guidePages.map(guide => `  <url>
   <!-- VM Size Pricing Pages -->
 ${vmPricingSkus.map(sku => `  <url>
     <loc>${escapeXml(`${BASE_URL}/tools/vm-pricing/${encodeURIComponent(sku)}/`)}</loc>
-    <lastmod>${dataLastUpdated}</lastmod>
+    <lastmod>${lastmodFor(contentChanges.vmSkus[sku])}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>`).join('\n')}
   <!-- Service Tag Reference Pages (base tags only) -->
 ${baseServiceTags.map(tag => `  <url>
     <loc>${escapeXml(`${BASE_URL}/tools/service-tags/${encodeURIComponent(tag)}/`)}</loc>
-    <lastmod>${dataLastUpdated}</lastmod>
+    <lastmod>${lastmodFor(contentChanges.serviceTags[tag])}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>`).join('\n')}
@@ -258,8 +276,9 @@ ${baseServiceTags.map(tag => `  <url>
     fs.writeFileSync(sitemapPath, sitemap);
 
     console.log(`✓ Sitemap generated successfully at ${sitemapPath}`);
-    const totalUrls = 11 + guidePages.length + baseServiceTags.length;
-    console.log(`  Total URLs: ${totalUrls} (11 core pages + ${guidePages.length} guides + ${baseServiceTags.length} service tags)`);
+    const totalUrls = (sitemap.match(/<loc>/g) || []).length;
+    const corePages = totalUrls - guidePages.length - vmPricingSkus.length - baseServiceTags.length;
+    console.log(`  Total URLs: ${totalUrls} (${corePages} core pages + ${guidePages.length} guides + ${vmPricingSkus.length} VM sizes + ${baseServiceTags.length} service tags)`);
 
   } catch (error) {
     console.error('Error generating sitemap:', error);

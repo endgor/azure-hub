@@ -78,6 +78,10 @@ jobs:
       - name: Regenerate site data
         run: npm run generate-site-data
 
+      # Per-page lastmod for sitemap and IndexNow; must run after every data step above.
+      - name: Track content changes
+        run: npm run track-content-changes
+
       - name: Commit and push if changed
         id: commit
         run: |
@@ -95,4 +99,4 @@ jobs:
 
       - name: Submit URLs to IndexNow
         if: steps.commit.outputs.changes == 'true'
-        run: npm run submit-indexnow -- --all
+        run: npm run submit-indexnow -- --changed
