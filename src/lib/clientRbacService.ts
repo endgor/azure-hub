@@ -1,5 +1,6 @@
 import { AzureRole, Operation, LeastPrivilegeInput, LeastPrivilegeResult } from '@/types/rbac';
-import { CACHE_TTL_MS, SEARCH } from '@/config/constants';
+import { SEARCH } from '@/config/constants';
+import { cachedJson } from '@/lib/cachedJson';
 import { calculatePermissionCount } from '@/lib/rbacUtils';
 import { matchesWildcard } from '@/lib/utils/wildcardMatcher';
 
@@ -9,36 +10,16 @@ interface ActionIndexEntry {
   roleCount: number;
 }
 
-let rolesCache: AzureRole[] | null = null;
-let rolesCacheExpiry = 0;
-
-let actionsCache: ActionIndexEntry[] | null = null;
-let actionsCacheExpiry = 0;
-
+/** Derived from the roles array, so it is keyed on that array's identity. */
 let actionSetsCache: {
+  roles: AzureRole[];
   controlActions: Set<string>;
   dataActions: Set<string>;
   dataActionPrefixes: Set<string>;
-  expiry: number;
 } | null = null;
 
-export async function loadRoleDefinitions(): Promise<AzureRole[]> {
-  const now = Date.now();
-
-  if (rolesCache && rolesCacheExpiry > now) {
-    return rolesCache;
-  }
-
-  const response = await fetch('/data/roles-extended.json');
-  if (!response.ok) {
-    throw new Error(`Failed to load role definitions: ${response.statusText}`);
-  }
-
-  const roles = await response.json() as AzureRole[];
-  rolesCache = roles;
-  rolesCacheExpiry = now + CACHE_TTL_MS;
-
-  return roles;
+export function loadRoleDefinitions(): Promise<AzureRole[]> {
+  return cachedJson<AzureRole[]>('/data/roles-extended.json');
 }
 
 export async function searchOperations(query: string): Promise<Operation[]> {
@@ -115,12 +96,11 @@ async function getKnownActionSets(): Promise<{
   dataActions: Set<string>;
   dataActionPrefixes: Set<string>;
 }> {
-  const now = Date.now();
-  if (actionSetsCache && actionSetsCache.expiry > now) {
+  const roles = await loadRoleDefinitions();
+  if (actionSetsCache && actionSetsCache.roles === roles) {
     return actionSetsCache;
   }
 
-  const roles = await loadRoleDefinitions();
   const controlActions = new Set<string>();
   const dataActions = new Set<string>();
 
@@ -150,10 +130,10 @@ async function getKnownActionSets(): Promise<{
   }
 
   actionSetsCache = {
+    roles,
     controlActions,
     dataActions,
     dataActionPrefixes,
-    expiry: now + CACHE_TTL_MS,
   };
 
   return actionSetsCache;
@@ -202,23 +182,8 @@ export async function preloadActionsCache(): Promise<void> {
   }
 }
 
-async function loadActionsIndex(): Promise<ActionIndexEntry[]> {
-  const now = Date.now();
-
-  if (actionsCache && actionsCacheExpiry > now) {
-    return actionsCache;
-  }
-
-  const response = await fetch('/data/actions-index.json');
-  if (!response.ok) {
-    throw new Error(`Failed to load actions index: ${response.statusText}`);
-  }
-
-  const actions = await response.json() as ActionIndexEntry[];
-  actionsCache = actions;
-  actionsCacheExpiry = now + CACHE_TTL_MS;
-
-  return actions;
+function loadActionsIndex(): Promise<ActionIndexEntry[]> {
+  return cachedJson<ActionIndexEntry[]>('/data/actions-index.json');
 }
 
 type MatchSpecificity = 'exact' | 'narrowWildcard' | 'broadWildcard' | 'fullWildcard';
