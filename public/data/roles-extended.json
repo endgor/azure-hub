@@ -1451,6 +1451,7 @@
         "actions": [
           "Microsoft.CognitiveServices/*/read",
           "Microsoft.CognitiveServices/accounts/listkeys/action",
+          "Microsoft.CognitiveServices/accounts/projects/connections/listsecrets/action",
           "Microsoft.Insights/alertRules/read",
           "Microsoft.Insights/diagnosticSettings/read",
           "Microsoft.Insights/logDefinitions/read",
@@ -1481,8 +1482,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-07-16T15:40:02.039042+00:00",
-    "permissionCount": 1342.8333333333333,
+    "updatedOn": "2026-09-17T15:43:50.176550+00:00",
+    "permissionCount": 1343.8333333333333,
     "dataActions": [
       "Microsoft.CognitiveServices/*"
     ],
@@ -29477,6 +29478,7 @@
           "Microsoft.Authorization/*/read",
           "Microsoft.CognitiveServices/*/read",
           "Microsoft.CognitiveServices/accounts/listkeys/action",
+          "Microsoft.CognitiveServices/accounts/projects/connections/listsecrets/action",
           "Microsoft.Insights/alertRules/read",
           "Microsoft.Insights/diagnosticSettings/read",
           "Microsoft.Insights/logDefinitions/read",
@@ -29507,8 +29509,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-07-16T15:40:02.040043+00:00",
-    "permissionCount": 2008.5,
+    "updatedOn": "2026-09-17T15:43:50.176550+00:00",
+    "permissionCount": 2009.5,
     "dataActions": [
       "Microsoft.CognitiveServices/*"
     ],
@@ -41286,6 +41288,7 @@
           "Microsoft.AzureStackHCI/edgeMachines/networkAdapters/jobs/read",
           "Microsoft.AzureStackHCI/edgeMachines/networkAdapters/jobs/write",
           "Microsoft.AzureStackHCI/edgeMachines/networkAdapters/jobs/delete",
+          "Microsoft.HybridCompute/machines/read",
           "Microsoft.Resources/subscriptions/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read"
         ],
@@ -41301,8 +41304,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-08-17T15:14:42.589815+00:00",
-    "permissionCount": 23,
+    "updatedOn": "2026-09-17T15:43:50.499797+00:00",
+    "permissionCount": 24,
     "dataActions": [],
     "notDataActions": []
   },
@@ -41331,6 +41334,7 @@
           "Microsoft.AzureStackHCI/edgeMachines/volumes/read",
           "Microsoft.AzureStackHCI/edgeMachines/networkAdapters/read",
           "Microsoft.AzureStackHCI/edgeMachines/networkAdapters/jobs/read",
+          "Microsoft.HybridCompute/machines/read",
           "Microsoft.Resources/subscriptions/read",
           "Microsoft.Resources/subscriptions/resourceGroups/read"
         ],
@@ -41346,8 +41350,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-08-17T15:14:42.709701+00:00",
-    "permissionCount": 15,
+    "updatedOn": "2026-09-17T15:43:50.499797+00:00",
+    "permissionCount": 16,
     "dataActions": [],
     "notDataActions": []
   },
