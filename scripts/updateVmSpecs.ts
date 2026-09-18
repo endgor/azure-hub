@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { execFileSync } from 'child_process';
+import { ClientSecretCredential, DefaultAzureCredential, type TokenCredential } from '@azure/identity';
 import { parseVmSize, getVmCategory, stripSkuTier } from '../src/lib/vmPricing/skuNaming';
 import type { VmSkuSpec, VmSkuCatalog, VmPricingIndex } from '../src/types/vmPricing';
 
@@ -44,27 +44,56 @@ function logDebug(...args: unknown[]): void {
   }
 }
 
-function az(args: string[]): string {
-  return execFileSync('az', args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }).trim();
+const ARM_SCOPE = process.env.ARM_SCOPE ?? 'https://management.azure.com/.default';
+
+let cachedCredential: TokenCredential | undefined;
+let cachedToken: { token: string; expiresOn: number } | undefined;
+
+/** Service principal in CI; anything DefaultAzureCredential finds (including `az login`) locally. */
+function getCredential(): TokenCredential {
+  if (cachedCredential) return cachedCredential;
+
+  const tenantId = process.env.AZURE_TENANT_ID;
+  const clientId = process.env.AZURE_CLIENT_ID;
+  const clientSecret = process.env.AZURE_CLIENT_SECRET;
+
+  cachedCredential =
+    tenantId && clientId && clientSecret
+      ? new ClientSecretCredential(tenantId, clientId, clientSecret, {
+          authorityHost: process.env.AZURE_AUTHORITY_HOST
+        })
+      : new DefaultAzureCredential();
+
+  return cachedCredential;
 }
 
-function checkAzureCli(): void {
-  try {
-    execFileSync('az', ['--version'], { stdio: 'ignore' });
-  } catch {
-    throw new Error('Azure CLI is not installed or not in PATH. Install it from https://aka.ms/azure-cli');
+/** Re-acquired near expiry: a full crawl of every region outlives a single ARM token. */
+async function getToken(): Promise<string> {
+  if (cachedToken && cachedToken.expiresOn > Date.now() + 60_000) return cachedToken.token;
+
+  const token = await getCredential().getToken(ARM_SCOPE);
+  if (!token) {
+    throw new Error(
+      'Could not acquire an ARM token. Set AZURE_TENANT_ID, AZURE_CLIENT_ID and AZURE_CLIENT_SECRET, ' +
+        'or run "az login".'
+    );
   }
 
-  try {
-    execFileSync('az', ['account', 'show'], { stdio: 'ignore' });
-  } catch {
-    throw new Error('Not logged into Azure. Run "az login" first.');
-  }
+  cachedToken = { token: token.token, expiresOn: token.expiresOnTimestamp };
+  return cachedToken.token;
 }
 
-async function fetchArmPage(url: string, token: string): Promise<ArmSkuResponse> {
+function getSubscriptionId(): string {
+  const subscriptionId = process.env.AZURE_SUBSCRIPTION_ID;
+  if (!subscriptionId) {
+    throw new Error('AZURE_SUBSCRIPTION_ID is not set; Microsoft.Compute/skus is queried at subscription scope.');
+  }
+  return subscriptionId;
+}
+
+async function fetchArmPage(url: string): Promise<ArmSkuResponse> {
   const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }
+    headers: { Authorization: `Bearer ${await getToken()}`, 'Content-Type': 'application/json' }
   });
 
   if (!response.ok) {
@@ -223,7 +252,8 @@ function readPricingIndex(): VmPricingIndex {
 }
 
 async function updateVmSpecs(): Promise<void> {
-  checkAzureCli();
+  const subscriptionId = getSubscriptionId();
+  await getToken();
 
   const index = readPricingIndex();
   console.info(`Indexing SKU availability against ${index.regions.length} priced regions`);
@@ -231,10 +261,8 @@ async function updateVmSpecs(): Promise<void> {
   const pricedRegions = readPricedRegions(index);
   console.info(`Found ${pricedRegions.size} priced SKUs across the generated price files`);
 
-  const subscriptionId = az(['account', 'show', '--query', 'id', '-o', 'tsv']);
-  const tenantId = az(['account', 'show', '--query', 'tenantId', '-o', 'tsv']);
-  const token = az(['account', 'get-access-token', '--query', 'accessToken', '-o', 'tsv']);
-  console.info(`Using subscription ${subscriptionId} (tenant ${tenantId})`);
+  const tenantId = process.env.AZURE_TENANT_ID;
+  console.info(`Using subscription ${subscriptionId}${tenantId ? ` (tenant ${tenantId})` : ''}`);
 
   const specs = new Map<string, ArmResourceSku>();
   let pages = 0;
@@ -248,7 +276,7 @@ async function updateVmSpecs(): Promise<void> {
     let regionSkuCount = 0;
 
     while (url) {
-      const page: ArmSkuResponse = await fetchArmPage(url, token);
+      const page: ArmSkuResponse = await fetchArmPage(url);
       pages++;
 
       for (const sku of page.value) {
