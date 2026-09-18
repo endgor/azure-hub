@@ -10,6 +10,8 @@ on:
 # This workflow updates both Azure IP ranges and RBAC role definitions.
 # Each fetch step may fail on its own: whatever succeeded is still committed and
 # deployed, and the final step turns the run red so the failure is not missed.
+# The Azure steps authenticate through @azure/identity using the AZURE_* env vars
+# below, so no azure/login step is needed.
 # Required GitHub secrets:
 # - AZURE_CLIENT_ID
 # - AZURE_CLIENT_SECRET
@@ -57,30 +59,12 @@ jobs:
         continue-on-error: true
         run: npm run update-vm-pricing
 
-      - name: Build Azure credentials JSON
-        run: |
-          creds=$(jq -nc \
-            --arg cid "$AZURE_CLIENT_ID" \
-            --arg cs  "$AZURE_CLIENT_SECRET" \
-            --arg tid "$AZURE_TENANT_ID" \
-            --arg sid "$AZURE_SUBSCRIPTION_ID" \
-            '{clientId:$cid, clientSecret:$cs, tenantId:$tid, subscriptionId:$sid}')
-          echo "::add-mask::$creds"
-          echo "AZURE_CREDENTIALS<<EOF" >> "$GITHUB_ENV"
-          echo "$creds" >> "$GITHUB_ENV"
-          echo "EOF" >> "$GITHUB_ENV"
-
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ env.AZURE_CREDENTIALS }}
-
       - name: Update Azure RBAC data
         id: rbac
         continue-on-error: true
         run: npm run update-rbac-data
 
-      # Needs an authenticated subscription: VM specs come from Microsoft.Compute/skus.
+      # Needs AZURE_SUBSCRIPTION_ID: VM specs come from Microsoft.Compute/skus at subscription scope.
       - name: Update Azure VM SKU specs
         id: vm-specs
         continue-on-error: true
