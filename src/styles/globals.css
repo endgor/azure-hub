@@ -45,64 +45,68 @@ body {
   }
 }
 
-.dark .text-slate-900,
-.dark .text-slate-800,
-.dark .text-slate-700 {
-  color: rgb(235 235 235 / 0.96);
-}
+/* Dark palette remaps for light-mode utilities. Layered, and :where() drops the
+   specificity so an explicit dark: utility on the same element still wins. */
+@layer utilities {
+  :where(.dark) .text-slate-900,
+  :where(.dark) .text-slate-800,
+  :where(.dark) .text-slate-700 {
+    color: rgb(235 235 235 / 0.96);
+  }
 
-.dark .text-slate-600,
-.dark .text-slate-500,
-.dark .text-slate-400,
-.dark .text-slate-300 {
-  color: rgb(160 160 160 / 0.90);
-}
+  :where(.dark) .text-slate-600,
+  :where(.dark) .text-slate-500,
+  :where(.dark) .text-slate-400,
+  :where(.dark) .text-slate-300 {
+    color: rgb(160 160 160 / 0.90);
+  }
 
-.dark .text-slate-200,
-.dark .text-slate-100 {
-  color: rgb(210 210 210 / 0.88);
-}
+  :where(.dark) .text-slate-200,
+  :where(.dark) .text-slate-100 {
+    color: rgb(210 210 210 / 0.88);
+  }
 
-.dark .border-slate-300 {
-  border-color: rgb(54 54 56 / 0.8);
-}
+  :where(.dark) .border-slate-300 {
+    border-color: rgb(54 54 56 / 0.8);
+  }
 
-.dark .border-slate-200 {
-  border-color: rgb(54 54 56 / 0.7);
-}
+  :where(.dark) .border-slate-200 {
+    border-color: rgb(54 54 56 / 0.7);
+  }
 
-.dark .border-slate-100 {
-  border-color: rgb(54 54 56 / 0.5);
-}
+  :where(.dark) .border-slate-100 {
+    border-color: rgb(54 54 56 / 0.5);
+  }
 
-.dark .bg-white {
-  background-color: rgb(27 27 28);
-}
+  :where(.dark) .bg-white {
+    background-color: rgb(27 27 28);
+  }
 
-.dark .bg-white\/95 {
-  background-color: rgb(27 27 28 / 0.95);
-}
+  :where(.dark) .bg-white\/95 {
+    background-color: rgb(27 27 28 / 0.95);
+  }
 
-.dark .bg-slate-50,
-.dark .bg-slate-100,
-.dark .bg-slate-200 {
-  background-color: rgb(54 54 56 / 0.5);
-}
+  :where(.dark) .bg-slate-50,
+  :where(.dark) .bg-slate-100,
+  :where(.dark) .bg-slate-200 {
+    background-color: rgb(54 54 56 / 0.5);
+  }
 
-.dark .bg-slate-700 {
-  background-color: rgb(54 54 56);
-}
+  :where(.dark) .bg-slate-700 {
+    background-color: rgb(54 54 56);
+  }
 
-.dark .bg-slate-800 {
-  background-color: rgb(27 27 28);
-}
+  :where(.dark) .bg-slate-800 {
+    background-color: rgb(27 27 28);
+  }
 
-.dark .bg-slate-900 {
-  background-color: rgb(27 27 28);
-}
+  :where(.dark) .bg-slate-900 {
+    background-color: rgb(27 27 28);
+  }
 
-.dark .ring-white\/60 {
-  --tw-ring-color: rgb(160 160 160 / 0.35);
+  :where(.dark) .ring-white\/60 {
+    --tw-ring-color: rgb(160 160 160 / 0.35);
+  }
 }
 
 .prose h1 {
