@@ -27,7 +27,8 @@
     "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts",
     "track-content-changes": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/trackContentChanges.ts",
     "bing-stats": "ts-node --project tsconfig.node.json scripts/bingStats.ts",
-    "cf-stats": "ts-node --project tsconfig.node.json scripts/cfStats.ts"
+    "cf-stats": "ts-node --project tsconfig.node.json scripts/cfStats.ts",
+    "gsc-stats": "ts-node --project tsconfig.node.json scripts/gscStats.ts"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.6",
