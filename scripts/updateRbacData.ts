@@ -31,7 +31,10 @@ const ARM_BASE_URL = process.env.ARM_BASE_URL ?? 'https://management.azure.com';
 const ARM_SCOPE = process.env.ARM_SCOPE ?? 'https://management.azure.com/.default';
 const GRAPH_BASE_URL = process.env.GRAPH_BASE_URL ?? 'https://graph.microsoft.com';
 const GRAPH_SCOPE = process.env.GRAPH_SCOPE ?? 'https://graph.microsoft.com/.default';
-const API_VERSION = '2022-04-01';
+const PROVIDER_OPERATIONS_API_VERSION = '2022-04-01';
+// Role conditions only exist from this preview version onward; the stable 2022-04-01
+// Permission schema has no condition/conditionVersion, and az uses the preview too.
+const ROLE_DEFINITIONS_API_VERSION = '2022-05-01-preview';
 
 let cachedCredential: TokenCredential | undefined;
 const tokenCache = new Map<string, { token: string; expiresOn: number }>();
@@ -190,7 +193,7 @@ export function toCliRoleRecord(item: ArmRoleDefinition): CliRoleRecord {
 async function fetchRoleDefinitions(): Promise<AzureRole[]> {
   console.info('Fetching Azure role definitions...');
 
-  const url = `${ARM_BASE_URL}/subscriptions/${getSubscriptionId()}/providers/Microsoft.Authorization/roleDefinitions?api-version=${API_VERSION}`;
+  const url = `${ARM_BASE_URL}/subscriptions/${getSubscriptionId()}/providers/Microsoft.Authorization/roleDefinitions?api-version=${ROLE_DEFINITIONS_API_VERSION}`;
   const items = await fetchAllPages<ArmRoleDefinition>(url, ARM_SCOPE);
   const roles = items.map(toCliRoleRecord);
 
@@ -253,7 +256,7 @@ function flattenProviderOperations(providerData: Record<string, unknown>): Opera
 async function fetchResourceProviderOperations(): Promise<Operation[]> {
   console.info('Fetching resource provider operations...');
 
-  const url = `${ARM_BASE_URL}/providers/Microsoft.Authorization/providerOperations?api-version=${API_VERSION}&$expand=resourceTypes`;
+  const url = `${ARM_BASE_URL}/providers/Microsoft.Authorization/providerOperations?api-version=${PROVIDER_OPERATIONS_API_VERSION}&$expand=resourceTypes`;
 
   try {
     const providers = await fetchAllPages<Record<string, unknown>>(url, ARM_SCOPE);
@@ -305,7 +308,7 @@ async function fetchOperationsByProvider(): Promise<Operation[]> {
     try {
       logDebug(`Fetching operations for ${provider}...`);
       const providerData = await restGet<Record<string, unknown>>(
-        `${ARM_BASE_URL}/providers/Microsoft.Authorization/providerOperations/${provider}?api-version=${API_VERSION}&$expand=resourceTypes`,
+        `${ARM_BASE_URL}/providers/Microsoft.Authorization/providerOperations/${provider}?api-version=${PROVIDER_OPERATIONS_API_VERSION}&$expand=resourceTypes`,
         ARM_SCOPE
       );
 
