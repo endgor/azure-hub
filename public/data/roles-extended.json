@@ -42003,5 +42003,235 @@
     "permissionCount": 2,
     "dataActions": [],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-18T14:00:56.289346+00:00",
+    "description": "Read approved Azure resources and security metadata.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/7e2a3b84-6f91-4c5d-b8a2-1f37e9d4ac60",
+    "name": "7e2a3b84-6f91-4c5d-b8a2-1f37e9d4ac60",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.ResourceGraph/resources/read",
+          "Microsoft.Storage/storageAccounts/read",
+          "Microsoft.Storage/storageAccounts/blobServices/containers/read",
+          "Microsoft.Network/publicIPAddresses/read",
+          "Microsoft.Network/networkSecurityGroups/read",
+          "Microsoft.Network/networkInterfaces/read",
+          "Microsoft.Network/dnsZones/read",
+          "Microsoft.Network/dnsZones/CNAME/read",
+          "Microsoft.Compute/virtualMachines/read",
+          "Microsoft.Compute/virtualMachines/extensions/read",
+          "Microsoft.Web/sites/read",
+          "Microsoft.Web/sites/config/read",
+          "Microsoft.Web/sites/config/list/action",
+          "Microsoft.ContainerService/managedClusters/read",
+          "Microsoft.KeyVault/vaults/read",
+          "Microsoft.ContainerRegistry/registries/read",
+          "Microsoft.Sql/servers/read",
+          "Microsoft.Sql/servers/firewallRules/read",
+          "Microsoft.DocumentDB/databaseAccounts/read",
+          "Microsoft.Automation/automationAccounts/read",
+          "Microsoft.OperationalInsights/workspaces/read",
+          "Microsoft.OperationalInsights/workspaces/query/read",
+          "Microsoft.OperationalInsights/workspaces/search/action",
+          "Microsoft.Security/assessments/read",
+          "Microsoft.Security/assessments/subAssessments/read",
+          "Microsoft.Security/alerts/read",
+          "Microsoft.Security/locations/alerts/read",
+          "Microsoft.Security/secureScores/read",
+          "Microsoft.Security/secureScoreControls/read",
+          "Microsoft.Security/secureScores/secureScoreControls/read",
+          "Microsoft.Security/tasks/read",
+          "Microsoft.Security/locations/tasks/read",
+          "Microsoft.Security/automations/read",
+          "Microsoft.Security/complianceResults/read",
+          "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/read",
+          "Microsoft.Authorization/roleAssignments/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
+          "Microsoft.KeyVault/vaults/keys/read",
+          "Microsoft.KeyVault/vaults/certificates/read"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Red Team Recon Agent - Azure",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-18T14:00:56.289346+00:00",
+    "permissionCount": 41,
+    "dataActions": [
+      "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
+      "Microsoft.KeyVault/vaults/keys/read",
+      "Microsoft.KeyVault/vaults/certificates/read"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-18T14:09:35.325959+00:00",
+    "description": "Read Azure web application and exposure metadata.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/c1d8f2a9-45be-4f73-9a16-8b02d5e7f4c1",
+    "name": "c1d8f2a9-45be-4f73-9a16-8b02d5e7f4c1",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.ResourceGraph/resources/read",
+          "Microsoft.Storage/storageAccounts/read",
+          "Microsoft.Network/publicIPAddresses/read",
+          "Microsoft.Network/networkSecurityGroups/read",
+          "Microsoft.Network/networkInterfaces/read",
+          "Microsoft.Network/dnsZones/read",
+          "Microsoft.Network/dnsZones/CNAME/read",
+          "Microsoft.Web/sites/read",
+          "Microsoft.Web/sites/config/read",
+          "Microsoft.Web/sites/config/list/action",
+          "Microsoft.ContainerRegistry/registries/read",
+          "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/read"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Red Team Web App Agent",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-18T14:09:35.325959+00:00",
+    "permissionCount": 14,
+    "dataActions": [],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-18T14:23:20.145704+00:00",
+    "description": "Read approved Azure resources and manage Azure role assignments.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/3f6d1a95-b7c8-4e2b-8f04-d91a6ce7235e",
+    "name": "3f6d1a95-b7c8-4e2b-8f04-d91a6ce7235e",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Resources/subscriptions/read",
+          "Microsoft.Resources/subscriptions/resourceGroups/read",
+          "Microsoft.ResourceGraph/resources/read",
+          "Microsoft.Storage/storageAccounts/read",
+          "Microsoft.Storage/storageAccounts/blobServices/containers/read",
+          "Microsoft.Network/publicIPAddresses/read",
+          "Microsoft.Network/networkSecurityGroups/read",
+          "Microsoft.Network/networkInterfaces/read",
+          "Microsoft.Network/dnsZones/read",
+          "Microsoft.Network/dnsZones/CNAME/read",
+          "Microsoft.Compute/virtualMachines/read",
+          "Microsoft.Compute/virtualMachines/extensions/read",
+          "Microsoft.Web/sites/read",
+          "Microsoft.Web/sites/config/read",
+          "Microsoft.Web/sites/config/list/action",
+          "Microsoft.ContainerService/managedClusters/read",
+          "Microsoft.KeyVault/vaults/read",
+          "Microsoft.ContainerRegistry/registries/read",
+          "Microsoft.Sql/servers/read",
+          "Microsoft.Sql/servers/firewallRules/read",
+          "Microsoft.DocumentDB/databaseAccounts/read",
+          "Microsoft.Automation/automationAccounts/read",
+          "Microsoft.OperationalInsights/workspaces/read",
+          "Microsoft.OperationalInsights/workspaces/query/read",
+          "Microsoft.OperationalInsights/workspaces/search/action",
+          "Microsoft.Security/assessments/read",
+          "Microsoft.Security/assessments/subAssessments/read",
+          "Microsoft.Security/alerts/read",
+          "Microsoft.Security/locations/alerts/read",
+          "Microsoft.Security/secureScores/read",
+          "Microsoft.Security/secureScoreControls/read",
+          "Microsoft.Security/secureScores/secureScoreControls/read",
+          "Microsoft.Security/tasks/read",
+          "Microsoft.Security/locations/tasks/read",
+          "Microsoft.Security/automations/read",
+          "Microsoft.Security/complianceResults/read",
+          "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/read",
+          "Microsoft.Authorization/roleAssignments/read",
+          "Microsoft.Authorization/roleAssignments/write",
+          "Microsoft.Authorization/roleAssignments/delete"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
+          "Microsoft.KeyVault/vaults/keys/read",
+          "Microsoft.KeyVault/vaults/certificates/read"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Red Team Administrator",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-18T14:30:28.854565+00:00",
+    "permissionCount": 43,
+    "dataActions": [
+      "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
+      "Microsoft.KeyVault/vaults/keys/read",
+      "Microsoft.KeyVault/vaults/certificates/read"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-18T16:54:44.648756+00:00",
+    "description": "Allows users to read and create or update Microsoft.Security service entitlement resources for Defender product onboarding.",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/23511ce8-0df2-4291-ac54-4c47989f54fa",
+    "name": "23511ce8-0df2-4291-ac54-4c47989f54fa",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.Security/serviceEntitlements/read",
+          "Microsoft.Security/serviceEntitlements/write"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Security Service Entitlements Contributor",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-18T16:54:44.648756+00:00",
+    "permissionCount": 2,
+    "dataActions": [],
+    "notDataActions": []
   }
 ]
