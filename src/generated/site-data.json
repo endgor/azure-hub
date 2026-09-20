@@ -204,13 +204,131 @@
                 "compute",
                 "sizing"
               ],
-              "date": "2025-11-17T00:00:00.000Z"
+              "date": "2026-09-20T00:00:00.000Z"
             }
           }
         ]
       }
     ],
     "guides": [
+      {
+        "slug": "vm-naming-convention",
+        "category": "virtual-machines",
+        "meta": {
+          "title": "Azure VM Naming Conventions",
+          "description": "Learn how to read Azure VM size names. Understand what each character in names like Standard_D4s_v5 means, including family, vCPUs, and features.",
+          "category": "virtual-machines",
+          "tags": [
+            "vm",
+            "compute",
+            "sizing"
+          ],
+          "date": "2026-09-20T00:00:00.000Z"
+        },
+        "content": "<p>Azure virtual machine names follow a specific pattern that encodes important information about the VM's capabilities. Understanding this naming convention helps you quickly identify the right VM size for your workload.</p>\n<h2 id=\"vm-name-structure\">VM Name Structure<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#vm-name-structure\"><span class=\"icon icon-link\"></span></a></h2>\n<p>A typical VM name looks like: <strong>Standard_D4s_v5</strong></p>\n<p>Microsoft describes the full pattern as:</p>\n<p><strong>[Family]</strong> + <em>[Subfamily]</em> + <strong>[# of vCPUs]</strong> + <em>[Constrained vCPUs]</em> + <strong>[Additive Features]</strong> + <em>[Accelerator Type]</em> + <em>[Memory Capacity]</em> + <strong>[Version]</strong></p>\n<p>The parts in italics are optional. Let's break down each component:</p>\n<h3 id=\"family\">Family<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#family\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The first letter (or two) indicates the VM Family Series. Most families use a single letter, but accelerated and specialized families use two, such as <code>NC</code> or <code>HB</code>.</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Family</th><th>Type</th><th>Typical workloads</th></tr></thead><tbody><tr><td><code>A</code></td><td>General purpose</td><td>Entry-level, economical</td></tr><tr><td><code>B</code></td><td>General purpose</td><td>Burstable</td></tr><tr><td><code>D</code></td><td>General purpose</td><td>Enterprise applications, relational databases, in-memory caching, data analytics</td></tr><tr><td><code>DC</code></td><td>General purpose</td><td>D-family with confidential computing</td></tr><tr><td><code>F</code></td><td>Compute optimized</td><td>Web servers, network appliances, batch processing, application servers</td></tr><tr><td><code>FX</code></td><td>Compute optimized</td><td>EDA, large memory relational databases, in-memory analytics</td></tr><tr><td><code>E</code></td><td>Memory optimized</td><td>Relational databases, medium to large caches, in-memory analytics</td></tr><tr><td><code>Eb</code></td><td>Memory optimized</td><td>E-family with high remote storage performance</td></tr><tr><td><code>EC</code></td><td>Memory optimized</td><td>E-family with confidential computing</td></tr><tr><td><code>M</code></td><td>Memory optimized</td><td>Extremely large databases, very large memory footprints</td></tr><tr><td><code>L</code></td><td>Storage optimized</td><td>High disk throughput and IO, big data, NoSQL, data warehousing</td></tr><tr><td><code>NC</code></td><td>GPU accelerated</td><td>Compute-intensive, graphics-intensive, visualization</td></tr><tr><td><code>ND</code></td><td>GPU accelerated</td><td>Large memory AI training and inference</td></tr><tr><td><code>NG</code></td><td>GPU accelerated</td><td>Virtual desktop (VDI), cloud gaming</td></tr><tr><td><code>NV</code></td><td>GPU accelerated</td><td>Virtual desktop (VDI), single-precision compute, video encoding and rendering</td></tr><tr><td><code>NP</code></td><td>FPGA accelerated</td><td>Machine learning inference, video transcoding, database search</td></tr><tr><td><code>HB</code></td><td>High performance compute</td><td>High memory bandwidth, fluid dynamics, weather modeling</td></tr><tr><td><code>HC</code></td><td>High performance compute</td><td>High density compute, finite element analysis, molecular dynamics</td></tr><tr><td><code>HX</code></td><td>High performance compute</td><td>Large memory capacity, EDA</td></tr></tbody></table>\n<p>Previous-generation families such as <code>G</code>/<code>GS</code> and <code>H</code> still show up in some regions and in pricing data, but Microsoft no longer lists them among the current sizes.</p>\n<h3 id=\"subfamily-optional\">Subfamily (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#subfamily-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Used for specialized VM differentiations:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Subfamily</th><th>Meaning</th></tr></thead><tbody><tr><td><code>B</code></td><td>Memory bandwidth optimized</td></tr><tr><td><code>C</code></td><td>Confidential (for DC, EC, NCC series) OR Compute intensive (for HC, NC, NCC series)</td></tr><tr><td><code>D</code></td><td>AI training and inference optimized</td></tr><tr><td><code>G</code></td><td>Cloud gaming and remote desktop optimized</td></tr><tr><td><code>V</code></td><td>Visualization and graphics optimized</td></tr><tr><td><code>X</code></td><td>Extra memory</td></tr></tbody></table>\n<p>Most subfamilies are a single uppercase letter, but a few are lowercase and still count as a subfamily of the parent family — the <code>Ebsv5</code> series, for example, is a subfamily of the E-family.</p>\n<h3 id=\"number-of-vcpus\">Number of vCPUs<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#number-of-vcpus\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The number following the family letter indicates the number of virtual CPUs.</p>\n<p><strong>Example:</strong> <code>D4</code> = 4 vCPUs</p>\n<h3 id=\"constrained-vcpus-optional\">Constrained vCPUs (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#constrained-vcpus-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>For certain VM sizes, this denotes the number of active vCPUs for <a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/constrained-vcpu\" rel=\"noopener noreferrer\" target=\"_blank\">constrained vCPU capable sizes</a>. The VM keeps the memory, storage, and bandwidth of the full size while licensing costs drop with the reduced core count.</p>\n<p>Azure writes the constrained count in one of two positions:</p>\n<ul>\n<li>Before the feature letters: <code>Standard_E128-32ads_v7</code> (128-core size running with 32 vCPUs)</li>\n<li>After the feature letters: <code>Standard_M176ds-44_3_v3</code> (176-core size running with 44 vCPUs)</li>\n</ul>\n<h3 id=\"additive-features\">Additive Features<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#additive-features\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Lower case letters denote additive features:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Feature</th><th>Meaning</th></tr></thead><tbody><tr><td><code>a</code></td><td>AMD-based processor</td></tr><tr><td><code>b</code></td><td>Remote storage bandwidth optimized</td></tr><tr><td><code>d</code></td><td>Includes a local temp disk</td></tr><tr><td><code>e</code></td><td>Encrypted; contains confidential TDX capabilities</td></tr><tr><td><code>f</code></td><td>Flat ratio (1:1) of vCPU to memory size</td></tr><tr><td><code>i</code></td><td>Isolated size</td></tr><tr><td><code>l</code></td><td>Low memory; decreased vCPU to memory ratio</td></tr><tr><td><code>m</code></td><td>Memory intensive; highest vCPU to memory ratio in a particular series</td></tr><tr><td><code>n</code></td><td>Network optimized; increased vCPU to network bandwidth ratio</td></tr><tr><td><code>o</code></td><td>Increased vCPU to local SSD storage capacity ratio</td></tr><tr><td><code>p</code></td><td>ARM-based processor</td></tr><tr><td><code>r</code></td><td>Includes RDMA (InfiniBand) secondary network</td></tr><tr><td><code>s</code></td><td>Compatible with any Premium SSD type</td></tr><tr><td><code>t</code></td><td>Tiny memory; smallest vCPU to memory ratio in a particular size</td></tr></tbody></table>\n<p>A size can carry any number of these, from none (<code>Dv5</code>) to several (<code>Dpldsv6</code>). If no CPU letter is present, the series uses Intel x86-64 processors; <code>a</code> means AMD, and <code>p</code> means Arm-based (Microsoft Cobalt or Ampere Altra).</p>\n<h3 id=\"accelerator-type-optional\">Accelerator Type (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#accelerator-type-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Denotes the type of hardware accelerator in specialized/GPU SKUs, separated by underscores. Only specialized/GPU SKUs launched from Q3 2020 onwards carry the accelerator name in the size name — older GPU sizes such as <code>Standard_NC6s_v3</code> do not.</p>\n<p>Accelerators currently seen in Azure VM names include:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Accelerator</th><th>Hardware</th></tr></thead><tbody><tr><td><code>T4</code></td><td>NVIDIA Tesla T4</td></tr><tr><td><code>A10</code></td><td>NVIDIA A10</td></tr><tr><td><code>A100</code></td><td>NVIDIA A100</td></tr><tr><td><code>H100</code></td><td>NVIDIA H100</td></tr><tr><td><code>H200</code></td><td>NVIDIA H200</td></tr><tr><td><code>GB200</code> / <code>GB300</code></td><td>NVIDIA Grace Blackwell superchips</td></tr><tr><td><code>RTXPRO6000BSE</code></td><td>NVIDIA RTX PRO 6000 Blackwell Server Edition</td></tr><tr><td><code>MI300X</code></td><td>AMD Instinct MI300X</td></tr><tr><td><code>V620</code> / <code>V710</code></td><td>AMD Radeon PRO</td></tr><tr><td><code>MA35D</code></td><td>AMD Alveo MA35D media accelerator</td></tr></tbody></table>\n<h3 id=\"memory-capacity-optional\">Memory Capacity (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#memory-capacity-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>For M-series VMs, denotes memory capacity rounded to the nearest TiB. In <code>Standard_M48ds_1_v3</code> the <code>1</code> means roughly 1 TiB of memory (974 GiB).</p>\n<h3 id=\"version\">Version<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#version\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The version number of the VM Family Series (e.g., <code>v7</code>, <code>v6</code>, <code>v5</code>). Version numbers only appear when a series has multiple generations — first-generation series such as <code>HB-series</code> or <code>B-series</code> often have no version segment at all.</p>\n<h3 id=\"other-segments-you-may-see\">Other segments you may see<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#other-segments-you-may-see\"><span class=\"icon icon-link\"></span></a></h3>\n<p>A few segments in the Azure API aren't part of the documented convention:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Segment</th><th>Meaning</th></tr></thead><tbody><tr><td><code>Promo</code></td><td>Promotional pricing variant of an existing size</td></tr><tr><td><code>cc</code></td><td>Confidential child capable (e.g. <code>Standard_DC16ads_cc_v5</code>)</td></tr><tr><td><code>xl</code>, <code>flex</code>, <code>noIB</code>, <code>NDR</code></td><td>Hardware variants within a series, such as different GPU memory tiers or InfiniBand configurations</td></tr></tbody></table>\n<h2 id=\"common-examples\">Common Examples<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#common-examples\"><span class=\"icon icon-link\"></span></a></h2>\n<h3 id=\"standard_d4s_v5\">Standard_D4s_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_d4s_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>D</strong> - General purpose family</li>\n<li><strong>4</strong> - 4 vCPUs</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li><strong>v5</strong> - Version 5 of the D-series</li>\n</ul>\n<h3 id=\"standard_e16ads_v5\">Standard_E16ads_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_e16ads_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>E</strong> - Memory optimized family</li>\n<li><strong>16</strong> - 16 vCPUs</li>\n<li><strong>a</strong> - AMD processor</li>\n<li><strong>d</strong> - Local temp disk included</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li><strong>v5</strong> - Version 5</li>\n</ul>\n<h3 id=\"standard_e96bds_v5\">Standard_E96bds_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_e96bds_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>E</strong> - Memory optimized family</li>\n<li><strong>b</strong> - Remote storage bandwidth optimized (the Eb subfamily, a SQL Server favourite)</li>\n<li><strong>96</strong> - 96 vCPUs</li>\n<li><strong>d</strong> - Local temp disk included</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li><strong>v5</strong> - Version 5</li>\n</ul>\n<h3 id=\"standard_f8s_v2\">Standard_F8s_v2<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_f8s_v2\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>F</strong> - Compute optimized family</li>\n<li><strong>8</strong> - 8 vCPUs</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li><strong>v2</strong> - Version 2</li>\n</ul>\n<h3 id=\"standard_m16-4ms\">Standard_M16-4ms<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_m16-4ms\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>M</strong> - Memory optimized family</li>\n<li><strong>16</strong> - 16 vCPUs in the base size</li>\n<li><strong>4</strong> - Constrained to 4 active vCPUs</li>\n<li><strong>m</strong> - Memory intensive</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li>No version segment - this is the first-generation M-series</li>\n</ul>\n<h3 id=\"standard_nc24ads_a100_v4\">Standard_NC24ads_A100_v4<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_nc24ads_a100_v4\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>NC</strong> - GPU accelerated family, compute-intensive subfamily</li>\n<li><strong>24</strong> - 24 vCPUs</li>\n<li><strong>a</strong> - AMD processor</li>\n<li><strong>d</strong> - Local temp disk included</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li><strong>A100</strong> - NVIDIA A100 GPU</li>\n<li><strong>v4</strong> - Version 4</li>\n</ul>\n<h3 id=\"standard_d8pls_v6\">Standard_D8pls_v6<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_d8pls_v6\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>D</strong> - General purpose family</li>\n<li><strong>8</strong> - 8 vCPUs</li>\n<li><strong>p</strong> - Arm-based processor (Microsoft Cobalt)</li>\n<li><strong>l</strong> - Low memory ratio</li>\n<li><strong>s</strong> - Premium SSD capable</li>\n<li><strong>v6</strong> - Version 6</li>\n</ul>\n<h2 id=\"quick-tips\">Quick Tips<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#quick-tips\"><span class=\"icon icon-link\"></span></a></h2>\n<ol>\n<li>\n<p><strong>Premium Storage</strong>: Look for the <code>s</code> suffix to ensure your VM supports premium SSDs for better performance.</p>\n</li>\n<li>\n<p><strong>Local Temp Disk</strong>: The <code>d</code> suffix indicates a local temporary disk is included, useful for page files or caching.</p>\n</li>\n<li>\n<p><strong>CPU vendor</strong>: No letter means Intel, <code>a</code> means AMD, and <code>p</code> means Arm. AMD and Arm sizes often provide better price-performance for scale-out workloads.</p>\n</li>\n<li>\n<p><strong>Version Numbers</strong>: Higher version numbers (v6, v7) typically offer better performance and newer features than older versions (v2, v3). The D and E families are on v7 today.</p>\n</li>\n<li>\n<p><strong>Licensing</strong>: Constrained vCPU sizes (<code>M16-4ms</code>, <code>E128-32ads_v7</code>) keep the memory and IO of the larger size while cutting per-core licensing costs.</p>\n</li>\n</ol>\n<h2 id=\"references\">References<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#references\"><span class=\"icon icon-link\"></span></a></h2>\n<ul>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/sizes\" rel=\"noopener noreferrer\" target=\"_blank\">Azure VM Size Families</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/vm-naming-conventions\" rel=\"noopener noreferrer\" target=\"_blank\">VM Size Naming Conventions</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/constrained-vcpu\" rel=\"noopener noreferrer\" target=\"_blank\">Constrained vCPU capable VM sizes</a></li>\n</ul>",
+        "headings": [
+          {
+            "id": "vm-name-structure",
+            "text": "VM Name Structure",
+            "level": 2
+          },
+          {
+            "id": "family",
+            "text": "Family",
+            "level": 3
+          },
+          {
+            "id": "subfamily-optional",
+            "text": "Subfamily (Optional)",
+            "level": 3
+          },
+          {
+            "id": "number-of-vcpus",
+            "text": "Number of vCPUs",
+            "level": 3
+          },
+          {
+            "id": "constrained-vcpus-optional",
+            "text": "Constrained vCPUs (Optional)",
+            "level": 3
+          },
+          {
+            "id": "additive-features",
+            "text": "Additive Features",
+            "level": 3
+          },
+          {
+            "id": "accelerator-type-optional",
+            "text": "Accelerator Type (Optional)",
+            "level": 3
+          },
+          {
+            "id": "memory-capacity-optional",
+            "text": "Memory Capacity (Optional)",
+            "level": 3
+          },
+          {
+            "id": "version",
+            "text": "Version",
+            "level": 3
+          },
+          {
+            "id": "other-segments-you-may-see",
+            "text": "Other segments you may see",
+            "level": 3
+          },
+          {
+            "id": "common-examples",
+            "text": "Common Examples",
+            "level": 2
+          },
+          {
+            "id": "standard_d4s_v5",
+            "text": "Standard_D4s_v5",
+            "level": 3
+          },
+          {
+            "id": "standard_e16ads_v5",
+            "text": "Standard_E16ads_v5",
+            "level": 3
+          },
+          {
+            "id": "standard_e96bds_v5",
+            "text": "Standard_E96bds_v5",
+            "level": 3
+          },
+          {
+            "id": "standard_f8s_v2",
+            "text": "Standard_F8s_v2",
+            "level": 3
+          },
+          {
+            "id": "standard_m16-4ms",
+            "text": "Standard_M16-4ms",
+            "level": 3
+          },
+          {
+            "id": "standard_nc24ads_a100_v4",
+            "text": "Standard_NC24ads_A100_v4",
+            "level": 3
+          },
+          {
+            "id": "standard_d8pls_v6",
+            "text": "Standard_D8pls_v6",
+            "level": 3
+          },
+          {
+            "id": "quick-tips",
+            "text": "Quick Tips",
+            "level": 2
+          },
+          {
+            "id": "references",
+            "text": "References",
+            "level": 2
+          }
+        ]
+      },
       {
         "slug": "private-endpoint-dns-setup",
         "category": "networking",
@@ -372,99 +490,6 @@
             "id": "6-youre-done",
             "text": "6. You're Done",
             "level": 3
-          }
-        ]
-      },
-      {
-        "slug": "vm-naming-convention",
-        "category": "virtual-machines",
-        "meta": {
-          "title": "Azure VM Naming Conventions",
-          "description": "Learn how to read Azure VM size names. Understand what each character in names like Standard_D4s_v5 means, including family, vCPUs, and features.",
-          "category": "virtual-machines",
-          "tags": [
-            "vm",
-            "compute",
-            "sizing"
-          ],
-          "date": "2025-11-17T00:00:00.000Z"
-        },
-        "content": "<p>Azure virtual machine names follow a specific pattern that encodes important information about the VM's capabilities. Understanding this naming convention helps you quickly identify the right VM size for your workload.</p>\n<h2 id=\"vm-name-structure\">VM Name Structure<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#vm-name-structure\"><span class=\"icon icon-link\"></span></a></h2>\n<p>A typical VM name looks like: <strong>Standard_D4s_v5</strong></p>\n<p>Let's break down each component:</p>\n<h3 id=\"family\">Family<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#family\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The first letter(s) indicate the VM Family Series.</p>\n<p><strong>Examples:</strong></p>\n<ul>\n<li><code>D</code> - General purpose</li>\n<li><code>E</code> - Memory optimized</li>\n<li><code>F</code> - Compute optimized</li>\n<li><code>M</code> - Memory intensive</li>\n<li><code>N</code> - GPU-enabled</li>\n</ul>\n<h3 id=\"subfamily-optional\">Subfamily (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#subfamily-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Used for specialized VM differentiations:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Subfamily</th><th>Meaning</th></tr></thead><tbody><tr><td><code>B</code></td><td>Memory bandwidth optimized</td></tr><tr><td><code>C</code></td><td>Confidential (for DC, EC, NCC series) OR Compute intensive (for HC, NC, NCC series)</td></tr><tr><td><code>D</code></td><td>AI training and inference optimized</td></tr><tr><td><code>G</code></td><td>Cloud gaming and remote desktop optimized</td></tr><tr><td><code>V</code></td><td>Visualization and graphics optimized</td></tr><tr><td><code>X</code></td><td>Extra memory</td></tr></tbody></table>\n<h3 id=\"number-of-vcpus\">Number of vCPUs<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#number-of-vcpus\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The number following the family letter indicates the number of virtual CPUs.</p>\n<p><strong>Example:</strong> <code>D4</code> = 4 vCPUs</p>\n<h3 id=\"constrained-vcpus-optional\">Constrained vCPUs (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#constrained-vcpus-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>For certain VM sizes, this denotes the number of vCPUs for constrained vCPU capable sizes.</p>\n<h3 id=\"additive-features\">Additive Features<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#additive-features\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Lower case letters denote additive features:</p>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<table><thead><tr><th>Feature</th><th>Meaning</th></tr></thead><tbody><tr><td><code>a</code></td><td>AMD-based processor</td></tr><tr><td><code>b</code></td><td>Remote storage bandwidth optimized</td></tr><tr><td><code>d</code></td><td>Includes a local temp disk</td></tr><tr><td><code>e</code></td><td>Encrypted; contains confidential TDX capabilities</td></tr><tr><td><code>f</code></td><td>Flat ratio (1:1) of vCPU to memory size</td></tr><tr><td><code>i</code></td><td>Isolated size</td></tr><tr><td><code>l</code></td><td>Low memory; decreased vCPU to memory ratio</td></tr><tr><td><code>m</code></td><td>Memory intensive; highest vCPU to memory ratio in a particular series</td></tr><tr><td><code>n</code></td><td>Network optimized; increased vCPU to network bandwidth ratio</td></tr><tr><td><code>o</code></td><td>Increased vCPU to local SSD storage capacity ratio</td></tr><tr><td><code>p</code></td><td>ARM-based processor</td></tr><tr><td><code>r</code></td><td>Includes RDMA (InfiniBand) secondary network</td></tr><tr><td><code>s</code></td><td>Compatible with any premium SSD type</td></tr><tr><td><code>t</code></td><td>Tiny memory; smallest vCPU to memory ratio in a particular size</td></tr></tbody></table>\n<h3 id=\"accelerator-type-optional\">Accelerator Type (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#accelerator-type-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>Denotes the type of hardware accelerator in specialized/GPU SKUs.</p>\n<h3 id=\"memory-capacity-optional\">Memory Capacity (Optional)<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#memory-capacity-optional\"><span class=\"icon icon-link\"></span></a></h3>\n<p>For M-series VMs, denotes memory capacity rounded to the nearest TiB.</p>\n<h3 id=\"version\">Version<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#version\"><span class=\"icon icon-link\"></span></a></h3>\n<p>The version number of the VM Family Series (e.g., <code>v5</code>, <code>v4</code>, <code>v3</code>).</p>\n<h2 id=\"common-examples\">Common Examples<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#common-examples\"><span class=\"icon icon-link\"></span></a></h2>\n<h3 id=\"standard_d4s_v5\">Standard_D4s_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_d4s_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>D</strong> - General purpose family</li>\n<li><strong>4</strong> - 4 vCPUs</li>\n<li><strong>s</strong> - Premium storage capable</li>\n<li><strong>v5</strong> - Version 5 of the D-series</li>\n</ul>\n<h3 id=\"standard_e16ads_v5\">Standard_E16ads_v5<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_e16ads_v5\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>E</strong> - Memory optimized family</li>\n<li><strong>16</strong> - 16 vCPUs</li>\n<li><strong>a</strong> - AMD processor</li>\n<li><strong>d</strong> - Local temp disk included</li>\n<li><strong>s</strong> - Premium storage capable</li>\n<li><strong>v5</strong> - Version 5</li>\n</ul>\n<h3 id=\"standard_f8s_v2\">Standard_F8s_v2<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#standard_f8s_v2\"><span class=\"icon icon-link\"></span></a></h3>\n<ul>\n<li><strong>F</strong> - Compute optimized family</li>\n<li><strong>8</strong> - 8 vCPUs</li>\n<li><strong>s</strong> - Premium storage capable</li>\n<li><strong>v2</strong> - Version 2</li>\n</ul>\n<h2 id=\"quick-tips\">Quick Tips<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#quick-tips\"><span class=\"icon icon-link\"></span></a></h2>\n<ol>\n<li>\n<p><strong>Premium Storage</strong>: Look for the <code>s</code> suffix to ensure your VM supports premium SSDs for better performance.</p>\n</li>\n<li>\n<p><strong>Local Temp Disk</strong>: The <code>d</code> suffix indicates a local temporary disk is included, useful for page files or caching.</p>\n</li>\n<li>\n<p><strong>AMD vs Intel</strong>: The <code>a</code> suffix indicates AMD processors, which often provide better price-performance for certain workloads.</p>\n</li>\n<li>\n<p><strong>Version Numbers</strong>: Higher version numbers (v5, v6) typically offer better performance and newer features than older versions (v2, v3).</p>\n</li>\n</ol>\n<h2 id=\"references\">References<a aria-hidden=\"true\" tabindex=\"-1\" href=\"#references\"><span class=\"icon icon-link\"></span></a></h2>\n<ul>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/sizes\" rel=\"noopener noreferrer\" target=\"_blank\">Azure VM Size Families</a></li>\n<li><a href=\"https://learn.microsoft.com/en-us/azure/virtual-machines/vm-naming-conventions\" rel=\"noopener noreferrer\" target=\"_blank\">VM Size Naming Conventions</a></li>\n</ul>",
-        "headings": [
-          {
-            "id": "vm-name-structure",
-            "text": "VM Name Structure",
-            "level": 2
-          },
-          {
-            "id": "family",
-            "text": "Family",
-            "level": 3
-          },
-          {
-            "id": "subfamily-optional",
-            "text": "Subfamily (Optional)",
-            "level": 3
-          },
-          {
-            "id": "number-of-vcpus",
-            "text": "Number of vCPUs",
-            "level": 3
-          },
-          {
-            "id": "constrained-vcpus-optional",
-            "text": "Constrained vCPUs (Optional)",
-            "level": 3
-          },
-          {
-            "id": "additive-features",
-            "text": "Additive Features",
-            "level": 3
-          },
-          {
-            "id": "accelerator-type-optional",
-            "text": "Accelerator Type (Optional)",
-            "level": 3
-          },
-          {
-            "id": "memory-capacity-optional",
-            "text": "Memory Capacity (Optional)",
-            "level": 3
-          },
-          {
-            "id": "version",
-            "text": "Version",
-            "level": 3
-          },
-          {
-            "id": "common-examples",
-            "text": "Common Examples",
-            "level": 2
-          },
-          {
-            "id": "standard_d4s_v5",
-            "text": "Standard_D4s_v5",
-            "level": 3
-          },
-          {
-            "id": "standard_e16ads_v5",
-            "text": "Standard_E16ads_v5",
-            "level": 3
-          },
-          {
-            "id": "standard_f8s_v2",
-            "text": "Standard_F8s_v2",
-            "level": 3
-          },
-          {
-            "id": "quick-tips",
-            "text": "Quick Tips",
-            "level": 2
-          },
-          {
-            "id": "references",
-            "text": "References",
-            "level": 2
           }
         ]
       }
