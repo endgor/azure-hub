@@ -42233,5 +42233,38 @@
     "permissionCount": 2,
     "dataActions": [],
     "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-09-19T12:13:03.792599+00:00",
+    "description": "Grants AKS Flex Node agents permission to retrieve bootstrap data and manage machine resources within an agent pool",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/8f139b0f-7eaf-460b-a9da-5b1246d9ed0d",
+    "name": "8f139b0f-7eaf-460b-a9da-5b1246d9ed0d",
+    "permissions": [
+      {
+        "actions": [
+          "Microsoft.ContainerService/managedClusters/agentPools/listBootstrapData/action",
+          "Microsoft.ContainerService/managedClusters/agentPools/machines/read",
+          "Microsoft.ContainerService/managedClusters/agentPools/machines/write"
+        ],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "Azure Kubernetes Service Flex Node Agent Role",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-09-19T12:13:03.792599+00:00",
+    "permissionCount": 3,
+    "dataActions": [],
+    "notDataActions": []
   }
 ]
