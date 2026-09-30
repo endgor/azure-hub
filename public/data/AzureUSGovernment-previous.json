@@ -1,5 +1,5 @@
 {
-  "changeNumber": 410,
+  "changeNumber": 411,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -10743,7 +10743,7 @@
       "name": "AzureCloud.usgovtexas",
       "id": "AzureCloud.usgovtexas",
       "properties": {
-        "changeNumber": 62,
+        "changeNumber": 63,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -10833,6 +10833,7 @@
           "57.16.97.0/24",
           "57.16.225.0/24",
           "57.16.227.0/24",
+          "57.17.64.0/19",
           "62.10.146.0/23",
           "62.10.149.0/24",
           "62.10.151.0/24",
