@@ -30694,7 +30694,7 @@
           "Microsoft.Authorization/roleAssignments/write",
           "Microsoft.Authorization/roleAssignments/delete"
         ],
-        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR ((@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{4d97b98b-1d4f-4787-a291-c67834d212e7, f1a07417-d97a-45cb-824c-7a7467783830, acdd72a7-3385-48ef-bd42-f606fba81ae7, 92aaf0da-9dab-42b6-94a3-d43ce8d16293, 506c2fa4-2713-45d3-a893-4b1360a66e88}) AND (@Request[Microsoft.Authorization/roleAssignments:PrincipalType] ForAnyOfAnyValues:StringEquals{'ServicePrincipal'}))) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{4d97b98b-1d4f-4787-a291-c67834d212e7, f1a07417-d97a-45cb-824c-7a7467783830, acdd72a7-3385-48ef-bd42-f606fba81ae7, 92aaf0da-9dab-42b6-94a3-d43ce8d16293, 506c2fa4-2713-45d3-a893-4b1360a66e88}))",
+        "condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR ((@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{4d97b98b-1d4f-4787-a291-c67834d212e7, f1a07417-d97a-45cb-824c-7a7467783830, acdd72a7-3385-48ef-bd42-f606fba81ae7, 506c2fa4-2713-45d3-a893-4b1360a66e88}) AND (@Request[Microsoft.Authorization/roleAssignments:PrincipalType] ForAnyOfAnyValues:StringEquals{'ServicePrincipal'}))) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidEquals{4d97b98b-1d4f-4787-a291-c67834d212e7, f1a07417-d97a-45cb-824c-7a7467783830, acdd72a7-3385-48ef-bd42-f606fba81ae7, 92aaf0da-9dab-42b6-94a3-d43ce8d16293, 506c2fa4-2713-45d3-a893-4b1360a66e88}))",
         "conditionVersion": "2.0",
         "dataActions": [
           "Microsoft.Discovery/*"
@@ -30708,7 +30708,7 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-09-25T12:52:35.181901+00:00",
+    "updatedOn": "2026-10-07T16:59:04.783667+00:00",
     "permissionCount": 2508,
     "dataActions": [
       "Microsoft.Discovery/*"
@@ -42036,7 +42036,10 @@
       {
         "actions": [
           "Microsoft.Security/serviceEntitlements/read",
-          "Microsoft.Security/serviceEntitlements/write"
+          "Microsoft.Security/serviceEntitlements/write",
+          "Microsoft.Security/serviceEntitlementSettings/read",
+          "Microsoft.Security/serviceEntitlementSettings/write",
+          "Microsoft.Security/serviceEntitlementSettings/delete"
         ],
         "condition": null,
         "conditionVersion": null,
@@ -42050,8 +42053,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2026-09-16T16:33:07.574165+00:00",
-    "permissionCount": 2,
+    "updatedOn": "2026-10-07T16:29:00.092055+00:00",
+    "permissionCount": 5,
     "dataActions": [],
     "notDataActions": []
   },
