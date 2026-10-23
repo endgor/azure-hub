@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Private endpoint traffic flow</title>
+  <desc id="d">A private endpoint NIC with IP 10.2.1.5 in a spoke VNet fronts a storage account with public access disabled. Spoke VMs, peered VNets and on-premises clients over VPN or ExpressRoute reach it on the private IP, optionally through the hub firewall. DNS resolves the public name to the private IP through a private DNS zone. Internet clients are blocked.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect x="0" y="0" width="900" height="600" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="30" y="36" font-size="18" font-weight="600" fill="#0f172a">Private Endpoint: traffic flow (hub-and-spoke + hybrid)</text>
+
+  <!-- On-prem -->
+  <rect x="30" y="70" width="170" height="130" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="46" y="96" font-size="13" font-weight="600" fill="#0f172a">On-premises</text>
+  <rect x="46" y="110" width="138" height="54" rx="6" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="115" y="132" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Client</text>
+  <text x="115" y="150" font-size="11" fill="#334155" text-anchor="middle">192.168.10.20</text>
+  <text x="46" y="186" font-size="10" fill="#475569">DNS: forwarder for</text>
+  <text x="46" y="198" font-size="10" fill="#475569" font-family="ui-monospace, Menlo, monospace">blob.core.windows.net</text>
+
+  <!-- Hub -->
+  <rect x="240" y="60" width="260" height="300" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text x="256" y="84" font-size="13" font-weight="600" fill="#1e3a8a">Hub VNet (10.0.0.0/16)</text>
+  <rect x="260" y="100" width="220" height="50" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="370" y="122" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">VPN / ExpressRoute gateway</text>
+  <text x="370" y="139" font-size="11" fill="#475569" text-anchor="middle">GatewaySubnet</text>
+  <rect x="260" y="175" width="220" height="60" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="370" y="198" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Azure Firewall (optional)</text>
+  <text x="370" y="215" font-size="11" fill="#475569" text-anchor="middle">Inspect + SNAT for symmetry</text>
+  <text x="370" y="229" font-size="10" fill="#475569" text-anchor="middle">needs UDRs that beat the /32 route</text>
+  <rect x="260" y="260" width="220" height="80" rx="6" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="370" y="282" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">DNS Private Resolver</text>
+  <text x="370" y="299" font-size="11" fill="#475569" text-anchor="middle">Inbound endpoint 10.0.4.4</text>
+  <text x="370" y="316" font-size="11" fill="#475569" text-anchor="middle">→ 168.63.129.16</text>
+  <text x="370" y="332" font-size="10" fill="#475569" text-anchor="middle">Private DNS zones linked to hub</text>
+
+  <!-- Spoke -->
+  <rect x="540" y="60" width="330" height="300" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text x="556" y="84" font-size="13" font-weight="600" fill="#1e3a8a">vnet-spoke (10.2.0.0/16), peered to hub</text>
+  <rect x="556" y="100" width="298" height="80" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="570" y="120" font-size="11" font-weight="600" fill="#0f172a">snet-app (10.2.2.0/24)</text>
+  <rect x="570" y="128" width="120" height="44" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="630" y="147" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">VM</text>
+  <text x="630" y="163" font-size="11" fill="#334155" text-anchor="middle">10.2.2.4</text>
+  <rect x="556" y="210" width="298" height="130" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="840" y="230" font-size="11" font-weight="600" fill="#0f172a" text-anchor="end">snet-pe (10.2.1.0/24)</text>
+  <rect x="570" y="242" width="180" height="56" rx="6" fill="#fef3c7" stroke="#d97706"/>
+  <text x="660" y="264" font-size="12" font-weight="600" fill="#0f172a" text-anchor="middle">Private endpoint NIC</text>
+  <text x="660" y="282" font-size="11" fill="#334155" text-anchor="middle">10.2.1.5 → mystorage/blob</text>
+  <text x="570" y="318" font-size="10" fill="#475569">Peered VNets get a /32 route to 10.2.1.5</text>
+  <text x="570" y="332" font-size="10" fill="#475569">(next hop InterfaceEndpoint)</text>
+
+  <!-- Storage -->
+  <rect x="540" y="400" width="330" height="120" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="556" y="424" font-size="13" font-weight="600" fill="#14532d">mystorage (Azure Storage)</text>
+  <text x="556" y="446" font-size="12" fill="#334155">Public network access: Disabled</text>
+  <text x="556" y="466" font-size="12" fill="#334155">Only reachable through approved</text>
+  <text x="556" y="484" font-size="12" fill="#334155">private endpoint connections</text>
+  <text x="556" y="506" font-size="11" fill="#475569">The endpoint maps to this one resource only</text>
+  <path d="M700 298 L700 396" stroke="#16a34a" stroke-width="3" marker-end="url(#g)"/>
+  <text x="710" y="376" font-size="11" font-weight="600" fill="#16a34a">Private Link</text>
+
+  <!-- DNS zone -->
+  <rect x="240" y="400" width="260" height="120" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="256" y="424" font-size="13" font-weight="600" fill="#0f172a">Private DNS zone</text>
+  <text x="256" y="442" font-size="11" fill="#334155" font-family="ui-monospace, Menlo, monospace">privatelink.blob.core.windows.net</text>
+  <text x="256" y="464" font-size="11" fill="#334155">A  mystorage → 10.2.1.5</text>
+  <text x="256" y="486" font-size="10" fill="#475569">Public DNS: mystorage.blob.core.windows.net</text>
+  <text x="256" y="500" font-size="10" fill="#475569">CNAME → mystorage.privatelink.blob...</text>
+  <path d="M370 340 L370 396" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#s)"/>
+  <text x="378" y="374" font-size="10" fill="#64748b">lookup</text>
+
+  <!-- Flows -->
+  <path d="M630 172 C 630 200, 640 220, 650 238" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#g)"/>
+  <text x="656" y="200" font-size="11" font-weight="600" fill="#16a34a">① VM → 10.2.1.5</text>
+
+  <path d="M184 137 L256 125" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#b)"/>
+  <path d="M370 150 L370 171" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#b)"/>
+  <path d="M480 205 C 520 205, 530 270, 566 270" fill="none" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#b)"/>
+  <text x="40" y="232" font-size="11" font-weight="600" fill="#7c3aed">② On-prem → 10.2.1.5</text>
+  <text x="40" y="248" font-size="11" fill="#7c3aed">over VPN/ER, through</text>
+  <text x="40" y="264" font-size="11" fill="#7c3aed">the hub, private IPs</text>
+  <text x="40" y="280" font-size="11" fill="#7c3aed">end to end</text>
+
+  <!-- Internet -->
+  <rect x="30" y="400" width="170" height="120" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="46" y="426" font-size="13" font-weight="600" fill="#0f172a">Internet client</text>
+  <text x="46" y="446" font-size="11" fill="#475569">Resolves the public IP,</text>
+  <text x="46" y="462" font-size="11" fill="#475569">public access is off</text>
+  <path d="M200 540 C 360 570, 520 560, 600 524" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#r)"/>
+  <text x="300" y="578" font-size="11" font-weight="600" fill="#dc2626">③ ✗ 403 / connection refused</text>
+  <line x1="115" y1="520" x2="115" y2="540" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/>
+  <line x1="115" y1="540" x2="200" y2="540" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/>
+</svg>

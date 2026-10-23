@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Service endpoint traffic flow</title>
+  <desc id="d">A VM in a subnet with a Microsoft.Storage service endpoint reaches the storage account's public IP over the Azure backbone with its private source IP. The hub firewall is bypassed. On-premises and internet clients are blocked by the storage firewall.</desc>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>
+    <marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+  </defs>
+  <rect x="0" y="0" width="900" height="560" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="30" y="36" font-size="18" font-weight="600" fill="#0f172a">Service Endpoint: traffic flow</text>
+
+  <!-- Spoke VNet -->
+  <rect x="30" y="60" width="440" height="215" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text x="46" y="84" font-size="13" font-weight="600" fill="#1e3a8a">vnet-spoke (10.1.0.0/16)</text>
+  <rect x="50" y="98" width="400" height="160" rx="8" fill="#ffffff" stroke="#93c5fd"/>
+  <text x="66" y="120" font-size="12" font-weight="600" fill="#0f172a">snet-app (10.1.1.0/24)</text>
+  <text x="66" y="138" font-size="11" fill="#475569">Service endpoint: Microsoft.Storage</text>
+  <rect x="66" y="160" width="130" height="60" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="131" y="186" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">VM</text>
+  <text x="131" y="204" font-size="12" fill="#334155" text-anchor="middle">10.1.1.4</text>
+  <rect x="214" y="180" width="222" height="72" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="225" y="197" font-size="11" font-weight="600" fill="#0f172a">Effective routes on the NIC</text>
+  <text x="225" y="213" font-size="11" fill="#334155">0.0.0.0/0 → VirtualAppliance (UDR)</text>
+  <text x="225" y="229" font-size="11" fill="#16a34a" font-weight="600">Storage prefixes →</text>
+  <text x="225" y="244" font-size="11" fill="#16a34a" font-weight="600">VirtualNetworkServiceEndpoint</text>
+
+  <!-- Hub firewall bypassed -->
+  <rect x="30" y="300" width="440" height="70" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-dasharray="6 4"/>
+  <text x="46" y="326" font-size="13" font-weight="600" fill="#475569">Hub: Azure Firewall / NVA</text>
+  <text x="46" y="346" font-size="11" fill="#64748b">Default route (0.0.0.0/0) points here, but Storage traffic</text>
+  <text x="46" y="361" font-size="11" fill="#64748b">skips it: service endpoint routes override UDRs and BGP</text>
+  <path d="M131 220 L131 296" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#s)"/>
+  <text x="140" y="268" font-size="11" fill="#64748b">other internet traffic</text>
+
+  <!-- Storage -->
+  <rect x="540" y="60" width="330" height="310" rx="10" fill="#f0fdf4" stroke="#22c55e"/>
+  <text x="556" y="84" font-size="13" font-weight="600" fill="#14532d">Azure Storage (public, multi-tenant)</text>
+  <rect x="560" y="100" width="290" height="250" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="576" y="124" font-size="13" font-weight="600" fill="#0f172a">mystorage.blob.core.windows.net</text>
+  <text x="576" y="144" font-size="12" fill="#334155">Public IP: 20.60.x.x (DNS unchanged)</text>
+  <line x1="576" y1="158" x2="834" y2="158" stroke="#e2e8f0"/>
+  <text x="576" y="180" font-size="12" font-weight="600" fill="#0f172a">Networking: Selected networks</text>
+  <text x="576" y="202" font-size="12" fill="#16a34a">✓ vnet-spoke / snet-app</text>
+  <text x="576" y="222" font-size="12" fill="#dc2626">✗ Everything else</text>
+  <line x1="576" y1="238" x2="834" y2="238" stroke="#e2e8f0"/>
+  <text x="576" y="260" font-size="11" fill="#475569">Sees the request from 10.1.1.4</text>
+  <text x="576" y="276" font-size="11" fill="#475569">tagged with the VNet/subnet identity</text>
+  <text x="576" y="300" font-size="11" fill="#475569">Rule is per subnet, not per resource:</text>
+  <text x="576" y="316" font-size="11" fill="#475569">snet-app can reach any storage account</text>
+  <text x="576" y="332" font-size="11" fill="#475569">that its egress path allows</text>
+
+  <!-- VM to storage -->
+  <path d="M196 168 L450 168 C 500 168, 510 140, 556 140" fill="none" stroke="#16a34a" stroke-width="2.5" marker-end="url(#g)"/>
+  <text x="440" y="122" font-size="11" font-weight="600" fill="#16a34a" text-anchor="end">① dst 20.60.x.x · src 10.1.1.4</text>
+  <text x="440" y="138" font-size="11" fill="#16a34a" text-anchor="end">over the Azure backbone</text>
+
+  <!-- On-prem -->
+  <rect x="30" y="430" width="300" height="100" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="46" y="456" font-size="13" font-weight="600" fill="#0f172a">On-premises client</text>
+  <text x="46" y="476" font-size="11" fill="#475569">Connected over VPN / ExpressRoute</text>
+  <text x="46" y="494" font-size="11" fill="#475569">Service endpoints don't extend here.</text>
+  <text x="46" y="512" font-size="11" fill="#475569">Traffic goes to the public IP from a NAT IP.</text>
+  <path d="M330 470 C 470 470, 560 420, 620 374" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#r)"/>
+  <text x="430" y="492" font-size="11" font-weight="600" fill="#dc2626">② ✗ 403 (unless the NAT IP is allowed)</text>
+
+  <!-- Internet -->
+  <rect x="640" y="430" width="230" height="100" rx="10" fill="#ffffff" stroke="#94a3b8"/>
+  <text x="656" y="456" font-size="13" font-weight="600" fill="#0f172a">Internet client</text>
+  <text x="656" y="476" font-size="11" fill="#475569">Same public endpoint,</text>
+  <text x="656" y="494" font-size="11" fill="#475569">rejected by the network rules</text>
+  <path d="M780 430 L780 374" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#r)"/>
+  <text x="790" y="408" font-size="11" font-weight="600" fill="#dc2626">③ ✗ 403</text>
+</svg>
