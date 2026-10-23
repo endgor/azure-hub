@@ -22,11 +22,11 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
 
   return (
     <div>
-      <div className="mb-1 flex items-center gap-2">
+      <div className="relative mb-1 flex items-center gap-2">
         <label htmlFor="assignable-scopes" className="block text-sm font-medium text-slate-700 dark:text-slate-200">
           Assignable Scopes <span className="text-rose-500">*</span>
         </label>
-        <div className="group relative inline-flex">
+        <div className="group inline-flex sm:relative">
           <button
             type="button"
             aria-label="Scope format help"
@@ -36,7 +36,7 @@ export default function ScopesManager({ scopes, onAdd, onRemove }: ScopesManager
           </button>
           <div
             role="tooltip"
-            className="pointer-events-none invisible absolute left-0 top-full z-20 mt-2 w-80 rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-700 opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+            className="pointer-events-none invisible absolute left-0 right-0 top-full z-20 mt-2 sm:right-auto sm:w-80 rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-700 opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
           >
             <p className="font-semibold text-slate-800 dark:text-slate-100">
               Valid scope formats

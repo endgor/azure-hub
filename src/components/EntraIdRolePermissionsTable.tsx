@@ -100,6 +100,47 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
     });
   }, [roles]);
 
+  const renderDescription = (role: EntraIDRole) => role.description ? (
+    <div className="text-xs text-slate-600 dark:text-slate-400">
+      {expandedDescriptions.has(role.id) ? (
+        <>
+          {role.description}
+          <button
+            onClick={() => toggleDescription(role.id)}
+            className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+          >
+            Show less
+          </button>
+        </>
+      ) : (
+        <>
+          {role.description.slice(0, 80)}
+          {role.description.length > 80 && (
+            <>
+              ...
+              <button
+                onClick={() => toggleDescription(role.id)}
+                className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+              >
+                Show more
+              </button>
+            </>
+          )}
+        </>
+      )}
+    </div>
+  ) : null;
+
+  const roleTypeBadge = (role: EntraIDRole) => (
+    <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
+      role.isBuiltIn
+        ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+        : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
+    }`}>
+      {role.isBuiltIn ? 'Built-in' : 'Custom'}
+    </span>
+  );
+
   return (
     <div className="space-y-4">
       {/* Header */}
@@ -119,8 +160,32 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
         />
       </div>
 
+      {/* Phones: one stacked block per role so the permission list gets the full width */}
+      <div className="space-y-3 md:hidden">
+        {rolesWithFlattenedPermissions.map(({ role, allPermissions }) => (
+          <section key={role.id} className="space-y-4 rounded-xl bg-white p-4 dark:bg-slate-900">
+            <div className="space-y-2">
+              <div className="font-medium leading-snug text-slate-900 dark:text-slate-100">{role.displayName}</div>
+              <div>{roleTypeBadge(role)}</div>
+              <div className="select-all break-all font-mono text-[11px] text-slate-400 dark:text-slate-500">{role.templateId}</div>
+              {renderDescription(role)}
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Permissions</h3>
+              <PermissionSummaryBar permissions={allPermissions} system="entraid" />
+              <PermissionList
+                permissions={allPermissions}
+                grouping="entraid"
+                collapseAfter={0}
+                maxHeightClass="max-h-[28rem]"
+              />
+            </div>
+          </section>
+        ))}
+      </div>
+
       {/* Table */}
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
+      <div className="hidden overflow-hidden rounded-xl bg-white dark:bg-slate-900 md:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
@@ -151,48 +216,13 @@ export default function EntraIdRolePermissionsTable({ roles }: EntraIdRolePermis
                       <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 mt-0.5 select-all">
                         {role.templateId}
                       </div>
-                      {role.description && (
-                        <div className="text-xs text-slate-600 dark:text-slate-400">
-                          {expandedDescriptions.has(role.id) ? (
-                            <>
-                              {role.description}
-                              <button
-                                onClick={() => toggleDescription(role.id)}
-                                className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
-                              >
-                                Show less
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              {role.description.slice(0, 80)}
-                              {role.description.length > 80 && (
-                                <>
-                                  ...
-                                  <button
-                                    onClick={() => toggleDescription(role.id)}
-                                    className="ml-1 text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
-                                  >
-                                    Show more
-                                  </button>
-                                </>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      )}
+                      {renderDescription(role)}
                     </div>
                   </td>
 
                   {/* Role Type Column */}
                   <td className="px-4 py-3 align-top">
-                    <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
-                      role.isBuiltIn
-                        ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                        : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
-                    }`}>
-                      {role.isBuiltIn ? 'Built-in' : 'Custom'}
-                    </span>
+                    {roleTypeBadge(role)}
                   </td>
 
                   {/* Permissions Column */}

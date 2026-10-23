@@ -77,7 +77,7 @@ export default function PermissionsSection({
       )}
 
       {/* Permission Type Tabs */}
-      <div className="flex gap-2 mb-4 overflow-x-auto">
+      <div className="mb-4 grid grid-cols-2 gap-2 sm:flex">
         {(['actions', 'notActions', 'dataActions', 'notDataActions'] as const).map((type) => (
           <button
             key={type}

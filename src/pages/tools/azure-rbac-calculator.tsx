@@ -19,7 +19,6 @@ import { calculateLeastPrivilege, searchOperations, getServiceNamespaces, getAct
 import type { LeastPrivilegeResult, AzureRole } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
-import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -29,7 +28,7 @@ import Button from '@/components/shared/Button';
 import { azureRbacConfig } from '@/lib/rbacConfig';
 
 // Import shared config-driven components
-import DisclaimerBanner from '@/components/shared/RbacCalculator/DisclaimerBanner';
+import { TitleWithInfo } from '@/components/shared/RbacCalculator/DisclaimerInfo';
 import ExampleScenarios from '@/components/shared/RbacCalculator/ExampleScenarios';
 import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
 
@@ -92,7 +91,6 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
   const [results, setResults] = useState<LeastPrivilegeResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('azure-rbac-disclaimer-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<AzureRole[]>([]);
@@ -116,10 +114,6 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
     // Only hide the suggestions dropdown, don't clear the input
     clearResults();
   }, searchResults.length > 0);
-
-  const handleDismissDisclaimer = () => {
-    setDisclaimerDismissed(true);
-  };
 
   // Defer actions cache preload to idle time (non-blocking)
   useEffect(() => {
@@ -395,9 +389,7 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
           <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">
             {azureRbacConfig.labels.categoryLabel}
           </p>
-          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
-            {azureRbacConfig.labels.heroTitle}
-          </h1>
+          <TitleWithInfo title={azureRbacConfig.labels.heroTitle} config={azureRbacConfig} />
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             {getDescription()}
           </p>
@@ -407,11 +399,6 @@ export default function AzureRbacCalculatorPage({ roleCount, namespaceCount }: R
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Analyzing {roleCount} built-in roles across {namespaceCount} Azure resource providers.
           </p>
-        )}
-
-        {/* Disclaimer Banner */}
-        {!disclaimerDismissed && (
-          <DisclaimerBanner config={azureRbacConfig} onDismiss={handleDismissDisclaimer} />
         )}
 
         {/* Mode Tabs */}

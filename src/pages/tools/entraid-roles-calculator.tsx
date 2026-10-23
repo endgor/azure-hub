@@ -24,7 +24,6 @@ import {
 import type { EntraIDRole, EntraIDLeastPrivilegeResult } from '@/types/rbac';
 import { filterAndSortByQuery } from '@/lib/searchUtils';
 import { PERFORMANCE } from '@/config/constants';
-import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ErrorBox from '@/components/shared/ErrorBox';
@@ -36,7 +35,7 @@ import EntraIdRolePermissionsTable from '@/components/EntraIdRolePermissionsTabl
 import { entraIdConfig } from '@/lib/rbacConfig';
 
 // Import shared config-driven components
-import DisclaimerBanner from '@/components/shared/RbacCalculator/DisclaimerBanner';
+import { TitleWithInfo } from '@/components/shared/RbacCalculator/DisclaimerInfo';
 import ExampleScenarios from '@/components/shared/RbacCalculator/ExampleScenarios';
 import AdvancedMode from '@/components/shared/RbacCalculator/AdvancedMode';
 import ModeTabs from '@/components/shared/RbacCalculator/ModeTabs';
@@ -104,7 +103,6 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
   const [results, setResults] = useState<EntraIDLeastPrivilegeResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [disclaimerDismissed, setDisclaimerDismissed] = useLocalStorageBoolean('entraid-roles-disclaimer-dismissed', false);
 
   // Role Explorer mode state
   const [availableRoles, setAvailableRoles] = useState<EntraIDRole[]>([]);
@@ -128,10 +126,6 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
     // Only hide the suggestions dropdown, don't clear the input
     clearResults();
   }, searchResults.length > 0);
-
-  const handleDismissDisclaimer = () => {
-    setDisclaimerDismissed(true);
-  };
 
   // Defer actions cache preload to idle time (non-blocking)
   useEffect(() => {
@@ -384,9 +378,7 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
           <p className="text-xs font-semibold uppercase tracking-wide text-blue-500/80 dark:text-blue-400 md:tracking-[0.3em]">
             {entraIdConfig.labels.categoryLabel}
           </p>
-          <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100 md:text-2xl lg:text-3xl">
-            {entraIdConfig.labels.heroTitle}
-          </h1>
+          <TitleWithInfo title={entraIdConfig.labels.heroTitle} config={entraIdConfig} />
           <p className="text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
             {getDescription()}
           </p>
@@ -404,11 +396,6 @@ export default function EntraIdRolesCalculatorPage({ roleCount }: EntraIdPagePro
             <code className="mx-1">entraid-roles.json</code>
             is fetched during the build when Azure credentials are configured, so a fresh deploy should restore this page.
           </ErrorBox>
-        )}
-
-        {/* Disclaimer Banner */}
-        {!disclaimerDismissed && (
-          <DisclaimerBanner config={entraIdConfig} onDismiss={handleDismissDisclaimer} />
         )}
 
         {/* Mode Tabs (Simple, Advanced, Role Explorer only) */}

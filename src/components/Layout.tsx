@@ -332,7 +332,7 @@ export default function Layout({
             navSections={NAV_SECTIONS}
           />
 
-          <div className="flex flex-1 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col">
             {/* Desktop top-right utility bar */}
             <div className="hidden md:flex items-center justify-end gap-2 bg-[#F8F9FB] px-6 py-3 dark:bg-[#121212]">
               <Link
@@ -355,7 +355,7 @@ export default function Layout({
             </div>
 
             {/* Mobile header with hamburger button */}
-            <div className="flex items-center gap-4 border-b border-slate-200 bg-white px-4 py-3 dark:border-[#363638] dark:bg-[#1B1B1C] md:hidden">
+            <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-3 sm:gap-4 dark:border-[#363638] dark:bg-[#1B1B1C] md:hidden">
               <button
                 type="button"
                 className="flex h-10 w-10 items-center justify-center rounded-md border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:border-slate-300 hover:text-slate-700 dark:border-[#363638] dark:bg-[#2C2C2E] dark:text-slate-200 dark:hover:border-[#363638] dark:hover:text-slate-100"
@@ -379,7 +379,7 @@ export default function Layout({
                   <span className="text-sky-600">Azure</span> Hub
                 </span>
               </Link>
-              <div className="ml-auto flex items-center gap-2">
+              <div className="ml-auto flex items-center gap-0.5 sm:gap-2">
                 <Link
                   href="https://github.com/endgor/azure-hub"
                   target="_blank"

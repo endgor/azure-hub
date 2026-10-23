@@ -20,6 +20,7 @@ import PermissionSummaryBar from '@/components/shared/PermissionSummaryBar';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { matchesWildcard } from '@/lib/utils/wildcardMatcher';
 import type { PermissionSystem } from '@/lib/utils/permissionGrouping';
+import { ResultsCaution } from '@/components/shared/RbacCalculator/DisclaimerInfo';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -271,7 +272,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Recommended Roles
@@ -284,6 +285,9 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
               </span>
             )}
           </p>
+          <div className="mt-1.5">
+            <ResultsCaution />
+          </div>
         </div>
         <ExportMenu
           options={exportOptions}
@@ -294,8 +298,77 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
         />
       </div>
 
+      {/* Phones: one card per role */}
+      <ul className="space-y-3 md:hidden">
+        {sortedResults.map((result) => {
+          const roleName = getRoleName(result);
+          const isExpanded = expandedRows.has(result.role.id);
+          const granted = getGrantedPermissions(result, roleSystem);
+
+          return (
+            <li key={result.role.id} className="rounded-xl bg-white p-4 dark:bg-slate-900">
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={selectedRoles.has(result.role.id)}
+                  onChange={() => toggleRoleSelection(result.role.id)}
+                  className="mt-0.5 h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-2 focus:ring-sky-500/50 dark:border-slate-600 dark:bg-slate-800"
+                  aria-label={`Select ${roleName}`}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="font-medium leading-snug text-slate-900 dark:text-slate-100">{roleName}</div>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <span className="inline-block rounded-full px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
+                      {getRoleTypeDisplay(result)}
+                    </span>
+                    {result.isExactMatch && (
+                      <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
+                        Exact Match
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+                <dt className="pt-0.5 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Matching</dt>
+                <dd className="text-slate-600 dark:text-slate-300">
+                  <MatchingSummary result={result} roleSystem={roleSystem} />
+                </dd>
+                <dt className="pt-0.5 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Grants</dt>
+                <dd>
+                  <PermissionSummaryBar permissions={[...granted.actions, ...granted.dataActions]} system={roleSystem} />
+                </dd>
+              </dl>
+
+              <button
+                type="button"
+                onClick={() => toggleRow(result.role.id)}
+                aria-expanded={isExpanded}
+                className="mt-4 flex w-full items-center justify-center gap-1 rounded-lg border border-slate-200 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                {isExpanded ? 'Hide permissions' : 'Show permissions'}
+                <svg className={`h-5 w-5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {isExpanded && (
+                <div className="mt-4 space-y-4">
+                  {result.role.description && (
+                    <p className="text-sm text-slate-600 dark:text-slate-300">{result.role.description}</p>
+                  )}
+                  <ExpandedRoleDetails result={result} permissions={granted} roleSystem={roleSystem} />
+                  <div className="break-all font-mono text-[11px] text-slate-400 dark:text-slate-500">{result.role.id}</div>
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+
       {/* Results Table */}
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
+      <div className="hidden overflow-hidden rounded-xl bg-white dark:bg-slate-900 md:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
@@ -377,25 +450,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                         </span>
                       </td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
-                        <div className="flex flex-col gap-0.5">
-                          {result.matchingActions.length > 0 && (
-                            <span className="flex items-center gap-1">
-                              {roleSystem === 'azure' && (
-                                <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">C</span>
-                              )}
-                              {result.matchingActions.length} {pluralize(result.matchingActions.length, 'action')}
-                            </span>
-                          )}
-                          {roleSystem === 'azure' && 'matchingDataActions' in result && result.matchingDataActions && result.matchingDataActions.length > 0 && (
-                            <span className="flex items-center gap-1">
-                              <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">D</span>
-                              {result.matchingDataActions.length} data {pluralize(result.matchingDataActions.length, 'action')}
-                            </span>
-                          )}
-                          {result.matchingActions.length === 0 && (roleSystem !== 'azure' || !('matchingDataActions' in result) || !result.matchingDataActions || result.matchingDataActions.length === 0) && (
-                            <span>0 actions</span>
-                          )}
-                        </div>
+                        <MatchingSummary result={result} roleSystem={roleSystem} />
                       </td>
                       <td className="px-4 py-3">
                         <PermissionSummaryBar
@@ -463,6 +518,33 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
     </div>
   );
 });
+
+/** Counts of requested control/data actions a role covers. */
+function MatchingSummary({ result, roleSystem }: { result: AnyRoleResult; roleSystem: RoleSystemType }) {
+  const dataActionCount = roleSystem === 'azure' && 'matchingDataActions' in result
+    ? (result.matchingDataActions?.length ?? 0)
+    : 0;
+
+  return (
+    <div className="flex flex-col gap-0.5">
+      {result.matchingActions.length > 0 && (
+        <span className="flex items-center gap-1">
+          {roleSystem === 'azure' && (
+            <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">C</span>
+          )}
+          {result.matchingActions.length} {pluralize(result.matchingActions.length, 'action')}
+        </span>
+      )}
+      {dataActionCount > 0 && (
+        <span className="flex items-center gap-1">
+          <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">D</span>
+          {dataActionCount} data {pluralize(dataActionCount, 'action')}
+        </span>
+      )}
+      {result.matchingActions.length === 0 && dataActionCount === 0 && <span>0 actions</span>}
+    </div>
+  );
+}
 
 /** Granted patterns that satisfy at least one requested action, including via wildcards. */
 function findMatchedPatterns(grantedPatterns: string[], requestedActions: string[]): Set<string> {
