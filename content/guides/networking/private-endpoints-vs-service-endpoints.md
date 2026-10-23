@@ -7,9 +7,15 @@ date: "2026-10-23"
 draft: true
 ---
 
-"Should we use private endpoints or service endpoints?" comes up in almost every Azure landing zone discussion I'm part of. Both lock a PaaS resource down to your network, both keep traffic on the Microsoft backbone, and both appear on the same **Networking** blade in the portal. They work in very different ways, though. Picking the wrong one usually only becomes obvious later, when someone tries to reach the resource from on-premises or the firewall team asks why they can't see the traffic.
+## WTF Is a Service Endpoint?
 
-This guide covers how each one works, what the traffic actually looks like, and the things I wish someone had told me before I rolled them out.
+Almost everyone who works with Azure runs into private endpoints sooner or later. Someone wants a storage account or Key Vault cut off from the internet, and the answer is usually "put a private endpoint on it". Service endpoints are a different story. Plenty of people have never heard the term, even though they may already be using them.
+
+That's because the portal mostly hides the name. Go to a storage account's **Networking** blade, switch to **Enabled from selected virtual networks and IP addresses**, add a VNet and subnet, and the portal quietly turns on the `Microsoft.Storage` service endpoint on that subnet for you. No separate step and no big announcement. The resource is now "locked down to your VNet", and the thing that made it work was a service endpoint you never explicitly created. The only places the term really shows up are a **Service endpoints** blade on the VNet and a setting on each subnet, which you have no reason to visit if the resource side already worked.
+
+So you end up with two features that both promise to "restrict access to your network", one you chose on purpose and one you may have enabled by accident. They work very differently. The difference usually only shows up later, when someone tries to reach the resource from on-premises or the firewall team asks why they can't see the traffic.
+
+So what should you use? This guide covers how each one works, what the traffic actually looks like, the pros and cons, and the things I wish someone had told me before I rolled them out.
 
 ## Quick Answer (TLDR)
 
