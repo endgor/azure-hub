@@ -47,7 +47,7 @@ export function Sidebar({
       <aside
         className={`flex-col border-r border-slate-200 bg-[#F3F4F6]/95 backdrop-blur transition-all duration-200 ease-out dark:border-[#363638] dark:bg-[#1B1B1C]/95 ${
           isMobileMenuOpen
-            ? 'fixed inset-y-0 left-0 z-50 flex w-[85vw] max-w-sm md:relative md:max-w-none'
+            ? 'fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] md:relative md:max-w-none'
             : 'relative hidden md:flex'
         } ${isSidebarCollapsed ? 'md:w-20' : 'md:w-72'}`}
       >
