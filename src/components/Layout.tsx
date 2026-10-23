@@ -332,7 +332,7 @@ export default function Layout({
             navSections={NAV_SECTIONS}
           />
 
-          <div className="flex flex-1 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col">
             {/* Desktop top-right utility bar */}
             <div className="hidden md:flex items-center justify-end gap-2 bg-[#F8F9FB] px-6 py-3 dark:bg-[#121212]">
               <Link

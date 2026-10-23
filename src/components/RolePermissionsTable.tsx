@@ -133,8 +133,60 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
     };
   }, [isComparisonMode, rolesWithFlattenedPermissions]);
 
+  const renderDescription = (role: AzureRole) => role.description ? (
+    <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-snug">
+        {expandedDescriptions.has(role.id) ? (
+          <>
+            {role.description}
+            {role.description.length > 80 && (
+              <button
+                type="button"
+                onClick={() => toggleDescription(role.id)}
+                className="ml-1 inline align-baseline text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
+              >
+                Show less
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            {role.description.slice(0, 80)}
+            {role.description.length > 80 && (
+              <>
+                …
+                <button
+                  type="button"
+                  onClick={() => toggleDescription(role.id)}
+                  className="ml-1 inline align-baseline text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
+                >
+                  Show more
+                </button>
+              </>
+            )}
+          </>
+        )}
+      </div>
+  ) : null;
+
+  const roleTypeBadges = (role: AzureRole) => (
+    <>
+      <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
+        role.roleType === 'BuiltInRole'
+          ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
+          : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
+      }`}>
+        {role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom'}
+      </span>
+      {isPrivilegedRole(role.roleName) && (
+        <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 whitespace-nowrap">
+          Privileged
+        </span>
+      )}
+    </>
+  );
+
   return (
-    <div className="rounded-xl bg-white p-6 dark:bg-slate-900">
+    <div className="rounded-xl bg-white p-4 dark:bg-slate-900 md:p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <div>
@@ -175,8 +227,52 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
         </div>
       )}
 
+      {/* Phones: one stacked block per role so permission lists get the full width */}
+      <div className="mt-4 space-y-6 md:hidden">
+        {rolesWithFlattenedPermissions.map(({ role, allActions, allDataActions }, index) => {
+          const other = isComparisonMode ? rolesWithFlattenedPermissions[index === 0 ? 1 : 0] : null;
+          return (
+            <section key={role.id} className="space-y-4 border-t border-slate-100 pt-4 first:border-0 first:pt-0 dark:border-slate-800">
+              <div>
+                <div className="flex items-start gap-2">
+                  {isComparisonMode && (
+                    <span className={`mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full ${index === 0 ? 'bg-sky-500' : 'bg-violet-500'}`} />
+                  )}
+                  <div className="font-semibold leading-snug text-slate-900 dark:text-slate-100">{role.roleName}</div>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-1.5">{roleTypeBadges(role)}</div>
+                <div className="mt-2 select-all break-all font-mono text-[11px] text-slate-400 dark:text-slate-500">{role.name}</div>
+                {renderDescription(role)}
+              </div>
+              <div>
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Actions</h3>
+                <PermissionList
+                  permissions={allActions}
+                  otherSet={other ? new Set(other.allActions) : null}
+                  uniqueColor={index === 0 ? 'sky' : 'violet'}
+                  showEmptyGroups={isComparisonMode}
+                  collapseAfter={0}
+                  maxHeightClass="max-h-[28rem]"
+                />
+              </div>
+              <div>
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Data Actions</h3>
+                <PermissionList
+                  permissions={allDataActions}
+                  otherSet={other ? new Set(other.allDataActions) : null}
+                  uniqueColor={index === 0 ? 'sky' : 'violet'}
+                  showEmptyGroups={isComparisonMode}
+                  collapseAfter={0}
+                  maxHeightClass="max-h-[28rem]"
+                />
+              </div>
+            </section>
+          );
+        })}
+      </div>
+
       {/* Table */}
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
+      <div className="hidden overflow-hidden rounded-xl bg-white dark:bg-slate-900 md:block">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm table-fixed">
             <colgroup>
@@ -195,8 +291,6 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
             </thead>
             <tbody className={tableBody}>
               {rolesWithFlattenedPermissions.map(({ role, allActions, allDataActions }, index) => {
-                const isPrivileged = isPrivilegedRole(role.roleName);
-
                 // For comparison mode, determine which set of shared permissions to check against
                 const otherActions = isComparisonMode
                   ? new Set(rolesWithFlattenedPermissions[index === 0 ? 1 : 0].allActions)
@@ -214,55 +308,11 @@ export default function RolePermissionsTable({ roles }: RolePermissionsTableProp
                       <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 mt-1 select-all break-all">
                         {role.name}
                       </div>
-                      {role.description && (
-                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-snug">
-                          {expandedDescriptions.has(role.id) ? (
-                            <>
-                              {role.description}
-                              {role.description.length > 80 && (
-                                <button
-                                  type="button"
-                                  onClick={() => toggleDescription(role.id)}
-                                  className="ml-1 inline align-baseline text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
-                                >
-                                  Show less
-                                </button>
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              {role.description.slice(0, 80)}
-                              {role.description.length > 80 && (
-                                <>
-                                  …
-                                  <button
-                                    type="button"
-                                    onClick={() => toggleDescription(role.id)}
-                                    className="ml-1 inline align-baseline text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300 font-medium"
-                                  >
-                                    Show more
-                                  </button>
-                                </>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      )}
+                      {renderDescription(role)}
                     </td>
                     <td className="px-4 py-4 align-top">
                       <div className="flex flex-col gap-1 items-start">
-                        <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${
-                          role.roleType === 'BuiltInRole'
-                            ? 'bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300'
-                            : 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300'
-                        }`}>
-                          {role.roleType === 'BuiltInRole' ? 'Built-in' : 'Custom'}
-                        </span>
-                        {isPrivileged && (
-                          <span className="inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 whitespace-nowrap">
-                            Privileged
-                          </span>
-                        )}
+                        {roleTypeBadges(role)}
                       </div>
                     </td>
                     <td className="px-5 py-4 align-top">

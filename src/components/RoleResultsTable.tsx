@@ -20,6 +20,7 @@ import PermissionSummaryBar from '@/components/shared/PermissionSummaryBar';
 import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { matchesWildcard } from '@/lib/utils/wildcardMatcher';
 import type { PermissionSystem } from '@/lib/utils/permissionGrouping';
+import { useMobileVariant } from '@/lib/mobileVariant';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -70,6 +71,8 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
   const [sortField, setSortField] = useState<SortField>('default');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const variant = useMobileVariant();
+  const hideOnMobile = variant === 1 ? 'hidden sm:table-cell' : '';
   const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -294,13 +297,27 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
         />
       </div>
 
+      {variant !== 1 && (
+        <MobileResultList
+          variant={variant}
+          results={sortedResults}
+          roleSystem={roleSystem}
+          getRoleName={getRoleName}
+          getRoleTypeDisplay={getRoleTypeDisplay}
+          expandedRows={expandedRows}
+          selectedRoles={selectedRoles}
+          onToggleRow={toggleRow}
+          onToggleSelect={toggleRoleSelection}
+        />
+      )}
+
       {/* Results Table */}
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-slate-900">
+      <div className={`overflow-hidden rounded-xl bg-white dark:bg-slate-900 ${variant !== 1 ? 'hidden md:block' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className={tableHeadRow}>
-                <th className="w-12 px-4 py-3">
+                <th className="w-10 py-3 pl-4 pr-1 sm:w-12 sm:px-4">
                   <input
                     type="checkbox"
                     checked={allSelected}
@@ -323,7 +340,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                     <SortIcon field="roleName" />
                   </button>
                 </th>
-                <th className={tableHeadCell}>
+                <th className={`${tableHeadCell} ${hideOnMobile}`}>
                   <button
                     onClick={() => handleSort('roleType')}
                     className="flex items-center hover:text-sky-600 dark:hover:text-sky-400"
@@ -335,10 +352,10 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                 <th className={tableHeadCell}>
                   Matching
                 </th>
-                <th className={tableHeadCell}>
+                <th className={`${tableHeadCell} ${hideOnMobile}`}>
                   Grants
                 </th>
-                <th className="w-16 px-4 py-3"></th>
+                <th className="w-12 px-2 py-3 sm:w-16 sm:px-4"></th>
               </tr>
             </thead>
             <tbody className={tableBody}>
@@ -352,7 +369,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                   <React.Fragment key={result.role.id}>
                     {/* Main Row */}
                     <tr className={tableRow}>
-                      <td className="px-4 py-3">
+                      <td className="py-3 pl-4 pr-1 sm:px-4">
                         <input
                           type="checkbox"
                           checked={selectedRoles.has(result.role.id)}
@@ -371,39 +388,21 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className={`px-4 py-3 ${hideOnMobile}`}>
                         <span className="inline-block rounded-full px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
                           {roleTypeDisplay}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-300">
-                        <div className="flex flex-col gap-0.5">
-                          {result.matchingActions.length > 0 && (
-                            <span className="flex items-center gap-1">
-                              {roleSystem === 'azure' && (
-                                <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">C</span>
-                              )}
-                              {result.matchingActions.length} {pluralize(result.matchingActions.length, 'action')}
-                            </span>
-                          )}
-                          {roleSystem === 'azure' && 'matchingDataActions' in result && result.matchingDataActions && result.matchingDataActions.length > 0 && (
-                            <span className="flex items-center gap-1">
-                              <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">D</span>
-                              {result.matchingDataActions.length} data {pluralize(result.matchingDataActions.length, 'action')}
-                            </span>
-                          )}
-                          {result.matchingActions.length === 0 && (roleSystem !== 'azure' || !('matchingDataActions' in result) || !result.matchingDataActions || result.matchingDataActions.length === 0) && (
-                            <span>0 actions</span>
-                          )}
-                        </div>
+                        <MatchingSummary result={result} roleSystem={roleSystem} />
                       </td>
-                      <td className="px-4 py-3">
+                      <td className={`px-4 py-3 ${hideOnMobile}`}>
                         <PermissionSummaryBar
                           permissions={[...granted.actions, ...granted.dataActions]}
                           system={roleSystem}
                         />
                       </td>
-                      <td className="px-4 py-3 w-16">
+                      <td className="px-2 py-3 w-12 sm:w-16 sm:px-4">
                         <button
                           onClick={() => toggleRow(result.role.id)}
                           className="rounded-lg p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
@@ -426,6 +425,14 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
                       <tr>
                         <td colSpan={6} className="px-4 py-3">
                           <div className="space-y-4">
+                            {variant === 1 && (
+                              <div className="flex flex-wrap items-center gap-2 sm:hidden">
+                                <span className="inline-block rounded-full px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">
+                                  {roleTypeDisplay}
+                                </span>
+                                <PermissionSummaryBar permissions={[...granted.actions, ...granted.dataActions]} system={roleSystem} label="Grants" />
+                              </div>
+                            )}
                             {/* Description */}
                             {result.role.description && (
                               <div>
@@ -463,6 +470,146 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
     </div>
   );
 });
+
+function MatchingSummary({ result, roleSystem }: { result: AnyRoleResult; roleSystem: RoleSystemType }) {
+  const dataCount = roleSystem === 'azure' && 'matchingDataActions' in result ? (result.matchingDataActions?.length ?? 0) : 0;
+  return (
+    <div className="flex flex-col gap-0.5">
+      {result.matchingActions.length > 0 && (
+        <span className="flex items-center gap-1">
+          {roleSystem === 'azure' && (
+            <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300">C</span>
+          )}
+          {result.matchingActions.length} {pluralize(result.matchingActions.length, 'action')}
+        </span>
+      )}
+      {dataCount > 0 && (
+        <span className="flex items-center gap-1">
+          <span className="inline-flex items-center rounded px-1 py-0.5 text-[9px] font-semibold uppercase bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300">D</span>
+          {dataCount} data {pluralize(dataCount, 'action')}
+        </span>
+      )}
+      {result.matchingActions.length === 0 && dataCount === 0 && <span>0 actions</span>}
+    </div>
+  );
+}
+
+const roleTypeChip = 'inline-block rounded-full px-2 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300';
+const exactMatchChip = 'inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300';
+const checkboxClass = 'h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-2 focus:ring-sky-500/50 dark:border-slate-600 dark:bg-slate-800';
+
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg className={`h-5 w-5 transition-transform ${open ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
+
+function ExpandedBody({ result, granted, roleSystem }: { result: AnyRoleResult; granted: GrantedPermissions; roleSystem: RoleSystemType }) {
+  return (
+    <div className="space-y-4">
+      {result.role.description && (
+        <p className="text-sm text-slate-600 dark:text-slate-300">{result.role.description}</p>
+      )}
+      <ExpandedRoleDetails result={result} permissions={granted} roleSystem={roleSystem} />
+      <div className="font-mono text-[11px] text-slate-400 dark:text-slate-500 break-all">{result.role.id}</div>
+    </div>
+  );
+}
+
+/** Phone layout for results: cards (variant 2) or a compact list (variant 3). */
+function MobileResultList({
+  variant, results, roleSystem, getRoleName, getRoleTypeDisplay, expandedRows, selectedRoles, onToggleRow, onToggleSelect,
+}: {
+  variant: number;
+  results: AnyRoleResult[];
+  roleSystem: RoleSystemType;
+  getRoleName: (r: AnyRoleResult) => string;
+  getRoleTypeDisplay: (r: AnyRoleResult) => string;
+  expandedRows: Set<string>;
+  selectedRoles: Set<string>;
+  onToggleRow: (id: string) => void;
+  onToggleSelect: (id: string) => void;
+}) {
+  if (variant === 2) {
+    return (
+      <ul className="space-y-3 md:hidden">
+        {results.map((result) => {
+          const id = result.role.id;
+          const name = getRoleName(result);
+          const open = expandedRows.has(id);
+          const granted = getGrantedPermissions(result, roleSystem);
+          return (
+            <li key={id} className="rounded-xl bg-white p-4 dark:bg-slate-900">
+              <div className="flex items-start gap-3">
+                <input type="checkbox" checked={selectedRoles.has(id)} onChange={() => onToggleSelect(id)} className={`mt-0.5 ${checkboxClass}`} aria-label={`Select ${name}`} />
+                <div className="min-w-0 flex-1">
+                  <div className="font-medium leading-snug text-slate-900 dark:text-slate-100">{name}</div>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    <span className={roleTypeChip}>{getRoleTypeDisplay(result)}</span>
+                    {result.isExactMatch && <span className={exactMatchChip}>Exact Match</span>}
+                  </div>
+                </div>
+              </div>
+              <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+                <dt className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400 pt-0.5">Matching</dt>
+                <dd className="text-slate-600 dark:text-slate-300"><MatchingSummary result={result} roleSystem={roleSystem} /></dd>
+                <dt className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400 pt-0.5">Grants</dt>
+                <dd><PermissionSummaryBar permissions={[...granted.actions, ...granted.dataActions]} system={roleSystem} /></dd>
+              </dl>
+              <button
+                type="button"
+                onClick={() => onToggleRow(id)}
+                className="mt-4 flex w-full items-center justify-center gap-1 rounded-lg border border-slate-200 py-2 text-sm font-medium text-slate-600 dark:border-slate-700 dark:text-slate-300"
+                aria-expanded={open}
+              >
+                {open ? 'Hide permissions' : 'Show permissions'} <Chevron open={open} />
+              </button>
+              {open && <div className="mt-4"><ExpandedBody result={result} granted={granted} roleSystem={roleSystem} /></div>}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
+  return (
+    <ul className="divide-y divide-slate-100 overflow-hidden rounded-xl bg-white dark:divide-slate-800 dark:bg-slate-900 md:hidden">
+      {results.map((result) => {
+        const id = result.role.id;
+        const name = getRoleName(result);
+        const open = expandedRows.has(id);
+        const granted = getGrantedPermissions(result, roleSystem);
+        const dataCount = 'matchingDataActions' in result ? (result.matchingDataActions?.length ?? 0) : 0;
+        const matchCount = result.matchingActions.length + dataCount;
+        return (
+          <li key={id}>
+            <div className="flex items-center gap-3 px-4 py-3">
+              <input type="checkbox" checked={selectedRoles.has(id)} onChange={() => onToggleSelect(id)} className={checkboxClass} aria-label={`Select ${name}`} />
+              <button type="button" onClick={() => onToggleRow(id)} className="flex min-w-0 flex-1 items-center gap-2 text-left" aria-expanded={open}>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-medium leading-snug text-slate-900 dark:text-slate-100">{name}</span>
+                  <span className="mt-0.5 block text-xs text-slate-500 dark:text-slate-400">
+                    {getRoleTypeDisplay(result)} · {matchCount} matching {pluralize(matchCount, 'action')}
+                    {result.isExactMatch && <span className="text-emerald-600 dark:text-emerald-400"> · Exact match</span>}
+                  </span>
+                </span>
+                <span className="shrink-0 text-slate-400"><Chevron open={open} /></span>
+              </button>
+            </div>
+            {open && (
+              <div className="space-y-3 px-4 pb-4">
+                <PermissionSummaryBar permissions={[...granted.actions, ...granted.dataActions]} system={roleSystem} label="Grants" />
+                <ExpandedBody result={result} granted={granted} roleSystem={roleSystem} />
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 /** Granted patterns that satisfy at least one requested action, including via wildcards. */
 function findMatchedPatterns(grantedPatterns: string[], requestedActions: string[]): Set<string> {
