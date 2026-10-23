@@ -21,6 +21,7 @@ import { getFlattenedPermissions } from '@/lib/utils/permissionFlattener';
 import { matchesWildcard } from '@/lib/utils/wildcardMatcher';
 import type { PermissionSystem } from '@/lib/utils/permissionGrouping';
 import { useMobileVariant } from '@/lib/mobileVariant';
+import { ResultsCaution } from '@/components/shared/RbacCalculator/DisclaimerInfo';
 
 type RoleSystemType = 'azure' | 'entraid';
 type AnyRoleResult = LeastPrivilegeResult | EntraIDLeastPrivilegeResult;
@@ -72,6 +73,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const variant = useMobileVariant();
+  const disclaimerVariant = useMobileVariant('dv');
   const hideOnMobile = variant === 1 ? 'hidden sm:table-cell' : '';
   const [selectedRoles, setSelectedRoles] = useState<Set<string>>(new Set());
 
@@ -287,6 +289,7 @@ const RoleResultsTable = memo(function RoleResultsTable({ results, roleSystem }:
               </span>
             )}
           </p>
+          {disclaimerVariant === 1 && <div className="mt-1.5"><ResultsCaution /></div>}
         </div>
         <ExportMenu
           options={exportOptions}
