@@ -39,6 +39,12 @@ This CNAME is created globally in Azure public DNS the moment you create the pri
 
 Clients on the public internet follow the same CNAME but get the public IP (since they don't have your Private DNS Zone). Clients going through your Azure DNS infrastructure get the private IP. Same FQDN, different answers depending on where the query is resolved.
 
+![Private endpoint DNS: one name, two answers](/guides/private-endpoint-dns/dns-split-horizon.svg)
+
+1. The client asks its resolver for `mystorageaccount.blob.core.windows.net`.
+2. The resolver finds the public CNAME pointing to `mystorageaccount.privatelink.blob.core.windows.net`.
+3. Inside a linked VNet, Azure DNS answers the `privatelink` name from your Private DNS Zone with the private IP. Everywhere else, the `privatelink` name resolves through Microsoft's public zone to the public IP.
+
 ## Cloud-Only Setup
 
 If all your workloads are in Azure with no on-premises connectivity, the setup is straightforward.
@@ -51,9 +57,17 @@ All you need:
 
 1. **Create a Private DNS Zone** for the service type (e.g., `privatelink.blob.core.windows.net`)
 2. **Link the zone to your VNet**
-3. The private endpoint's A record is automatically added to the zone
+3. **Make sure the private endpoint has a DNS zone group** pointing at the zone, so its A record gets added (see below)
 
 That's it. Azure DNS resolves the CNAME, checks linked Private DNS Zones, and returns the private IP.
+
+### Getting the A record into the zone
+
+The A record isn't added by magic. It's managed by a **private DNS zone group** on the private endpoint. When you create a private endpoint in the portal and select **Integrate with private DNS zone**, the portal creates the zone group for you, and the record is created, updated and removed together with the endpoint.
+
+From the CLI, Bicep or Terraform you have to create the zone group yourself, for example with `az network private-endpoint dns-zone-group create`. If you skip it, the endpoint deploys fine but no A record is created, and clients keep resolving the public IP. I see this regularly with endpoints deployed from pipelines.
+
+In larger hub-and-spoke environments, the common pattern is to let **Azure Policy** handle it. The Azure Landing Zones initiative *Configure Azure PaaS services to use private DNS zones* uses `DeployIfNotExists` policies to add the zone group to every new private endpoint and point it at the central zones in the hub. Application teams create the endpoint, and the platform team's policy wires up DNS. If you go this way, don't also create zone groups in your own code.
 
 **Important:** The Private DNS Zone only resolves for VNets that are directly linked to it. If you have a single VNet this is straightforward, but in a hub-and-spoke topology you need to think about this more carefully.
 
@@ -65,11 +79,18 @@ This works fine for small setups, but I've seen it become a real headache as env
 
 For larger environments, use **Azure DNS Private Resolver** to centralize resolution and avoid the zone-linking multiplication:
 
-1. Deploy the Private Resolver in your hub VNet
+1. Deploy the Private Resolver in your hub VNet (the inbound endpoint needs its own subnet, delegated to `Microsoft.Network/dnsResolvers`)
 2. Link all Private DNS Zones to the hub VNet only
 3. Configure spoke VNets to use the resolver's **inbound endpoint** IP as their DNS server (the inbound endpoint receives queries from clients and VNets, while the outbound endpoint is used for forwarding rules to on-premises or external DNS)
 
 Now spoke VNets don't need direct links to the zones. Their queries are forwarded to the resolver in the hub, which has access to all linked zones. One zone link per service type instead of one per spoke.
+
+![Hub-and-spoke DNS with Azure DNS Private Resolver](/guides/private-endpoint-dns/dns-hub-spoke.svg)
+
+1. The VM in the spoke sends its DNS query to the resolver's inbound endpoint (`10.0.4.4`), which the spoke has configured as its DNS server.
+2. The resolver hands the query to Azure DNS (`168.63.129.16`) from inside the hub.
+3. Azure DNS checks the Private DNS Zones linked to the **hub** and returns the private endpoint's IP.
+4. The VM connects directly to the private endpoint. DNS went through the hub, but the traffic doesn't have to.
 
 ### When you have custom DNS servers on the VNet
 
@@ -157,14 +178,14 @@ This way the conditional forwarders replicate automatically across all on-premis
 
 Here's what happens step by step when an on-premises client queries `mystorageaccount.blob.core.windows.net`:
 
-1. Client asks the on-premises DNS server
-2. DNS server matches the conditional forwarder for `blob.core.windows.net`
-3. Query is forwarded over VPN/ExpressRoute to the Azure DNS Private Resolver (or forwarder VM)
-4. The resolver forwards to `168.63.129.16`
-5. Azure DNS resolves the CNAME: `mystorageaccount.blob.core.windows.net` → `mystorageaccount.privatelink.blob.core.windows.net`
-6. Azure DNS checks Private DNS Zones linked to the VNet and finds an A record: `mystorageaccount.privatelink.blob.core.windows.net` → `10.0.1.5`
-7. The private IP travels back through the chain to the client
-8. Client connects to `10.0.1.5` over VPN/ExpressRoute
+![Hybrid private endpoint DNS resolution](/guides/private-endpoint-dns/dns-hybrid-flow.svg)
+
+1. The client asks the on-premises DNS server.
+2. The DNS server matches the conditional forwarder for `blob.core.windows.net` and forwards the query over VPN/ExpressRoute to the Azure DNS Private Resolver inbound endpoint (or a forwarder VM).
+3. The resolver forwards the query to `168.63.129.16`.
+4. Azure DNS follows the public CNAME: `mystorageaccount.blob.core.windows.net` → `mystorageaccount.privatelink.blob.core.windows.net`.
+5. Azure DNS checks the Private DNS Zones linked to the hub VNet and finds the A record `mystorageaccount.privatelink.blob.core.windows.net` → `10.2.1.5`. The answer travels back through the chain to the client.
+6. The client connects to `10.2.1.5` over VPN/ExpressRoute.
 
 ## Quick Verification
 
@@ -211,7 +232,7 @@ These are the issues I run into most often when helping customers set up private
 
 2. **Not linking the Private DNS Zone to the right VNet.** The zone must be linked to the VNet where your DNS resolver or forwarder lives, not just the VNet where the private endpoint is deployed.
 
-3. **Windows DNS forwarding timeout too low.** If using Windows DNS servers forwarding to `168.63.129.16`, increase the forwarding timeout to 5-10 seconds. The default 3 seconds is too short, especially over ExpressRoute or VPN where latency varies. If it times out, the server falls back to root hints and resolves the public IP instead. This one is particularly frustrating to debug because it works intermittently.
+3. **Windows DNS forwarding timeout too low.** If using Windows DNS servers forwarding to `168.63.129.16`, raise the server-level forwarding timeout (`Set-DnsServerForwarder -Timeout`). The default is 3 seconds, which can be too short, especially over ExpressRoute or VPN where latency varies. If it times out, the server falls back to root hints and resolves the public IP instead. Keep the whole chain within the server's overall recursion timeout (8 seconds by default, `Set-DnsServerRecursion -Timeout`), or the server gives up with SERVFAIL before it gets there. This one is particularly frustrating to debug because it works intermittently.
 
 4. **Creating multiple zones with the same name.** In hub-and-spoke, create one `privatelink.blob.core.windows.net` zone and link it to all VNets. Don't create separate zones per spoke.
 
@@ -221,11 +242,18 @@ These are the issues I run into most often when helping customers set up private
 
 7. **Blocking `168.63.129.16`.** This IP must be reachable on port 53 from any VM acting as a DNS forwarder. Local firewall rules that block it will break the entire chain.
 
+8. **Private endpoint created without a DNS zone group.** Common with endpoints deployed from CLI, Bicep or Terraform. The endpoint works, but no A record lands in the zone, so everything resolves to the public IP. Add the zone group, or let Azure Policy add it (see [Getting the A record into the zone](#getting-the-a-record-into-the-zone)).
+
+9. **Forwarding ruleset rule for a zone that's also linked.** If a VNet has a Private DNS Zone linked **and** a DNS Private Resolver forwarding ruleset with a rule for the same namespace, the linked zone always wins and the rule is silently ignored. Pick one per namespace.
+
 ## References
 
 - [Azure Private Endpoint DNS zone values](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns)
 - [Private Endpoint DNS integration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration)
 - [What is IP address 168.63.129.16](https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16)
 - [Azure DNS Private Resolver for hybrid DNS](https://learn.microsoft.com/en-us/azure/dns/private-resolver-hybrid-dns)
+- [Private DNS zone groups](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration#private-dns-zone-group)
+- [Private Link and DNS integration at scale (Azure Policy)](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/private-link-and-dns-integration-at-scale)
+- [Windows DNS forwarder and conditional forwarder timeouts](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/forwarders-resolution-timeouts)
 - [Private DNS Zones across VNets](https://oneuptime.com/blog/post/2026-02-16-how-to-configure-azure-private-dns-zones-for-name-resolution-across-vnets/view)
 - [Azure Private DNS Zone Fallback to Internet](https://www.kristhecodingunicorn.com/post/azure-private-dns-zone-fallback-to-public/)

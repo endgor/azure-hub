@@ -22,7 +22,7 @@ So what should you use? This guide covers how each one works, what the traffic a
 ## Quick Answer (TLDR)
 
 - **Service endpoint:** a subnet setting. Traffic from that subnet still goes to the service's **public IP**, but over the Azure backbone and with your **private source IP**, so the service firewall can allow "this subnet". Free, quick to set up, no DNS changes. **Does not work from on-premises** or from other VNets, and it lets the subnet reach *every* resource of that service type.
-- **Private endpoint:** a **NIC with a private IP in your VNet** that maps to **one specific resource**. Reachable from the VNet, peered VNets and on-premises over VPN/ExpressRoute. You can turn public access off completely. Costs money and **requires DNS work**.
+- **Private endpoint:** a **NIC with a private IP in your VNet** that maps to **one specific resource**. Reachable from the VNet, peered VNets and on-premises over VPN/ExpressRoute. You can turn public access off completely. Costs money and **requires DNS work** (covered in the [Private Endpoint DNS guide](/guides/networking/private-endpoint-dns-setup/)).
 
 **Default choice:** use private endpoints for production, anything reached from on-premises, and anything with data exfiltration requirements. Use service endpoints where cost or simplicity matters more and all traffic starts in Azure, or for platform dependencies (for example a firewall subnet reaching Storage) where a private endpoint is overkill.
 
@@ -52,7 +52,7 @@ DNS is what makes it work. Creating the private endpoint adds a CNAME in public 
 ![Private endpoint traffic flow](/guides/private-vs-service-endpoints/private-endpoint-flow.svg)
 
 1. The VM resolves `mystorage.blob.core.windows.net` to `10.2.1.5` and connects to it directly. The private endpoint passes the traffic to the storage account over Private Link.
-2. The on-premises client's DNS forwards `blob.core.windows.net` to the DNS Private Resolver in the hub and gets `10.2.1.5` back. Traffic goes over VPN/ExpressRoute into the hub, optionally through the firewall, then to the endpoint. Private IPs the whole way.
+2. The on-premises client's DNS forwards `blob.core.windows.net` to the DNS Private Resolver in the hub and gets `10.2.1.5` back (the [hybrid setup](/guides/networking/private-endpoint-dns-setup/#hybrid-setup-on-premises--azure) walks through this). Traffic goes over VPN/ExpressRoute into the hub, optionally through the firewall, then to the endpoint. Private IPs the whole way.
 3. Public network access is disabled on the storage account, so internet clients are rejected.
 
 ## Side-by-Side Comparison
@@ -105,7 +105,7 @@ DNS is what makes it work. Creating the private endpoint adds a CNAME in public 
 **Cons**
 
 - **Costs money.** Small per endpoint, but it adds up across hundreds of endpoints and heavy data transfer.
-- **DNS is mandatory and easy to get wrong.** A broken zone link or forwarder silently sends clients to the public IP.
+- **DNS is mandatory and easy to get wrong.** A broken zone link, a missing DNS zone group or a wrong forwarder silently sends clients to the public IP. See the [common mistakes](/guides/networking/private-endpoint-dns-setup/#common-mistakes).
 - **Consumes IP addresses** and needs subnet planning. Some services need several endpoints (blob, file, queue and table are separate sub-resources).
 - **More moving parts:** endpoint approval, zone records, network policies and route tables.
 
@@ -189,12 +189,13 @@ nslookup mystorage.blob.core.windows.net
 # Expected: mystorage.privatelink.blob.core.windows.net -> 10.2.1.5
 ```
 
-If it returns a public IP, the problem is DNS, not the endpoint.
+If it returns a public IP, the problem is DNS, not the endpoint. The [Private Endpoint DNS guide](/guides/networking/private-endpoint-dns-setup/#common-mistakes) lists the usual causes.
 
 ## References
 
 - [Azure virtual network service endpoints](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview)
 - [What is a private endpoint?](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview)
+- [Private Endpoint DNS Setup for Hybrid and Cloud-Only Environments](/guides/networking/private-endpoint-dns-setup/) (Azure Hub guide)
 - [Private Link FAQ (includes service endpoint questions)](https://learn.microsoft.com/en-us/azure/private-link/private-link-faq)
 - [Manage network policies for private endpoints](https://learn.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy)
 - [Azure Firewall scenarios to inspect traffic destined to a private endpoint](https://learn.microsoft.com/en-us/azure/private-link/inspect-traffic-with-azure-firewall)
