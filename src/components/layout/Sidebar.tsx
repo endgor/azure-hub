@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ICONS, type IconKey } from './icons';
+import { LogoMark } from './LogoMark';
 
 export interface NavItem {
   label: string;
@@ -53,15 +53,7 @@ export function Sidebar({
       >
         <div className="relative flex items-center justify-center px-4 py-5">
           <Link href="/" className="flex min-w-0 items-center justify-center gap-2.5" aria-label="Azure Hub home">
-            <Image
-              src="/logo-icon.png"
-              alt=""
-              width={72}
-              height={72}
-              priority
-              unoptimized
-              className="h-9 w-9 shrink-0"
-            />
+            <LogoMark className="h-[22px] w-auto shrink-0 text-sky-600 dark:text-sky-500" />
             <span
               className={`truncate text-xl font-semibold tracking-tight text-slate-900 dark:text-white ${
                 isSidebarCollapsed ? 'md:hidden' : ''

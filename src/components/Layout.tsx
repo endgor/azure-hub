@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useLocalStorageBoolean } from '@/hooks/useLocalStorageState';
@@ -9,6 +8,7 @@ import { SEOHead } from './layout/SEOHead';
 import { Sidebar, type NavSection } from './layout/Sidebar';
 import { ICONS } from './layout/icons';
 import { ThemeToggle } from './layout/ThemeToggle';
+import { LogoMark } from './layout/LogoMark';
 
 interface BreadcrumbItem {
   name: string;
@@ -374,15 +374,7 @@ export default function Layout({
                 </svg>
               </button>
               <Link href="/" className="flex items-center gap-2.5" aria-label="Azure Hub home">
-                <Image
-                  src="/logo-icon.png"
-                  alt=""
-                  width={64}
-                  height={64}
-                  priority
-                  unoptimized
-                  className="h-8 w-8 shrink-0"
-                />
+                <LogoMark className="h-5 w-auto shrink-0 text-sky-600 dark:text-sky-500" />
                 <span className="whitespace-nowrap text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
                   <span className="text-sky-600">Azure</span> Hub
                 </span>
