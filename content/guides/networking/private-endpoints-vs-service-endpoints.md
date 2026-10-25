@@ -3,8 +3,7 @@ title: "Private Endpoints vs Service Endpoints: Which One Should You Use?"
 description: "How Azure Private Endpoints and Service Endpoints differ, how traffic flows with each, the pros and cons, and the gotchas that catch people out"
 category: "networking"
 tags: ["private-endpoint", "service-endpoint", "private-link", "network-security", "hub-and-spoke"]
-date: "2026-10-23"
-draft: true
+date: "2026-10-25"
 ---
 
 ## WTF Is a Service Endpoint?
