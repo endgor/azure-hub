@@ -54,9 +54,13 @@ jobs:
         if: github.event_name != 'pull_request'
         run: npm run deploy
 
+      # Previews are unrouted versions, so include draft guides there for review.
+      # Production deploys from main never set this and keep drafts hidden.
       - name: Build OpenNext worker bundle
         if: github.event_name == 'pull_request'
         run: npx opennextjs-cloudflare build
+        env:
+          INCLUDE_DRAFTS: '1'
 
       # `opennextjs-cloudflare deploy` does this for production, but the preview
       # path calls wrangler directly. Without it the prerendered pages never reach

@@ -185,6 +185,10 @@ async function buildGuidesData(): Promise<GeneratedSiteData['guides']> {
       const fullPath = path.join(categoryPath, fileName);
       const fileContents = fs.readFileSync(fullPath, 'utf8');
       const { data, content: markdown } = await parseMarkdownFile(fileContents);
+      // Guides marked `draft: true` are only built when INCLUDE_DRAFTS=1 (local preview).
+      if ((data as { draft?: unknown } | null)?.draft === true && process.env.INCLUDE_DRAFTS !== '1') {
+        continue;
+      }
       const meta = parseGuideMeta(data);
       const rendered = await renderGuideContent(markdown);
 

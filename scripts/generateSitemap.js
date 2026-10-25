@@ -32,6 +32,9 @@ function getGuidePages() {
       const filePath = path.join(categoryPath, file);
       const content = fs.readFileSync(filePath, 'utf8');
       const { data } = matter(content);
+      if (data.draft === true) {
+        continue;
+      }
       const slug = file.replace(/\.md$/, '');
 
       // Use the guide's date as lastmod, or fall back to file mtime
