@@ -8,6 +8,8 @@ date: "2026-03-26"
 
 Getting DNS right for Private Endpoints is one of those things that looks simple on paper but trips people up constantly. I've set this up for multiple customers and the same issues come up every time. Microsoft's documentation is detailed but spreads the information across multiple pages, making it hard to see the full picture. This guide is what I wish I had when I first started working with private endpoints.
 
+Not sure whether you need a private endpoint or a service endpoint in the first place? Start with [Private Endpoints vs Service Endpoints](/guides/networking/private-endpoints-vs-service-endpoints/).
+
 ## Quick Setup (TLDR)
 
 **Cloud-only:** Create a Private DNS Zone (e.g., `privatelink.blob.core.windows.net`), link it to your VNet, and make sure your VNet is using Azure-provided DNS or forwarding to `168.63.129.16`. For hub-and-spoke, either link every spoke VNet to the zone or use Azure DNS Private Resolver in the hub.
@@ -248,6 +250,7 @@ These are the issues I run into most often when helping customers set up private
 
 ## References
 
+- [Private Endpoints vs Service Endpoints: Which One Should You Use?](/guides/networking/private-endpoints-vs-service-endpoints/) (Azure Hub guide)
 - [Azure Private Endpoint DNS zone values](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns)
 - [Private Endpoint DNS integration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration)
 - [What is IP address 168.63.129.16](https://learn.microsoft.com/en-us/azure/virtual-network/what-is-ip-address-168-63-129-16)
