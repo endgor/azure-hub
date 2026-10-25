@@ -24,6 +24,7 @@
     "update-private-dns-zones": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updatePrivateDnsZones.ts",
     "update-vm-pricing": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateVmPricing.ts",
     "update-vm-specs": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/updateVmSpecs.ts",
+    "generate-guide-diagrams": "ts-node --project tsconfig.node.json scripts/generateGuideDiagrams.ts",
     "submit-indexnow": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/submitIndexNow.ts",
     "track-content-changes": "ts-node --project tsconfig.node.json -r tsconfig-paths/register scripts/trackContentChanges.ts",
     "bing-stats": "ts-node --project tsconfig.node.json scripts/bingStats.ts",
@@ -56,6 +57,7 @@
   "devDependencies": {
     "@azure/identity": "^4.14.0",
     "@next/bundle-analyzer": "16.4.2",
+    "@squinch/pack-azure": "0.16.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^26.6.5",
