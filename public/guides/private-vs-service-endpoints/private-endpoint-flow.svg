@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 640" width="1040" height="640" role="img" aria-labelledby="t d">
 <title id="t">Private endpoint traffic flow</title>
-<desc id="d">A private endpoint with IP 10.2.1.5 in a spoke VNet fronts a storage account with public access disabled. A VM in the spoke and an on-premises client over VPN or ExpressRoute (through the hub gateway and optional Azure Firewall) both connect to the private IP. The DNS Private Resolver answers from a private DNS zone linked to the hub. Internet clients are blocked.</desc>
+<desc id="d">A private endpoint with IP 10.2.1.5 in a spoke VNet fronts a storage account with public access disabled. A VM in the spoke and an on-premises client over VPN or ExpressRoute (through the hub gateway and optional Azure Firewall) both connect to the private IP. The DNS Private Resolver answers from a private DNS zone linked to the hub. Public clients reach the storage public endpoint over the internet and are blocked.</desc>
 <defs><marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#323130"/></marker><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#d13438"/></marker></defs>
 <rect x="0.5" y="0.5" width="1039" height="639" fill="#ffffff" stroke="#e1dfdd"/>
 <rect x="20" y="50" width="190" height="250" fill="#ffffff" stroke="#8a8886" stroke-width="1"/>
@@ -69,13 +69,16 @@
 <text x="850" y="461" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#605e5c" text-anchor="start">approved private</text>
 <text x="850" y="476" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#605e5c" text-anchor="start">endpoint connections</text>
 <rect x="20" y="400" width="190" height="130" fill="#ffffff" stroke="#8a8886" stroke-width="1"/>
-<text x="30" y="425" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="600" fill="#323130" text-anchor="start">Internet</text>
+<text x="30" y="425" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="600" fill="#323130" text-anchor="start">Public client</text>
 <image href="data:image/svg+xml;base64,PHN2ZyBpZD0iZTI0NjcxZjYtZjUwMS00OTUyLWEyZGItOGIwYjFkMzI5YzE3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDE4IDE4Ij48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImJlOTI5MDFiLWVjMzMtNGM2NS1hZGYxLTliMGVlZDA2ZDY3NyIgeDE9IjkiIHkxPSI2Ljg4IiB4Mj0iOSIgeTI9IjIwLjQ1IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwLjIyIiBzdG9wLWNvbG9yPSIjMzJkNGY1IiAvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzE5OGFiMyIgLz48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0iYjQ2ZmMyNDYtMjVkOC00Mzk4LTg3NzktMTA0MmU4Y2FjYWU3IiB4MT0iOC42MSIgeTE9Ii0wLjQiIHgyPSI5LjYiIHkyPSIxMS45MiIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMC4yMiIgc3RvcC1jb2xvcj0iIzMyZDRmNSIgLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxOThhYjMiIC8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHRpdGxlPkljb24taWRlbnRpdHktMjMwPC90aXRsZT48cGF0aCBkPSJNMTUuNzIsMThhMS40NSwxLjQ1LDAsMCwwLDEuNDUtMS40NS40Ny40NywwLDAsMCwwLS4xN0MxNi41OSwxMS44MSwxNCw4LjA5LDksOC4wOVMxLjM0LDExLjI0LjgzLDE2LjM5QTEuNDYsMS40NiwwLDAsMCwyLjE0LDE4SDE1LjcyWiIgZmlsbD0idXJsKCNiZTkyOTAxYi1lYzMzLTRjNjUtYWRmMS05YjBlZWQwNmQ2NzcpIiAvPjxwYXRoIGQ9Ik05LDkuMTdhNC41OSw0LjU5LDAsMCwxLTIuNDgtLjczTDksMTQuODZsMi40NC02LjM4QTQuNTMsNC41MywwLDAsMSw5LDkuMTdaIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjgiIC8+PGNpcmNsZSBjeD0iOS4wMSIgY3k9IjQuNTgiIHI9IjQuNTgiIGZpbGw9InVybCgjYjQ2ZmMyNDYtMjVkOC00Mzk4LTg3NzktMTA0MmU4Y2FjYWU3KSIgLz48L3N2Zz4=" x="95.0" y="445.0" width="40" height="40"/>
 <text x="115" y="508" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#605e5c" text-anchor="middle">Resolves the public IP</text>
-<path d="M115 530 L115 590 L930 590 L930 534" fill="none" stroke="#d13438" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ar)"/>
-<circle cx="520" cy="590" r="9" fill="#ffffff" stroke="#d13438" stroke-width="1.5"/>
-<path d="M516 586 L524 594 M524 586 L516 594" stroke="#d13438" stroke-width="1.8"/>
-<circle cx="496" cy="590" r="10" fill="#d13438"/>
-<text x="496" y="594" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
-<text x="545" y="612" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#d13438" text-anchor="start">Blocked: public network access is disabled</text>
+<path d="M115 530 L115 590 L368 590" fill="none" stroke="#d13438" stroke-width="1.5" stroke-dasharray="6 4"/>
+<path d="M368 604 A18 18 0 0 1 380 576 A24 24 0 0 1 420 562 A22 22 0 0 1 456 578 A17 17 0 0 1 472 604 Z" fill="#ffffff" stroke="#8a8886" stroke-width="1.5"/>
+<text x="420" y="595" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="600" fill="#323130" text-anchor="middle">Internet</text>
+<path d="M472 590 L930 590 L930 534" fill="none" stroke="#d13438" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#ar)"/>
+<circle cx="930" cy="562" r="9" fill="#ffffff" stroke="#d13438" stroke-width="1.5"/>
+<path d="M926 558 L934 566 M934 558 L926 566" stroke="#d13438" stroke-width="1.8"/>
+<circle cx="906" cy="562" r="10" fill="#d13438"/>
+<text x="906" y="566" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+<text x="915" y="612" font-family="'Segoe UI', -apple-system, 'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="400" fill="#d13438" text-anchor="end">Blocked at the public endpoint: public network access is disabled</text>
 </svg>
