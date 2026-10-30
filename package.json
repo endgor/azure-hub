@@ -32,7 +32,7 @@
     "gsc-stats": "ts-node --project tsconfig.node.json scripts/gscStats.ts"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.12",
+    "@opennextjs/cloudflare": "1.20.13",
     "@types/d3-geo": "^3.1.1",
     "@types/topojson-client": "^3.1.5",
     "d3-geo": "^3.1.1",
