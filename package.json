@@ -32,12 +32,12 @@
     "gsc-stats": "ts-node --project tsconfig.node.json scripts/gscStats.ts"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.12",
+    "@opennextjs/cloudflare": "1.20.13",
     "@types/d3-geo": "^3.1.1",
     "@types/topojson-client": "^3.1.5",
     "d3-geo": "^3.1.1",
     "exceljs": "^4.4.0",
-    "next": "16.4.2",
+    "next": "16.4.3",
     "papaparse": "^5.7.0",
     "react": "^19.2.8",
     "react-dom": "^19.3.1",
@@ -74,9 +74,9 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0",
+    "typescript-eslint": "^8.72.1",
     "vitest": "^5.0.5",
-    "wrangler": "^4.151.3"
+    "wrangler": "^4.153.0"
   },
   "overrides": {
     "postcss": "^8.5.26",
