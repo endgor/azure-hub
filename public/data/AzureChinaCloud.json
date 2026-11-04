@@ -1,5 +1,5 @@
 {
-  "changeNumber": 419,
+  "changeNumber": 420,
   "cloud": "China",
   "values": [
     {
@@ -3037,15 +3037,19 @@
       "name": "PowerPlatformInfra",
       "id": "PowerPlatformInfra",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "PowerPlatformInfra",
         "addressPrefixes": [
+          "40.72.49.160/27",
+          "40.72.56.96/27",
           "40.73.47.202/32",
           "40.73.122.133/32",
           "40.73.122.212/32",
+          "40.162.134.240/28",
+          "40.162.179.32/28",
           "52.130.4.32/27",
           "52.130.4.64/26",
           "52.130.4.152/29",
@@ -8032,7 +8036,7 @@
       "name": "PowerPlatformInfra.ChinaEast2",
       "id": "PowerPlatformInfra.ChinaEast2",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "chinaeast2",
         "regionId": 55,
         "platform": "Azure",
@@ -8040,6 +8044,7 @@
         "addressPrefixes": [
           "40.73.122.133/32",
           "40.73.122.212/32",
+          "40.162.179.32/28",
           "52.130.4.32/27",
           "52.130.4.64/26",
           "52.130.4.152/29",
@@ -8056,12 +8061,13 @@
       "name": "PowerPlatformInfra.ChinaEast3",
       "id": "PowerPlatformInfra.ChinaEast3",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "chinaeast3",
         "regionId": 90,
         "platform": "Azure",
         "systemService": "PowerPlatformInfra",
         "addressPrefixes": [
+          "40.72.56.96/27",
           "163.228.59.64/26",
           "163.228.59.128/27",
           "163.228.66.162/32",
@@ -8078,13 +8084,14 @@
       "name": "PowerPlatformInfra.ChinaNorth2",
       "id": "PowerPlatformInfra.ChinaNorth2",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "chinanorth2",
         "regionId": 54,
         "platform": "Azure",
         "systemService": "PowerPlatformInfra",
         "addressPrefixes": [
           "40.73.47.202/32",
+          "40.162.134.240/28",
           "52.130.19.32/27",
           "52.130.19.64/26",
           "52.130.20.240/29",
@@ -8102,12 +8109,13 @@
       "name": "PowerPlatformInfra.ChinaNorth3",
       "id": "PowerPlatformInfra.ChinaNorth3",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "chinanorth3",
         "regionId": 89,
         "platform": "Azure",
         "systemService": "PowerPlatformInfra",
         "addressPrefixes": [
+          "40.72.49.160/27",
           "159.27.243.224/27",
           "159.27.246.0/26",
           "163.228.227.118/32",

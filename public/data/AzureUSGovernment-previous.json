@@ -1,5 +1,5 @@
 {
-  "changeNumber": 415,
+  "changeNumber": 416,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -3980,7 +3980,7 @@
       "name": "PowerPlatformInfra",
       "id": "PowerPlatformInfra",
       "properties": {
-        "changeNumber": 8,
+        "changeNumber": 9,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -4024,6 +4024,7 @@
           "52.181.33.3/32",
           "52.181.33.7/32",
           "52.181.67.0/25",
+          "52.181.73.192/26",
           "52.182.32.2/32",
           "52.182.32.218/32",
           "52.227.216.40/32",
@@ -4043,6 +4044,7 @@
           "52.245.170.221/32",
           "52.245.211.174/32",
           "52.245.239.198/32",
+          "57.17.40.0/26",
           "57.17.69.192/26",
           "57.17.70.0/26",
           "57.17.99.128/25",
@@ -9234,7 +9236,7 @@
       "name": "PowerPlatformInfra.USDoDCentral",
       "id": "PowerPlatformInfra.USDoDCentral",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "usdodcentral",
         "regionId": 44,
         "platform": "Azure",
@@ -9248,6 +9250,7 @@
           "52.126.254.192/26",
           "52.182.32.2/32",
           "52.182.32.218/32",
+          "57.17.40.0/26",
           "2001:489a:2102:1800::/58"
         ],
         "networkFeatures": [
@@ -9262,7 +9265,7 @@
       "name": "PowerPlatformInfra.USDoDEast",
       "id": "PowerPlatformInfra.USDoDEast",
       "properties": {
-        "changeNumber": 4,
+        "changeNumber": 5,
         "region": "usdodeast",
         "regionId": 45,
         "platform": "Azure",
@@ -9276,6 +9279,7 @@
           "52.181.33.3/32",
           "52.181.33.7/32",
           "52.181.67.0/25",
+          "52.181.73.192/26",
           "2001:489a:2102:1880::/58"
         ],
         "networkFeatures": [
