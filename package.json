@@ -32,7 +32,7 @@
     "gsc-stats": "ts-node --project tsconfig.node.json scripts/gscStats.ts"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.13",
+    "@opennextjs/cloudflare": "1.20.15",
     "@types/d3-geo": "^3.1.1",
     "@types/topojson-client": "^3.1.5",
     "d3-geo": "^3.1.1",
@@ -76,7 +76,7 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",
     "vitest": "^5.1.0",
-    "wrangler": "^4.153.0"
+    "wrangler": "^4.157.0"
   },
   "overrides": {
     "postcss": "^8.5.26",
