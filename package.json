@@ -57,7 +57,7 @@
   "devDependencies": {
     "@azure/identity": "^4.14.0",
     "@next/bundle-analyzer": "16.4.4",
-    "@squinch/pack-azure": "0.16.0",
+    "@squinch/pack-azure": "0.17.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^26.6.6",
