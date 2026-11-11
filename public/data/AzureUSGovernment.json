@@ -1,5 +1,5 @@
 {
-  "changeNumber": 417,
+  "changeNumber": 418,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -1157,6 +1157,31 @@
       }
     },
     {
+      "name": "AzureDatabricksServerless",
+      "id": "AzureDatabricksServerless",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "regionId": 0,
+        "platform": "Azure",
+        "systemService": "AzureDatabricksServerless",
+        "addressPrefixes": [
+          "20.158.156.0/23",
+          "51.55.120.0/23",
+          "51.55.178.0/23",
+          "62.11.88.0/23",
+          "2001:489a:3203:3::/119",
+          "2001:489a:3403:6::/119"
+        ],
+        "networkFeatures": [
+          "NSG",
+          "API",
+          "FW",
+          "UDR"
+        ]
+      }
+    },
+    {
       "name": "AzureDigitalTwins",
       "id": "AzureDigitalTwins",
       "properties": {
@@ -1439,7 +1464,7 @@
       "name": "AzureKeyVault",
       "id": "AzureKeyVault",
       "properties": {
-        "changeNumber": 14,
+        "changeNumber": 15,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -1465,6 +1490,8 @@
           "52.235.251.24/29",
           "52.235.251.96/30",
           "52.245.128.108/30",
+          "57.17.101.78/31",
+          "57.17.103.60/30",
           "2001:489a:3103:1::3b8/125",
           "2001:489a:3103:2::798/125",
           "2001:489a:3103:2::7a0/126",
@@ -6689,7 +6716,7 @@
       "name": "AzureKeyVault.USGovVirginia",
       "id": "AzureKeyVault.USGovVirginia",
       "properties": {
-        "changeNumber": 7,
+        "changeNumber": 8,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -6700,6 +6727,8 @@
           "20.140.200.200/30",
           "52.235.251.24/29",
           "52.235.251.96/30",
+          "57.17.101.78/31",
+          "57.17.103.60/30",
           "2001:489a:3103:1::3b8/125",
           "2001:489a:3103:2::798/125",
           "2001:489a:3103:2::7a0/126",
@@ -11000,7 +11029,7 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 71,
+        "changeNumber": 72,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -11099,7 +11128,17 @@
           "52.245.150.0/23",
           "52.245.192.0/18",
           "52.247.128.0/18",
-          "57.16.0.0/24",
+          "57.16.0.0/22",
+          "57.16.64.0/24",
+          "57.16.66.0/24",
+          "57.16.98.0/24",
+          "57.16.100.0/24",
+          "57.16.102.0/24",
+          "57.16.104.0/24",
+          "57.16.106.0/24",
+          "57.16.108.0/24",
+          "57.16.110.0/24",
+          "57.16.112.0/24",
           "57.17.96.0/19",
           "57.17.128.0/19",
           "62.10.0.0/17",

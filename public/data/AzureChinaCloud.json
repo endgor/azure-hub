@@ -1,5 +1,5 @@
 {
-  "changeNumber": 420,
+  "changeNumber": 421,
   "cloud": "China",
   "values": [
     {
@@ -903,6 +903,49 @@
       }
     },
     {
+      "name": "AzureDatabricksServerless",
+      "id": "AzureDatabricksServerless",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "regionId": 0,
+        "platform": "Azure",
+        "systemService": "AzureDatabricksServerless",
+        "addressPrefixes": [
+          "40.162.97.0/26",
+          "40.162.129.64/26",
+          "40.162.225.128/26",
+          "143.64.29.64/28",
+          "143.64.29.192/28",
+          "143.64.30.32/28",
+          "143.64.31.208/28",
+          "143.64.31.224/27",
+          "143.64.57.192/29",
+          "143.64.61.136/29",
+          "143.64.119.112/28",
+          "143.64.119.160/27",
+          "143.64.119.192/26",
+          "143.64.136.96/28",
+          "143.64.137.48/28",
+          "143.64.154.160/28",
+          "143.64.155.16/28",
+          "143.64.155.80/28",
+          "143.64.155.160/27",
+          "143.64.155.208/28",
+          "143.64.155.224/27",
+          "143.64.156.48/28",
+          "163.228.205.64/26",
+          "163.228.235.40/29"
+        ],
+        "networkFeatures": [
+          "NSG",
+          "API",
+          "FW",
+          "UDR"
+        ]
+      }
+    },
+    {
       "name": "AzureDigitalTwins",
       "id": "AzureDigitalTwins",
       "properties": {
@@ -1222,12 +1265,14 @@
       "name": "AzureKeyVault",
       "id": "AzureKeyVault",
       "properties": {
-        "changeNumber": 11,
+        "changeNumber": 12,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "AzureKeyVault",
         "addressPrefixes": [
+          "40.72.49.232/30",
+          "40.72.49.236/31",
           "40.72.79.152/29",
           "40.73.24.214/31",
           "40.73.72.185/32",
@@ -5695,12 +5740,14 @@
       "name": "AzureKeyVault.ChinaNorth3",
       "id": "AzureKeyVault.ChinaNorth3",
       "properties": {
-        "changeNumber": 6,
+        "changeNumber": 7,
         "region": "chinanorth3",
         "regionId": 89,
         "platform": "Azure",
         "systemService": "AzureKeyVault",
         "addressPrefixes": [
+          "40.72.49.232/30",
+          "40.72.49.236/31",
           "52.131.21.112/30",
           "52.131.26.76/30",
           "159.27.194.76/30",
