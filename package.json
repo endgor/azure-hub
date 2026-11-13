@@ -37,7 +37,7 @@
     "@types/topojson-client": "^3.1.5",
     "d3-geo": "^3.1.2",
     "exceljs": "^4.4.0",
-    "next": "16.4.5",
+    "next": "16.4.6",
     "papaparse": "^5.7.0",
     "react": "^19.2.8",
     "react-dom": "^19.3.1",
@@ -57,7 +57,7 @@
   "devDependencies": {
     "@azure/identity": "^4.14.1",
     "@next/bundle-analyzer": "16.4.4",
-    "@squinch/pack-azure": "0.17.1",
+    "@squinch/pack-azure": "0.18.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^26.6.6",
@@ -70,13 +70,13 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "gray-matter": "^4.0.3",
     "postcss": "^8.5.26",
-    "tailwindcss": "^4.3.4",
+    "tailwindcss": "^4.3.5",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
+    "typescript-eslint": "^8.72.2",
     "vitest": "^5.1.0",
-    "wrangler": "^4.157.0"
+    "wrangler": "^4.160.0"
   },
   "overrides": {
     "postcss": "^8.5.26",
