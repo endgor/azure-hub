@@ -58,7 +58,7 @@
     "@azure/identity": "^4.14.1",
     "@next/bundle-analyzer": "16.4.6",
     "@squinch/pack-azure": "0.18.0",
-    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^26.6.6",
     "@types/papaparse": "^5.5.2",
