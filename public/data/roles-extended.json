@@ -30986,18 +30986,7 @@
     "name": "1abf4029-2200-4343-800c-e4c4c01eddbd",
     "permissions": [
       {
-        "actions": [
-          "Microsoft.Mission/Locations/OperationStatuses/read",
-          "Microsoft.Mission/Locations/OperationStatuses/write",
-          "Microsoft.Mission/Operations/read",
-          "Microsoft.Mission/virtualEnclaves/read",
-          "Microsoft.Mission/virtualEnclaves/write",
-          "Microsoft.Mission/virtualEnclaves/delete",
-          "Microsoft.Mission/virtualEnclaves/workloads/read",
-          "Microsoft.Mission/virtualEnclaves/workloads/write",
-          "Microsoft.Mission/virtualEnclaves/workloads/delete",
-          "Microsoft.Mission/communities/read"
-        ],
+        "actions": [],
         "condition": null,
         "conditionVersion": null,
         "dataActions": [],
@@ -31010,8 +30999,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-07-10T15:32:23.627975+00:00",
-    "permissionCount": 10,
+    "updatedOn": "2026-11-18T16:14:43.741700+00:00",
+    "permissionCount": 0,
     "dataActions": [],
     "notDataActions": []
   },
