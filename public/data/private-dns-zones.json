@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-23",
+  "lastUpdated": "2026-11-24",
   "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
   "entries": [
     {
@@ -1368,7 +1368,7 @@
         "privatelink.file.core.windows.net"
       ],
       "publicDnsForwarders": [
-        "file.core.windows.net"
+        "file.storage.azure.net"
       ],
       "category": "Storage",
       "cloud": "Commercial"
