@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-24",
+  "lastUpdated": "2026-11-25",
   "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
   "entries": [
     {
@@ -153,10 +153,12 @@
         "namespace"
       ],
       "dnsZoneNames": [
-        "privatelink.servicebus.windows.net"
+        "privatelink.servicebus.windows.net",
+        "privatelink.eventhubs.azure.net"
       ],
       "publicDnsForwarders": [
-        "servicebus.windows.net"
+        "servicebus.windows.net",
+        "eventhubs.azure.net"
       ],
       "category": "Analytics",
       "cloud": "Commercial"
@@ -168,10 +170,12 @@
         "namespace"
       ],
       "dnsZoneNames": [
-        "privatelink.servicebus.windows.net"
+        "privatelink.servicebus.windows.net",
+        "privatelink.servicebus.azure.net"
       ],
       "publicDnsForwarders": [
-        "servicebus.windows.net"
+        "servicebus.windows.net",
+        "servicebus.azure.net"
       ],
       "category": "Analytics",
       "cloud": "Commercial"
@@ -567,7 +571,7 @@
       "cloud": "Commercial"
     },
     {
-      "resourceType": "Azure Cosmos DB for MongoDB - vCore",
+      "resourceType": "Azure DocumentDB",
       "armType": "Microsoft.DocumentDB/mongoClusters",
       "subresources": [
         "MongoCluster"
@@ -727,10 +731,12 @@
         "namespace"
       ],
       "dnsZoneNames": [
-        "privatelink.servicebus.windows.net"
+        "privatelink.servicebus.windows.net",
+        "privatelink.servicebus.azure.net"
       ],
       "publicDnsForwarders": [
-        "servicebus.windows.net"
+        "servicebus.windows.net",
+        "servicebus.azure.net"
       ],
       "category": "Integration",
       "cloud": "Commercial"

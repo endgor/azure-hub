@@ -1,5 +1,5 @@
 {
-  "changeNumber": 422,
+  "changeNumber": 423,
   "cloud": "China",
   "values": [
     {
@@ -3013,12 +3013,14 @@
       "name": "PowerBI",
       "id": "PowerBI",
       "properties": {
-        "changeNumber": 9,
+        "changeNumber": 10,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
         "systemService": "PowerBI",
         "addressPrefixes": [
+          "40.72.51.16/28",
+          "40.72.57.144/28",
           "40.72.72.68/30",
           "40.72.72.120/29",
           "40.72.72.128/31",
@@ -3029,6 +3031,8 @@
           "40.162.71.96/30",
           "40.162.71.112/29",
           "40.162.71.120/30",
+          "40.162.135.208/28",
+          "40.162.180.96/28",
           "52.130.0.70/31",
           "52.130.1.72/29",
           "52.130.1.80/30",
@@ -7953,12 +7957,13 @@
       "name": "PowerBI.ChinaEast2",
       "id": "PowerBI.ChinaEast2",
       "properties": {
-        "changeNumber": 1,
+        "changeNumber": 2,
         "region": "chinaeast2",
         "regionId": 55,
         "platform": "Azure",
         "systemService": "PowerBI",
         "addressPrefixes": [
+          "40.162.180.96/28",
           "52.130.0.70/31",
           "52.130.1.72/29",
           "52.130.1.80/30",
@@ -7979,12 +7984,13 @@
       "name": "PowerBI.ChinaEast3",
       "id": "PowerBI.ChinaEast3",
       "properties": {
-        "changeNumber": 1,
+        "changeNumber": 2,
         "region": "chinaeast3",
         "regionId": 90,
         "platform": "Azure",
         "systemService": "PowerBI",
         "addressPrefixes": [
+          "40.72.57.144/28",
           "40.162.57.76/30",
           "40.162.57.112/29",
           "40.162.57.120/30",
@@ -8029,12 +8035,13 @@
       "name": "PowerBI.ChinaNorth2",
       "id": "PowerBI.ChinaNorth2",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "chinanorth2",
         "regionId": 54,
         "platform": "Azure",
         "systemService": "PowerBI",
         "addressPrefixes": [
+          "40.162.135.208/28",
           "52.130.16.68/30",
           "52.130.16.120/29",
           "52.130.16.128/31",
@@ -8056,12 +8063,13 @@
       "name": "PowerBI.ChinaNorth3",
       "id": "PowerBI.ChinaNorth3",
       "properties": {
-        "changeNumber": 1,
+        "changeNumber": 2,
         "region": "chinanorth3",
         "regionId": 89,
         "platform": "Azure",
         "systemService": "PowerBI",
         "addressPrefixes": [
+          "40.72.51.16/28",
           "40.162.71.96/30",
           "40.162.71.112/29",
           "40.162.71.120/30",

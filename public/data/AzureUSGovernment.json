@@ -1,5 +1,5 @@
 {
-  "changeNumber": 419,
+  "changeNumber": 420,
   "cloud": "AzureGovernment",
   "values": [
     {
@@ -3939,7 +3939,7 @@
       "name": "PowerBI",
       "id": "PowerBI",
       "properties": {
-        "changeNumber": 7,
+        "changeNumber": 8,
         "region": "",
         "regionId": 0,
         "platform": "Azure",
@@ -3976,8 +3976,17 @@
           "52.127.49.192/26",
           "52.127.55.216/29",
           "52.181.42.128/28",
+          "52.181.74.208/28",
           "52.235.251.108/30",
+          "57.17.41.64/28",
+          "57.17.76.40/29",
+          "57.17.76.96/27",
+          "57.17.77.0/28",
           "57.17.100.128/26",
+          "57.17.106.149/32",
+          "57.17.106.150/31",
+          "57.17.109.40/30",
+          "57.17.109.64/27",
           "2001:489a:3103::5e0/123",
           "2001:489a:3103::600/122",
           "2001:489a:3103:1::/122",
@@ -9180,7 +9189,7 @@
       "name": "PowerBI.USDoDCentral",
       "id": "PowerBI.USDoDCentral",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usdodcentral",
         "regionId": 44,
         "platform": "Azure",
@@ -9191,6 +9200,7 @@
           "20.140.72.144/29",
           "20.140.77.232/30",
           "20.159.234.240/28",
+          "57.17.41.64/28",
           "2001:489a:3203::620/123",
           "2001:489a:3203::640/122"
         ],
@@ -9206,7 +9216,7 @@
       "name": "PowerBI.USDoDEast",
       "id": "PowerBI.USDoDEast",
       "properties": {
-        "changeNumber": 2,
+        "changeNumber": 3,
         "region": "usdodeast",
         "regionId": 45,
         "platform": "Azure",
@@ -9217,6 +9227,7 @@
           "20.140.64.144/29",
           "20.141.16.148/30",
           "52.181.42.128/28",
+          "52.181.74.208/28",
           "2001:489a:3303::5e0/123",
           "2001:489a:3303::600/122",
           "2001:489a:3303:1::/122",
@@ -9261,7 +9272,7 @@
       "name": "PowerBI.USGovTexas",
       "id": "PowerBI.USGovTexas",
       "properties": {
-        "changeNumber": 3,
+        "changeNumber": 4,
         "region": "usgovtexas",
         "regionId": 41,
         "platform": "Azure",
@@ -9273,6 +9284,9 @@
           "51.54.53.96/28",
           "51.54.198.16/28",
           "51.54.198.48/28",
+          "57.17.76.40/29",
+          "57.17.76.96/27",
+          "57.17.77.0/28",
           "2001:489a:3403::620/123",
           "2001:489a:3403::640/122"
         ],
@@ -9288,7 +9302,7 @@
       "name": "PowerBI.USGovVirginia",
       "id": "PowerBI.USGovVirginia",
       "properties": {
-        "changeNumber": 5,
+        "changeNumber": 6,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -9304,6 +9318,10 @@
           "52.127.55.216/29",
           "52.235.251.108/30",
           "57.17.100.128/26",
+          "57.17.106.149/32",
+          "57.17.106.150/31",
+          "57.17.109.40/30",
+          "57.17.109.64/27",
           "2001:489a:3103::5e0/123",
           "2001:489a:3103::600/122",
           "2001:489a:3103:1::/122",
@@ -11030,7 +11048,7 @@
       "name": "AzureCloud.usgovvirginia",
       "id": "AzureCloud.usgovvirginia",
       "properties": {
-        "changeNumber": 72,
+        "changeNumber": 73,
         "region": "usgovvirginia",
         "regionId": 42,
         "platform": "Azure",
@@ -11142,6 +11160,7 @@
           "57.16.112.0/24",
           "57.17.96.0/19",
           "57.17.128.0/19",
+          "57.17.192.0/19",
           "62.10.0.0/17",
           "62.10.128.0/23",
           "62.10.132.0/24",

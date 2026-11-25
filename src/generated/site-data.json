@@ -1,35 +1,44 @@
 {
   "home": {
-    "lastUpdated": "2026-11-24"
+    "lastUpdated": "2026-11-25"
   },
   "about": {
     "fileMetadata": [
       {
         "cloud": "AzureCloud",
-        "changeNumber": 427,
-        "filename": "ServiceTags_Public_20261116.json",
-        "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20261116.json",
-        "lastRetrieved": "2026-11-24"
+        "changeNumber": 428,
+        "filename": "ServiceTags_Public_20261123.json",
+        "downloadUrl": "https://download.microsoft.com/download/7/1/d/71d86715-5596-4529-9b13-da13a5de5b63/ServiceTags_Public_20261123.json",
+        "lastRetrieved": "2026-11-25",
+        "previousChangeNumber": 427,
+        "previousFilename": "ServiceTags_Public_20261116.json",
+        "diffAvailable": true
       },
       {
         "cloud": "AzureChinaCloud",
-        "changeNumber": 422,
-        "filename": "ServiceTags_China_20261116.json",
-        "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20261116.json",
-        "lastRetrieved": "2026-11-24"
+        "changeNumber": 423,
+        "filename": "ServiceTags_China_20261123.json",
+        "downloadUrl": "https://download.microsoft.com/download/9/d/0/9d03b7e2-4b80-4bf3-9b91-da8c7d3ee9f9/ServiceTags_China_20261123.json",
+        "lastRetrieved": "2026-11-25",
+        "previousChangeNumber": 422,
+        "previousFilename": "ServiceTags_China_20261116.json",
+        "diffAvailable": true
       },
       {
         "cloud": "AzureUSGovernment",
-        "changeNumber": 419,
-        "filename": "ServiceTags_AzureGovernment_20261116.json",
-        "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20261116.json",
-        "lastRetrieved": "2026-11-24"
+        "changeNumber": 420,
+        "filename": "ServiceTags_AzureGovernment_20261123.json",
+        "downloadUrl": "https://download.microsoft.com/download/6/4/d/64db03bf-895b-4173-a8b1-ba4ad5d4df22/ServiceTags_AzureGovernment_20261123.json",
+        "lastRetrieved": "2026-11-25",
+        "previousChangeNumber": 419,
+        "previousFilename": "ServiceTags_AzureGovernment_20261116.json",
+        "diffAvailable": true
       }
     ],
-    "rbacLastRetrieved": "2026-11-24"
+    "rbacLastRetrieved": "2026-11-25"
   },
   "rbac": {
-    "roleCount": 994,
+    "roleCount": 995,
     "namespaceCount": 242
   },
   "entraid": {

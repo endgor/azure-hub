@@ -16725,6 +16725,8 @@
         "actions": [
           "Microsoft.Sql/servers/read",
           "Microsoft.Sql/servers/write",
+          "Microsoft.Sql/servers/administrators/read",
+          "Microsoft.Sql/servers/administrators/write",
           "Microsoft.Sql/servers/databases/read",
           "Microsoft.Sql/servers/databases/write",
           "Microsoft.Sql/servers/databases/delete",
@@ -16761,8 +16763,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-10-10T16:08:02.832145+00:00",
-    "permissionCount": 25,
+    "updatedOn": "2026-11-24T16:11:52.924767+00:00",
+    "permissionCount": 27,
     "dataActions": [],
     "notDataActions": []
   },
@@ -17055,6 +17057,8 @@
         "actions": [
           "Microsoft.Sql/managedInstances/read",
           "Microsoft.Sql/managedInstances/write",
+          "Microsoft.Sql/managedInstances/administrators/read",
+          "Microsoft.Sql/managedInstances/administrators/write",
           "Microsoft.Sql/managedInstances/databases/read",
           "Microsoft.Sql/managedInstances/databases/write",
           "Microsoft.Sql/managedInstances/databases/delete",
@@ -17097,8 +17101,8 @@
     "systemData": null,
     "type": "Microsoft.Authorization/roleDefinitions",
     "updatedBy": null,
-    "updatedOn": "2025-10-10T16:38:33.016875+00:00",
-    "permissionCount": 31,
+    "updatedOn": "2026-11-24T16:11:52.924767+00:00",
+    "permissionCount": 33,
     "dataActions": [],
     "notDataActions": []
   },
@@ -44581,6 +44585,39 @@
     "permissionCount": 8,
     "dataActions": [
       "Microsoft.CognitiveServices/accounts/ContentSafety/unifiedModerate/action"
+    ],
+    "notDataActions": []
+  },
+  {
+    "assignableScopes": [
+      "/"
+    ],
+    "createdBy": null,
+    "createdOn": "2026-11-24T16:11:52.924767+00:00",
+    "description": "Process health data in EBM Calc service API",
+    "id": "/subscriptions/1e3d98eb-68e5-482d-81a8-58bde9f2042f/providers/Microsoft.Authorization/roleDefinitions/bc578a8a-7f30-4777-bc46-55f9058a8388",
+    "name": "bc578a8a-7f30-4777-bc46-55f9058a8388",
+    "permissions": [
+      {
+        "actions": [],
+        "condition": null,
+        "conditionVersion": null,
+        "dataActions": [
+          "Microsoft.HealthBot/healthBots/AIActions/EBMcalc/Process/Action"
+        ],
+        "notActions": [],
+        "notDataActions": []
+      }
+    ],
+    "roleName": "EBM Calc Data User",
+    "roleType": "BuiltInRole",
+    "systemData": null,
+    "type": "Microsoft.Authorization/roleDefinitions",
+    "updatedBy": null,
+    "updatedOn": "2026-11-24T16:11:52.924767+00:00",
+    "permissionCount": 1,
+    "dataActions": [
+      "Microsoft.HealthBot/healthBots/AIActions/EBMcalc/Process/Action"
     ],
     "notDataActions": []
   }
