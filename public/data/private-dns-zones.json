@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-25",
+  "lastUpdated": "2026-11-26",
   "sourceUrl": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns",
   "entries": [
     {
@@ -1104,7 +1104,7 @@
       "cloud": "Commercial"
     },
     {
-      "resourceType": "Azure Migrate",
+      "resourceType": "Azure Catalyst",
       "armType": "Microsoft.Migrate/migrateProjects",
       "subresources": [
         "Default"
@@ -1119,7 +1119,7 @@
       "cloud": "Commercial"
     },
     {
-      "resourceType": "Azure Migrate",
+      "resourceType": "Azure Catalyst",
       "armType": "Microsoft.Migrate/assessmentProjects",
       "subresources": [
         "Default"
@@ -2109,7 +2109,7 @@
       "cloud": "Government"
     },
     {
-      "resourceType": "Azure Migrate",
+      "resourceType": "Azure Catalyst",
       "armType": "Microsoft.Migrate/migrateProjects",
       "subresources": [
         "Default"
@@ -2124,7 +2124,7 @@
       "cloud": "Government"
     },
     {
-      "resourceType": "Azure Migrate",
+      "resourceType": "Azure Catalyst",
       "armType": "Microsoft.Migrate/assessmentProjects",
       "subresources": [
         "Default"
